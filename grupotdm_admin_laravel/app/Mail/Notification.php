@@ -32,15 +32,15 @@ class Notification extends Mailable
      * Get the message envelope.
      */
 
-     public function build(){
-
-        $correo = $this->correo;
-        $nombre = $this->nombre;
-        $company = $this->company;
-        $area = $this->area;
-        return $this->subject("ACTIVACIÓN DE USUARIO")
-        ->view('mails.notification', compact('nombre', 'correo', 'company','area'));
-     }
+ public function build()
+{
+    $correo = $this->correo;
+    $nombre = $this->nombre;
+    $company = $this->company;
+    $area = $this->area;
+    return $this->subject("ACTIVACIÓN DE USUARIO")
+                ->view('mails.notification', compact('nombre', 'correo','company','area'));
+}
 
 
 

@@ -18,7 +18,7 @@
         <div class="content_mail"
             style="background-color: white;
     padding: 30px 120px;
-    width: 400px;
+    width: 100%;
     height: auto;">
             <div class="content_page" style="text-align: center;">
                 <div class="content_logo" style="width: 100%;
@@ -33,7 +33,9 @@
             <div class="info">
                 <p>Buen día Administrador, El usuario <b>{{ $nombre }}</b> con correo <b> {{ $correo }}</b> de <b>{{ $company }}</b> del area de <b>{{ $area }}</b> esta a la espera de activación</p>
             </div>
-
+<center>
+            <p style="text-align: center; color: red;border-top: solid black 1px; padding: 2px">Informacion enviada por el area de administración GRUPO TDM</p>
+        </center>
         </div>
     </div>
 </body>
