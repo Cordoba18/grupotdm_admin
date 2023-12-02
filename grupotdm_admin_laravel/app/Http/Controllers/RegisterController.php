@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Mail;
 class RegisterController extends Controller
 {
     public function index(){
-
           $areas = Area::all();
         $companies = Companie::all();
         return view("user.register",compact('areas', 'companies'));
@@ -51,11 +50,13 @@ function new_user(Request $request){
     $user->id_company = $request->id_company;
     $user->id_state = 2;
     $user->id_area = $request->id_area;
-    $user->id_chargy = DB::selectOne("SELECT c.id FROM charges c WHERE c.id_area = $request->id_area AND c.chargy='JEFE DE AREA'");
+    $id_chargy = DB::selectOne("SELECT c.id FROM charges c WHERE c.id_area =$request->id_area AND c.chargy='JEFE DE AREA'");
+    $user->id_chargy = $id_chargy;
     $company = DB::selectOne("SELECT c.company FROM companies c WHERE c.id = $request->id_company");
     $area = DB::selectOne("SELECT a.area FROM areas a WHERE a.id = $request->id_area");
-    $user->save();
+
     Mail::to("soporte@eltemplodelamoda.com.co")->send(new Notification($request->name, $request->email , $company, $area));
+    $user->save();
     return response()->json(['message' => true], 200);
 
 }
