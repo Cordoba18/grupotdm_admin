@@ -3,7 +3,7 @@ let form_code = '<h2>INGRESE EL CODIGO</h2>' +
     '<form action="" method="POST">' +
     '<p id="message_code"></p>' +
     '<label>CODIGO</label>' +
-    '<input id="code" type="number" inputmode="none" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="INGRESE EL CODIGO" name="code" required>' +
+    '<input id="code" type="number" inputmode="none" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese el codigo" name="code" required>' +
     '<p id="error_code" hidden></p>' +
     '<button id="btn_verificar" type="submit">VERIFICAR</button>' +
     '<a href="'+route_login+'">Si tengo cuenta</a>' +
@@ -75,7 +75,7 @@ btn_register.addEventListener('click', function (e) {
                     _token: _token,
                 },
                 success: function (response) {
-                    console.log(response);
+
                     error_form.setAttribute('hidden', 'true');
                     if (response['message'] == true) {
                         Swal.fire({
@@ -122,7 +122,7 @@ btn_register.addEventListener('click', function (e) {
 })
 
 
-function activate_form_code(code, email, password, name, gender, _token) {
+function activate_form_code(code, email, password, name,area,nit,company,lastname , _token) {
 
     const message_code = document.querySelector('#message_code');
     message_code.innerHTML = 'Hemos enviado un codigo de verificacion a ' + email;
@@ -140,9 +140,11 @@ function activate_form_code(code, email, password, name, gender, _token) {
                 url: "register/new_user",
                 data: {
                     email: email,
-                    name: name,
+                    name: name + "" + lastname,
                     password: password,
-                    gender: gender,
+                    id_area: area,
+                    nit: nit,
+                    id_company: company,
                     _token: _token,
                 },
                 success: function (response) {
@@ -151,18 +153,15 @@ function activate_form_code(code, email, password, name, gender, _token) {
                         Swal.fire({
                             icon: 'success',
                             title: 'USUARIO CREADO',
-                            text: 'Gracias por ser parte de nosotros!',
+                            text: 'Hemos notificado al administrador para validar tu creación',
                           })
-
-                          setTimeout(() => {
-                            window.location = "home";
-                          }, 2000);
-
-
                     } else {
-
+                        alert('HUBO UN ERROR EN SU CONSULTA. Intentalo nuevamente')
                     }
+                    setTimeout(() => {
+                        window.location = "login";
 
+                    }, 2000);
 
                 },
                 error: function (error) {

@@ -17,6 +17,9 @@ class User extends Model
         'email',
         'nit',
         'password',
+        'id_company',
+        'id_area',
+        'id_chargy',
         'id_state',
     ];
 
