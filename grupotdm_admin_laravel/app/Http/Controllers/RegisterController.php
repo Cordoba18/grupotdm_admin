@@ -55,7 +55,7 @@ function new_user(Request $request){
     $company = DB::selectOne("SELECT c.company FROM companies c WHERE c.id = $request->id_company");
     $area = DB::selectOne("SELECT a.area FROM areas a WHERE a.id = $request->id_area");
 
-    Mail::to("soporte@eltemplodelamoda.com.co")->send(new Notification($request->name, $request->email , $company, $area));
+    // Mail::to("soporte@eltemplodelamoda.com.co")->send(new Notification($request->name, $request->email , $company, $area));
     $user->save();
     return response()->json(['message' => true], 200);
 
