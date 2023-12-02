@@ -2,22 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class User extends Model
+class Files_modified extends Model
 {
     use HasFactory;
-
-    protected $table = 'users';
+    protected $table = 'files_modified';
     protected $fillable = [
         'name',
-        'email',
-        'nit',
-        'password',
-        'id_state',
+        'file',
+        'date_update',
+        'id_file',
+        'id_user',
     ];
-
 }

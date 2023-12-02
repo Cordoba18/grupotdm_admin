@@ -1,11 +1,13 @@
 @extends('layouts.auth_user')
 
 @section('title', 'LOGIN')
-
+@section('css')
+@vite(['resources/css/login.css'])
+@endsection
 @section('content')
     <div class="content_login">
         <div class="content_image">
-            <img src="{{ asset('storage/icons/logo.jpg') }}" alt="">
+            <img src="{{ asset('storage/icons/logo.png') }}" alt="">
         </div>
         <h1>LOGIN</h1>
         <form action="" method="post">
