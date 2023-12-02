@@ -46,6 +46,7 @@ function new_user(Request $request){
     $user = new User();
     $user->name = $request->name;
     $user->email = $request->email;
+    $user->nit= $request->nit;
     $user->password = Hash::make($request->password);
     $user->id_company = $request->id_company;
     $user->id_state = 2;
@@ -54,7 +55,7 @@ function new_user(Request $request){
     $company = DB::selectOne("SELECT c.company FROM companies c WHERE c.id = $request->id_company");
     $area = DB::selectOne("SELECT a.area FROM areas a WHERE a.id = $request->id_area");
     $user->save();
-    Mail::to('soporte@eltemplodelamoda.com.co')->send(new Notification($request->name, $request->email , $company, $area));
+    Mail::to("soporte@eltemplodelamoda.com.co")->send(new Notification($request->name, $request->email , $company, $area));
     return response()->json(['message' => true], 200);
 
 }
