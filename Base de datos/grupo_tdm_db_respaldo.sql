@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 01, 2023 at 11:29 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 02-12-2023 a las 02:50:07
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `grupo_tdm_db`
+-- Base de datos: `grupo_tdm_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `areas`
+-- Estructura de tabla para la tabla `areas`
 --
 
 CREATE TABLE `areas` (
@@ -32,10 +32,10 @@ CREATE TABLE `areas` (
   `area` varchar(100) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `areas`
+-- Volcado de datos para la tabla `areas`
 --
 
 INSERT INTO `areas` (`id`, `area`, `updated_at`, `created_at`) VALUES
@@ -52,12 +52,13 @@ INSERT INTO `areas` (`id`, `area`, `updated_at`, `created_at`) VALUES
 (11, 'CONTROL DE RIESGOS', NULL, NULL),
 (12, 'LOGÍSTICA', NULL, NULL),
 (13, 'VENTAS VIRTUALES', NULL, NULL),
-(14, 'VENTAS', NULL, NULL);
+(14, 'VENTAS', NULL, NULL),
+(15, 'PRODUCCIÒN', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `charges`
+-- Estructura de tabla para la tabla `charges`
 --
 
 CREATE TABLE `charges` (
@@ -66,10 +67,10 @@ CREATE TABLE `charges` (
   `id_area` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `charges`
+-- Volcado de datos para la tabla `charges`
 --
 
 INSERT INTO `charges` (`id`, `chargy`, `id_area`, `updated_at`, `created_at`) VALUES
@@ -130,12 +131,36 @@ INSERT INTO `charges` (`id`, `chargy`, `id_area`, `updated_at`, `created_at`) VA
 (55, 'AUXILIAR', 12, NULL, NULL),
 (56, 'JEFE DE AREA', 13, NULL, NULL),
 (57, 'LÍDER', 13, NULL, NULL),
-(58, 'ASESOR', 13, NULL, NULL);
+(58, 'ASESOR', 13, NULL, NULL),
+(59, 'JEFE DE AREA', 14, NULL, NULL),
+(60, 'ADMINISTRADOR/LIDER DE SERVICIO', 14, NULL, NULL),
+(61, 'ELITE', 14, NULL, NULL),
+(62, 'LIDER ESTRATÈGICO', 14, NULL, NULL),
+(63, 'SOCIO ESTRATÈGICO', 14, NULL, NULL),
+(64, 'LÌDER DE CAJA', 14, NULL, NULL),
+(65, 'VENDEDOR', 14, NULL, NULL),
+(66, 'LOCUTOR', 14, NULL, NULL),
+(67, 'VISUAL', 14, NULL, NULL),
+(68, 'AUXILIAR DE CAJA', 14, NULL, NULL),
+(69, 'JEFE DE AREA', 15, NULL, NULL),
+(70, 'COORDINADOR', 15, NULL, NULL),
+(71, 'JEFE DE BODEGA', 15, NULL, NULL),
+(72, 'INSUMOS', 15, NULL, NULL),
+(73, 'MATERIA PRIMA', 15, NULL, NULL),
+(74, 'EXTENDEDORES Y CONTADORES', 15, NULL, NULL),
+(75, 'JEFE DE CORTE', 15, NULL, NULL),
+(76, 'COSTOS Y FACTURACIÒN', 15, NULL, NULL),
+(77, 'LEGISLACIÒN DE INGRESOS A BODEGA', 15, NULL, NULL),
+(78, 'COSTEO DE PRENDAS', 15, NULL, NULL),
+(79, 'FACTURACIÒN', 15, NULL, NULL),
+(80, 'TALLERES', 15, NULL, NULL),
+(81, 'GESTORES DE PRODUCCIÒN', 15, NULL, NULL),
+(82, 'AUTORES DE CALIDAD', 15, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `codes`
+-- Estructura de tabla para la tabla `codes`
 --
 
 CREATE TABLE `codes` (
@@ -143,12 +168,12 @@ CREATE TABLE `codes` (
   `code` varchar(6) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments`
+-- Estructura de tabla para la tabla `comments`
 --
 
 CREATE TABLE `comments` (
@@ -159,12 +184,12 @@ CREATE TABLE `comments` (
   `id_state` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `companies`
+-- Estructura de tabla para la tabla `companies`
 --
 
 CREATE TABLE `companies` (
@@ -172,10 +197,10 @@ CREATE TABLE `companies` (
   `company` varchar(100) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `companies`
+-- Volcado de datos para la tabla `companies`
 --
 
 INSERT INTO `companies` (`id`, `company`, `updated_at`, `created_at`) VALUES
@@ -185,7 +210,7 @@ INSERT INTO `companies` (`id`, `company`, `updated_at`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `directories`
+-- Estructura de tabla para la tabla `directories`
 --
 
 CREATE TABLE `directories` (
@@ -198,12 +223,12 @@ CREATE TABLE `directories` (
   `id_state` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files`
+-- Estructura de tabla para la tabla `files`
 --
 
 CREATE TABLE `files` (
@@ -216,12 +241,12 @@ CREATE TABLE `files` (
   `id_user` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files_modified`
+-- Estructura de tabla para la tabla `files_modified`
 --
 
 CREATE TABLE `files_modified` (
@@ -233,12 +258,12 @@ CREATE TABLE `files_modified` (
   `d_user` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `priorities`
+-- Estructura de tabla para la tabla `priorities`
 --
 
 CREATE TABLE `priorities` (
@@ -247,10 +272,10 @@ CREATE TABLE `priorities` (
   `hour` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `priorities`
+-- Volcado de datos para la tabla `priorities`
 --
 
 INSERT INTO `priorities` (`id`, `priority`, `hour`, `updated_at`, `created_at`) VALUES
@@ -263,7 +288,7 @@ INSERT INTO `priorities` (`id`, `priority`, `hour`, `updated_at`, `created_at`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reports`
+-- Estructura de tabla para la tabla `reports`
 --
 
 CREATE TABLE `reports` (
@@ -274,12 +299,12 @@ CREATE TABLE `reports` (
   `date` varchar(45) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `report_details`
+-- Estructura de tabla para la tabla `report_details`
 --
 
 CREATE TABLE `report_details` (
@@ -287,25 +312,60 @@ CREATE TABLE `report_details` (
   `report` varchar(100) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shops`
+-- Estructura de tabla para la tabla `shops`
 --
 
 CREATE TABLE `shops` (
   `id` int(11) NOT NULL,
   `shop` varchar(100) NOT NULL,
+  `id_company` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `shops`
+--
+
+INSERT INTO `shops` (`id`, `shop`, `id_company`, `updated_at`, `created_at`) VALUES
+(1, 'CALI CENTRO - TEMPLO 1', 1, NULL, NULL),
+(2, 'CALI CENTRO - TEMPLO 2', 1, NULL, NULL),
+(3, 'ARMENIA - TEMPLO 4', 1, NULL, NULL),
+(4, 'CALI VALLE DEL LILI SUR - TEMPLO 5', 1, NULL, NULL),
+(5, 'BUENAVENTURA - TEMPLO 6', 1, NULL, NULL),
+(6, 'CALI CALIMA - TEMPLO 8', 1, NULL, NULL),
+(7, 'PALMIRA - TEMPLO 9', 1, NULL, NULL),
+(8, 'PEREIRA - TEMPLO 10', 1, NULL, NULL),
+(9, 'CALI CENTRO - TEMPLO 11', 1, NULL, NULL),
+(10, 'JAMUNDÌ - TEMPLO 13', 1, NULL, NULL),
+(11, 'MANIZALES - TEMPLO 14', 1, NULL, NULL),
+(12, 'TULÙA - TEMPLO 16', 1, NULL, NULL),
+(13, 'SANTANDER DE QUILICHAO - TEMPLO 17', 1, NULL, NULL),
+(14, 'CALI CALLE 26 - TEMPLO 18', 1, NULL, NULL),
+(15, 'IBAGUÈ - TEMPLO 19', 1, NULL, NULL),
+(16, 'CALI MARIANO RAMOS - TEMPLO 20', 1, NULL, NULL),
+(17, 'YUMBO - TEMPLO 23', 1, NULL, NULL),
+(18, 'BUGA - TEMPLO 24', 1, NULL, NULL),
+(19, 'CALI LOS MANGOS - TEMPLO 26', 1, NULL, NULL),
+(20, 'FLORIDA - TEMPLO 27', 1, NULL, NULL),
+(21, 'POPAYÀN - TEMPLO 28', 1, NULL, NULL),
+(22, 'CALI MELÈNDEZ - TEMPLO 29', 1, NULL, NULL),
+(23, 'CALI ALAMEDA - TEMPLO 30', 1, NULL, NULL),
+(24, 'CALI CARRERA 1 - TEMPLO 31', 1, NULL, NULL),
+(25, 'CALI COSMOCENTRO - TEMPLO 32', 1, NULL, NULL),
+(26, 'NEIVA CENTRO - TEMPLO 33', 1, NULL, NULL),
+(27, 'BUENAVENTURA PACIFIC MALLL - TEMPLO 34', 1, NULL, NULL),
+(28, 'PALMIRA UNICENTRO - TEMPLO 35', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `states`
+-- Estructura de tabla para la tabla `states`
 --
 
 CREATE TABLE `states` (
@@ -313,20 +373,25 @@ CREATE TABLE `states` (
   `state` varchar(45) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `states`
+-- Volcado de datos para la tabla `states`
 --
 
 INSERT INTO `states` (`id`, `state`, `updated_at`, `created_at`) VALUES
 (1, 'ACTIVO', NULL, NULL),
-(2, 'INACTIVO', NULL, NULL);
+(2, 'INACTIVO', NULL, NULL),
+(3, 'PENDIENTE', NULL, NULL),
+(4, 'VISTO', NULL, NULL),
+(5, 'EN EJECUCIÒN', NULL, NULL),
+(6, 'VENCIDO', NULL, NULL),
+(7, 'TERMINADO', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tickets`
+-- Estructura de tabla para la tabla `tickets`
 --
 
 CREATE TABLE `tickets` (
@@ -343,12 +408,12 @@ CREATE TABLE `tickets` (
   `id_state` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
@@ -364,33 +429,33 @@ CREATE TABLE `users` (
   `id_shop` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `areas`
+-- Indices de la tabla `areas`
 --
 ALTER TABLE `areas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `charges`
+-- Indices de la tabla `charges`
 --
 ALTER TABLE `charges`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_charges_areas_idx` (`id_area`);
 
 --
--- Indexes for table `codes`
+-- Indices de la tabla `codes`
 --
 ALTER TABLE `codes`
   ADD PRIMARY KEY (`email`);
 
 --
--- Indexes for table `comments`
+-- Indices de la tabla `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
@@ -399,13 +464,13 @@ ALTER TABLE `comments`
   ADD KEY `fk_comments_states1_idx` (`id_state`);
 
 --
--- Indexes for table `companies`
+-- Indices de la tabla `companies`
 --
 ALTER TABLE `companies`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `directories`
+-- Indices de la tabla `directories`
 --
 ALTER TABLE `directories`
   ADD PRIMARY KEY (`id`),
@@ -413,7 +478,7 @@ ALTER TABLE `directories`
   ADD KEY `fk_directories_states1_idx` (`id_state`);
 
 --
--- Indexes for table `files`
+-- Indices de la tabla `files`
 --
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`),
@@ -421,7 +486,7 @@ ALTER TABLE `files`
   ADD KEY `fk_files_users1_idx` (`id_user`);
 
 --
--- Indexes for table `files_modified`
+-- Indices de la tabla `files_modified`
 --
 ALTER TABLE `files_modified`
   ADD PRIMARY KEY (`id`),
@@ -429,13 +494,13 @@ ALTER TABLE `files_modified`
   ADD KEY `fk_files_modified_users1_idx` (`d_user`);
 
 --
--- Indexes for table `priorities`
+-- Indices de la tabla `priorities`
 --
 ALTER TABLE `priorities`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `reports`
+-- Indices de la tabla `reports`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`),
@@ -443,25 +508,26 @@ ALTER TABLE `reports`
   ADD KEY `fk_reports_report_details1_idx` (`id_report_detail`);
 
 --
--- Indexes for table `report_details`
+-- Indices de la tabla `report_details`
 --
 ALTER TABLE `report_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `shops`
+-- Indices de la tabla `shops`
 --
 ALTER TABLE `shops`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_shops_companies1_idx` (`id_company`);
 
 --
--- Indexes for table `states`
+-- Indices de la tabla `states`
 --
 ALTER TABLE `states`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tickets`
+-- Indices de la tabla `tickets`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
@@ -471,7 +537,7 @@ ALTER TABLE `tickets`
   ADD KEY `fk_tickets_priorities1_idx` (`id_priority`);
 
 --
--- Indexes for table `users`
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -482,105 +548,105 @@ ALTER TABLE `users`
   ADD KEY `fk_users_shops1_idx` (`id_shop`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `areas`
+-- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `charges`
+-- AUTO_INCREMENT de la tabla `charges`
 --
 ALTER TABLE `charges`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT de la tabla `comments`
 --
 ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `companies`
+-- AUTO_INCREMENT de la tabla `companies`
 --
 ALTER TABLE `companies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `directories`
+-- AUTO_INCREMENT de la tabla `directories`
 --
 ALTER TABLE `directories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `files`
+-- AUTO_INCREMENT de la tabla `files`
 --
 ALTER TABLE `files`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `files_modified`
+-- AUTO_INCREMENT de la tabla `files_modified`
 --
 ALTER TABLE `files_modified`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `priorities`
+-- AUTO_INCREMENT de la tabla `priorities`
 --
 ALTER TABLE `priorities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `reports`
+-- AUTO_INCREMENT de la tabla `reports`
 --
 ALTER TABLE `reports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `report_details`
+-- AUTO_INCREMENT de la tabla `report_details`
 --
 ALTER TABLE `report_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shops`
+-- AUTO_INCREMENT de la tabla `shops`
 --
 ALTER TABLE `shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `states`
+-- AUTO_INCREMENT de la tabla `states`
 --
 ALTER TABLE `states`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `tickets`
+-- AUTO_INCREMENT de la tabla `tickets`
 --
 ALTER TABLE `tickets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `charges`
+-- Filtros para la tabla `charges`
 --
 ALTER TABLE `charges`
   ADD CONSTRAINT `fk_charges_areas` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `comments`
+-- Filtros para la tabla `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `fk_comments_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -588,35 +654,41 @@ ALTER TABLE `comments`
   ADD CONSTRAINT `fk_comments_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `directories`
+-- Filtros para la tabla `directories`
 --
 ALTER TABLE `directories`
   ADD CONSTRAINT `fk_directories_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_directories_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `files`
+-- Filtros para la tabla `files`
 --
 ALTER TABLE `files`
   ADD CONSTRAINT `fk_files_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_files_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `files_modified`
+-- Filtros para la tabla `files_modified`
 --
 ALTER TABLE `files_modified`
   ADD CONSTRAINT `fk_files_modified_files1` FOREIGN KEY (`id_file`) REFERENCES `files` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_files_modified_users1` FOREIGN KEY (`d_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `reports`
+-- Filtros para la tabla `reports`
 --
 ALTER TABLE `reports`
   ADD CONSTRAINT `fk_reports_report_details1` FOREIGN KEY (`id_report_detail`) REFERENCES `report_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_reports_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `tickets`
+-- Filtros para la tabla `shops`
+--
+ALTER TABLE `shops`
+  ADD CONSTRAINT `fk_shops_companies1` FOREIGN KEY (`id_company`) REFERENCES `companies` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `tickets`
 --
 ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_tickets_priorities1` FOREIGN KEY (`id_priority`) REFERENCES `priorities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -625,7 +697,7 @@ ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_tickets_users2` FOREIGN KEY (`id_user_destination`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `users`
+-- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_areas1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
