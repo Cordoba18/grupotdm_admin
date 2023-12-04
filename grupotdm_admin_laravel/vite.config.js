@@ -11,6 +11,7 @@ export default defineConfig({
 
                 'resources/js/register.js',
                 'resources/js/app.js',
+                'resources/js/recovery_password.js',
             ],
             refresh: true,
         }),

@@ -3,11 +3,11 @@
 @section('title', 'GRUPO TDM')
 
 @section('content_header')
-    <h1>ADMINISTRACION</h1>
+    <h1>ADMINISTRACIÒN</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <p>Bienvenido al panel de administraciòn del GRUPO TDM</p>
 @stop
 
 @section('css')
@@ -15,5 +15,5 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+
 @stop

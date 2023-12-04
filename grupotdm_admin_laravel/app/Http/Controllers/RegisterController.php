@@ -17,7 +17,7 @@ class RegisterController extends Controller
 {
     public function index(){
 
-          $areas = Area::all();
+          $areas = Area::all()->where('id', '<>', '1');
         $companies = Companie::all();
         return view("user.register",compact('areas', 'companies'));
     }

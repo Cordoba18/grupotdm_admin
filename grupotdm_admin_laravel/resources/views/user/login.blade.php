@@ -1,11 +1,11 @@
 @extends('layouts.auth_user')
 
-@section('title', 'LOGIN')
+@section('title', 'Login GRUPO TDM')
 @section('css')
 @vite(['resources/css/login.css'])
 @endsection
 @section('content')
-    <div class="content_login">
+    <div class="content_form">
         <div class="content_image">
             <img src="{{ asset('storage/icons/logo.png') }}" alt="">
         </div>
@@ -17,10 +17,12 @@
             <label>Contraseña: </label>
             <input type="password" placeholder="Ingrese su contraseña" name="password">
             <div class="content_recovery_password">
-                <a href="">¿Olvidaste tu contraseña?</a>
+                <a href="{{ route('recover') }}">¿Olvidaste tu contraseña?</a>
             </div>
             @if (session('message_error'))
-              <p id="error"> {{ session('message_error') }}</p>
+
+              <p class="alert alert-danger" role="alert" id="error" class=""> {{ session('message_error') }}</p>
+            
          @endif
             <div class="content_form_buttons">
             <button>INGRESAR</button>

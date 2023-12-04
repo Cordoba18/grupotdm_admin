@@ -64,8 +64,8 @@ return [
     */
 
     'logo' => '<b>GRUPO TDM</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_img' => 'storage/icons/logo.png',
+    'logo_img_class' => 'brand-image img-circle elevation-1',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'storage/icons/logo.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -107,13 +107,14 @@ return [
     */
 
     'preloader' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'storage/icons/logo.png',
             'alt' => 'AdminLTE Preloader Image',
-            'effect' => 'animation__shake',
-            'width' => 60,
-            'height' => 60,
+            'effect' => 'animation__fade',
+            'width' => 100,
+            'height' => 100,
+            'animation_time' => 1000,
         ],
     ],
 
@@ -253,7 +254,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'login/logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -290,24 +291,24 @@ return [
     */
 
     'menu' => [
+        ['header' => 'ADMINISTRACIÒN'],
+        [
+            'text' => 'Usuarios',
+            'url'  => 'dashboard/users',
+            'icon' => 'fas fa-solid fa-users',
+        ],
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
 
-        ['header' => 'CONFIGURACIONES'],
+        ['header' => 'SOPORTE SISTEMAS'],
         [
-            'text' => 'PERFIL',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'Tickets',
+            'url'  => 'dashboard/tickets',
+            'icon' => 'fas fa-solid fa-gears',
         ],
-        [
-            'text' => 'CAMBIAR CONTRASEÑA',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        ['header' => 'COSAS'],
 
     ],
 

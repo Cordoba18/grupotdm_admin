@@ -4,7 +4,7 @@ let form_code = '<h2>INGRESE EL CODIGO</h2>' +
     '<p id="message_code"></p>' +
     '<label>CODIGO</label>' +
     '<input id="code" type="number" inputmode="none" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese el codigo" name="code" required>' +
-    '<p id="error_code" hidden></p>' +
+    '<p class="alert alert-danger" role="alert" id="error_code" hidden></p>' +
     '<button id="btn_verificar" type="submit">VERIFICAR</button>' +
     '<a href="'+route_login+'">Si tengo cuenta</a>' +
     '</form>';
@@ -25,7 +25,7 @@ btn_register.addEventListener('click', function (e) {
     const lastname = document.querySelector('#lastname');
     const password1 = document.querySelector('#password1');
     const password2 = document.querySelector('#password2');
-    error_form.style.color = 'red';
+
      if (largotextos(name.value)) {
         error_form.innerHTML = "NOMBRE NO VALIDO";
         error_form.removeAttribute('hidden');
@@ -65,7 +65,8 @@ btn_register.addEventListener('click', function (e) {
         } else {
             error_form.innerHTML = "VALIDANDO USUARIO....";
             error_form.removeAttribute('hidden');
-            error_form.style.color = 'green';
+            error_form.classList.remove('alert-danger');
+        error_form.classList.add('alert-success');
             $.ajax({
                 type: "POST",
                 url: "register/validate_email",
@@ -77,6 +78,9 @@ btn_register.addEventListener('click', function (e) {
                 success: function (response) {
 
                     error_form.setAttribute('hidden', 'true');
+                    error_form.classList.remove('alert-success');
+                    error_form.classList.add('alert-danger');
+
                     if (response['message'] == true) {
                         Swal.fire({
                             icon: 'error',
@@ -140,7 +144,7 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
                 url: "register/new_user",
                 data: {
                     email: email,
-                    name: name + "" + lastname,
+                    name: name + " " + lastname,
                     password: password,
                     id_area: parseInt(area),
                     nit: nit,
@@ -183,17 +187,17 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
 
 
 function validate_email(texto) {
-    const patron1 = /@gmail\.com/;
+    const patron1 = /@eltemplodelamoda\.com.co/;
 
     const resultado1 = texto.search(patron1);
-    const patron2 = /@hotmail\.com/;
+    // const patron2 = /@hotmail\.com/;
 
-    const resultado2 = texto.search(patron2);
-    const patron3 = /@outlook\.com/;
+    // const resultado2 = texto.search(patron2);
+    // const patron3 = /@outlook\.com/;
 
-    const resultado3 = texto.search(patron3);
+    // const resultado3 = texto.search(patron3);
 
-    if (resultado1 !== -1  || resultado2 !== -1 || resultado3 !== -1) {
+    if (resultado1 !== -1) {
         return true;
     } else {
         return false;
