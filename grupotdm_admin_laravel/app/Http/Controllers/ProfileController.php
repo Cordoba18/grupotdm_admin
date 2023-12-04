@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Mail\ActionUser;
+use App\Models\Area;
+use App\Models\Charge;
+use App\Models\Companie;
+use App\Models\Shop;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -76,7 +81,7 @@ class ProfileController extends Controller
 
         $users = ProfileController::users($user);
 
-        return view('dashboard.users', compact('users'));
+        return view('dashboard.users.users', compact('users'));
     }
     public function delete_user(Request $request){
 
@@ -135,5 +140,63 @@ public function create_ticket(){
 
 
     return view('dashboard.tickets.create');
+}
+
+public function edit_profile($id){
+
+
+
+    $user = User::find($id);
+    $id = Auth::user()->id;
+    $validation_jefe = DB::selectOne("SELECT * FROM users u
+        INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE c.chargy = 'JEFE DE AREA' AND u.id = $id");
+        if (!$validation_jefe) {
+            $validation_jefe == null;
+        }
+    $areas = Area::all()->where('id', '<>', '1');
+    $companies = Companie::all();
+    $charges = Charge::all();
+    $shops = Shop::all();
+    return view("dashboard.users.edit_profile", compact("user", "validation_jefe", "companies", "areas", "charges", "shops"));
+
+}
+
+public function save_changes(Request $request){
+
+    $user = User::find($request->id);
+    $user->name = $request->name;
+    $user->nit= $request->nit;
+    $user->id_company = $request->id_company;
+    $user->id_state = 2;
+    $user->id_area = $request->id_area;
+    $user->id_chargy = $request->id_chargy;
+    if ($request->id_shop){
+        $user->id_shop = $request->id_shop;
+    }
+    $user->save();
+    return redirect()->route('dashboard.users.edit_profile', $request->id)->with("message","Usuario actualizado con exito!");
+
+}
+public function change_password($id){
+    $user = User::find($id);
+    return view("dashboard.users.edit_password", compact("user"));
+}
+
+public function save_changes_password(Request $request){
+    $user = User::find($request->id);
+
+    if (Hash::check($request->password_now, $user->password)) {
+        if ($request->password2 == $request->password) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return redirect()->route('dashboard.users.change_password', $request->id)->with("message","Contraseña actualizada con exito!");
+        }else{
+            return redirect()->route('dashboard.users.change_password', $request->id)->with("message_error","Las contraseñas no coinciden!");
+        }
+
+    }else{
+        return redirect()->route('dashboard.users.change_password', $request->id)->with("message_error","Contraseña actual no valida!");
+    }
 }
 }

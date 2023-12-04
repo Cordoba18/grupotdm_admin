@@ -54,7 +54,10 @@
                 <td>{{ $u->shop }}</td>
                 @endif
                 <td>{{ $u->state }}</td>
-                <td><a href="" class="btn btn-outline-primary">EDITAR</a>
+                <td>
+                    <form action="{{ route('dashboard.users.edit_profile' , $u->id)}}" method="get">
+                    <button href="" class="btn btn-outline-primary">EDITAR</button>
+                </form>
                     <form action="{{ route('dashboard.users.delete') }}" method="post">
                         @csrf
                         <input hidden type="text" name="id_jefe" value="{{ $user->id }}">
