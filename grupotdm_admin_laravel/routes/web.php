@@ -32,11 +32,15 @@ Route::post('/dashboard/users/profile/edit_profile/save_changes', [ProfileContro
 Route::post('/dashboard/users/delete', [ProfileController::class, 'delete_user'])->name('dashboard.users.delete');
 Route::get('/dashboard/users/edit_profile/change_password/{id}', [ProfileController::class, 'change_password'])->name('dashboard.users.change_password');
 Route::post('/dashboard/users/edit_profile/change_password/save_changes', [ProfileController::class, 'save_changes_password'])->name('dashboard.users.change_password.save_changes');
+Route::get('/dashboard/users/new_user', [ProfileController::class, 'new_user'])->name('dashboard.users.new_user');
+Route::post('/dashboard/users/new_user/save_user', [ProfileController::class, 'save_user'])->name('dashboard.users.save_user');
 
 Route::get('/dashboard/tickets', [ProfileController::class, 'show_tickets'])->name('dashboard.tickets');
 Route::get('/dashboard/tickets/create', [ProfileController::class, 'create_ticket'])->name('dashboard.tickets.create');
+Route::get('/dashboard/tickets/get_id/{id}', [ProfileController::class, 'get_id'])->name('dashboard.tickets.get_id');
+Route::post('/dashboard/tickets/state', [ProfileController::class, 'state'])->name('dashboard.tickets.state');
 
-
+Route::post('/dashboard/tickets/create/save_ticket', [ProfileController::class, 'save_ticket'])->name('dashboard.tickets.save_ticket');
 Route::get('/recover', [RecoveryPasswordController::class, 'index'])->name('recover');
 Route::post('/recover/sendcode',[RecoveryPasswordController::class, 'sendcode'])->name('recover.sendcode');
 Route::post('/recover/validecode',[RecoveryPasswordController::class, 'validecode'])->name('recover.validecode');

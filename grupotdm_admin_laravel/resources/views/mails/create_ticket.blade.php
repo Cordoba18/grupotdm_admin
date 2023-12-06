@@ -11,13 +11,13 @@
 
 
     <div class="content_full"
-        style="width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
+        style="width: 400px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
     justify-content: center;
     align-items: center;
     align-content: center; align-self: center; justify-self: center; justify-items: center;">
         <div class="content_mail"
             style="background-color: white;
-    padding: 30px 120px;
+    padding: 30px 20px;
     width: 100%;
     height: auto;">
             <div class="content_page" style="text-align: center;">
@@ -31,11 +31,27 @@
             </div>
 
             <div class="info">
-                <b>Buen dìa {{ $name }}</b>
+                <b>Buen dìa {{ $user_destination->name }}</b>
                 <br>
                 <b>Cordial saludo</b>
                 <br>
-                <p>El motivo del presente correo es notificar que su jefe de area con nombre {{ $name_action }} y correo {{ $email }} a modificado su cuenta a estado <b>{{ $state }}</b> </p>
+                <p>El motivo del presente correo es notificar la creacion de un ticket por {{ $user_sender->name }} con correo {{ $user_sender->email }} con las siguientes caracteristicas: </p>
+                <div style="display: flex; justify-content: center; align-items: center">
+                <p>Nombre :  </p> <b>{{ $ticket->name }}</b>
+                </div>
+                <br>
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Prioridad :  </p> <b>{{ $priority }}</b>
+                    </div>
+                <br>
+
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Fecha de inicio :  </p> <b>{{ $ticket->date_start }}</b>
+                    </div>
+                <br>
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Fecha final :  </p> <b>{{ $ticket->date_finally }}</b>
+                    </div>
                 <br>
                 <b>POV: No responder a este correo ya que es un correo automatico</b>
             </div>

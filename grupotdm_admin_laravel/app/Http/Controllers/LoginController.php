@@ -16,7 +16,7 @@ class LoginController extends Controller
 
     }
 
-    public function logueo(Request $request ){
+    public function logueo(Request $request){
 
         $email = $request->email;
        $credentials = request()->only('email', 'password');

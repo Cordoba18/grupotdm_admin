@@ -63,9 +63,9 @@
 </div>
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Area</label>
-  <select required name="id_area" @if (!$validation_jefe)
+  <select required name="id_area"
   disabled
-  @endif style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
+ style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
     @php
     $area = null;
     @endphp
@@ -129,14 +129,19 @@
     }
     @endforeach
     @if ($shop == null)
+    <option value="">SELECIONE UNA TIENDA</option>
+    @foreach ($shops as $s)
+    <option value="{{ $s->id }}">{{ $s->shop }} </option>
+    @endforeach
     @else
     <option value="{{ $user->id_shop }}">{{ $shop }}</option>
-    @endif
     @foreach ($shops as $s)
     @if($s->id != $user->id_shop && $s->id_company == $user->id_company )
     <option value="{{ $s->id }}">{{ $s->shop }} </option>
     @endif
     @endforeach
+    @endif
+
   </select>
 </div>
 

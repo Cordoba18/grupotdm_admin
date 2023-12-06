@@ -6,20 +6,27 @@
     $user = Auth::user();
 @endphp
 @section('content_header')
-@if ($users == null)
+@if (!$validation_jefe)
 <h1>No estas autorizado para ver usuarios</h1>
 @else
 <h1>Usuarios</h1>
+<a href="{{ route('dashboard.users.new_user') }}" class="btn btn-primary">CREAR NUEVO USUARIO</a>
     <br>
+    @if (session('message'))
+
+    <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
+
+@endif
+<br>
     <div class="content_search"></div>
-    <input type="text" placeholder="Buscar" id="Buscar usuarios">
+    <input type="text" placeholder="Buscar" id="Buscar usuarios" style="width: 90%">
     <button id="btn_search" class="btn btn-primary">Buscar</button>
 @endif
 
 @stop
 
 @section('content')
-@if ($users != null)
+@if ($validation_jefe)
 
     <table class="table">
         <thead>
@@ -30,10 +37,6 @@
          <th>COMPAÑIA</th>
          <th>AREA</th>
          <th>CARGO</th>
-         @if ($user->id_area != 1)
-         <th>TIENDA</th>
-         @endif
-
          <th>ESTADO</th>
          <th>EDITAR</th>
 
@@ -50,9 +53,6 @@
                 <td>{{ $u->company }}</td>
                 <td>{{ $u->area }}</td>
                 <td>{{ $u->chargy }}</td>
-                @if ($user->id_area != 1)
-                <td>{{ $u->shop }}</td>
-                @endif
                 <td>{{ $u->state }}</td>
                 <td>
                     <form action="{{ route('dashboard.users.edit_profile' , $u->id)}}" method="get">

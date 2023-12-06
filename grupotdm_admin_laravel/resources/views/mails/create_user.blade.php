@@ -11,7 +11,7 @@
 
 
     <div class="content_full"
-        style="width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
+        style="width: 900px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
     justify-content: center;
     align-items: center;
     align-content: center; align-self: center; justify-self: center; justify-items: center;">
@@ -31,11 +31,31 @@
             </div>
 
             <div class="info">
-                <b>Buen dìa {{ $name }}</b>
+                <b>Buen dìa {{ $user->name }}</b>
                 <br>
                 <b>Cordial saludo</b>
                 <br>
-                <p>El motivo del presente correo es notificar que su jefe de area con nombre {{ $name_action }} y correo {{ $email }} a modificado su cuenta a estado <b>{{ $state }}</b> </p>
+                <p>El motivo del presente correo es notificar la informacion sobre la creacion de su cuenta el cual cuenta con las siguientes caracteristicas:</p>
+                <div style="display: flex; justify-content: center; align-items: center">
+                <p>Nombre :  </p> <b>{{ $user->name }}</b>
+                </div>
+                <br>
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Nit :  </p> <b>{{ $user->nit }}</b>
+                    </div>
+                <br>
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Contraseña :  </p> <b>{{ $password }}</b>
+                    </div>
+                <br>
+
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Area :  </p> <b>{{ $user->area }}</b>
+                    </div>
+                <br>
+                <div style="display: flex; justify-content: center; align-items: center">
+                    <p>Cargo :  </p> <b>{{ $user->chargy }}</b>
+                    </div>
                 <br>
                 <b>POV: No responder a este correo ya que es un correo automatico</b>
             </div>
