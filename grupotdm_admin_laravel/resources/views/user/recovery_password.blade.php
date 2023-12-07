@@ -4,6 +4,7 @@
 @vite(['resources/css/login.css'])
 @endsection
 @section('content')
+<div class="content_principal">
     <div class="content_form">
         <div class="content_image">
             <img src="{{ asset('storage/icons/logo.png') }}" alt="">
@@ -13,7 +14,7 @@
             @csrf
             <label>Ingrese su correo electronico</label>
             <input type="email" placeholder="Ingrese su correo" name="email">
-            </div>
+
             @if (session('message_error'))
               <p class="alert alert-danger" role="alert" id="error"> {{ session('message_error') }}</p>
             @endif
@@ -23,4 +24,5 @@
         </div>
         </form>
     </div>
+</div>
 @endsection

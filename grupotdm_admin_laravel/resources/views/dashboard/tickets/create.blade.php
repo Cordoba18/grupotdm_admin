@@ -9,11 +9,10 @@
 
 <h1>Generar un ticket</h1>
 
-
 @stop
 
 @section('content')
-<form action="{{ route('dashboard.tickets.save_ticket') }}" method="POST">
+<form action="{{ route('dashboard.tickets.save_ticket') }}" method="POST" enctype="multipart/form-data">
     @csrf
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Nombre</label>
@@ -26,7 +25,7 @@
 
   <div class="mb-3">
     <label for="formFile" class="form-label">Subir un archivo</label>
-    <input class="form-control" type="file" id="formFile" name="image">
+    <input class="form-control" type="file" id="formFile" name="file">
   </div>
 @if($validate_user_sistemas)
 

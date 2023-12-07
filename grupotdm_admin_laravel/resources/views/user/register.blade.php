@@ -37,7 +37,7 @@
             <input id="password1" type="password" placeholder="Ingrese su contraseña" name="password1">
             <label>Confirmar contraseña: </label>
             <input id="password2" type="password" placeholder="Ingrese de nuevo la contraseña" name="password2">
-            <p class="alert alert-danger" role="alert" id="message_error" hidden></p>
+            <p class="alert alert-danger" role="alert" id="message_error" class="error" hidden></p>
             <div class="content_form_buttons">
             <button id="btn_register">REGISTRARSE</button>
             <a href="{{ route('login') }}">Loguearse</a>

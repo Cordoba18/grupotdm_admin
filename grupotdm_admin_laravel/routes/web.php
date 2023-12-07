@@ -28,6 +28,7 @@ Route::get('/dashboard', [ProfileController::class, 'index'])->name('dashboard')
 
 Route::get('/dashboard/users', [ProfileController::class, 'show_users'])->name('dashboard.users');
 Route::get('/dashboard/users/profile/edit_profile/{id}', [ProfileController::class, 'edit_profile'])->name('dashboard.users.edit_profile');
+Route::get('/dashboard/users/profile/view_user/{id}', [ProfileController::class, 'view_user'])->name('dashboard.users.view_user');
 Route::post('/dashboard/users/profile/edit_profile/save_changes', [ProfileController::class, 'save_changes'])->name('dashboard.users.save_changes');
 Route::post('/dashboard/users/delete', [ProfileController::class, 'delete_user'])->name('dashboard.users.delete');
 Route::get('/dashboard/users/edit_profile/change_password/{id}', [ProfileController::class, 'change_password'])->name('dashboard.users.change_password');
@@ -39,8 +40,12 @@ Route::get('/dashboard/tickets', [ProfileController::class, 'show_tickets'])->na
 Route::get('/dashboard/tickets/create', [ProfileController::class, 'create_ticket'])->name('dashboard.tickets.create');
 Route::get('/dashboard/tickets/get_id/{id}', [ProfileController::class, 'get_id'])->name('dashboard.tickets.get_id');
 Route::post('/dashboard/tickets/state', [ProfileController::class, 'state'])->name('dashboard.tickets.state');
-
+Route::get('/dashboard/tickets/ticket_detail/{id}', [ProfileController::class, 'ticket_detail'])->name('dashboard.tickets.ticket_detail');
+Route::get('/dashboard/tickets/edit_ticket/{id}', [ProfileController::class, 'edit_ticket'])->name('dashboard.tickets.edit_ticket');
+Route::post('/dashboard/tickets/edit_ticket/save_changes_ticket', [ProfileController::class, 'save_changes_ticket'])->name('dashboard.tickets.save_changes_ticket');
 Route::post('/dashboard/tickets/create/save_ticket', [ProfileController::class, 'save_ticket'])->name('dashboard.tickets.save_ticket');
+Route::post('/dashboard/tickets/comment_create', [ProfileController::class, 'comment_create'])->name('dashboard.tickets.comment_create');
+Route::post('/dashboard/tickets/comment_delete', [ProfileController::class, 'comment_delete'])->name('dashboard.tickets.comment_delete');
 Route::get('/recover', [RecoveryPasswordController::class, 'index'])->name('recover');
 Route::post('/recover/sendcode',[RecoveryPasswordController::class, 'sendcode'])->name('recover.sendcode');
 Route::post('/recover/validecode',[RecoveryPasswordController::class, 'validecode'])->name('recover.validecode');

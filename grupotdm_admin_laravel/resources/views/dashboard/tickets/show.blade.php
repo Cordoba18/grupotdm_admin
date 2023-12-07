@@ -19,7 +19,7 @@
 @stop
 
 @section('content')
-
+<input type="number" hidden id="my_id" value="{{ $user->id }}">
     <table class="table">
         <thead>
          <th>ID</th>
@@ -37,15 +37,16 @@
         <tbody style="overflow-y: 300px;">
             <div class="content_tickets" >
                 @foreach ($tickets as $t)
-
                 <tr id="tickets">
                     <td>{{ $t->id }}</td>
                     <td>{{ $t->name }}</td>
                     <td id="date_start">{{ $t->date_start }}</td>
                     <td id="date_finally" >{{ $t->date_finally }}</td>
                     <td>{{ $t->priority }}</td>
-                    <td>{{ $t->name_sender }}</td>
-                    <td>{{ $t->name_destination }}</td>
+
+
+                    <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $t->id_user_sender) }}">{{ $t->name_sender }}</a><p hidden id="id_sender"> {{ $t->id_user_sender }}</p> </td>
+                    <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $t->id_user_destination) }}">{{ $t->name_destination }}</a> <p hidden id="id_destination"> {{ $t->id_user_destination }}</p></td>
                     <td>{{ $t->state }}</td>
                     <td>
                         <input type="number" value="{{ $t->id_state }}" disabled hidden id="id_state">
@@ -61,6 +62,7 @@
                         @else
                         <button class="btn btn-danger">ELIMINAR</button>
                         @endif
+                        <a href="{{ route('dashboard.tickets.ticket_detail', $t->id) }}" class="btn btn-primary">DETALLE</a>
                     </form>
                     </td>
 

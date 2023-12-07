@@ -21,7 +21,7 @@
               <p class="alert alert-danger" role="alert" id="error" hidden></p>
 
             <div class="content_form_buttons">
-            <button id="btn_change_password">Confirmar Cambio de contraseña</button>
+            <button id="btn_change_password">Guardar</button>
             <a href="{{ route('login') }}">Volver</a>
         </div>
         </form>

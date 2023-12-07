@@ -22,7 +22,7 @@
                     <p class="alert alert-danger" role="alert" id="error"> {{ session('message_error') }}</p>
                 @endif
                 <div class="content_form_buttons">
-                    <button>Enviar codìgo</button>
+                    <button>Validar codígo</button>
                     <a href="{{ route('login') }}">Volver</a>
                 </div>
             </form>

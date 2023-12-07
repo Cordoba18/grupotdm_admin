@@ -20,12 +20,23 @@ tickets.forEach(ticket => {
 
     const date_start = ticket.querySelector('#date_start').textContent;
     const date_finally = ticket.querySelector('#date_finally').textContent;
+    const my_id = document.querySelector('#my_id').value;
+    const id_destination = ticket.querySelector('#id_destination').textContent;
+    const id_sender = ticket.querySelector('#id_sender').textContent;
     const hour = calcularHorasRestantes(date_start, date_finally);
-    console.log(hour)
+
     const id_state = ticket.querySelector('#id_state').value;
+
+    if (my_id == id_destination || my_id == id_sender) {
+        ticket.style.backgroundColor = "2px solid red";
+        console.log('validando')
+    }
     if (id_state == 7) {
         ticket.style.backgroundColor = 'green';
-    } else
+    } else if (id_state == 6) {
+        ticket.style.backgroundColor = '#F45050';
+    }
+    else
         if (hour <= 1) {
             ticket.style.backgroundColor = 'orange';
         } else if (hour == 0 || hour == "") {

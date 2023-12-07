@@ -1,0 +1,94 @@
+.content_principal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+.content_form{
+    padding: 20px 50px;
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    border: 5px inset gray;
+    border-radius: 5px;
+}
+
+.content_form h1{
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+
+}
+.content_form .content_image{
+width: 100%;
+height: 150px;
+}
+
+.content_form .content_image img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    }
+    .content_form form input{
+        padding: 22px;
+    }
+    .content_form form select{
+        padding: 10px;
+
+    }
+.content_form form input, .content_form form select{
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 40px;
+    border: 1px solid grey;
+
+
+}
+.content_form .content_recovery_password{
+    width: 100%;
+    text-align: right;
+    transition: 1ms all;
+
+}
+.content_form .content_recovery_password:hover{
+    font-weight: bold;
+}
+.content_form .content_recovery_password a{
+
+    color: black;
+}
+.content_form .content_form_buttons{
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.content_form .content_form_buttons button{
+    padding: 10px 70px;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    transition: 100ms all;
+    border: 0;
+    width: 100%;
+    margin-right: 30px;
+}
+.content_form .content_form_buttons button:hover{
+    background-color: red;
+
+}
+.content_form .content_form_buttons a{
+    text-decoration: none;
+    text-align: center;
+    width: max-content;
+    font-size: 20px;
+    color: black;
+
+}
