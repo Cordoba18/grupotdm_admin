@@ -65,7 +65,6 @@
                         <a href="{{ route('dashboard.tickets.ticket_detail', $t->id) }}" class="btn btn-primary">DETALLE</a>
                     </form>
                     </td>
-
                 </tr>
                 @endforeach
                 </div>

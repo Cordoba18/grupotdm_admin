@@ -1,7 +1,9 @@
 @extends('layouts.auth_user')
 
 @section('title', 'Registro GRUPO TDM')
-
+@section('css')
+@vite(['resources/css/login.css'])
+@endsection
 @section('content')
 <div class="content_principal">
     <div class="content_form">

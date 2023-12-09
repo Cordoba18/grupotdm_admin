@@ -16,7 +16,7 @@
     @csrf
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Nombre</label>
-    <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del ticket">
+    <input type="text" required name="name" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del ticket">
   </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Descripciòn</label>

@@ -10,6 +10,7 @@
 <h1>No estas autorizado para ver usuarios</h1>
 @else
 <h1>Usuarios</h1>
+<br>
 <a href="{{ route('dashboard.users.new_user') }}" class="btn btn-primary">CREAR NUEVO USUARIO</a>
     <br>
     @if (session('message'))
@@ -18,9 +19,12 @@
 
 @endif
 <br>
-    <div class="content_search"></div>
-    <input type="text" placeholder="Buscar" id="Buscar usuarios" style="width: 90%">
+    <div class="content_search">
+        <form action="{{ route('dashboard.users.search_users') }}" method="get">
+    <input type="text" name="search" placeholder="Buscar" id="Buscar usuarios" style="width: 90%">
     <button id="btn_search" class="btn btn-primary">Buscar</button>
+</form>
+</div>
 @endif
 
 @stop

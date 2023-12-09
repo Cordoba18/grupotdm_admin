@@ -1,13 +1,13 @@
 
-let form_code = '<h2>INGRESE EL CODIGO</h2>' +
+let form_code = '<div class="content_form"><h1>INGRESE EL CODIGO</h1>' +
     '<form action="" method="POST">' +
     '<p id="message_code"></p>' +
     '<label>CODIGO</label>' +
     '<input id="code" type="number" inputmode="none" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese el codigo" name="code" required>' +
     '<p class="alert alert-danger" role="alert" id="error_code" hidden></p>' +
-    '<button id="btn_verificar" type="submit">VERIFICAR</button>' +
-    '<a href="'+route_login+'">Si tengo cuenta</a>' +
-    '</form>';
+    '<div class="content_form_buttons"><button id="btn_verificar" type="submit">VERIFICAR</button>' +
+    '<a href="'+route_login+'">Si tengo cuenta</a></div>' +
+    '</form></div>';
 
 let content_form = document.querySelector('.content_principal');
 const btn_register = document.querySelector('#btn_register');

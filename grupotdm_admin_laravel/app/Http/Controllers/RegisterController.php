@@ -9,6 +9,7 @@ use App\Models\Code;
 use App\Models\Companie;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -60,4 +61,6 @@ function new_user(Request $request){
     return response()->json(['message' => true], 200);
 
 }
+
+
 }

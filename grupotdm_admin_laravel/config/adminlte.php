@@ -307,7 +307,34 @@ return [
         [
             'text' => 'Tickets',
             'url'  => 'dashboard/tickets',
-            'icon' => 'fas fa-solid fa-gears',
+            'icon' => 'fas fa-solid fa-user-nurse',
+        ],
+        ['header' => 'ARCHIVOS'],
+        [
+            'text' => 'Directorios',
+            'url'  => 'dashboard/directories',
+            'icon' => 'fas fa-solid fa-folder-open',
+        ],
+        [
+            'text' => 'Permisos',
+            'url'  => 'dashboard/permissions',
+            'icon' => 'fas fa-solid fa-file',
+        ],
+        [
+            'text' => 'Actas de salida',
+            'url'  => 'dashboard/proceedings',
+            'icon' => 'fas fa-solid fa-file',
+        ],
+        ['header' => 'CONFIGURACIONES'],
+        [
+            'text' => 'Perfil',
+            'url'  => 'dashboard/profile',
+            'icon' => 'fas fa-solid fa-user',
+        ],
+        [
+            'text' => 'Reportes',
+            'url'  => 'dashboard/profile',
+            'icon' => 'fas fa-solid fa-wrench',
         ],
 
     ],

@@ -26,7 +26,10 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 
 Route::get('/dashboard', [ProfileController::class, 'index'])->name('dashboard');
 
+Route::get('/dashboard/profile', [ProfileController::class, 'show_profile'])->name('dashboard.profile');
+
 Route::get('/dashboard/users', [ProfileController::class, 'show_users'])->name('dashboard.users');
+Route::get('/dashboard/users/search_users', [ProfileController::class, 'search_users'])->name('dashboard.users.search_users');
 Route::get('/dashboard/users/profile/edit_profile/{id}', [ProfileController::class, 'edit_profile'])->name('dashboard.users.edit_profile');
 Route::get('/dashboard/users/profile/view_user/{id}', [ProfileController::class, 'view_user'])->name('dashboard.users.view_user');
 Route::post('/dashboard/users/profile/edit_profile/save_changes', [ProfileController::class, 'save_changes'])->name('dashboard.users.save_changes');
@@ -57,3 +60,15 @@ Route::post('/register/new_user',[RegisterController::class, 'new_user'])->name(
 
 Route::post('/login/logueo',[LoginController::class, 'logueo'])->name('login.logueo');
 Route::post('/login/logout',[LoginController::class, 'logout'])->name('login.logout');
+
+Route::get('/dashboard/directories', [ProfileController::class, 'show_directories'])->name('dashboard.directories');
+Route::get('/dashboard/directories/create_repository', [ProfileController::class, 'create_repository'])->name('dashboard.create_repository');
+Route::post('/dashboard/directories/create_repository/save_directory', [ProfileController::class, 'save_directory'])->name('dashboard.create_repository.save_directory');
+Route::get('/dashboard/directories/view_directory/{id}', [ProfileController::class, 'view_directory'])->name('dashboard.view_directory');
+Route::post('/dashboard/directories/delete_directory', [ProfileController::class, 'delete_directory'])->name('dashboard.delete_directory');
+Route::post('/dashboard/directories/delete_file', [ProfileController::class, 'delete_file'])->name('dashboard.delete_file');
+Route::get('/dashboard/directories/create_file/{id}', [ProfileController::class, 'create_file'])->name('dashboard.create_file');
+Route::post('/dashboard/directories/create_file/save_file', [ProfileController::class, 'save_file'])->name('dashboard.save_file');
+Route::get('/dashboard/directories/view_file', [ProfileController::class, 'view_file'])->name('dashboard.view_file');
+Route::post('/dashboard/directories/view_file/edit_file', [ProfileController::class, 'edit_file'])->name('dashboard.edit_file');
+

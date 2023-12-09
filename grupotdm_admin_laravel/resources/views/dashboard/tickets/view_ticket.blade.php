@@ -30,7 +30,7 @@
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Archivo</label>
     <div class="col-sm-10">
-    <a class="btn btn-dark" href="{{ asset('storage/files/'.$file) }}" download="">Descargar archivo de {{$ticket->name }}<i class="fa-solid fa-cloud"></i></a>
+    <a class="btn btn-dark" href="{{ asset('storage/files/'.$file) }}" download="">Descargar archivo de {{$ticket->name }} <i class="bi bi-download"></i></a>
 </div>
 </div>
   @endif
