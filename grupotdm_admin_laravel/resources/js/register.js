@@ -190,14 +190,15 @@ function validate_email(texto) {
     const patron1 = /@eltemplodelamoda\.com.co/;
 
     const resultado1 = texto.search(patron1);
-    // const patron2 = /@hotmail\.com/;
 
-    // const resultado2 = texto.search(patron2);
+    const patron2 = /@eltemplodelamodafresca\.com.co/;
+
+    const resultado2 = texto.search(patron2);
     // const patron3 = /@outlook\.com/;
 
     // const resultado3 = texto.search(patron3);
 
-    if (resultado1 !== -1) {
+    if (resultado1 !== -1 || resultado2 !== -1) {
         return true;
     } else {
         return false;

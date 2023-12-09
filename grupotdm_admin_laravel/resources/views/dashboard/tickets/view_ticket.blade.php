@@ -71,11 +71,12 @@
       <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->state }}">
     </div>
 </div>
-    <a class="btn btn-success" href="{{ route('dashboard.tickets') }}">Volver</a>
+
     @if ($ticket->id_user_sender == $user->id)
-    <a href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-primary"> EDITAR TICKET </a>
+    <a href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-success"> EDITAR TICKET </a>
     @endif
-    <br>
+    <a class="btn btn-primary" href="{{ route('dashboard.tickets') }}">Volver</a>
+    <br><br>
     <div class="mb-3 row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
         <br>

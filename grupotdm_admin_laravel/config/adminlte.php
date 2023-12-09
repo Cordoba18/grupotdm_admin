@@ -333,7 +333,7 @@ return [
         ],
         [
             'text' => 'Reportes',
-            'url'  => 'dashboard/profile',
+            'url'  => 'dashboard/',
             'icon' => 'fas fa-solid fa-wrench',
         ],
 

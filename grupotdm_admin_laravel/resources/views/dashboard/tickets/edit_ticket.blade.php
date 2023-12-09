@@ -80,7 +80,9 @@ $id_user = null;
       <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->priority }}">
     </div>
 </div>
+
     <button class="btn btn-success">GUARDAR CAMBIOS</button>
+    <a class="btn btn-primary" href="{{ route('dashboard.tickets.ticket_detail', $ticket->id) }}">Volver</a>
 </form>
 @stop
 

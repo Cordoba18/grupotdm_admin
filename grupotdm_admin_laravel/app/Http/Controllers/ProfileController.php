@@ -130,7 +130,7 @@ class ProfileController extends Controller
                     INNER JOIN areas a ON u.id_area = a.id
                     INNER JOIN charges ch ON u.id_chargy = ch.id
                     WHERE u.id <> $user->id AND
-                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%')");
+                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%') ORDER BY u.id DESC");
 
 
                 }else{
@@ -141,7 +141,7 @@ class ProfileController extends Controller
                 INNER JOIN areas a ON u.id_area = a.id
                 INNER JOIN charges ch ON u.id_chargy = ch.id
                 WHERE u.id_area = $user->id_area AND u.id <> $user->id AND
-                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%')");
+                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%') ORDER BY u.id DESC");
 
                 }
             }else{
@@ -152,7 +152,7 @@ class ProfileController extends Controller
             INNER JOIN states s ON u.id_state = s.id
             INNER JOIN areas a ON u.id_area = a.id
             INNER JOIN charges ch ON u.id_chargy = ch.id
-            WHERE u.id <> $user->id");
+            WHERE u.id <> $user->id ORDER BY u.id DESC");
 
 
         }else{
@@ -162,7 +162,7 @@ class ProfileController extends Controller
         INNER JOIN states s ON u.id_state = s.id
         INNER JOIN areas a ON u.id_area = a.id
         INNER JOIN charges ch ON u.id_chargy = ch.id
-        WHERE u.id_area = $user->id_area AND u.id <> $user->id");
+        WHERE u.id_area = $user->id_area AND u.id <> $user->id ORDER BY u.id DESC");
 
         }
     }
@@ -246,7 +246,6 @@ public function state(Request $request){
 
     }else{
         $Ticket->id_state =2;
-
     }
     $Ticket->save();
     $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
@@ -371,8 +370,9 @@ public function save_user(Request $request){
     $my_user = User::find(Auth::user()->id);
     $validation_email = DB::selectOne("SELECT * FROM users WHERE email ='$request->email'");
     $validation_nit = DB::selectOne("SELECT * FROM users WHERE nit ='$request->nit'");
-    $validation_form_email = strpos($request->email, 'eltemplodelamoda.com.co');
-    if (!$validation_form_email) {
+    $validation_form_email = strpos($request->email, '@eltemplodelamoda.com.co');
+    $validation_form_email2 = strpos($request->email, '@eltemplodelamodafresca.com.co');
+    if (!$validation_form_email && !$validation_form_email2) {
         return redirect()->route('dashboard.users.new_user')->with("message_error","Formato de correo no permitido");
     }else
     if ($validation_email) {
@@ -475,7 +475,7 @@ public function comment_delete(Request $request){
 public function edit_ticket($id){
     $user = Auth::user();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-        $users = User::all();
+        $users = DB::select("SELECT*FROM users WHERE id_area = 2 AND id_state =1");
         $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
         FROM tickets t
         INNER JOIN priorities p ON t.id_priority = p.id
