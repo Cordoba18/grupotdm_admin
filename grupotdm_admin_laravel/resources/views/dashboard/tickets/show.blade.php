@@ -16,6 +16,120 @@
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
 
          @endif
+
+         <div class="content_search">
+            <form action="{{ route('dashboard.show_tickets_filter_search') }}" method="get">
+                @csrf
+                @if ($search)
+                <input type="text" name="search" placeholder="Buscar" id="Buscar usuarios" value="{{ $search }}">
+                @else
+                <input type="text" name="search" placeholder="Buscar" id="Buscar usuarios">
+                @endif
+                <select name="filter" id="" >
+                    <option value="">Seleccione un filtro</option>
+                    @foreach ($filters as $f)
+                    <option value="{{ $f->id }}">{{ $f->state }}</option>
+                    @endforeach
+                </select>
+        <button id="btn_search" class="btn btn-primary">Buscar</button>
+    </form>
+    </div>
+@if($validate_user_sistemas)
+
+
+<div class="content_info_tickets">
+    <div class="content_amount">
+        <h1>Vistos/pendientes </h1>
+        @php
+        $total_v_P = 0;
+        @endphp
+        @foreach ($tickets_all as $t)
+        @if($t->id_user_destination == $user->id && ($t->id_state == 3 || $t->id_state == 4))
+        @php
+        $total_v_P += 1;
+        @endphp
+        @endif
+        @endforeach
+        <b>{{ $total_v_P }}</b>
+    </div>
+    <div class="content_amount">
+        <h1>En ejecución </h1>
+        @php
+        $total_e = 0;
+        @endphp
+        @foreach ($tickets_all as $t)
+        @if($t->id_user_destination == $user->id && $t->id_state == 5 )
+        @php
+        $total_e += 1;
+        @endphp
+        @endif
+        @endforeach
+        <b>{{ $total_e }}</b>
+    </div>
+    <div class="content_amount">
+        <h1>Vencidos </h1>
+        @php
+        $total_v = 0;
+        @endphp
+        @foreach ($tickets_all as $t)
+        @if($t->id_user_destination == $user->id && $t->id_state == 6 )
+        @php
+        $total_v += 1;
+        @endphp
+        @endif
+        @endforeach
+        <b>{{ $total_v }}</b>
+    </div>
+
+ </div>
+@else
+<div class="content_info_tickets">
+    <div class="content_amount">
+        <h1>Vistos/pendientes </h1>
+        @php
+        $total_v_P = 0;
+        @endphp
+        @foreach ($tickets_all as $t)
+        @if($t->id_user_sender == $user->id && ($t->id_state == 3 || $t->id_state == 4))
+        @php
+        $total_v_P += 1;
+        @endphp
+        @endif
+        @endforeach
+        <b>{{ $total_v_P }}</b>
+    </div>
+    <div class="content_amount">
+        <h1>En ejecución </h1>
+        @php
+        $total_e = 0;
+        @endphp
+        @foreach ($tickets_all as $t)
+        @if($t->id_user_sender == $user->id && $t->id_state == 5 )
+        @php
+        $total_e += 1;
+        @endphp
+        @endif
+        @endforeach
+        <b>{{ $total_e }}</b>
+    </div>
+    <div class="content_amount">
+        <h1>Vencidos </h1>
+        @php
+        $total_v = 0;
+        @endphp
+        @foreach ($tickets_all as $t)
+        @if($t->id_user_sender == $user->id && $t->id_state == 6 )
+        @php
+        $total_v += 1;
+        @endphp
+        @endif
+        @endforeach
+        <b>{{ $total_v }}</b>
+    </div>
+
+ </div>
+@endif
+
 @stop
 
 @section('content')

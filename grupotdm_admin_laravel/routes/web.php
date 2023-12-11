@@ -40,6 +40,7 @@ Route::get('/dashboard/users/new_user', [ProfileController::class, 'new_user'])-
 Route::post('/dashboard/users/new_user/save_user', [ProfileController::class, 'save_user'])->name('dashboard.users.save_user');
 
 Route::get('/dashboard/tickets', [ProfileController::class, 'show_tickets'])->name('dashboard.tickets');
+Route::get('/dashboard/tickets/show_tickets_filter_search', [ProfileController::class, 'show_tickets_filter_search'])->name('dashboard.show_tickets_filter_search');
 Route::get('/dashboard/tickets/create', [ProfileController::class, 'create_ticket'])->name('dashboard.tickets.create');
 Route::get('/dashboard/tickets/get_id/{id}', [ProfileController::class, 'get_id'])->name('dashboard.tickets.get_id');
 Route::post('/dashboard/tickets/state', [ProfileController::class, 'state'])->name('dashboard.tickets.state');

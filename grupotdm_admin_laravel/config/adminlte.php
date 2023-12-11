@@ -84,7 +84,7 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
             'path' => 'storage/icons/logo.png',
             'alt' => 'Auth Logo',
@@ -112,8 +112,8 @@ return [
             'path' => 'storage/icons/logo.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__fade',
-            'width' => 100,
-            'height' => 100,
+            'width' => 50,
+            'height' => 50,
             'animation_time' => 1000,
         ],
     ],

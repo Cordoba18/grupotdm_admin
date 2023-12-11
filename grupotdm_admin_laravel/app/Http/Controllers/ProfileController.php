@@ -177,62 +177,165 @@ class ProfileController extends Controller
 
 
 public function show_tickets(){
+
+    $tickets_all = Ticket::all();
     $user = Auth::user();
+    $search =null;
+    $filter =null;
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-if ($validate_user_sistemas) {
-    $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
-    FROM tickets t
-    INNER JOIN priorities p ON t.id_priority = p.id
-    INNER JOIN users us ON t.id_user_sender =us.id
-    INNER JOIN users ud ON t.id_user_destination = ud.id
-    INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2 ORDER BY t.id DESC");
-
-
-
-} else {
-    $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
-    FROM tickets t
-    INNER JOIN priorities p ON t.id_priority = p.id
-    INNER JOIN users us ON t.id_user_sender =us.id
-    INNER JOIN users ud ON t.id_user_destination = ud.id
-    INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state <> 2 ORDER BY t.id DESC");
-
+    $tickets = ProfileController::get_tickets($validate_user_sistemas, $user ,null, null);
+$filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=4 OR id=5 OR id=6 OR id=7");
+    return view('dashboard.tickets.show',compact('tickets' , 'validate_user_sistemas', 'filters','search','filter','tickets_all'));
 }
 
-foreach ($tickets as $t) {
-    $ticket = Ticket::find($t->id);
-    $action = false;
-    if ($t->id_user_destination == $user->id && $t->id_state == 3) {
-        $ticket->id_state = 4;
-        $action = true;
+
+
+
+
+public function show_tickets_filter_search(Request $request){
+
+    $tickets_all = Ticket::all();
+    $user = Auth::user();
+    $search = $request->search;
+    $filter = $request->filter;
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    $tickets = ProfileController::get_tickets($validate_user_sistemas, $user ,$request->search,$request->filter);
+$filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=4 OR id=5 OR id=6 OR id=7");
+    return view('dashboard.tickets.show',compact('tickets' , 'validate_user_sistemas', 'filters', 'search', 'filter','tickets_all'));
+}
+
+public static function get_tickets($validate_user_sistemas, $user, $search, $filter){
+    if ($validate_user_sistemas) {
+        if ($search != null && $filter != null) {
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+            FROM tickets t
+            INNER JOIN priorities p ON t.id_priority = p.id
+            INNER JOIN users us ON t.id_user_sender =us.id
+            INNER JOIN users ud ON t.id_user_destination = ud.id
+            INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2
+            AND (t.id LIKE '%$search%'
+                OR t.name LIKE '%$search%'
+            OR t.description LIKE '%$search%'
+            OR t.date_start LIKE '%$search%'
+            OR t.date_finally LIKE '%$search%'
+            OR p.priority LIKE '%$search%'
+            OR us.name LIKE '%$search%'
+            OR ud.name LIKE '%$search%') AND t.id_state = $filter ORDER BY t.id DESC");
+        } else if ($search != null){
+        $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+        FROM tickets t
+        INNER JOIN priorities p ON t.id_priority = p.id
+        INNER JOIN users us ON t.id_user_sender =us.id
+        INNER JOIN users ud ON t.id_user_destination = ud.id
+        INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2
+        AND (t.id LIKE '%$search%'
+            OR t.name LIKE '%$search%'
+        OR t.description LIKE '%$search%'
+        OR t.date_start LIKE '%$search%'
+        OR t.date_finally LIKE '%$search%'
+        OR p.priority LIKE '%$search%'
+        OR us.name LIKE '%$search%'
+        OR ud.name LIKE '%$search%') ORDER BY t.id DESC");
+        }else if ($filter != null) {
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+        FROM tickets t
+        INNER JOIN priorities p ON t.id_priority = p.id
+        INNER JOIN users us ON t.id_user_sender =us.id
+        INNER JOIN users ud ON t.id_user_destination = ud.id
+        INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC");
+        }else{
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+            FROM tickets t
+            INNER JOIN priorities p ON t.id_priority = p.id
+            INNER JOIN users us ON t.id_user_sender =us.id
+            INNER JOIN users ud ON t.id_user_destination = ud.id
+            INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2 ORDER BY t.id DESC");
+        }
+
+
+    } else {
+
+        if ($search != null && $filter != null) {
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+            FROM tickets t
+            INNER JOIN priorities p ON t.id_priority = p.id
+            INNER JOIN users us ON t.id_user_sender =us.id
+            INNER JOIN users ud ON t.id_user_destination = ud.id
+            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND (t.id LIKE '%$search%'
+            OR t.name LIKE '%$search%'
+        OR t.description LIKE '%$search%'
+        OR t.date_start LIKE '%$search%'
+        OR t.date_finally LIKE '%$search%'
+        OR p.priority LIKE '%$search%'
+        OR us.name LIKE '%$search%'
+        OR ud.name LIKE '%$search%') AND  t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC");
+        } else if ($search != null) {
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+            FROM tickets t
+            INNER JOIN priorities p ON t.id_priority = p.id
+            INNER JOIN users us ON t.id_user_sender =us.id
+            INNER JOIN users ud ON t.id_user_destination = ud.id
+            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND (t.id LIKE '%$search%'
+            OR t.name LIKE '%$search%'
+        OR t.description LIKE '%$search%'
+        OR t.date_start LIKE '%$search%'
+        OR t.date_finally LIKE '%$search%'
+        OR p.priority LIKE '%$search%'
+        OR us.name LIKE '%$search%'
+        OR ud.name LIKE '%$search%') AND  t.id_state <> 2 ORDER BY t.id DESC");
+        }else if ($filter != null) {
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+            FROM tickets t
+            INNER JOIN priorities p ON t.id_priority = p.id
+            INNER JOIN users us ON t.id_user_sender =us.id
+            INNER JOIN users ud ON t.id_user_destination = ud.id
+            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state = $filter AND t.id_state <> 2 ORDER BY t.id DESC");
+        }else{
+            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+            FROM tickets t
+            INNER JOIN priorities p ON t.id_priority = p.id
+            INNER JOIN users us ON t.id_user_sender =us.id
+            INNER JOIN users ud ON t.id_user_destination = ud.id
+            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state <> 2 ORDER BY t.id DESC");
+        }
+
+
     }
 
-    // Fecha y hora actual
-$fechaActual = new DateTime();
+    foreach ($tickets as $t) {
+        $ticket = Ticket::find($t->id);
+        $action = false;
+        if ($t->id_user_destination == $user->id && $t->id_state == 3) {
+            $ticket->id_state = 4;
+            $action = true;
+        }
 
-// Fecha que deseas validar
-$fechaStr = $t->date_finally;
+        // Fecha y hora actual
+    $fechaActual = new DateTime();
 
-// Convertir la cadena de fecha a un objeto DateTime
-$fecha = DateTime::createFromFormat('d/m/Y H:i:s', $fechaStr);
+    // Fecha que deseas validar
+    $fechaStr = $t->date_finally;
 
-// Comparar las fechas (ignorando la parte de la hora para comparar solo la fecha)
-if ($fecha->format('Y-m-d') < $fechaActual->format('Y-m-d') && $t->id_state !== 7 && $t->id_state !== 6 ) {
-$ticket->id_state = 6;
-$action = true;
+    // Convertir la cadena de fecha a un objeto DateTime
+    $fecha = DateTime::createFromFormat('d/m/Y H:i:s', $fechaStr);
+
+    // Comparar las fechas (ignorando la parte de la hora para comparar solo la fecha)
+    if ($fecha->format('Y-m-d') < $fechaActual->format('Y-m-d') && $t->id_state !== 7 && $t->id_state !== 6 ) {
+    $ticket->id_state = 6;
+    $action = true;
+    }
+    $ticket->save();
+    if ($action) {
+
+    $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $ticket->id");
+    $user_sender = User::find($ticket->id_user_sender);
+    $user_destination = User::find($ticket->id_user_destination);
+    Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+    }
+    }
+
+    return $tickets;
 }
-$ticket->save();
-if ($action) {
-
-$infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $ticket->id");
-$user_sender = User::find($ticket->id_user_sender);
-$user_destination = User::find($ticket->id_user_destination);
-Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
-}
-}
-    return view('dashboard.tickets.show',compact('tickets' , 'validate_user_sistemas'));
-}
-
 
 public function state(Request $request){
     $user = User::find($request->id);
