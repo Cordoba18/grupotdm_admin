@@ -38,14 +38,13 @@
   </div>
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Confirmar contraseña</label>
-    <input type="password" name="password2" class="form-control" required id="exampleFormControlInput1" placeholder="Confirme su contraseña"
+    <input type="password" name="password2" class="form-control" required id="exampleFormControlInput1" placeholder="Confirme su contraseña">
   </div>
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Compañia</label>
   <select required name="id_company" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
     <option value="">SELECCIONE UNA COMPAÑIA</option>
     @foreach ($companies as $c)
-
     <option value="{{ $c->id }}">{{ $c->company }}</option>
     @endforeach
   </select>
@@ -73,7 +72,19 @@
 </div>
 </select>
 </div>
+@if($validate_user_sistemas)
 
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Punto fuerte</label>
+  <select required name="id_theme_user" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
+    <option value="">SELECCIONE SU PUNTO FUERTE</option>
+    @foreach ($themes_users as $t)
+    <option value="{{ $t->id }}">{{ $t->theme_user }}</option>
+    @endforeach
+  </select>
+</div>
+
+@endif
 
 <div class="content_buttons" style="padding-bottom: 20px">
     <button class="btn btn-success">CREAR USUARIO</button>

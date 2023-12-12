@@ -37,6 +37,16 @@
     <option value="{{ $u->id }}">{{ $u->name }}</option>
     @endforeach
   </select>
+  @else
+
+  <label for="exampleFormControlInput1" class="form-label">Seleccione el tema central</label>
+  <select name="id_theme_user" required style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
+    <option selected>Seleccionar tema</option>
+    @foreach ($themes_users as $t)
+    <option value="{{ $t->id }}">{{ $t->theme_user }}</option>
+    @endforeach
+  </select>
+
   @endif
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Dias de plazo</label>

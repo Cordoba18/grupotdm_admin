@@ -1,7 +1,10 @@
 @extends('adminlte::page')
 
 @section('title', 'GRUPO TDM')
-
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+    @vite(['resources/css/tickets.css'])
+@stop
 @php
     $user = Auth::user();
 @endphp
@@ -10,7 +13,7 @@
 <h1>Tickets</h1>
     <br>
     <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark">GENERAR UN TICKET</a>
-    <br>
+    <br><br>
     @if (session('message'))
 
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
@@ -19,7 +22,7 @@
 
          <div class="content_search">
             <form action="{{ route('dashboard.show_tickets_filter_search') }}" method="get">
-                @csrf
+
                 @if ($search)
                 <input type="text" name="search" placeholder="Buscar" id="Buscar usuarios" value="{{ $search }}">
                 @else
@@ -164,20 +167,32 @@
                     <td>{{ $t->state }}</td>
                     <td>
                         <input type="number" value="{{ $t->id_state }}" disabled hidden id="id_state">
+
+                        @if ($t->id_user_sender == $user->id)
+                        <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
+                            @csrf
+                            <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
+                            @if($t->id_state == 7)
+                            <button class="btn btn-success">RE ABRIR</button>
+                            @else
+                            <button class="btn btn-danger">ELIMINAR</button>
+                            @endif
+
+                        </form>
+
+                        @else
                         <form action="{{ route('dashboard.tickets.state') }}" method="post">
                             @csrf
                             <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
-                        @if ($validate_user_sistemas)
                         @if ($t->id_state == 4 && $t->id_user_destination == $user->id)
                         <button  class="btn btn-dark">EJECUTAR</button>
                         @elseif ($t->id_state == 5 && $t->id_user_destination == $user->id)
                         <button class="btn btn-success">TERMINAR</button>
                         @endif
-                        @else
-                        <button class="btn btn-danger">ELIMINAR</button>
+                    </form>
                         @endif
                         <a href="{{ route('dashboard.tickets.ticket_detail', $t->id) }}" class="btn btn-primary">DETALLE</a>
-                    </form>
+
                     </td>
                 </tr>
                 @endforeach
@@ -188,9 +203,7 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
 @vite(['resources/js/show_tickets.js'])

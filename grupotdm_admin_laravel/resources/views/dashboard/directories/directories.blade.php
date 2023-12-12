@@ -18,8 +18,14 @@
          @endif
 
     <a href="{{ route('dashboard.create_repository') }}" class="btn btn-dark">CREAR REPOSITORIO</a>
-    <br>
+    <br><br>
 
+    <div class="content_search">
+        <form action="{{ route('dashboard.directories.search') }}" method="get">
+            <input type="text" name="search" placeholder="Buscar repositorios" style="width: 80%">
+            <button id="btn_search" class="btn btn-primary">Buscar</button></form>
+        </div>
+<br>
 @stop
 
 @section('content')
@@ -27,16 +33,22 @@
     <table class="table">
         <thead>
          <th>NOMBRE</th>
+         <th>Codigo</th>
          <th>FECHA CREACION</th>
          <th>ULTIMA FECHA DE MODIFICACION</th>
          <th>PROPIETARIO</th>
          <th>VER</th>
-         <th>ELIMINAR</th>
+         <th>ACCION</th>
         </thead>
         <tbody style="overflow-y: 300px;">
             @foreach ($directories as $d)
             <tr>
             <td>{{ $d->name }}</td>
+            @if($d->id_user == Auth::user()->id)
+            <td>{{ $d->code }}</td>
+            @else
+            <td>OCULTO</td>
+            @endif
             <td>{{ $d->date_create }}</td>
             <td>{{ $d->date_update }}</td>
             <td>{{ $d->name_user }}</td>

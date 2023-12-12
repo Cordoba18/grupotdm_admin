@@ -19,7 +19,13 @@
 
     <a href="{{ route('dashboard.create_file',$id) }}" class="btn btn-dark">CREAR ARCHIVO</a>
     <br>
-
+<br>
+<div class="content_search">
+    <form action="{{ route('dashboard.directories.search') }}" method="get">
+        @csrf
+        <input type="text" name="search" placeholder="Buscar archivos" style="width: 80%">
+        <button id="btn_search" class="btn btn-primary">Buscar</button></form>
+</div>
 @stop
 
 @section('content')

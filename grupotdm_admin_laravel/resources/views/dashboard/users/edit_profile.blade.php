@@ -145,6 +145,39 @@
   </select>
 </div>
 
+@if($validate_user_sistemas)
+
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Punto fuerte</label>
+  <select required name="id_theme_user" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
+    @php
+    $theme_user = null;
+    @endphp
+    @foreach ($themes_users as $t) {
+        @if ($t->id == $user->id_theme_user) {
+            @php
+            $theme_user = $t->theme_user
+            @endphp
+        }
+        @endif
+    }
+    @endforeach
+    @if($theme_user == null)
+    <option value="">SELECCIONE SU PUNTO FUERTE</option>
+    @else
+      <option value="{{ $user->id_theme_user }}">{{ $theme_user }}</option>
+    @endif
+
+    @foreach ($themes_users as $t)
+    @if($t->id != $user->id_theme_user)
+    <option value="{{ $t->id }}">{{ $t->theme_user }} </option>
+    @endif
+    @endforeach
+  </select>
+</div>
+
+@endif
+
 <div class="content_buttons" style="padding-bottom: 20px">
     <button class="btn btn-success">Guardar Cambios</button>
     </form>

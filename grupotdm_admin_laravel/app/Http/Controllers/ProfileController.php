@@ -20,6 +20,7 @@ use App\Models\File as ModelsFile;
 use App\Models\Files_modified;
 use App\Models\Prioritie;
 use App\Models\Shop;
+use App\Models\Theme_user;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
@@ -337,8 +338,25 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
     return $tickets;
 }
 
+public function delete_ticket(Request $request){
+
+    $user = Auth::user();
+    $Ticket = Ticket::find($request->id_ticket);
+    if($Ticket->id_state == 7){
+        $Ticket->id_state =3;
+    }else{
+        $Ticket->id_state =2;
+    }
+
+    $Ticket->save();
+    $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
+    $user_sender = User::find($Ticket->id_user_sender);
+    $user_destination = User::find($Ticket->id_user_destination);
+    Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+    return redirect()->route('dashboard.tickets')->with('message', 'Ticket eliminado con exito');
+}
+
 public function state(Request $request){
-    $user = User::find($request->id);
     $Ticket = Ticket::find($request->id_ticket);
 
     if ($Ticket->id_state == 4) {
@@ -347,8 +365,6 @@ public function state(Request $request){
     }else if ($Ticket->id_state == 5) {
         $Ticket->id_state =7;
 
-    }else{
-        $Ticket->id_state =2;
     }
     $Ticket->save();
     $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
@@ -364,8 +380,8 @@ public function create_ticket(){
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     $priorities = Prioritie::all();
     $users = DB::select("SELECT * FROM users WHERE id_area = 2 AND id_state = 1 AND id <> $user->id");
-
-        return view('dashboard.tickets.create', compact('user', 'validate_user_sistemas', 'priorities','users'));
+    $themes_users = Theme_user::all();
+        return view('dashboard.tickets.create', compact('user', 'themes_users','validate_user_sistemas', 'priorities','users'));
 }
 
 public function save_ticket(Request $request){
@@ -378,14 +394,22 @@ public function save_ticket(Request $request){
     $new_ticket->id_priority = $request->id_priority;
     $new_ticket->id_user_sender = $user->id;
     $new_ticket->id_state = 3;
-    $user_sistemas = DB::selectOne("SELECT u.id FROM users u
-        INNER JOIN charges c ON u.id_chargy = c.id
-         WHERE c.id_area = 2 AND c.chargy = 'JEFE DE AREA' AND u.id_state = 1");
+
     if ($request->id_user_destination) {
         $new_ticket->id_user_destination = $request->id_user_destination;
     }else{
 
-         $new_ticket->id_user_destination = $user_sistemas->id;
+         $id_theme_user =  $request->id_theme_user;
+         $user_sistemas = DB::selectOne("SELECT u.id FROM users u
+         INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE c.id_area = 2 AND u.id_theme_user = $id_theme_user AND u.id_state = 1 ORDER BY RAND() LIMIT 1");
+
+        if (!$user_sistemas) {
+            $user_sistemas = DB::selectOne("SELECT u.id FROM users u
+            INNER JOIN charges c ON u.id_chargy = c.id
+           WHERE c.id_area = 2 AND u.id_state = 1 ORDER BY RAND() LIMIT 1");
+        }
+        $new_ticket->id_user_destination = $user_sistemas->id;
         }
     if ($request->hasFile('file')) {
         $file = $request->file('file');
@@ -417,7 +441,10 @@ public function edit_profile($id){
     $companies = Companie::all();
     $charges = Charge::all();
     $shops = Shop::all();
-    return view("dashboard.users.edit_profile", compact("user", "validation_jefe", "companies", "areas", "charges", "shops"));
+    $themes_users = Theme_user::all();
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+
+    return view("dashboard.users.edit_profile", compact("themes_users","user", "validation_jefe", "companies", "areas", "charges", "shops", "validate_user_sistemas"));
 
 }
 
@@ -431,6 +458,10 @@ public function save_changes(Request $request){
 
     if ($request->id_shop){
         $user->id_shop = $request->id_shop;
+    }
+
+    if ($request->id_theme_user) {
+        $user->id_theme_user = $request->id_theme_user;
     }
     $user->save();
     return redirect()->route('dashboard.users.edit_profile', $request->id)->with("message","Usuario actualizado con exito!");
@@ -461,12 +492,13 @@ public function save_changes_password(Request $request){
 public function new_user(){
 
     $user = User::find(Auth::user()->id);
-
+    $themes_users = Theme_user::all();
     $companies = Companie::all();
     $charges = Charge::all()->where('id_area','=',$user->id_area);
     $shops = Shop::all();
     $area = DB::selectOne("SELECT * FROM areas WHERE id = $user->id_area");
-    return view('dashboard.users.new_user', compact ('user', 'companies', 'charges', 'shops', 'area'));
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    return view('dashboard.users.new_user', compact ('user', 'companies', 'charges', 'shops', 'area','themes_users', 'validate_user_sistemas'));
 }
 
 public function save_user(Request $request){
@@ -494,6 +526,10 @@ public function save_user(Request $request){
         $user->id_area = $my_user->id_area;
         $user->password = Hash::make($request->password);
         $user->id_chargy = $request->id_chargy;
+
+        if ($request->id_theme_user) {
+            $user->id_theme_user = $request->id_theme_user;
+        }
         if ($request->id_shop){
             $user->id_shop = $request->id_shop;
         }
@@ -637,7 +673,7 @@ public function show_profile(){
 public function show_directories(){
 
     $user = Auth::user();
-    $directories = DB::select("SELECT d.id, d.name, d.directory, d.date_create, d.date_update, u.id AS id_user , u.name AS name_user, s.state, s.id AS id_state
+    $directories = DB::select("SELECT d.code, d.id, d.name, d.directory, d.date_create, d.date_update, u.id AS id_user , u.name AS name_user, s.state, s.id AS id_state
     FROM directories d
     INNER JOIN users u ON d.id_user = u.id
     INNER JOIN areas a ON u.id_area = a.id
@@ -647,6 +683,21 @@ public function show_directories(){
 return view("dashboard.directories.directories",compact('user', 'directories'));
 
 
+}
+
+public function show_directories_search(Request $request){
+    $user = Auth::user();
+    $search = $request->search;
+    $directories = DB::select("SELECT d.code, d.id, d.name, d.directory, d.date_create, d.date_update, u.id AS id_user , u.name AS name_user, s.state, s.id AS id_state
+    FROM directories d
+    INNER JOIN users u ON d.id_user = u.id
+    INNER JOIN areas a ON u.id_area = a.id
+    INNER JOIN states s ON d.id_state = s.id
+    WHERE a.id = $user->id_area AND d.id_state = 1
+    AND (d.id LIKE '%$search%' OR d.name LIKE '%$search%' OR d.date_create LIKE '%$search%' OR u.name LIKE '%$search%')
+    ORDER BY d.id DESC");
+
+return view("dashboard.directories.directories",compact('user', 'directories'));
 }
 public function create_repository(){
     return view("dashboard.directories.create");

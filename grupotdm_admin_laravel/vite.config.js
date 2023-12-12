@@ -8,7 +8,11 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/login.css',
                 'resources/css/form.css',
+                'resources/css/tickets.css',
+
+
                 'resources/js/register.js',
+
                 'resources/js/app.js',
                 'resources/js/recovery_password.js',
                 'resources/js/tickets.js',

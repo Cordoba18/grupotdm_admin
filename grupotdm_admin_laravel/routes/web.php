@@ -44,6 +44,7 @@ Route::get('/dashboard/tickets/show_tickets_filter_search', [ProfileController::
 Route::get('/dashboard/tickets/create', [ProfileController::class, 'create_ticket'])->name('dashboard.tickets.create');
 Route::get('/dashboard/tickets/get_id/{id}', [ProfileController::class, 'get_id'])->name('dashboard.tickets.get_id');
 Route::post('/dashboard/tickets/state', [ProfileController::class, 'state'])->name('dashboard.tickets.state');
+Route::post('/dashboard/tickets/delete_ticket', [ProfileController::class, 'delete_ticket'])->name('dashboard.tickets.delete_ticket');
 Route::get('/dashboard/tickets/ticket_detail/{id}', [ProfileController::class, 'ticket_detail'])->name('dashboard.tickets.ticket_detail');
 Route::get('/dashboard/tickets/edit_ticket/{id}', [ProfileController::class, 'edit_ticket'])->name('dashboard.tickets.edit_ticket');
 Route::post('/dashboard/tickets/edit_ticket/save_changes_ticket', [ProfileController::class, 'save_changes_ticket'])->name('dashboard.tickets.save_changes_ticket');
@@ -63,6 +64,7 @@ Route::post('/login/logueo',[LoginController::class, 'logueo'])->name('login.log
 Route::post('/login/logout',[LoginController::class, 'logout'])->name('login.logout');
 
 Route::get('/dashboard/directories', [ProfileController::class, 'show_directories'])->name('dashboard.directories');
+Route::get('/dashboard/directories/search', [ProfileController::class, 'show_directories_search'])->name('dashboard.directories.search');
 Route::get('/dashboard/directories/create_repository', [ProfileController::class, 'create_repository'])->name('dashboard.create_repository');
 Route::post('/dashboard/directories/create_repository/save_directory', [ProfileController::class, 'save_directory'])->name('dashboard.create_repository.save_directory');
 Route::get('/dashboard/directories/view_directory/{id}', [ProfileController::class, 'view_directory'])->name('dashboard.view_directory');

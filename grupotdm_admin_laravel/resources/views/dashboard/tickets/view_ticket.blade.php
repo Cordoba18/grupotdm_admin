@@ -71,11 +71,28 @@
       <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->state }}">
     </div>
 </div>
-
     @if ($ticket->id_user_sender == $user->id)
     <a href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-success"> EDITAR TICKET </a>
     @endif
     <a class="btn btn-primary" href="{{ route('dashboard.tickets') }}">Volver</a>
+    <br><br>
+    @if ($ticket->id_user_sender == $user->id)
+    <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
+        @csrf
+        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+        <button class="btn btn-danger">ELIMINAR</button>
+    </form>
+    @else
+    <form action="{{ route('dashboard.tickets.state') }}" method="post">
+        @csrf
+        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+    @if ($ticket->id_state == 4 && $ticket->id_user_destination == $user->id)
+    <button  class="btn btn-dark">EJECUTAR</button>
+    @elseif ($ticket->id_state == 5 && $ticket->id_user_destination == $user->id)
+    <button class="btn btn-success">TERMINAR</button>
+    @endif
+</form>
+    @endif
     <br><br>
     <div class="mb-3 row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
