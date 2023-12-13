@@ -9,6 +9,7 @@ export default defineConfig({
                 'resources/css/login.css',
                 'resources/css/form.css',
                 'resources/css/tickets.css',
+                'resources/css/view_ticket.css',
 
 
                 'resources/js/register.js',

@@ -1,0 +1,47 @@
+#form {
+    width: 250px;
+    margin: 0 auto;
+    height: 50px;
+  }
+
+  #form p {
+    text-align: center;
+  }
+
+  #form label {
+    font-size: 20px;
+
+  }
+
+  #form_starts input[type="radio"] {
+    display: none;
+  }
+
+  #form_starts label {
+    color: grey;
+    font-size: 18px;
+  }
+
+  .clasificacion {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+
+  #form_starts label:hover,
+  #form_starts label:hover ~  label {
+    color: orange;
+  }
+
+  #form_starts input[type="radio"]:checked ~  label {
+    color: orange;
+  }
+
+  .coments{
+    max-height: 400px;
+    overflow-y: auto;
+    width: 100%;margin: 10px;
+  }
+  .coments .comment{
+    display: flex; flex-direction: column; width: 100%; border: 3px solid gray; padding: 4px;
+    margin-bottom: 3px;
+  }

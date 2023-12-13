@@ -56,6 +56,11 @@
                 placeholder="Ingrese el codigo" name="code" required>
         </div>
         <button class="btn btn-success">GUARDAR CAMBIOS</button>
+
+    </form>
+    <form action="{{ route('dashboard.view_directory') }}" method="get">
+        <input type="number" name="id" value="{{ $directorie->id}}" hidden>
+        <button class="btn btn-primary">VOLVER</button>
     </form>
     <br>
     <b>OTROS CAMBIOS</b>

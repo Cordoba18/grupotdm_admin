@@ -206,14 +206,10 @@ $filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=4 OR id=5 OR id=6
 }
 
 public static function get_tickets($validate_user_sistemas, $user, $search, $filter){
+    $consult = null;
     if ($validate_user_sistemas) {
         if ($search != null && $filter != null) {
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-            FROM tickets t
-            INNER JOIN priorities p ON t.id_priority = p.id
-            INNER JOIN users us ON t.id_user_sender =us.id
-            INNER JOIN users ud ON t.id_user_destination = ud.id
-            INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2
+            $consult = "WHERE t.id_state <> 2
             AND (t.id LIKE '%$search%'
                 OR t.name LIKE '%$search%'
             OR t.description LIKE '%$search%'
@@ -221,14 +217,9 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
             OR t.date_finally LIKE '%$search%'
             OR p.priority LIKE '%$search%'
             OR us.name LIKE '%$search%'
-            OR ud.name LIKE '%$search%') AND t.id_state = $filter ORDER BY t.id DESC");
+            OR ud.name LIKE '%$search%') AND t.id_state = $filter ORDER BY t.id DESC";
         } else if ($search != null){
-        $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-        FROM tickets t
-        INNER JOIN priorities p ON t.id_priority = p.id
-        INNER JOIN users us ON t.id_user_sender =us.id
-        INNER JOIN users ud ON t.id_user_destination = ud.id
-        INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2
+        $consult = "WHERE t.id_state <> 2
         AND (t.id LIKE '%$search%'
             OR t.name LIKE '%$search%'
         OR t.description LIKE '%$search%'
@@ -236,77 +227,55 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
         OR t.date_finally LIKE '%$search%'
         OR p.priority LIKE '%$search%'
         OR us.name LIKE '%$search%'
-        OR ud.name LIKE '%$search%') ORDER BY t.id DESC");
+        OR ud.name LIKE '%$search%') ORDER BY t.id DESC";
         }else if ($filter != null) {
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-        FROM tickets t
-        INNER JOIN priorities p ON t.id_priority = p.id
-        INNER JOIN users us ON t.id_user_sender =us.id
-        INNER JOIN users ud ON t.id_user_destination = ud.id
-        INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC");
+            $consult = "WHERE t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC";
         }else{
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-            FROM tickets t
-            INNER JOIN priorities p ON t.id_priority = p.id
-            INNER JOIN users us ON t.id_user_sender =us.id
-            INNER JOIN users ud ON t.id_user_destination = ud.id
-            INNER JOIN states s ON t.id_state = s.id  WHERE t.id_state <> 2 ORDER BY t.id DESC");
+            $consult = "WHERE t.id_state <> 2 AND t.id_state <> 7 ORDER BY t.id DESC";
         }
 
 
     } else {
 
         if ($search != null && $filter != null) {
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-            FROM tickets t
-            INNER JOIN priorities p ON t.id_priority = p.id
-            INNER JOIN users us ON t.id_user_sender =us.id
-            INNER JOIN users ud ON t.id_user_destination = ud.id
-            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND (t.id LIKE '%$search%'
+            $consult = "WHERE (us.id = $user->id OR ud.id = $user->id) AND (t.id LIKE '%$search%'
             OR t.name LIKE '%$search%'
         OR t.description LIKE '%$search%'
         OR t.date_start LIKE '%$search%'
         OR t.date_finally LIKE '%$search%'
         OR p.priority LIKE '%$search%'
         OR us.name LIKE '%$search%'
-        OR ud.name LIKE '%$search%') AND  t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC");
+        OR ud.name LIKE '%$search%') AND  t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC";
         } else if ($search != null) {
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-            FROM tickets t
-            INNER JOIN priorities p ON t.id_priority = p.id
-            INNER JOIN users us ON t.id_user_sender =us.id
-            INNER JOIN users ud ON t.id_user_destination = ud.id
-            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND (t.id LIKE '%$search%'
+            $consult = "WHERE (us.id = $user->id OR ud.id = $user->id) AND (t.id LIKE '%$search%'
             OR t.name LIKE '%$search%'
         OR t.description LIKE '%$search%'
         OR t.date_start LIKE '%$search%'
         OR t.date_finally LIKE '%$search%'
         OR p.priority LIKE '%$search%'
         OR us.name LIKE '%$search%'
-        OR ud.name LIKE '%$search%') AND  t.id_state <> 2 ORDER BY t.id DESC");
+        OR ud.name LIKE '%$search%') AND  t.id_state <> 2 ORDER BY t.id DESC";
         }else if ($filter != null) {
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-            FROM tickets t
-            INNER JOIN priorities p ON t.id_priority = p.id
-            INNER JOIN users us ON t.id_user_sender =us.id
-            INNER JOIN users ud ON t.id_user_destination = ud.id
-            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state = $filter AND t.id_state <> 2 ORDER BY t.id DESC");
+            $consult = "WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state = $filter AND t.id_state <> 2 ORDER BY t.id DESC";
         }else{
-            $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
-            FROM tickets t
-            INNER JOIN priorities p ON t.id_priority = p.id
-            INNER JOIN users us ON t.id_user_sender =us.id
-            INNER JOIN users ud ON t.id_user_destination = ud.id
-            INNER JOIN states s ON t.id_state = s.id WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state <> 2 ORDER BY t.id DESC");
+            $consult = "WHERE (us.id = $user->id OR ud.id = $user->id) AND t.id_state <> 2 ORDER BY t.id DESC";
         }
+
 
 
     }
 
-    foreach ($tickets as $t) {
+    $tickets = DB::select("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  $consult");
+    $tickets_all = Ticket::all();
+    foreach ($tickets_all as $t) {
         $ticket = Ticket::find($t->id);
         $action = false;
-        if ($t->id_user_destination == $user->id && $t->id_state == 3) {
+        if ($t->id_user_destination == $user->id  && $t->id_state == 3) {
             $ticket->id_state = 4;
             $action = true;
         }
@@ -331,7 +300,13 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
     $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $ticket->id");
     $user_sender = User::find($ticket->id_user_sender);
     $user_destination = User::find($ticket->id_user_destination);
-    Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+    if ($ticket->id_state != 6) {
+        Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+    }else{
+        Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+        Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+    }
+
     }
     }
 
@@ -566,7 +541,8 @@ public function view_user($id){
 }
 
 public function ticket_detail($id){
-
+    $user = Auth::user();
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
     FROM tickets t
     INNER JOIN priorities p ON t.id_priority = p.id
@@ -575,7 +551,7 @@ public function ticket_detail($id){
     INNER JOIN states s ON t.id_state = s.id WHERE t.id = $id");
     $file = DB::selectOne("SELECT t.file FROM tickets t WHERE t.id = $id")->file;
     $comments = DB::select("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id_ticket = $id ORDER BY c.id DESC");
-    return view("dashboard.tickets.view_ticket", compact("ticket","file","comments"));
+    return view("dashboard.tickets.view_ticket", compact("validate_user_sistemas","ticket","file","comments"));
 
 }
 public function comment_create(Request $request){
@@ -735,9 +711,10 @@ $code = ProfileController::randNumer();
 }
 
 
-public function view_directory($id){
+public function view_directory(Request $request){
 
     $user = Auth::user();
+    $id =  $request->id;
     $files = DB::select("SELECT f.id, f.file, f.name, f.date_create, f.date_update, f.id_directory, s.state, f.id_state, u.id AS id_user, u.name AS name_user, d.directory, d.id_user AS id_user_directory
     FROM files f
     INNER JOIN users u ON f.id_user = u.id
@@ -745,6 +722,18 @@ public function view_directory($id){
     INNER JOIN states s ON f.id_state = s.id WHERE d.id = $id AND f.id_state = 1 ORDER BY f.id DESC");
     return view('dashboard.directories.files.files', compact('files', 'user', 'id'));
 
+}
+
+public function view_directory_search(Request $request){
+    $user = Auth::user();
+    $id =  $request->id;
+    $search =  $request->search;
+    $files = DB::select("SELECT f.id, f.file, f.name, f.date_create, f.date_update, f.id_directory, s.state, f.id_state, u.id AS id_user, u.name AS name_user, d.directory, d.id_user AS id_user_directory
+    FROM files f
+    INNER JOIN users u ON f.id_user = u.id
+    INNER JOIN directories d ON f.id_directory = d.id
+    INNER JOIN states s ON f.id_state = s.id WHERE d.id = $id AND f.id_state = 1 AND (u.name LIKE '%$search%' OR d.name LIKE '%$search%' OR f.name LIKE '%$search%' OR f.id LIKE '%$search%') ORDER BY f.id DESC");
+    return view('dashboard.directories.files.files', compact('files', 'user', 'id'));
 }
 
 public function create_file($id_directory){
@@ -776,7 +765,7 @@ public function save_file(Request $request){
             $new_file->date_update = $fechaColombiana;
             Mail::to($user->email)->send(new new_file($user, $directory, $new_file));
             $new_file->save();
-            return redirect()->route('dashboard.view_directory', $id_directory)->with('message','Archivo creado con exito');
+            return back()->with('message','Archivo creado con exito');
         }
     }else{
         return redirect()->route('dashboard.create_file', $id_directory)->with('message','Codigo de directorio incorrecto');

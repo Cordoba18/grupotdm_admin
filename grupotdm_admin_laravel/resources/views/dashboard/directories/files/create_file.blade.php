@@ -36,6 +36,10 @@
   </div>
     <button class="btn btn-success">Crear archivo</button>
 </form>
+<form action="{{ route('dashboard.view_directory') }}" method="get">
+    <input type="number" name="id" value="{{ $id_directory}}" hidden>
+    <button class="btn btn-primary">VOLVER</button>
+</form>
 @stop
 
 @section('css')

@@ -67,7 +67,8 @@ Route::get('/dashboard/directories', [ProfileController::class, 'show_directorie
 Route::get('/dashboard/directories/search', [ProfileController::class, 'show_directories_search'])->name('dashboard.directories.search');
 Route::get('/dashboard/directories/create_repository', [ProfileController::class, 'create_repository'])->name('dashboard.create_repository');
 Route::post('/dashboard/directories/create_repository/save_directory', [ProfileController::class, 'save_directory'])->name('dashboard.create_repository.save_directory');
-Route::get('/dashboard/directories/view_directory/{id}', [ProfileController::class, 'view_directory'])->name('dashboard.view_directory');
+Route::get('/dashboard/directories/view_directory', [ProfileController::class, 'view_directory'])->name('dashboard.view_directory');
+Route::get('/dashboard/directories/view_directory/search', [ProfileController::class, 'view_directory_search'])->name('dashboard.view_directory.search');
 Route::post('/dashboard/directories/delete_directory', [ProfileController::class, 'delete_directory'])->name('dashboard.delete_directory');
 Route::post('/dashboard/directories/delete_file', [ProfileController::class, 'delete_file'])->name('dashboard.delete_file');
 Route::get('/dashboard/directories/create_file/{id}', [ProfileController::class, 'create_file'])->name('dashboard.create_file');

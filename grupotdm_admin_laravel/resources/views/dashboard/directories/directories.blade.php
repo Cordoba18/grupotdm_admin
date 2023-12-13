@@ -53,7 +53,11 @@
             <td>{{ $d->date_update }}</td>
             <td>{{ $d->name_user }}</td>
             <td>
-                <a class="btn btn-primary" href="{{ route('dashboard.view_directory', $d->id) }}">VER</a>
+                <form action="{{ route('dashboard.view_directory') }}" method="get">
+                    <input type="number" name="id" value="{{ $d->id }}" hidden>
+                    <button class="btn btn-primary">VER</button>
+                </form>
+
             </td>
             <td>
                 @if ($d->id_user == $user->id)

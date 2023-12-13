@@ -5,6 +5,12 @@
 @php
     $user = Auth::user();
 @endphp
+
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+    @vite(['resources/css/view_ticket.css'])
+@stop
 @section('content_header')
 
 <h1>Ticket</h1>
@@ -71,7 +77,7 @@
       <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->state }}">
     </div>
 </div>
-    @if ($ticket->id_user_sender == $user->id)
+    @if ($ticket->id_user_sender == $user->id || $validate_user_sistemas)
     <a href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-success"> EDITAR TICKET </a>
     @endif
     <a class="btn btn-primary" href="{{ route('dashboard.tickets') }}">Volver</a>
@@ -93,7 +99,10 @@
     @endif
 </form>
     @endif
-    <br><br>
+
+
+@if ($ticket->id_user_destination == $user->id || $ticket->id_user_sender == $user->id)
+<br><br>
     <div class="mb-3 row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
         <br>
@@ -107,9 +116,12 @@
         </div>
     </div>
 
-    <div class="coments" style="width: 100%;margin: 10px">
+@endif
+    <br>
+
+    <div class="coments">
         @foreach ($comments as $c)
-        <div class="comment" style="display: flex; flex-direction: column; width: 100%; border: 3px solid gray; padding: 4px; @if ($c->id_user == $user->id)
+        <div class="comment" style="@if ($c->id_user == $user->id)
         {{ "align-items: end;" }}
         @else
         {{ "align-items: start;" }}
@@ -132,11 +144,35 @@
         </div>
         @endforeach
     </div>
+    @if ($ticket->id_user_sender == $user->id)
+
+    <br><br>
+    <form id="form_starts" action="" method="post">
+        @csrf
+        <b>AGREGAR CALIFICACIÒN</b>
+        <p class="clasificacion">
+          <input id="radio1" type="radio" name="estrellas" value="5"><!--
+          --><label for="radio1">★</label><!--
+          --><input id="radio2" type="radio" name="estrellas" value="4"><!--
+          --><label for="radio2">★</label><!--
+          --><input id="radio3" type="radio" name="estrellas" value="3"><!--
+          --><label for="radio3">★</label><!--
+          --><input id="radio4" type="radio" name="estrellas" value="2"><!--
+          --><label for="radio4">★</label><!--
+          --><input id="radio5" type="radio" name="estrellas" value="1"><!--
+          --><label for="radio5">★</label>
+        </p>
+        <input type="number" hidden name="id_ticket" value="{{ $ticket->id }}">
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Agrega una opinion</label>
+            <textarea  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion......."></textarea>
+          </div>
+
+          <button class="btn btn-success" style="margin-bottom:20px;">Agregar calificacion</button>
+      </form>
+    @endif
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
 

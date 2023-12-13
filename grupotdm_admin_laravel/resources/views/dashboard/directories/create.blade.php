@@ -23,6 +23,7 @@
   </div>
 
     <button class="btn btn-success">Crear directorio</button>
+    <a href="{{ route('dashboard.directories') }}" class="btn btn-primary">Volver</a>
 </form>
 @stop
 
