@@ -10,10 +10,7 @@ export default defineConfig({
                 'resources/css/form.css',
                 'resources/css/tickets.css',
                 'resources/css/view_ticket.css',
-
-
                 'resources/js/register.js',
-
                 'resources/js/app.js',
                 'resources/js/recovery_password.js',
                 'resources/js/tickets.js',
