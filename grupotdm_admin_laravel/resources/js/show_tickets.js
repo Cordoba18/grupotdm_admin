@@ -32,7 +32,7 @@ tickets.forEach(ticket => {
         console.log('validando')
     }
     if (id_state == 7) {
-        ticket.style.backgroundColor = 'green';
+        ticket.style.backgroundColor = '#D0F288';
     } else if (id_state == 6) {
         ticket.style.backgroundColor = '#F45050';
     }

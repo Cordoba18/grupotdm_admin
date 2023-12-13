@@ -4,7 +4,10 @@
 
 
 @section('content_header')
-
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+@stop
     <h1>EDITAR ARCHIVO</h1>
 
     @if (session('message'))
@@ -83,7 +86,7 @@
                     <td>
                         <a class="btn btn-dark"
                             href="{{ asset('storage/files/' . $directorie->directory . '/' . $fm->file) }}"
-                            download="">Descargar {{ $fm->name }}</a>
+                            download="">Descargar {{ $fm->name }} <i class="bi bi-download"></i></a>
                     </td>
                 </tr>
             @endforeach
@@ -92,9 +95,7 @@
     </table>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
 

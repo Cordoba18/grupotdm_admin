@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Mail\ActionUser;
+use App\Mail\calification_ticket;
 use App\Mail\comment_ticket;
 use App\Mail\create_ticket;
 use App\Mail\create_user;
@@ -12,6 +13,7 @@ use App\Mail\modificate_ticket;
 use App\Mail\new_file;
 use App\Mail\new_repository;
 use App\Models\Area;
+use App\Models\Calification;
 use App\Models\Charge;
 use App\Models\Comment;
 use App\Models\Companie;
@@ -418,7 +420,6 @@ public function edit_profile($id){
     $shops = Shop::all();
     $themes_users = Theme_user::all();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-
     return view("dashboard.users.edit_profile", compact("themes_users","user", "validation_jefe", "companies", "areas", "charges", "shops", "validate_user_sistemas"));
 
 }
@@ -551,14 +552,45 @@ public function ticket_detail($id){
     INNER JOIN states s ON t.id_state = s.id WHERE t.id = $id");
     $file = DB::selectOne("SELECT t.file FROM tickets t WHERE t.id = $id")->file;
     $comments = DB::select("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id_ticket = $id ORDER BY c.id DESC");
-    return view("dashboard.tickets.view_ticket", compact("validate_user_sistemas","ticket","file","comments"));
+    $calification = Calification::where("id_ticket", $id)->first();
+    return view("dashboard.tickets.view_ticket", compact("calification","validate_user_sistemas","ticket","file","comments"));
 
+}
+
+public function calification_ticket(Request $request){
+    $user = Auth::user();
+    $estrellas = $request->estrellas;
+    $comment = $request->comment;
+    $id_ticket = $request->id_ticket;
+    $fechaActual = Carbon::now('America/Bogota');
+    $fechaActual->locale('es');
+    $fechaColombiana = $fechaActual->format('d F Y');
+    $califications = Calification::where("id_ticket", $id_ticket)->first();
+    if ($califications) {
+        $califications->calification = $estrellas;
+        $califications->comment = $comment;
+        $califications->date = $fechaColombiana;
+        $califications->save();
+
+    }else{
+        $new_calification = new Calification();
+        $new_calification->calification = $estrellas;
+        $new_calification->comment = $comment;
+        $new_calification->id_user = $user->id;
+        $new_calification->id_ticket = $id_ticket;
+        $new_calification->date = $fechaColombiana;
+        $new_calification->save();
+    }
+    $ticket = Ticket::find($id_ticket);
+    $user_sender = User::find($ticket->id_user_destination);
+    Mail::to($user_sender->email)->send(new calification_ticket($user_sender, $ticket));
+    return redirect()->back()->with('message', 'Calificación Agregada con exito!');
 }
 public function comment_create(Request $request){
 
     $new_comment = new Comment();
 
-    $fechaActual = Carbon::now();
+    $fechaActual = Carbon::now('America/Bogota');
     $fechaActual->locale('es');
     $fechaColombiana = $fechaActual->format('d F Y');
     $new_comment->comment = $request->comment;
@@ -644,7 +676,9 @@ public function show_profile(){
     $companies = Companie::all();
     $charges = Charge::all();
     $shops = Shop::all();
-    return view("dashboard.users.edit_profile", compact("user", "validation_jefe", "companies", "areas", "charges", "shops"));
+    $themes_users = Theme_user::all();
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    return view("dashboard.users.edit_profile", compact("themes_users","validate_user_sistemas","user", "validation_jefe", "companies", "areas", "charges", "shops"));
 }
 public function show_directories(){
 

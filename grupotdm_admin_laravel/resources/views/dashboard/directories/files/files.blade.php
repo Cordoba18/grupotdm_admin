@@ -4,6 +4,10 @@
 
 @section('content_header')
 
+@section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
 <h1>Archivos</h1>
 <br>
 @if (session('message'))
@@ -79,9 +83,7 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
 

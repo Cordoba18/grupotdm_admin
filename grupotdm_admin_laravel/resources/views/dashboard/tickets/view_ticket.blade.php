@@ -8,8 +8,10 @@
 
 
 @section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
     @vite(['resources/css/view_ticket.css'])
+
 @stop
 @section('content_header')
 
@@ -77,6 +79,49 @@
       <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->state }}">
     </div>
 </div>
+@if ($calification)
+<div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Calificación</label>
+    <div class="col-sm-10" id="content_starts">
+
+        @if($calification->calification == 1)
+        <i class="bi bi-star-fill"></i>
+        @elseif ($calification->calification == 2)
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        @elseif ($calification->calification == 3)
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        @elseif ($calification->calification == 4)
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        @elseif ($calification->calification == 5)
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        <i class="bi bi-star-fill"></i>
+        @endif
+    </div>
+</div>
+<div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Reseña</label>
+    <div class="col-sm-10">
+        <textarea disabled  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion......." >{{ $calification->comment }}</textarea>
+    </div>
+</div>
+@else
+<div class="mb-3 row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">Calificación</label>
+    <div class="col-sm-10">
+      <input disabled type="text" readonly class="form-control-plaintext" value="No existe una calificación">
+    </div>
+</div>
+ <br>
+@endif
     @if ($ticket->id_user_sender == $user->id || $validate_user_sistemas)
     <a href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-success"> EDITAR TICKET </a>
     @endif
@@ -147,9 +192,14 @@
     @if ($ticket->id_user_sender == $user->id)
 
     <br><br>
-    <form id="form_starts" action="" method="post">
+    <form id="form_starts" action="{{ route('dashboard.tickets.calification_ticket') }}" method="post">
         @csrf
-        <b>AGREGAR CALIFICACIÒN</b>
+        @if ($calification)
+        <b>EDITAR CALIFICACIÓN</b>
+        @else
+        <b>AGREGAR CALIFICACIÓN</b>
+        @endif
+
         <p class="clasificacion">
           <input id="radio1" type="radio" name="estrellas" value="5"><!--
           --><label for="radio1">★</label><!--
@@ -165,10 +215,16 @@
         <input type="number" hidden name="id_ticket" value="{{ $ticket->id }}">
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Agrega una opinion</label>
+            @if($calification)
+
+            <textarea  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion.......">{{ $calification->comment }}</textarea>
+            @else
             <textarea  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion......."></textarea>
+            @endif
+
           </div>
 
-          <button class="btn btn-success" style="margin-bottom:20px;">Agregar calificacion</button>
+          <button class="btn btn-success" style="margin-bottom:20px;">CALIFICAR</button>
       </form>
     @endif
 @stop

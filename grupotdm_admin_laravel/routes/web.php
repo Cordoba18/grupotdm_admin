@@ -50,6 +50,7 @@ Route::get('/dashboard/tickets/edit_ticket/{id}', [ProfileController::class, 'ed
 Route::post('/dashboard/tickets/edit_ticket/save_changes_ticket', [ProfileController::class, 'save_changes_ticket'])->name('dashboard.tickets.save_changes_ticket');
 Route::post('/dashboard/tickets/create/save_ticket', [ProfileController::class, 'save_ticket'])->name('dashboard.tickets.save_ticket');
 Route::post('/dashboard/tickets/comment_create', [ProfileController::class, 'comment_create'])->name('dashboard.tickets.comment_create');
+Route::post('/dashboard/tickets/calification_ticket', [ProfileController::class, 'calification_ticket'])->name('dashboard.tickets.calification_ticket');
 Route::post('/dashboard/tickets/comment_delete', [ProfileController::class, 'comment_delete'])->name('dashboard.tickets.comment_delete');
 Route::get('/recover', [RecoveryPasswordController::class, 'index'])->name('recover');
 Route::post('/recover/sendcode',[RecoveryPasswordController::class, 'sendcode'])->name('recover.sendcode');
