@@ -104,7 +104,7 @@ class ProfileController extends Controller
         return view('dashboard.users.users', compact('users', 'validation_jefe'));
     }
     public function delete_user(Request $request){
-
+        $my_user = Auth::user();
         $user = User::find($request->id);
         $jefe = User::find($request->id_jefe);
         if ($user->id_state == 1) {
@@ -112,6 +112,7 @@ class ProfileController extends Controller
         }else{
             $user->id_state = 1;
         }
+        ReportController::create_report("El usuario $my_user->email ha cambiado el estado del usuario $user->email a ACTIVO O ELIMINADO", $my_user->id, 3);
         $states = DB::selectOne("SELECT * FROM states WHERE id = $user->id_state");
         $user->save();
         Mail::to($user->email)->send(new ActionUser($user->name, $jefe->email, $states->state, $jefe->name));
@@ -321,8 +322,10 @@ public function delete_ticket(Request $request){
     $Ticket = Ticket::find($request->id_ticket);
     if($Ticket->id_state == 7){
         $Ticket->id_state =3;
+        ReportController::create_report("El usuario $user->email Re abrio el ticket con id $Ticket->id", $user->id, 11);
     }else{
         $Ticket->id_state =2;
+        ReportController::create_report("El usuario $user->email ha eliminado el ticket con id $Ticket->id", $user->id, 6);
     }
 
     $Ticket->save();
@@ -334,13 +337,16 @@ public function delete_ticket(Request $request){
 }
 
 public function state(Request $request){
+    $user = Auth::user();
     $Ticket = Ticket::find($request->id_ticket);
 
     if ($Ticket->id_state == 4) {
         $Ticket->id_state =5;
+        ReportController::create_report("El usuario $user->email inicio la ejecución del ticket con id $Ticket->id", $user->id, 7);
 
     }else if ($Ticket->id_state == 5) {
         $Ticket->id_state =7;
+        ReportController::create_report("El usuario $user->email finalizo la ejecución del ticket con id $Ticket->id", $user->id, 7);
 
     }
     $Ticket->save();
@@ -396,6 +402,7 @@ public function save_ticket(Request $request){
         $file->move(public_path('storage/files'), $name_file);
         $new_ticket->file = $name_file;
     }
+    ReportController::create_report("El usuario $user->email creo un ticket llamado $new_ticket->name", $user->id, 4);
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$new_ticket->id_user_destination");
     Mail::to($user_destination->email)->send(new create_ticket($user, $user_destination, $new_ticket));
     $new_ticket->save();

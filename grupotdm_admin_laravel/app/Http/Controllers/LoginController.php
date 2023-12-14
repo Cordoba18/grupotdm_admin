@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
+
 class LoginController extends Controller
 {
 
@@ -20,11 +21,13 @@ class LoginController extends Controller
 
         $email = $request->email;
        $credentials = request()->only('email', 'password');
-
-       if (DB::select("SELECT * FROM users WHERE email='$email' AND id_state = 1")) {
+       $user = DB::selectOne("SELECT * FROM users WHERE email='$email' AND id_state = 1");
+       if ($user) {
         if (Auth::attempt($credentials)) {
             request()->session()->regenerate();
+            ReportController::create_report("El usuario $user->name con correo $user->email ha ingresado al sistema", $user->id, 8);
             return redirect()->route('dashboard');
+
            }else{
 
             return redirect()->route('login')->with('message_error', 'Credenciales incorrectas');

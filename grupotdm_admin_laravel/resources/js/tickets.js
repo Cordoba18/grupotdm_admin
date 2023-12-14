@@ -28,11 +28,23 @@ function obtenerFechaActual() {
 
   function aumentarDiasYHorasAFecha(fechaStr, diasAIncrementar, horasAIncrementar) {
     // Convertir la cadena de fecha a un objeto Date
-    var fecha = new Date(fechaStr);
+    var partesFecha = fechaStr.split(/[\s/:]+/);
+
+    // Crear un objeto Date con las partes de la fecha
+    var fecha = new Date(
+        partesFecha[2],  // Año
+        partesFecha[1] - 1,  // Mes (restar 1 porque los meses en JavaScript son de 0 a 11)
+        partesFecha[0],  // Día
+        partesFecha[3],  // Horas
+        partesFecha[4],  // Minutos
+        partesFecha[5]   // Segundos
+    );
+
 
     // Ignorar el rango horario entre las 12:30 y las 1:30
     var horasActuales = fecha.getHours();
     var minutosActuales = fecha.getMinutes();
+
     if (horasActuales >= 12 && horasActuales < 13 && minutosActuales >= 30) {
         // Si está en el rango horario, avanzar a las 1:30 del día siguiente
         fecha.setHours(13, 30, 0, 0);
@@ -45,18 +57,14 @@ function obtenerFechaActual() {
     fecha.setHours(totalHoras);
 
     // Formatear y mostrar la nueva fecha
-    var formatoFecha = `${formatoDosDigitos(fecha.getMonth() + 1)}/${formatoDosDigitos(fecha.getDate())}/${fecha.getFullYear()} ${formatoDosDigitos(fecha.getHours())}:${formatoDosDigitos(fecha.getMinutes())}:${formatoDosDigitos(fecha.getSeconds())}`;
+    var formatoFecha = `${formatoDosDigitos(fecha.getDate())}/${formatoDosDigitos(fecha.getMonth() + 1)}/${fecha.getFullYear()} ${formatoDosDigitos(fecha.getHours())}:${formatoDosDigitos(fecha.getMinutes())}:${formatoDosDigitos(fecha.getSeconds())}`;
 
     return formatoFecha;
-
 }
 
-  function formatoDosDigitos(valor) {
+function formatoDosDigitos(valor) {
     return valor < 10 ? '0' + valor : valor;
-  }
-
-  // Llamar a la función con la fecha, los días, y las horas a incrementar
-  // Llamar a la función con la fecha y las horas a incrementar
+}
 
   const input_date_start = document.querySelector('#input_date_start');
 
