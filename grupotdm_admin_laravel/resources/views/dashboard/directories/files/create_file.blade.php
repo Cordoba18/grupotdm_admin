@@ -9,7 +9,7 @@
 
 @if (session('message'))
 
-              <p class="alert alert-danger" role="alert" class=""> {{ session('message') }}</p>
+              <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
 
          @endif
 @stop

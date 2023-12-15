@@ -539,12 +539,13 @@ public function view_user($id){
     INNER JOIN areas a ON u.id_area = a.id
     INNER JOIN charges ch ON u.id_chargy = ch.id
     WHERE u.id = $id");
-    $shop = DB::selectOne("SELECT s.shop FROM users u INNER JOIN shops s ON u.id_shop = s.id");
+    $shop = DB::selectOne("SELECT s.shop FROM users u INNER JOIN shops s ON u.id_shop = s.id WHERE u.id = $id");
     if ($shop) {
         $shop = $shop->shop;
     }else{
         $shop = null;
     }
+
     return view('dashboard.users.view_user', compact('user', 'shop'));
 }
 
@@ -892,4 +893,13 @@ public function delete_file(Request $request){
     $file->save();
     return back()->with('message','Archivo eliminado con exito');
 }
+
+public function show_reports(){
+$user = Auth::user();
+
+
+
+}
+
+
 }

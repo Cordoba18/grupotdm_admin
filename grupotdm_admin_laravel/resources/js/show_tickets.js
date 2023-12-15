@@ -34,7 +34,7 @@ tickets.forEach(ticket => {
     if (id_state == 7) {
         ticket.style.backgroundColor = '#D0F288';
     } else if (id_state == 6) {
-        ticket.style.backgroundColor = '#F45050';
+        ticket.style.backgroundColor = '#F48484';
     }
     else
         if (hour <= 1) {
