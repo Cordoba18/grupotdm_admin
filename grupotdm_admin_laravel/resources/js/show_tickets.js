@@ -14,6 +14,9 @@ function calcularHorasRestantes(fechaInicioStr, fechaFinStr) {
 
     return horasRestantes;
 }
+try {
+
+
 const tickets = document.querySelectorAll('#tickets');
 
 tickets.forEach(ticket => {
@@ -26,11 +29,9 @@ tickets.forEach(ticket => {
     const hour = calcularHorasRestantes(date_start, date_finally);
 
     const id_state = ticket.querySelector('#id_state').value;
-
-    if (my_id == id_destination || my_id == id_sender) {
-        ticket.style.backgroundColor = "2px solid red";
-        console.log('validando')
-    }
+    console.log('Usuario remitente',id_sender)
+    console.log('Usuario de destino',id_destination)
+    console.log('Usuario mi usuario',my_id)
     if (id_state == 7) {
         ticket.style.backgroundColor = '#D0F288';
     } else if (id_state == 6) {
@@ -45,3 +46,7 @@ tickets.forEach(ticket => {
             ticket.style.backgroundColor = 'yellow';
         }
 });
+}
+catch (error) {
+
+}

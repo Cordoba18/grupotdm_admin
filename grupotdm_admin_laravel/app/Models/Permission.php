@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     use HasFactory;
-    protected $table = 'priorities';
+    protected $table = 'permissions';
     protected $fillable = [
         'date_application',
-        'date_permission',
+        'date_tomorrow',
         'time_exit',
         'time_return',
-        'time_tomorrow',
         'id_user_collaborator',
         'id_user_boss',
         'id_user_reception',

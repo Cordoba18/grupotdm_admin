@@ -29,7 +29,7 @@
 
   <div class="mb-3">
     <label for="formFile" class="form-label">FECHA DE SOLICITUD</label>
-    <input required type="text" id="date_aplicattion" name="date_aplicattion" readonly class="form-control-plaintext">
+    <input required type="text" id="date_application" name="date_application" readonly class="form-control-plaintext">
   </div>
 
   <div class="mb-3">
@@ -88,5 +88,5 @@
 
 
 @section('js')
-@vite(['resources/js/permissions.js'])
+@vite(['resources/js/create_permissions.js'])
 @stop

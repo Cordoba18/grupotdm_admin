@@ -81,5 +81,11 @@ Route::get('/dashboard/reports', [ProfileController::class, 'show_reports'])->na
 
 
 Route::get('/dashboard/permissions', [ProfileController::class, 'show_permissions'])->name('dashboard.permissions');
+Route::get('/dashboard/permissions/view_permission/{id}', [ProfileController::class, 'view_permission'])->name('dashboard.permissions.view_permission');
 Route::get('/dashboard/permissions/create', [ProfileController::class, 'create_permission'])->name('dashboard.permissions.create');
 Route::post('/dashboard/permissions/create/save', [ProfileController::class, 'save_permission'])->name('dashboard.permissions.create.save');
+Route::post('/dashboard/permissions/delete', [ProfileController::class, 'delete_permission'])->name('dashboard.permissions.delete');
+Route::post('/dashboard/permissions/view_permission/approve', [ProfileController::class, 'permission_approve'])->name('dashboard.permissions.view_permission.permission_approve');
+Route::post('/dashboard/permissions/view_permission/disapprove', [ProfileController::class, 'permission_disapprove'])->name('dashboard.permissions.view_permission.permission_disapprove');
+Route::post('/dashboard/permissions/view_permission/user_exit', [ProfileController::class, 'permission_user_exit'])->name('dashboard.permissions.view_permission.permission_user_exit');
+Route::post('/dashboard/permissions/view_permission/user_return', [ProfileController::class, 'permission_user_return'])->name('dashboard.permissions.view_permission.permission_user_return');

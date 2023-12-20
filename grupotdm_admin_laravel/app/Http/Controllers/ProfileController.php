@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Mail\action_permission;
 use App\Mail\ActionUser;
 use App\Mail\calification_ticket;
 use App\Mail\comment_ticket;
+use App\Mail\create_permission;
 use App\Mail\create_ticket;
 use App\Mail\create_user;
 use App\Mail\edit_ticket;
@@ -939,13 +941,16 @@ public function show_permissions(Request $request){
 
     $user = Auth::user();
     if ($request->search != null) {
-        $search = "WHERE (p.observations LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR p.date_permission LIKE '%$request->search%')";
+        $search = "WHERE (p.date_application LIKE '%$request->search%' OR p.id LIKE '%$request->search%' OR p.observations LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR p.date_tomorrow LIKE '%$request->search%')";
     } else {
         $search = " ";
     }
-    $permissions = DB::select("SELECT p.id, p.date_application, u.name, a.area, u.id_area, p.id_user_collaborator FROM permissions p
+    $permissions = DB::select("SELECT p.id, p.date_application, r.reason, re.replenish_time, u.name, a.area, u.id_area, p.id_user_collaborator, p.id_state, s.state FROM permissions p
     INNER JOIN users u ON p.id_user_collaborator = u.id
-    INNER JOIN areas a ON u.id_area = a.id $search ORDER BY p.id DESC");
+    INNER JOIN states s ON p.id_state = s.id
+    INNER JOIN reasons r ON p.id_reason = r.id
+    INNER JOIN replenish_times re ON p.id_replenish_time = re.id
+    INNER JOIN areas a ON u.id_area = a.id $search AND p.id_state <> 2 ORDER BY p.id DESC");
     $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
          WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
@@ -960,10 +965,11 @@ public function create_permission(){
 }
 
 public function save_permission(Request $request){
-
 $user = Auth::user();
-dd($request->date_tomorrow);
-$new_permission = new Permission;
+$jefe = DB::selectOne("SELECT * FROM users u
+INNER JOIN charges c ON u.id_chargy = c.id
+ WHERE c.chargy = 'JEFE DE AREA' AND u.id_area = $user->id_area");
+$new_permission = new Permission();
 $new_permission->date_application = $request->date_application;
 if($request->date_tomorrow !== 0 && $request->date_tomorrow != '' && $request->date_tomorrow != null){
     $new_permission->date_tomorrow  = $request->date_tomorrow;
@@ -974,5 +980,83 @@ $new_permission->id_reason = $request->id_reason;
 $new_permission->id_replenish_time = $request->id_replenish_time;
 $new_permission->id_state = 8;
 $new_permission->save();
+if ($jefe){
+    Mail::to($jefe->email)->send(new create_permission($jefe, $new_permission, $user));
+}
+ReportController::create_report("Ha generado un permiso con fecha: $new_permission->date_application ", $user->id, 9);
+return redirect()->route('dashboard.permissions')->with('message','Permiso generado con exito!');
+}
+public function delete_permission(Request $request){
+
+    $id_permission = $request->id_permission;
+    $permission = Permission::find($id_permission);
+    $permission->id_state = 2;
+    $permission->save();
+    return back()->with('message','Permiso eliminado con exito!');
+
+}
+public function view_permission($id){
+    $user = Auth::user();
+    $validation_jefe = DB::selectOne("SELECT * FROM users u
+    INNER JOIN charges c ON u.id_chargy = c.id
+    WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
+    $permission = DB::selectOne("SELECT p.id, uc.name AS name_user, uc.nit, p.date_application, r.reason, re.replenish_time, s.state, p.id_state, p.observations
+    FROM permissions p
+    INNER JOIN users uc ON p.id_user_collaborator = uc.id
+    INNER JOIN reasons r ON p.id_reason = r.id
+    INNER JOIN replenish_times re ON p.id_replenish_time = re.id
+    INNER JOIN states s ON p.id_state = s.id
+    WHERE p.id = $id");
+    $dates_permission = Permission::find($id);
+    $user_boss = User::find($dates_permission->id_user_boss);
+    $user_reception = User::find($dates_permission->id_user_reception);
+    return view('dashboard.permissions.show_permission', compact('validation_jefe','permission', 'dates_permission','user_boss','user_reception'));
+}
+
+public function permission_approve(Request $request){
+    $user = Auth::user();
+    $id_permission =  $request->id_permission;
+    $permission = Permission::find($id_permission);
+    $permission->id_state = 10;
+    $permission->id_user_boss = $user->id;
+    $permission->save();
+    $user_colaborator = User::find($permission->id_user_collaborator);
+    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area <b>$user->name</b> ha aprovado su permiso con ID <b>$id_permission</b>"));
+    return back()->with('message','Permiso aprovado correctamente!');
+}
+public function permission_disapprove(Request $request){
+    $user = Auth::user();
+    $id_permission =  $request->id_permission;
+    $permission = Permission::find($id_permission);
+    $permission->id_state = 9;
+    $permission->id_user_boss = $user->id;
+    $permission->save();
+    $user_colaborator = User::find($permission->id_user_collaborator);
+    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area <b>$user->name</b> ha desaprobado su permiso con ID <b>$id_permission</b>"));
+    return back()->with('message','Permiso rechazado correctamente!');
+}
+public function permission_user_exit(Request $request){
+    $user = Auth::user();
+    $id_permission =  $request->id_permission;
+    $permission = Permission::find($id_permission);
+    $permission->id_user_reception = $user->id;
+    $permission->time_exit = $request->time_exit;
+    $permission->save();
+    $user_colaborator = User::find($permission->id_user_collaborator);
+    $user_boss = User::find($permission->id_user_boss);
+    Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  <b>$user_colaborator->name</b>  ha salido de las instalaciones con permiso de ID <b>$id_permission</b>"));
+    return back()->with('message','Hora de salida registrada correctamente!');
+}
+public function permission_user_return(Request $request){
+    $user = Auth::user();
+    $id_permission =  $request->id_permission;
+    $permission = Permission::find($id_permission);
+    $permission->id_user_reception = $user->id;
+    $permission->time_return = $request->time_return;
+    $permission->save();
+    $user_colaborator = User::find($permission->id_user_collaborator);
+    $user_boss = User::find($permission->id_user_boss);
+    Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  <b>$user_colaborator->name</b>  ha regresado a las instalaciones con permiso de ID <b>$id_permission</b>"));
+    return back()->with('message','Hora de entrada registrada correctamente!');
 }
 }
