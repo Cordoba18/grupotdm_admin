@@ -20,7 +20,11 @@ use App\Models\Companie;
 use App\Models\Directorie;
 use App\Models\File as ModelsFile;
 use App\Models\Files_modified;
+use App\Models\Permission;
 use App\Models\Prioritie;
+use App\Models\Reason;
+use App\Models\Replenish_time;
+use App\Models\Report_detail;
 use App\Models\Shop;
 use App\Models\Theme_user;
 use App\Models\Ticket;
@@ -234,7 +238,7 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
         }else if ($filter != null) {
             $consult = "WHERE t.id_state <> 2 AND t.id_state = $filter ORDER BY t.id DESC";
         }else{
-            $consult = "WHERE t.id_state <> 2 AND t.id_state <> 7 ORDER BY t.id DESC";
+            $consult = "WHERE t.id_state <> 2 AND t.id_state <> 7 AND t.id_state <> 6 ORDER BY t.id DESC";
         }
 
 
@@ -281,6 +285,7 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
         if ($t->id_user_destination == $user->id  && $t->id_state == 3) {
             $ticket->id_state = 4;
             $action = true;
+            ReportController::create_report("El usuario $user->email ha visto el ticket con id $ticket->id", $user->id, 7);
         }
 
         // Fecha y hora actual
@@ -304,6 +309,7 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
     $user_sender = User::find($ticket->id_user_sender);
     $user_destination = User::find($ticket->id_user_destination);
     if ($ticket->id_state != 6) {
+        ReportController::create_report("El ticket con ID $ticket->id para el usuario $user->email ha vencido", $user->id, 7);
         Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
     }else{
         Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
@@ -432,7 +438,7 @@ public function edit_profile($id){
 }
 
 public function save_changes(Request $request){
-
+    $my_user = Auth::user();
     $user = User::find($request->id);
     $user->name = $request->name;
     $user->nit= $request->nit;
@@ -446,6 +452,7 @@ public function save_changes(Request $request){
     if ($request->id_theme_user) {
         $user->id_theme_user = $request->id_theme_user;
     }
+    ReportController::create_report("Se han modificado los datos del usuario $user->email", $my_user->id, 2);
     $user->save();
     return redirect()->route('dashboard.users.edit_profile', $request->id)->with("message","Usuario actualizado con exito!");
 
@@ -457,10 +464,11 @@ public function change_password($id){
 
 public function save_changes_password(Request $request){
     $user = User::find($request->id);
-
+    $my_user = Auth::user();
     if (Hash::check($request->password_now, $user->password)) {
         if ($request->password2 == $request->password) {
             $user->password = Hash::make($request->password);
+            ReportController::create_report("Se ha modificado la contraseña del usuario $user->email", $my_user->id, 2);
             $user->save();
             return redirect()->route('dashboard.users.change_password', $request->id)->with("message","Contraseña actualizada con exito!");
         }else{
@@ -509,13 +517,13 @@ public function save_user(Request $request){
         $user->id_area = $my_user->id_area;
         $user->password = Hash::make($request->password);
         $user->id_chargy = $request->id_chargy;
-
         if ($request->id_theme_user) {
             $user->id_theme_user = $request->id_theme_user;
         }
         if ($request->id_shop){
             $user->id_shop = $request->id_shop;
         }
+        ReportController::create_report("Se ha creado el siguiente usuario $user->email", $my_user->id, 1);
         $user->save();
         $user = DB::selectOne("SELECT * FROM users WHERE email='$request->email'");
         Mail::to($user->email)->send(new create_user($user->id, $request->password));
@@ -590,6 +598,7 @@ public function calification_ticket(Request $request){
         $new_calification->save();
     }
     $ticket = Ticket::find($id_ticket);
+    ReportController::create_report("Se ha agregado una calificacion de $estrellas estrellas para el ticket con ID $ticket->id", $user->id, 7);
     $user_sender = User::find($ticket->id_user_destination);
     Mail::to($user_sender->email)->send(new calification_ticket($user_sender, $ticket));
     return redirect()->back()->with('message', 'Calificación Agregada con exito!');
@@ -615,15 +624,16 @@ public function comment_create(Request $request){
      }else{
         $user = User::find($validate_sender->id_user_sender);
      }
-
+     ReportController::create_report("Se ha agregado un comentario para el ticket con ID $ticket->id", $user->id, 7);
      Mail::to($user->email)->send(new comment_ticket($user, $ticket));
      $new_comment->save();
      return redirect()->route('dashboard.tickets.ticket_detail', $request->id_ticket)->with("message","Comentario agregado con exito!");
 
 }
 public function comment_delete(Request $request){
-
+    $user = Auth::user();
     $comment = Comment::find($request->id_comment);
+    ReportController::create_report("Se ha eliminado el comentario con ID $comment->id para el ticket con ID $comment->id_ticket", $user->id, 7);
     $comment->delete();
     return redirect()->route('dashboard.tickets.ticket_detail', $request->id_ticket)->with("message","Comentario eliminado con exito!");
 }
@@ -642,7 +652,7 @@ public function edit_ticket($id){
 }
 
 public function save_changes_ticket(Request $request){
-
+    $user = Auth::user();
     $ticket = Ticket::find($request->id_ticket);
     $ticket->name = $request->name;
     $ticket->description = $request->description;
@@ -657,6 +667,7 @@ public function save_changes_ticket(Request $request){
         $file->move(public_path('storage/files'), $name_file);
         $ticket->file = $name_file;
     }
+    ReportController::create_report("Se ha editado el ticket con ID $ticket->id", $user->id, 7);
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$ticket->id_user_destination");
     Mail::to($user_destination->email)->send(new edit_ticket($user_destination, $ticket));
     $ticket->save();
@@ -745,7 +756,9 @@ $code = ProfileController::randNumer();
         $directorie->id_user =$user->id;
         $directorie->id_state =1;
         Mail::to($user->email)->send(new new_repository($user, $directorie));
+        ReportController::create_report("Se ha creado un nuevo repositorio con llamado $request->name", $user->id, 12);
         $directorie->save();
+
         return redirect()->route('dashboard.directories')->with('message','Directorio creado correctamente');
 
 }
@@ -806,6 +819,7 @@ public function save_file(Request $request){
             $new_file->date_create = $fechaColombiana;
             $new_file->date_update = $fechaColombiana;
             Mail::to($user->email)->send(new new_file($user, $directory, $new_file));
+            ReportController::create_report("Se ha creado un nuevo archivo con llamado $request->name en el directorio con ID $directory->id", $user->id, 14);
             $new_file->save();
             return back()->with('message','Archivo creado con exito');
         }
@@ -881,7 +895,10 @@ public function delete_directory(Request $request){
     $id_directory = $request->id_directory;
     $directory = Directorie::find($id_directory);
     $directory->id_state = 2;
+    $user = Auth::user();
+    ReportController::create_report("Se ha eliminado un directorio llamado $directory->name con ID $id_directory", $user->id, 13);
     $directory->save();
+
     return back()->with('message','Directorio eliminado con exito');
 }
 
@@ -890,16 +907,72 @@ public function delete_file(Request $request){
     $id_file = $request->id_file;
     $file = ModelsFile::find($id_file);
     $file->id_state = 2;
+    $user = Auth::user();
+    ReportController::create_report("Se ha eliminado un archivo llamado $file->name con ID $id_file", $user->id, 16);
     $file->save();
     return back()->with('message','Archivo eliminado con exito');
 }
 
-public function show_reports(){
+public function show_reports(Request $request){
 $user = Auth::user();
+$report_details = Report_detail::all();
 
-
-
+if ($request->search != null && $request->filter != null) {
+    $search = "WHERE (r.id LIKE '%$request->search%' OR r.description LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR r.date LIKE '%$request->search%') AND r.id_report_detail = $request->filter";
+}else if ($request->search != null) {
+    $search = "WHERE (r.id LIKE '%$request->search%' OR r.description LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR r.date LIKE '%$request->search%')";
+} else if ($request->filter != null) {
+    $search = "WHERE r.id_report_detail = $request->filter";
+} else {
+    $search = "";
 }
 
+$reports = DB::select("SELECT r.id, r.description, r.id_user, u.name AS name_user, r.date, rd.report, r.id_report_detail, u.id_area
+FROM  reports r
+INNER JOIN report_details rd ON r.id_report_detail = rd.id
+INNER JOIN users u ON r.id_user = u.id $search ORDER BY r.id DESC");
 
+return view('dashboard.reports.reports',compact('report_details', 'reports'));
+}
+
+public function show_permissions(Request $request){
+
+    $user = Auth::user();
+    if ($request->search != null) {
+        $search = "WHERE (p.observations LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR p.date_permission LIKE '%$request->search%')";
+    } else {
+        $search = " ";
+    }
+    $permissions = DB::select("SELECT p.id, p.date_application, u.name, a.area, u.id_area, p.id_user_collaborator FROM permissions p
+    INNER JOIN users u ON p.id_user_collaborator = u.id
+    INNER JOIN areas a ON u.id_area = a.id $search ORDER BY p.id DESC");
+    $validation_jefe = DB::selectOne("SELECT * FROM users u
+        INNER JOIN charges c ON u.id_chargy = c.id
+         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
+    return view('dashboard.permissions.permissions', compact('permissions', 'validation_jefe'));
+}
+
+public function create_permission(){
+
+    $reasons = Reason::all();
+    $replenish_times = Replenish_time::all();
+    return view('dashboard.permissions.create', compact('reasons','replenish_times'));
+}
+
+public function save_permission(Request $request){
+
+$user = Auth::user();
+dd($request->date_tomorrow);
+$new_permission = new Permission;
+$new_permission->date_application = $request->date_application;
+if($request->date_tomorrow !== 0 && $request->date_tomorrow != '' && $request->date_tomorrow != null){
+    $new_permission->date_tomorrow  = $request->date_tomorrow;
+}
+$new_permission->id_user_collaborator = $user->id;
+$new_permission->observations = $request->observations;
+$new_permission->id_reason = $request->id_reason;
+$new_permission->id_replenish_time = $request->id_replenish_time;
+$new_permission->id_state = 8;
+$new_permission->save();
+}
 }

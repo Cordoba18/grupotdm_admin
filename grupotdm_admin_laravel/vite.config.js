@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/js/recovery_password.js',
                 'resources/js/tickets.js',
                 'resources/js/show_tickets.js',
+                'resources/js/permissions.js',
             ],
             refresh: true,
         }),

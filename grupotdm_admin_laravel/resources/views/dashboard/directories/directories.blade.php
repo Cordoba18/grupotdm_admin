@@ -17,7 +17,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.create_repository') }}" class="btn btn-dark">CREAR REPOSITORIO</a>
+    <a href="{{ route('dashboard.create_repository') }}" class="btn btn-dark">CREAR DIRECTORIO</a>
     <br><br>
 
     <div class="content_search">

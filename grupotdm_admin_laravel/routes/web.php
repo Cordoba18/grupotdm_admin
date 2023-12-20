@@ -77,4 +77,9 @@ Route::post('/dashboard/directories/create_file/save_file', [ProfileController::
 Route::get('/dashboard/directories/view_file', [ProfileController::class, 'view_file'])->name('dashboard.view_file');
 Route::post('/dashboard/directories/view_file/edit_file', [ProfileController::class, 'edit_file'])->name('dashboard.edit_file');
 
-Route::get('/dashboard/resports', [ProfileController::class, 'show_reports'])->name('dashboard.resports');
+Route::get('/dashboard/reports', [ProfileController::class, 'show_reports'])->name('dashboard.resports');
+
+
+Route::get('/dashboard/permissions', [ProfileController::class, 'show_permissions'])->name('dashboard.permissions');
+Route::get('/dashboard/permissions/create', [ProfileController::class, 'create_permission'])->name('dashboard.permissions.create');
+Route::post('/dashboard/permissions/create/save', [ProfileController::class, 'save_permission'])->name('dashboard.permissions.create.save');
