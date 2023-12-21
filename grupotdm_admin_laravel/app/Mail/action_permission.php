@@ -15,14 +15,14 @@ class action_permission extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
-    public $message;
+    public $message_email;
     /**
      * Create a new message instance.
      */
-    public function __construct($user, $message)
+    public function __construct($user, $message_email)
     {
         $this->user = $user;
-        $this->message = $message;
+        $this->message_email = $message_email;
 
     }
 
@@ -33,9 +33,9 @@ class action_permission extends Mailable
  public function build()
 {
     $user = $this->user;
-    $message = $this->message;
+    $message_email = $this->message_email;
     return $this->subject("PERMISO COLABORADOR")
-                ->view('mails.action_permission', compact('user','message'));
+                ->view('mails.action_permission', compact('user','message_email'));
 }
 
 

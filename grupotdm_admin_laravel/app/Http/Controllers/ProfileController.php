@@ -1021,8 +1021,8 @@ public function permission_approve(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
-    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area <b>$user->name</b> ha aprovado su permiso con ID <b>$id_permission</b>"));
-    return back()->with('message','Permiso aprovado correctamente!');
+    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha aprovado su permiso con ID $id_permission"));
+    return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso aprovado correctamente!');
 }
 public function permission_disapprove(Request $request){
     $user = Auth::user();
@@ -1032,8 +1032,8 @@ public function permission_disapprove(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
-    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area <b>$user->name</b> ha desaprobado su permiso con ID <b>$id_permission</b>"));
-    return back()->with('message','Permiso rechazado correctamente!');
+    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha desaprobado su permiso con ID $id_permission"));
+    return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso rechazado correctamente!');
 }
 public function permission_user_exit(Request $request){
     $user = Auth::user();
@@ -1044,8 +1044,8 @@ public function permission_user_exit(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     $user_boss = User::find($permission->id_user_boss);
-    Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  <b>$user_colaborator->name</b>  ha salido de las instalaciones con permiso de ID <b>$id_permission</b>"));
-    return back()->with('message','Hora de salida registrada correctamente!');
+    Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  $user_colaborator->name ha salido de las instalaciones con permiso de ID $id_permission"));
+    return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Hora de salida registrada correctamente!');
 }
 public function permission_user_return(Request $request){
     $user = Auth::user();
@@ -1056,7 +1056,7 @@ public function permission_user_return(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     $user_boss = User::find($permission->id_user_boss);
-    Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  <b>$user_colaborator->name</b>  ha regresado a las instalaciones con permiso de ID <b>$id_permission</b>"));
-    return back()->with('message','Hora de entrada registrada correctamente!');
+    Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  $user_colaborator->name  ha regresado a las instalaciones con permiso de ID $id_permission"));
+    return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Hora de entrada registrada correctamente!');
 }
 }

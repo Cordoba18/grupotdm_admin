@@ -35,7 +35,7 @@
                 <br>
                 <b>Cordial saludo</b>
                 <br>
-                <p>El motivo del presente correo es notificar {{ $message  }} </p>
+                <p>El motivo del presente correo es notificar {{ $message_email  }} </p>
                 <br>
                 <b>POV: No responder a este correo ya que es un correo automatico</b>
             </div>

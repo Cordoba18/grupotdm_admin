@@ -49,7 +49,7 @@
 
     <tbody>
         @foreach ($permissions as $p)
-        @if ($p->id_area == $user->id_area || $validation_jefe || $p->id_user_collaborator == $user->id || $user->id_area == 16)
+        @if ($p->id_area == $user->id_area || $validation_jefe || $p->id_user_collaborator == $user->id || $user->id_area == 16 || $user->id_area == 9)
         <tr id="permission">
             <td>{{ $p->id }}</td>
             <td>{{ $p->date_application }}</td>
