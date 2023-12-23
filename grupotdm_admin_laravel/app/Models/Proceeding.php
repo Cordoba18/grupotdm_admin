@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class State_Certificate extends Model
+class Proceeding extends Model
 {
     use HasFactory;
-    protected $table = 'states_certificates';
+    protected $table = 'proceedings';
     protected $fillable = [
-        'state_certificate',
+        'proceeding',
     ];
 }

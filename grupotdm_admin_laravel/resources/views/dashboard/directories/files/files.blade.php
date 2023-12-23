@@ -60,18 +60,18 @@
                 <form action="{{ route('dashboard.view_file') }}" method="get">
                 <input type="number" value="{{ $f->id }}" hidden name="id_file">
                 <input type="number" value="{{ $f->id_directory }}" hidden name="id_directory">
-                <button class="btn btn-primary" href="">VER</button>
+                <button class="btn btn-primary" href=""><i class="bi bi-eye-fill"></i></button>
                 </form>
             </td>
             <td>
-                <a class="btn btn-success" href="{{ asset('storage/files/'.$f->directory."/".$f->file) }}" download="">Descargar {{$f->name }} <i class="bi bi-download"></i></a>
+                <a class="btn btn-success" href="{{ asset('storage/files/'.$f->directory."/".$f->file) }}" download="">Descargar Archivo<i class="bi bi-download"></i></a>
             </td>
             <td>
                 @if ($f->id_user_directory == $user->id)
                 <form action="{{route('dashboard.delete_file')}}" method="post" onsubmit="return confirmarEnvio()">
                     @csrf
                     <input type="number" value="{{ $f->id }}" hidden name="id_file">
-                    <button class="btn btn-danger">ELIMINAR</button>
+                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                 </form>
                 @endif
             </td>

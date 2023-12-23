@@ -14,7 +14,10 @@ use App\Mail\edit_ticket;
 use App\Mail\modificate_ticket;
 use App\Mail\new_file;
 use App\Mail\new_repository;
+use App\Models\Origin_Certificate;
 use App\Models\Area;
+use App\Models\State_Certificate;
+use App\Models\Type_Component;
 use App\Models\Calification;
 use App\Models\Charge;
 use App\Models\Comment;
@@ -24,6 +27,7 @@ use App\Models\File as ModelsFile;
 use App\Models\Files_modified;
 use App\Models\Permission;
 use App\Models\Prioritie;
+use App\Models\Proceeding;
 use App\Models\Reason;
 use App\Models\Replenish_time;
 use App\Models\Report_detail;
@@ -1067,5 +1071,39 @@ public function permission_user_return(Request $request){
 public function show_certificates(Request $request){
 $user = Auth::user();
 
+if($request->search){
+    $search = "AND (p.proceeding LIKE '%$request->search%' OR c.date LIKE '%$request->search%' OR ud.name LIKE '%$request->search%' OR ur.name LIKE '%$request->search%' OR s.state LIKE '%$request->search%')";
+}else{
+$search = "";
+}
+$certificates = DB::select("SELECT p.id, p.proceeding, c.date, ud.name AS name_delivery, ud.id AS id_user_delivery, ur.name AS name_receives, ur.id AS id_user_receives, s.state, c.id_state
+FROM certificates c
+INNER JOIN proceedings p ON c.id_proceeding = p.id
+INNER JOIN users ud ON c.id_user_delivery = ud.id
+INNER JOIN users ur ON c.id_user_receives = ur.id
+INNER JOIN states s ON c.id_state = s.id
+WHERE c.id_state <> 2 $search");
+
+return view('dashboard.certificates.certificates', compact('user','certificates'));
+}
+
+
+public function create_certificate(){
+    $my_user = Auth::user();
+    $user = DB::selectOne("SELECT u.id,  a.area, u.name FROM users u
+    INNER JOIN areas a ON u.id_area = a.id
+    WHERE u.id = $my_user->id");
+    $areas = Area::all();
+    $proceedings = Proceeding::all();
+    $origins_certificates = Origin_Certificate::all();
+    $states_certificates = State_Certificate::all();
+    $types_components = Type_Component::all();
+    return view('dashboard.certificates.create', compact('user', 'areas', 'proceedings','origins_certificates','states_certificates','types_components'));
+}
+
+public function get_users_areas($id){
+
+    $users = DB::select("SELECT * FROM users WHERE id_area = $id AND id_state <> 2");
+    return response()->json(['users' => $users], 200);
 }
 }

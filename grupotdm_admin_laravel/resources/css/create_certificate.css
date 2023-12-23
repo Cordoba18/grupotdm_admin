@@ -1,0 +1,21 @@
+.content_header_certificate{
+    display: flex;
+    flex-wrap: wrap;
+}
+.content_header_certificate .content_left_certificate{
+    width: 50%;
+    padding: 5px;
+}
+.content_header_certificate .content_right_certificate{
+    width: 50%;
+    padding: 5px;
+}
+@media(max-width: 800px){
+    .content_header_certificate .content_left_certificate{
+        width: 100%;
+
+    }
+    .content_header_certificate .content_right_certificate{
+        width: 100%;
+    }
+}

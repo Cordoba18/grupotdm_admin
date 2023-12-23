@@ -321,7 +321,7 @@ return [
             'icon' => 'fas fa-solid fa-file',
         ],
         [
-            'text' => 'Actas',
+            'text' => 'Certificados/Actas',
             'url'  => 'dashboard/certificates',
             'icon' => 'fas fa-solid fa-file',
         ],

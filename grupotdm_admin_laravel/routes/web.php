@@ -90,3 +90,5 @@ Route::post('/dashboard/permissions/view_permission/user_exit', [ProfileControll
 Route::post('/dashboard/permissions/view_permission/user_return', [ProfileController::class, 'permission_user_return'])->name('dashboard.permissions.view_permission.permission_user_return');
 
 Route::get('/dashboard/certificates', [ProfileController::class, 'show_certificates'])->name('dashboard.certificates');
+Route::get('/dashboard/certificates/create', [ProfileController::class, 'create_certificate'])->name('dashboard.certificates.create');
+Route::get('/dashboard/certificates/create/get_users_areas/{id}', [ProfileController::class, 'get_users_areas'])->name('dashboard.certificates.create.get_users_areas');

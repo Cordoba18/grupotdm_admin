@@ -46,7 +46,7 @@
             <label for="formFile" class="form-label">Descargar archivo</label>
             <br>
             <a class="btn btn-dark" href="{{ asset('storage/files/' . $directorie->directory . '/' . $file->file) }}"
-                download="">Descargar {{ $file->name }} <i class="bi bi-download"></i></a>
+                download="">Descargar Archivo <i class="bi bi-download"></i></a>
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">Cambiar archivo</label>
@@ -88,7 +88,7 @@
                     <td>
                         <a class="btn btn-dark"
                             href="{{ asset('storage/files/' . $directorie->directory . '/' . $fm->file) }}"
-                            download="">Descargar {{ $fm->name }} <i class="bi bi-download"></i></a>
+                            download="">Descargar Archivo<i class="bi bi-download"></i></a>
                     </td>
                 </tr>
             @endforeach

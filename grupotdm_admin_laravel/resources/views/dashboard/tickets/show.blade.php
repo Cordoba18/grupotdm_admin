@@ -192,7 +192,7 @@
                         @endif
                     </form>
                         @endif
-                        <a href="{{ route('dashboard.tickets.ticket_detail', $t->id) }}" class="btn btn-primary">DETALLE</a>
+                        <a href="{{ route('dashboard.tickets.ticket_detail', $t->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
 
                     </td>
                 </tr>

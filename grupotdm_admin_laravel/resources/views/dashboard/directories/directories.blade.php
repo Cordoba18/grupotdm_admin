@@ -1,7 +1,10 @@
 @extends('adminlte::page')
 
 @section('title', 'GRUPO TDM')
-
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+@stop
 @section('content_header')
 
 <h1>DIRECTORIOS</h1>
@@ -55,7 +58,7 @@
             <td>
                 <form action="{{ route('dashboard.view_directory') }}" method="get">
                     <input type="number" name="id" value="{{ $d->id }}" hidden>
-                    <button class="btn btn-primary">VER</button>
+                    <button class="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
                 </form>
 
             </td>
@@ -64,7 +67,7 @@
                 <form action="{{ route('dashboard.delete_directory') }}" method="post"  onsubmit="return confirmarEnvio()">
                     @csrf
                     <input type="number" value="{{ $d->id }}" hidden name="id_directory">
-                    <button class="btn btn-danger">ELIMINAR</button>
+                    <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                 </form>
                 @endif
             </td>
@@ -76,9 +79,7 @@
 
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
+
 
 @section('js')
 
