@@ -58,13 +58,15 @@
             <input id="code" type="number" inputmode="none" maxlength="6" inputmode="numeric" pattern="[0-9]*"
                 placeholder="Ingrese el codigo" name="code" required>
         </div>
-        <button class="btn btn-success">GUARDAR CAMBIOS</button>
+        <div style="display: flex">
+        <button class="btn btn-success" style="margin-right: 10px">GUARDAR CAMBIOS</button>
 
     </form>
     <form action="{{ route('dashboard.view_directory') }}" method="get">
         <input type="number" name="id" value="{{ $directorie->id}}" hidden>
         <button class="btn btn-primary">VOLVER</button>
     </form>
+</div>
     <br>
     <b>OTROS CAMBIOS</b>
     <br>

@@ -10,6 +10,7 @@
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
+
     @vite(['resources/css/view_ticket.css'])
 
 @stop
@@ -145,9 +146,9 @@
 </form>
     @endif
 
-
+<div class="content_comments">
 @if ($ticket->id_user_destination == $user->id || $ticket->id_user_sender == $user->id)
-<br><br>
+<div class="header_comments">
     <div class="mb-3 row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
         <br>
@@ -156,20 +157,19 @@
                 @csrf
                 <input type="number" value="{{ $ticket->id }}" hidden name="id_ticket">
                 <input type="text" required placeholder="Agregar un comentario" name="comment" style="width: 90%">
-                <button class="btn btn-primary btn-sm" >Guardar</button>
+                <button class="btn btn-light" >Guardar</button>
             </form>
         </div>
     </div>
-
+</div>
 @endif
-    <br>
 
     <div class="coments">
         @foreach ($comments as $c)
         <div class="comment" style="@if ($c->id_user == $user->id)
         {{ "align-items: end;" }}
         @else
-        {{ "align-items: start;" }}
+        {{ "align-items: start; background-color:#DDDDDD;" }}
         @endif">
             <div class="comment_header">
             <b style="margin-right: 30px">{{ $c->name }}</b>
@@ -182,13 +182,14 @@
                 @csrf
                 <input type="number" value="{{ $ticket->id }}" name="id_ticket" hidden>
                 <input type="number" value="{{ $c->id }}" name="id_comment" hidden>
-                <button href="" class="btn btn-danger">ELIMINAR COMENTARIO</button>
+                <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
             </form>
 
             @endif
         </div>
         @endforeach
     </div>
+</div>
     @if ($ticket->id_user_sender == $user->id)
 
     <br><br>

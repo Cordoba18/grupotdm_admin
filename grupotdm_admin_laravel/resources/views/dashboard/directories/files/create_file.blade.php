@@ -34,12 +34,16 @@
     <label for="formFile" class="form-label">Subir un archivo</label>
     <input required class="form-control" type="file" id="formFile" name="file">
   </div>
-    <button class="btn btn-success">Crear archivo</button>
+  <div class="mb-3">
+  <div class="content_buttons" style="display: flex">
+    <button class="btn btn-success" style="margin-right: 10px">Crear archivo</button>
 </form>
 <form action="{{ route('dashboard.view_directory') }}" method="get">
     <input type="number" name="id" value="{{ $id_directory}}" hidden>
     <button class="btn btn-primary">VOLVER</button>
 </form>
+</div>
+</div>
 @stop
 
 @section('css')

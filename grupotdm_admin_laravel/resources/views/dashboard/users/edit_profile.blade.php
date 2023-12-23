@@ -178,8 +178,8 @@
 
 @endif
 
-<div class="content_buttons" style="padding-bottom: 20px">
-    <button class="btn btn-success">Guardar Cambios</button>
+<div class="content_buttons" style="padding-bottom: 20px; display: flex;">
+    <button class="btn btn-success" style="margin-right: 10px">Guardar Cambios</button>
     </form>
     @if ($validation_jefe || $user->id == $my_user->id)
     <form action="{{ route('dashboard.users.change_password' , $user->id) }}" method="get">

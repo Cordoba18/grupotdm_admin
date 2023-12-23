@@ -22,7 +22,7 @@
     <div class="content_search">
             <form action="{{ route('dashboard.permissions') }}" method="get">
 
-                <input type="text" name="search" placeholder="Buscar permiso">
+                <input type="text" name="search" placeholder="Buscar permiso" style="width: 80%">
 
         <button id="btn_search" class="btn btn-primary">Buscar</button>
     </form>
@@ -36,7 +36,7 @@
 
 <table class="table">
 
-    <thead>
+    <thead class="table-dark">
         <th>ID</th>
         <th>FECHA DE SOLICITUD</th>
         <th>NOMBRE DE COLABORADOR</th>
@@ -53,7 +53,7 @@
         <tr id="permission">
             <td>{{ $p->id }}</td>
             <td>{{ $p->date_application }}</td>
-            <td>{{ $p->name }}</td>
+            <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $p->id_user_collaborator) }}">{{ $p->name }}</a></td>
             <td>{{ $p->area }}</td>
             <td>{{ $p->reason }}</td>
             <td>{{ $p->replenish_time }}</td>

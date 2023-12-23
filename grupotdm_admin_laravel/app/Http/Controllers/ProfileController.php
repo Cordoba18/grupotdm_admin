@@ -941,7 +941,7 @@ public function show_permissions(Request $request){
 
     $user = Auth::user();
     if ($request->search != null) {
-        $search = "WHERE (p.date_application LIKE '%$request->search%' OR p.id LIKE '%$request->search%' OR p.observations LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR p.date_tomorrow LIKE '%$request->search%')";
+        $search = "WHERE (p.id LIKE '%$request->search%' OR p.date_application LIKE '%$request->search%'  OR p.observations LIKE '%$request->search%' OR u.name LIKE '%$request->search%' OR p.date_tomorrow LIKE '%$request->search%' OR s.state LIKE '%$request->search%')";
     } else {
         $search = " ";
     }
@@ -983,7 +983,7 @@ $new_permission->save();
 if ($jefe){
     Mail::to($jefe->email)->send(new create_permission($jefe, $new_permission, $user));
 }
-ReportController::create_report("Ha generado un permiso con fecha: $new_permission->date_application ", $user->id, 9);
+ReportController::create_report("Ha generado un permiso por/para $new_permission->observations", $user->id, 9);
 return redirect()->route('dashboard.permissions')->with('message','Permiso generado con exito!');
 }
 public function delete_permission(Request $request){
@@ -1021,6 +1021,7 @@ public function permission_approve(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
+    ReportController::create_report("El jefe $user->name ha aprovado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha aprovado su permiso con ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso aprovado correctamente!');
 }
@@ -1032,6 +1033,7 @@ public function permission_disapprove(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
+    ReportController::create_report("El jefe $user->name ha desaprovado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha desaprobado su permiso con ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso rechazado correctamente!');
 }
@@ -1044,6 +1046,7 @@ public function permission_user_exit(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     $user_boss = User::find($permission->id_user_boss);
+    ReportController::create_report("El recepcionista $user->name ha dado salida al colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  $user_colaborator->name ha salido de las instalaciones con permiso de ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Hora de salida registrada correctamente!');
 }
@@ -1056,7 +1059,13 @@ public function permission_user_return(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     $user_boss = User::find($permission->id_user_boss);
+    ReportController::create_report("El recepcionista $user->name ha dado entrada al colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  $user_colaborator->name  ha regresado a las instalaciones con permiso de ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Hora de entrada registrada correctamente!');
+}
+
+public function show_certificates(Request $request){
+$user = Auth::user();
+
 }
 }

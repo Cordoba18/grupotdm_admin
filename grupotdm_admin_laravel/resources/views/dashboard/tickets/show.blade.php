@@ -14,7 +14,7 @@
 <h1>Tickets</h1>
     <br>
     <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark">GENERAR UN TICKET</a>
-    <br><br>
+    <br>
     @if (session('message'))
 
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
@@ -139,7 +139,7 @@
 @section('content')
 <input type="number" hidden id="my_id" value="{{ $user->id }}">
     <table class="table">
-        <thead>
+        <thead class="table-dark">
          <th>ID</th>
          <th>NOMBRE</th>
          <th>FECHA INICIO</th>
@@ -176,7 +176,7 @@
                             @if($t->id_state == 7)
                             <button class="btn btn-success">RE ABRIR</button>
                             @else
-                            <button class="btn btn-danger">ELIMINAR</button>
+                            <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                             @endif
 
                         </form>

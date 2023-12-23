@@ -51,7 +51,6 @@
     <label for="exampleFormControlInput1" class="form-label">Estado</label>
     <input type="text" name="" class="form-control" disabled id="exampleFormControlInput1" value="{{ $user->state }}">
   </div>
-  <a class="btn btn-success" href="{{ route('dashboard.tickets') }}">Volver</a>
 @stop
 
 @section('css')

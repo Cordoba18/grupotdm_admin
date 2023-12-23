@@ -321,8 +321,8 @@ return [
             'icon' => 'fas fa-solid fa-file',
         ],
         [
-            'text' => 'Actas de salida',
-            'url'  => 'dashboard/proceedings',
+            'text' => 'Actas',
+            'url'  => 'dashboard/certificates',
             'icon' => 'fas fa-solid fa-file',
         ],
         ['header' => 'CONFIGURACIONES'],

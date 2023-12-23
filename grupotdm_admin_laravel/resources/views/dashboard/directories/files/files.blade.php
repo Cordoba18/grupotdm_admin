@@ -36,7 +36,7 @@
 @section('content')
 
     <table class="table">
-        <thead>
+        <thead class="table-dark">
          <th>ID</th>
          <th>NOMBRE</th>
          <th>FECHA DE CREACION</th>
@@ -50,7 +50,7 @@
         </thead>
         <tbody style="overflow-y: 300px;">
             @foreach ($files as $f)
-            <tr>
+            <tr class="table-secondary">
             <td>{{ $f->id }}</td>
             <td>{{ $f->name }}</td>
             <td>{{ $f->date_create }}</td>

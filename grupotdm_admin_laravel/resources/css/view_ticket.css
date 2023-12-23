@@ -39,10 +39,11 @@
   .coments{
     max-height: 400px;
     overflow-y: auto;
-    width: 100%;margin: 10px;
+    margin: 10px;
+    width: 100%;
   }
   .coments .comment{
-    display: flex; flex-direction: column; width: 100%; border: 3px solid gray; padding: 4px;
+    display: flex; flex-direction: column; width: 98%; background-color: white; padding: 10px;
     margin-bottom: 3px;
   }
 
@@ -50,3 +51,20 @@
     color: orange;
     font-size: 20px;
   }
+
+  .content_comments {
+    margin-top: 10px;
+    border: 0.5px solid black;
+    box-shadow: 0px 0px 5px;
+    width: 100%;
+  }
+.content_comments .header_comments{
+    padding: 10px;
+    background-color: rgb(255, 124, 124);
+}
+.content_comments .header_comments input[type="text"]{
+
+    border: 0;
+    padding: 5px;
+    margin-bottom: 20px;
+}

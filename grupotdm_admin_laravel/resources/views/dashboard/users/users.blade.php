@@ -5,6 +5,11 @@
 @php
     $user = Auth::user();
 @endphp
+@section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
 @section('content_header')
 @if (!$validation_jefe)
 <h1>No estas autorizado para ver usuarios</h1>
@@ -33,7 +38,7 @@
 @if ($validation_jefe)
 
     <table class="table">
-        <thead>
+        <thead class="table-dark">
          <th>ID</th>
          <th>NOMBRE</th>
          <th>NIT</th>
@@ -49,7 +54,7 @@
             <div class="content_users">
 
                 @foreach ($users as $u)
-                <tr>
+                <tr class="table-light">
                 <td>{{ $u->id }}</td>
                 <td>{{ $u->name }}</td>
                 <td>{{ $u->nit }}</td>
@@ -60,14 +65,14 @@
                 <td>{{ $u->state }}</td>
                 <td>
                     <form action="{{ route('dashboard.users.edit_profile' , $u->id)}}" method="get">
-                    <button href="" class="btn btn-outline-primary">EDITAR</button>
+                    <button href="" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
                 </form>
                     <form action="{{ route('dashboard.users.delete') }}" method="post">
                         @csrf
                         <input hidden type="text" name="id_jefe" value="{{ $user->id }}">
                         <input hidden type="text" name="id" value="{{ $u->id }}">
                     @if ($u->id_state == 1)
-                    <button class="btn btn-outline-danger" href="">ELIMINAR</button></td>
+                    <button class="btn btn-outline-danger" href=""><i class="bi bi-trash3"></i></button></td>
                     @else
                     <button class="btn btn-outline-success" href="">ACTIVAR</button></td>
                 @endif
@@ -80,9 +85,6 @@
     @endif
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
 
 @section('js')
 

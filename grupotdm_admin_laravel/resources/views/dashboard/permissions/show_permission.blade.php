@@ -20,13 +20,15 @@
 @section('content')
 <div id="content_form_permission">
     <center>
-<h1>FORMATO DE SOLICITUD DE PERMISO</h1>
+<b style="font-size: 25px">FORMATO DE SOLICITUD DE PERMISO</b>
 
-<div class="content_img">
-<img src="{{ asset('storage/icons/logo.png') }}" alt="">
+<div class="content_img" style="height: 100px; width: 150px">
+<img style="object-fit: contain; width: 100%; height: 100%;" src="{{ asset('storage/icons/logo.png') }}" alt="">
 </div>
 </center>
 <br>
+<div class="content_form"  style="display: flex">
+<div class="content_left" style="padding: 10px; width: 50%;">
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">NOMBRE DE COLABORADOR</label>
     <input style="width: 100%" type="text" required disabled name="" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $permission->name_user }}">
@@ -69,6 +71,7 @@
   @endif
 </div>
 
+
 <div class="mb-3">
     <label for="formFile" class="form-label">FECHA DE LLEGADA</label>
   @if($dates_permission->time_return)
@@ -87,8 +90,11 @@
   @endif
 </div>
   @endif
+</div>
+  <div class="content_right" style="padding: 10px; width: 50%;">
+
   <div class="mb-3">
-    <label for="formFile" class="form-label">JEFE QUE APROBO EL PERMISO</label>
+    <label for="formFile" class="form-label">JEFE RESPONSABLE DEL PERMISO</label>
     @if($user_boss)
     <input style="width: 100%" required disabled type="text" id="" name="" readonly class="form-control-plaintext" value="{{ $user_boss->name }}">
     <label for="formFile" class="form-label">CEDULA DEL JEFE</label>
@@ -120,7 +126,7 @@
     <label for="formFile" class="form-label">ESTADO</label>
     <input style="width: 100%" required  disabled ="text" id="" name="" readonly class="form-control-plaintext" value="{{ $permission->state }}">
   </div>
-  @if($validation_jefe && !$user_boss && $permission->id_state == 8)
+  @if($validation_jefe && !$user_boss && $permission->id_state == 8 && $user->id_area != 16)
   <div class="mb-3">
     <label for="formFile" class="form-label">¿Deseas aprobar el permiso?</label>
     <form action="{{ route('dashboard.permissions.view_permission.permission_approve') }}" method="post">
@@ -136,6 +142,8 @@
   </div>
 
   @endif
+</div>
+</div>
 </div>
 <button onclick="imprimirDiv()" class="btn btn-dark">Imprimir PERMISO</button>
 <br><br><br>

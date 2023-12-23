@@ -12,7 +12,7 @@
          <div class="content_search">
             <form action="{{ route('dashboard.resports') }}" method="get">
 
-                <input type="text" name="search" placeholder="Buscar Reporte">
+                <input type="text" name="search" placeholder="Buscar Reporte" style="width: 100%; margin-bottom: 10px">
                     <select name="filter" id="" >
                     <option value="">Seleccione un filtro</option>
                     @foreach ($report_details as $r)
@@ -32,7 +32,7 @@
 
 <table class="table">
 
-    <thead>
+    <thead class="table-dark">
         <th>ID</th>
         <th>DECRIPCIÓN</th>
         <th>USUARIO DE ACCIÓN</th>
@@ -43,7 +43,7 @@
     <tbody>
         @foreach ($reports as $r)
         @if($r->id_area == $user->id_area || $user->id_area == 1)
-        <tr>
+        <tr  class="table-light">
             <td>{{ $r->id }}</td>
             <td>{{ $r->description }}</td>
             <td>{{ $r->name_user }}</td>

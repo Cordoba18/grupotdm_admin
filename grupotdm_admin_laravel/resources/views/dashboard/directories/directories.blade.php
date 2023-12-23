@@ -31,7 +31,7 @@
 @section('content')
 
     <table class="table">
-        <thead>
+        <thead class="table-dark">
          <th>NOMBRE</th>
          <th>Codigo</th>
          <th>FECHA CREACION</th>
@@ -42,7 +42,7 @@
         </thead>
         <tbody style="overflow-y: 300px;">
             @foreach ($directories as $d)
-            <tr>
+            <tr class="table-light">
             <td>{{ $d->name }}</td>
             @if($d->id_user == Auth::user()->id)
             <td>{{ $d->code }}</td>
