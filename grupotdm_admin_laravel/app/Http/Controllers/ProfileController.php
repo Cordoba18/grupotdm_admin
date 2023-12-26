@@ -7,6 +7,7 @@ use App\Mail\action_permission;
 use App\Mail\ActionUser;
 use App\Mail\calification_ticket;
 use App\Mail\comment_ticket;
+use App\Mail\create_certificate;
 use App\Mail\create_permission;
 use App\Mail\create_ticket;
 use App\Mail\create_user;
@@ -14,6 +15,7 @@ use App\Mail\edit_ticket;
 use App\Mail\modificate_ticket;
 use App\Mail\new_file;
 use App\Mail\new_repository;
+use App\Models\Certificate;
 use App\Models\Origin_Certificate;
 use App\Models\Area;
 use App\Models\State_Certificate;
@@ -31,6 +33,7 @@ use App\Models\Proceeding;
 use App\Models\Reason;
 use App\Models\Replenish_time;
 use App\Models\Report_detail;
+use App\Models\Row_Certificate;
 use App\Models\Shop;
 use App\Models\Theme_user;
 use App\Models\Ticket;
@@ -1076,13 +1079,13 @@ if($request->search){
 }else{
 $search = "";
 }
-$certificates = DB::select("SELECT p.id, p.proceeding, c.date, ud.name AS name_delivery, ud.id AS id_user_delivery, ur.name AS name_receives, ur.id AS id_user_receives, s.state, c.id_state
+$certificates = DB::select("SELECT c.id, p.proceeding, c.date, ud.name AS name_delivery, ud.id AS id_user_delivery, ur.name AS name_receives, ur.id AS id_user_receives, s.state, c.id_state
 FROM certificates c
 INNER JOIN proceedings p ON c.id_proceeding = p.id
 INNER JOIN users ud ON c.id_user_delivery = ud.id
 INNER JOIN users ur ON c.id_user_receives = ur.id
 INNER JOIN states s ON c.id_state = s.id
-WHERE c.id_state <> 2 $search");
+WHERE c.id_state <> 2 $search ORDER BY c.id DESC");
 
 return view('dashboard.certificates.certificates', compact('user','certificates'));
 }
@@ -1105,5 +1108,38 @@ public function get_users_areas($id){
 
     $users = DB::select("SELECT * FROM users WHERE id_area = $id AND id_state <> 2");
     return response()->json(['users' => $users], 200);
+}
+
+public function save_certificate(Request $request){
+    $user = Auth::user();
+    $new_certificate = new Certificate();
+    $new_certificate->id_proceeding = $request->id_proceeding;
+    $new_certificate->date = $request->date;
+    $new_certificate->address = $request->address;
+    $new_certificate->id_user_delivery = $user->id;
+    $new_certificate->id_user_receives = $request->id_user_receives;
+    $new_certificate->general_remarks = $request->general_remarks	;
+    $new_certificate->id_state = 3;
+    $new_certificate->save();
+    $certificate = DB::selectOne("SELECT * FROM certificates WHERE date = '$request->date' AND id_user_delivery = $user->id AND address = '$request->address'");
+    $user_receive = User::find($request->id_user_receives);
+    Mail::to($user_receive->email)->send(new create_certificate($user_receive, $user,$certificate));
+    return response()->json(['id_certificate'=> $certificate->id],200);
+}
+
+public function save_rows_certificate(Request $request){
+$user = Auth::user();
+$new_rows_certificate = new Row_Certificate();
+$new_rows_certificate->amount = $request->amount;
+$new_rows_certificate->description = $request->description;
+$new_rows_certificate->brand = $request->brand;
+$new_rows_certificate->serie = $request->serie;
+$new_rows_certificate->id_certificate = $request->id_certificate;
+$new_rows_certificate->id_type_component = $request->id_type_component;
+$new_rows_certificate->id_origin_certificate = $request->id_origin_certificate;
+$new_rows_certificate->id_state_certificate	 = $request->id_state_certificate;
+$new_rows_certificate->accessories = $request->accessories;
+$new_rows_certificate->save();
+return response()->json(['message'=> true],200);
 }
 }

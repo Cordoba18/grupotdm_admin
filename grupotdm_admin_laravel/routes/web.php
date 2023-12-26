@@ -91,4 +91,6 @@ Route::post('/dashboard/permissions/view_permission/user_return', [ProfileContro
 
 Route::get('/dashboard/certificates', [ProfileController::class, 'show_certificates'])->name('dashboard.certificates');
 Route::get('/dashboard/certificates/create', [ProfileController::class, 'create_certificate'])->name('dashboard.certificates.create');
+Route::post('/dashboard/certificates/create/save', [ProfileController::class, 'save_certificate'])->name('dashboard.certificates.create.save');
+Route::post('/dashboard/certificates/create/save_rows', [ProfileController::class, 'save_rows_certificate'])->name('dashboard.certificates.create.save_rows');
 Route::get('/dashboard/certificates/create/get_users_areas/{id}', [ProfileController::class, 'get_users_areas'])->name('dashboard.certificates.create.get_users_areas');
