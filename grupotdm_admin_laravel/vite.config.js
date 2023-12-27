@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/tickets.css',
                 'resources/css/view_ticket.css',
                 'resources/css/create_certificate.css',
+                'resources/css/view_certificate.css',
                 'resources/js/register.js',
                 'resources/js/app.js',
                 'resources/js/recovery_password.js',
@@ -20,7 +21,7 @@ export default defineConfig({
                 'resources/js/permissions.js',
                 'resources/js/show_permission.js',
                 'resources/js/create_certificate.js',
-
+                'resources/js/show_certificate.js',
             ],
             refresh: true,
         }),

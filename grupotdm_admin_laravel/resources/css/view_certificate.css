@@ -1,0 +1,24 @@
+td,tr{
+    text-align: center;
+}
+th{
+    background-color: black;
+}
+
+.content_header_certificate{
+    display: flex;
+    flex-wrap: wrap;
+}
+.content_header_certificate .content_left_certificate,.content_header_certificate .content_right_certificate{
+
+    width: 50%;
+    padding: 10px;
+}
+@media (max-width:800px){
+    .content_header_certificate .content_left_certificate,.content_header_certificate .content_right_certificate{
+        width: 100%;
+    }
+
+}
+
+

@@ -53,10 +53,10 @@
         <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $c->id_user_delivery) }}">{{ $c->name_delivery }}</a></td>
         <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $c->id_user_receives) }}">{{ $c->name_receives }}</a></td>
         <td>{{ $c->state }}</td>
-        <td><a href="" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if ($c->id_user_delivery == $user->id)
-            <form action="" method="post"  onsubmit="return confirmarEnvio()">
+        <td><a href="{{ route('dashboard.certificates.view_certificate', $c->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if ($c->id_user_delivery == $user->id)
+            <form action="{{ route('dashboard.certificates.delete') }}" method="post"  onsubmit="return confirmarEnvio()">
                 @csrf
-                <input type="number" value="{{ $c->id }}" hidden name="id_directory">
+                <input type="number" value="{{ $c->id }}" hidden name="id_certificate">
                 <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
             </form>
             @endif</td>
@@ -73,7 +73,7 @@
 <script>
     function confirmarEnvio() {
       // Mostrar un mensaje de confirmación
-      var confirmacion = confirm("¿Estás seguro de eliminar este directorio?");
+      var confirmacion = confirm("¿Estás seguro de eliminar esta acta?");
 
       // Si el usuario hace clic en "Aceptar", el formulario se enviará
       return confirmacion;

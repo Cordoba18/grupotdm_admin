@@ -15,6 +15,7 @@ use App\Mail\edit_ticket;
 use App\Mail\modificate_ticket;
 use App\Mail\new_file;
 use App\Mail\new_repository;
+use App\Mail\notification_certificate;
 use App\Models\Certificate;
 use App\Models\Origin_Certificate;
 use App\Models\Area;
@@ -1141,5 +1142,74 @@ $new_rows_certificate->id_state_certificate	 = $request->id_state_certificate;
 $new_rows_certificate->accessories = $request->accessories;
 $new_rows_certificate->save();
 return response()->json(['message'=> true],200);
+}
+
+public function delete_certificate(Request $request){
+    $user = Auth::user();
+    $id_certificate = $request->id_certificate;
+    $certificate = Certificate::find($id_certificate);
+    $certificate->id_state = 2;
+    $certificate->save();
+    $user_receive = User::find($certificate->id_user_receives);
+    Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el usuario $user->name ha eliminado el certificado con ID $certificate->id y fecha $certificate->date"));
+    return redirect()->route('dashboard.certificates')->with('message','Certificado eliminado con exito!');
+
+}
+
+public function view_certificate($id){
+
+    $certificate = DB::selectOne("SELECT c.general_remarks, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.name AS name_receives, ar.area AS area_receives, ud.name AS name_delivery, ad.area AS area_delivery
+    FROM certificates c
+    INNER JOIN proceedings p ON c.id_proceeding = p.id
+    INNER JOIN states s ON c.id_state = s.id
+    INNER JOIN users ur ON c.id_user_receives = ur.id
+    INNER JOIN areas ar ON ur.id_area = ar.id
+    INNER JOIN users ud ON c.id_user_delivery = ud.id
+    INNER JOIN areas ad ON ur.id_area = ad.id
+    WHERE c.id = $id");
+
+    $user_reception = DB::selectOne("SELECT * FROM users u
+    INNER JOIN certificates c ON u.id = c.id_user_reception WHERE c.id = $id");
+    $certificate_full = Certificate::find($id);
+ $rows_certificate = DB::select("SELECT r.id, r.amount, r.description, r.brand, r.serie, o.origin_certificate, s.state_certificate, t.type_component, r.accessories
+ FROM rows_certificates r
+ INNER JOIN origins_certificates o ON r.id_origin_certificate = o.id
+ INNER JOIN states_certificates s ON r.id_state_certificate = s.id
+ INNER JOIN type_components t ON r.id_type_component = t.id WHERE r.id_certificate = $id");
+ return view('dashboard.certificates.view_certificate',compact('certificate','user_reception','certificate_full','rows_certificate'));
+}
+
+public function state_certificate(Request $request){
+$user = Auth::user();
+    $id_certificate = $request->id_certificate;
+    $date = $request->date;
+    $certificate = Certificate::find($id_certificate);
+    $user_receive = User::find($certificate->id_user_receives);
+    $user_delivery = User::find($certificate->id_user_delivery);
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $fechaHoraActual = now()->format('Y-m-d_H-i-s');
+        $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
+        $rutaImagen = public_path('storage/files/' . $name_file);
+        $file->move(public_path('storage/files'), $name_file);
+        // $new_ticket->file = $name_file;
+    }
+
+    if ($certificate->id_state == 3) {
+        $certificate->id_state = 11;
+        $certificate->image_exit = $name_file;
+        $certificate->date_exit = $date;
+        $certificate->id_user_reception = $user->id;
+        Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date salio de las instalaciones para la direccion expecificada: $certificate->address"));
+    }else{
+        $certificate->id_state = 12;
+        $certificate->image_delivery = $name_file;
+        $certificate->date_delivery = $date;
+        Mail::to($user_delivery->email)->send(new notification_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
+    }
+
+
+    $certificate->save();
+    return redirect()->route('dashboard.certificates.view_certificate',$id_certificate)->with('message', 'Accion realizada con exito');
 }
 }

@@ -9,7 +9,7 @@ class Origin_Certificate extends Model
 {
     use HasFactory;
 
-    protected $table = 'origins_cerficates';
+    protected $table = 'origins_certificates';
     protected $fillable = [
         'origin_certificate',
     ];
