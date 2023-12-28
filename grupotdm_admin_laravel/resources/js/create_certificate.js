@@ -30,8 +30,8 @@ function obtenerFechaActual() {
 const row =  document.querySelector('.row_certificate').innerHTML;
 
 
-btn_delete_row();
-function btn_delete_row() {
+loading_buttons_rows();
+function loading_buttons_rows() {
     const rows =  document.querySelectorAll('.row_certificate');
     rows.forEach(row => {
 
@@ -41,7 +41,77 @@ function btn_delete_row() {
             e.preventDefault();
             row.remove();
         })
+
     });
+    loading_validate_button_Row();
+}
+
+function loading_validate_button_Row() {
+    const rows =  document.querySelectorAll('.row_certificate');
+    rows.forEach(row => {
+
+        validate_dates = false;
+    const btn_validate = row.querySelector('#btn_validate');
+
+    btn_validate.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id_product = row.querySelector('#id_product');
+        const description = row.querySelector('#description');
+                        const brand = row.querySelector('#brand');
+                        const serie = row.querySelector('#serie');
+                        const id_type_component = row.querySelector('#id_type_component');
+                        const id_origin_certificate = row.querySelector('#id_origin_certificate');
+                        const id_state_certificate = row.querySelector('#id_state_certificate');
+                        const accessories = row.querySelector('#accessories');
+
+                        rows.forEach(row2 => {
+                            const id_product2 = row2.querySelector('#id_product').value;
+
+                        });
+        if (id_product.value == "") {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Rellena el campo para validar"
+              });
+        }else{
+        $.ajax({
+            type: "GET",
+            url: "create/get_dates_product/" + id_product.value,
+            success: function (response) {
+
+               if (response['product']) {
+                console.log(response['product'])
+                description.value = response['product']['name']
+                brand.value = response['product']['brand']
+                serie.value = response['product']['serie']
+                id_type_component.value = response['product']['type_component']
+                id_origin_certificate.value = response['product']['origin_certificate']
+                id_state_certificate.value = response['product']['state_certificate']
+                accessories.value = response['product']['accessories']
+                btn_validate.setAttribute('hidden', 'true');
+               }else{
+                Swal.fire({
+                    icon: "error",
+                    title: "PRODUCTO NO ENCONTRADO",
+                    text: "El producto no existe o esta asociado a una acta en procesos!"
+                  });
+               }
+
+
+            },
+            error: function (error) {
+                // Manejar el error si lo hay
+
+            }
+        });
+
+    }
+
+
+  })
+
+});
 }
   const date = document.querySelector('#date');
   date.value = obtenerFechaActual();
@@ -55,7 +125,7 @@ function btn_delete_row() {
     element.classList.add("row_certificate");
     const content_rows = document.querySelector('#content_rows');
     content_rows.appendChild(element);
-    btn_delete_row();
+    loading_buttons_rows();
   })
   const id_area_receives = document.querySelector('#id_area_receives');
 
@@ -281,3 +351,5 @@ function btn_delete_row() {
 
 
   })
+
+

@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Row_Certificate extends Model
+class Report_product extends Model
 {
     use HasFactory;
-
-    protected $table = 'rows_certificates';
+    protected $table = 'report_products';
     protected $fillable = [
+        'report',
         'id_product',
         'id_certificate',
     ];

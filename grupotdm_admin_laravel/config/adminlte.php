@@ -309,6 +309,11 @@ return [
             'url'  => 'dashboard/tickets',
             'icon' => 'fas fa-solid fa-user-nurse',
         ],
+        [
+            'text' => 'Inventario',
+            'url'  => 'dashboard/inventories',
+            'icon' => 'fas fa-solid fa-paperclip',
+        ],
         ['header' => 'ARCHIVOS'],
         [
             'text' => 'Directorios',

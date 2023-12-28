@@ -1,0 +1,58 @@
+
+.content_products{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.content_product{
+
+    width: 500px;
+    height: 500px;
+    padding: 5px;
+    background-color: white;
+    margin: 5px;
+    border-radius: 15px;
+    transition: 0.5s all;
+    border: 0.5px gray solid;
+
+}
+
+.content_product:hover{
+
+    background-color: black;
+    box-shadow: 0px 0px 10px;
+    color: white;
+
+}
+.content_product .content_image_product{
+    width: 100%;
+    margin: 0;
+    height: 300px;
+}
+.content_product .content_image_product img{
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+    object-fit: cover;
+
+}
+.content_product .content_info{
+    margin-left: 30px;
+    font-size: 20px;
+    margin-top: 20px;
+
+}
+.content_product .content_info div{
+
+    display: flex;
+}
+.content_product .content_info div b{
+
+    margin-left: 10px;
+}
+
+.content_product .content_buttons{
+    margin-left: 30px;
+}

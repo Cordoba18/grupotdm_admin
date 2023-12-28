@@ -8,6 +8,12 @@
 
 @section('content')
     <p>Bienvenido al panel de administraciòn del GRUPO TDM</p>
+
+    @if (session('message_error'))
+
+    <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
+
+@endif
 @stop
 
 @section('css')

@@ -97,3 +97,9 @@ Route::post('/dashboard/certificates/create/save_rows', [ProfileController::clas
 Route::get('/dashboard/certificates/create/get_users_areas/{id}', [ProfileController::class, 'get_users_areas'])->name('dashboard.certificates.create.get_users_areas');
 Route::get('/dashboard/certificates/view_certificate/{id}', [ProfileController::class, 'view_certificate'])->name('dashboard.certificates.view_certificate');
 Route::post('/dashboard/certificates/view_certificate/state_certificate', [ProfileController::class, 'state_certificate'])->name('dashboard.certificates.view_certificate.state_certificate');
+Route::get('/dashboard/certificates/create/get_dates_product/{id}', [ProfileController::class, 'get_dates_product'])->name('dashboard.certificates.create.get_dates_product');
+
+
+Route::get('/dashboard/inventories', [ProfileController::class, 'show_inventories'])->name('dashboard.inventories');
+Route::get('/dashboard/inventories/create', [ProfileController::class, 'create_product'])->name('dashboard.inventories.create');
+Route::post('/dashboard/inventories/create/save', [ProfileController::class, 'save_product'])->name('dashboard.inventories.create.save');

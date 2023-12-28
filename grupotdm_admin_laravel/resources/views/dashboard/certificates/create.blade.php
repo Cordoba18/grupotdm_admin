@@ -72,8 +72,8 @@
 
         <table class="table" style="font-size: 14px">
             <thead class="table-dark">
-            <th>CANTIDAD</th>
-            <th>DESCRIPCIÓN - MODELO</th>
+            <th>ID</th>
+            <th>NOMBRE/DESCRIPCIÓN</th>
             <th>MARCA</th>
             <th>SERIAL</th>
             <th>TIPO DE COMPONENTE</th>
@@ -85,29 +85,14 @@
 
         <tbody class="table-light" id="content_rows" style="height: auto">
                 <tr class="row_certificate">
-                    <td><input type="number" placeholder="Cantidad" id="amount" name="amount" value=""></td>
-                    <td><input type="text" placeholder="Descripción" id="description" name="description" value=""></td>
-                    <td><input type="text" placeholder="Marca" id="brand" name="brand" value=""></td>
-                    <td><input type="text" placeholder="Serial" id="serie" name="serie"></td>
-                    <td><select name="id_type_component" id="id_type_component" required>
-                        <option value="">Tipo de componente</option>
-                        @foreach ($types_components as $t)
-                        <option value="{{ $t->id }}">{{ $t->type_component }}</option>
-                        @endforeach
-                    </select></td>
-                    <td><select required name="id_origin_certificate" id="id_origin_certificate">
-                        <option value="">Estado de origen</option>
-                    @foreach ($origins_certificates as $o)
-                    <option value="{{ $o->id }}">{{ $o->origin_certificate }}</option>
-                    @endforeach
-                </select></td>
-                    <td><select required name="id_state_certificate" id="id_state_certificate">
-                        <option value="">Estado</option>
-                        @foreach ($states_certificates as $s)
-                        <option value="{{ $s->id }}">{{ $s->state_certificate }}</option>
-                        @endforeach
-                        </select></td>
-                    <td><textarea name="accessories" id="accessories" cols="20" rows="3" placeholder="Accesorios"></textarea></td>
+                    <td><input type="number" placeholder="Id producto" id="id_product" name="" value=""> <button id="btn_validate" class="btn btn-success">VALIDAR</button></td>
+                    <td><input type="text" readonly disabled placeholder="Descripción" id="description" name="description" value=""></td>
+                    <td><input type="text" readonly disabled placeholder="Marca" id="brand" name="brand" value=""></td>
+                    <td><input type="text" readonly disabled placeholder="Serial" id="serie" name="serie"></td>
+                    <td><input  type="text" readonly disabled name="id_type_component" id="id_type_component" required></td>
+                    <td><input type="text" required disabled name="id_origin_certificate" id="id_origin_certificate"></td>
+                    <td><input type="text" required disabled name="id_state_certificate" id="id_state_certificate"></td>
+                    <td><textarea name="accessories" id="accessories" cols="20" rows="3" required disabled placeholder="Accesorios"></textarea></td>
                     <td><button class="btn btn-danger" id="btn_delete_row"><i class="bi bi-trash3"></i></button></td>
                 </tr>
         </tbody>

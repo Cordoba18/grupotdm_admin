@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/css/view_ticket.css',
                 'resources/css/create_certificate.css',
                 'resources/css/view_certificate.css',
+                'resources/css/inventories.css',
                 'resources/js/register.js',
                 'resources/js/app.js',
                 'resources/js/recovery_password.js',

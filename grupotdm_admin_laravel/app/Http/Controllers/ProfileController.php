@@ -24,6 +24,7 @@ use App\Models\Type_Component;
 use App\Models\Calification;
 use App\Models\Charge;
 use App\Models\Comment;
+use App\Models\Image_product;
 use App\Models\Companie;
 use App\Models\Directorie;
 use App\Models\File as ModelsFile;
@@ -38,6 +39,7 @@ use App\Models\Row_Certificate;
 use App\Models\Shop;
 use App\Models\Theme_user;
 use App\Models\Ticket;
+use App\Models\Product;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
 use DateTime;
@@ -1211,5 +1213,94 @@ $user = Auth::user();
 
     $certificate->save();
     return redirect()->route('dashboard.certificates.view_certificate',$id_certificate)->with('message', 'Accion realizada con exito');
+}
+
+
+public function show_inventories(Request $request){
+
+    $products = Product::all()->where('id_state','=',1);
+    $images_products = Image_product::all()->where('id_state','=',1);
+    $user = Auth::user();
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    if($validate_user_sistemas){
+    return view('dashboard.inventories.inventories', compact('products', 'images_products'));
+    }else{
+        return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
+    }
+}
+
+public function create_product(){
+
+    $areas = Area::all();
+    $origins_certificates = Origin_Certificate::all();
+    $states_certificates = State_Certificate::all();
+    $types_components = Type_Component::all();
+    return view('dashboard.inventories.create', compact('areas','origins_certificates','states_certificates','types_components'));
+}
+
+public function save_product(Request $request){
+
+
+    $product = new Product();
+    $validation = DB::selectOne("SELECT * FROM products WHERE id_state = 1 AND serie  LIKE '%$request->serie%'");
+    $user = Auth::user();
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    if($validate_user_sistemas){
+    if($validation){
+        return redirect()->back()->with('message_error','Ya existe un producto con esa serial');
+    }else{
+        $product->name = $request->name;
+        $product->brand = $request->brand;
+        $product->serie = $request->serie;
+        $product->accessories = $request->accessories;
+        $product->id_type_component = $request->id_type_component;
+        $product->id_state_certificate = $request->id_state_certificate;
+        $product->id_origin_certificate = $request->id_origin_certificate;
+        $product->id_state = 1;
+        $product->save();
+        $id_product = DB::selectOne("SELECT * FROM products WHERE serie = '$request->serie' AND id_state = 1")->id;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fechaHoraActual = now()->format('Y-m-d_H-i-s');
+            $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
+            $rutaImagen = public_path('storage/files/' . $name_file);
+            $file->move(public_path('storage/files'), $name_file);
+            $image_product = new Image_product();
+            $image_product->image = $name_file;
+            $image_product->id_product = $id_product;
+            $image_product->id_state = 1;
+            $image_product->save();
+            return redirect()->route('dashboard.inventories')->with('message','Producto guardado con exito');
+        }else{
+
+            return redirect()->route('dashboard.inventories')->with('message','Producto guardado sin imagen!');
+        }
+
+
+    }
+
+}else{
+    return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
+}
+}
+
+public function get_dates_product($id){
+
+    $product = DB::selectOne("SELECT p.id, p.name, p.brand, p.serie, o.origin_certificate, s.state_certificate, t.type_component, p.accessories
+ FROM products p
+ INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+ INNER JOIN states_certificates s ON p.id_state_certificate = s.id
+ INNER JOIN type_components t ON p.id_type_component = t.id WHERE p.id = $id AND p.id_state = 1");
+
+$validation_product = DB::select("SELECT * FROM products p
+ INNER JOIN rows_certificates rs ON p.id = rs.id_product
+INNER JOIN certificates c ON rs.id_certificate = c.id
+INNER JOIN type_components t ON p.id_type_component = t.id
+WHERE p.id = $id AND p.id_state = 1 AND (c.id_state = 8 AND c.id_state = 11 )");
+ if($product && !$validation_product){
+    return response()->json(['product' => $product], 200);
+ }else{
+    return response()->json(['product' => false], 200);
+ }
 }
 }
