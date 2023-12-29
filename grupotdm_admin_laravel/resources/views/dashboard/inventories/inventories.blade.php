@@ -41,7 +41,7 @@
 
     <div class="content_product">
         <div class="content_image_product">
-            <a href="">
+            <a href="{{ route('dashboard.inventories.view_product',$p->id) }}">
             @foreach($images_products as $ip)
             @php
                 $suma = 1;
@@ -51,11 +51,13 @@
             $suma = $suma + 1;
 
         @endphp
+        @if($suma == 1)
+        <img src="{{ asset('storage/icons/logo.png') }}" alt="">
+        @else
         <img src="{{ asset('storage/files/'.$ip->image) }}" alt="">
+        @endif
             @endif
-            @if($suma == 1)
-            <img src="{{ asset('storage/icons/logo.png') }}" alt="">
-            @endif
+
             @endforeach
         </a>
         </div>
@@ -68,7 +70,7 @@
         </div>
     </div>
     <div class="content_buttons">
-        <form action="" method="post">
+        <form action="{{ route('dashboard.inventories.delete') }}" method="post" onsubmit="return confirmarEnvio()">
             @csrf
             <input type="text" hidden value="{{ $p->id }}" name="id_product">
             <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
@@ -84,4 +86,13 @@
 
 
 @section('js')
+
+<script>
+    function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de eliminar este producto?");
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
+</script>
 @stop

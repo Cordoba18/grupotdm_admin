@@ -126,7 +126,7 @@
     <label for="formFile" class="form-label">ESTADO</label>
     <input style="width: 100%" required  disabled ="text" id="" name="" readonly class="form-control-plaintext" value="{{ $permission->state }}">
   </div>
-  @if($validation_jefe && !$user_boss && $permission->id_state == 8 && $user->id_area != 16)
+  @if($validation_jefe && !$user_boss && $permission->id_state == 3 && $user->id_area != 16)
   <div class="mb-3">
     <label for="formFile" class="form-label">¿Deseas aprobar el permiso?</label>
     <form action="{{ route('dashboard.permissions.view_permission.permission_approve') }}" method="post">

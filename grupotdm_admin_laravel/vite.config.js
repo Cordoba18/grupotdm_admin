@@ -23,6 +23,7 @@ export default defineConfig({
                 'resources/js/show_permission.js',
                 'resources/js/create_certificate.js',
                 'resources/js/show_certificate.js',
+                'resources/js/certificates.js',
             ],
             refresh: true,
         }),

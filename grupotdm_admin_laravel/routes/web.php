@@ -103,3 +103,5 @@ Route::get('/dashboard/certificates/create/get_dates_product/{id}', [ProfileCont
 Route::get('/dashboard/inventories', [ProfileController::class, 'show_inventories'])->name('dashboard.inventories');
 Route::get('/dashboard/inventories/create', [ProfileController::class, 'create_product'])->name('dashboard.inventories.create');
 Route::post('/dashboard/inventories/create/save', [ProfileController::class, 'save_product'])->name('dashboard.inventories.create.save');
+Route::post('/dashboard/inventories/delete', [ProfileController::class, 'delete_product'])->name('dashboard.inventories.delete');
+Route::get('/dashboard/inventories/view_product/{id}', [ProfileController::class, 'view_product'])->name('dashboard.inventories.view_product');

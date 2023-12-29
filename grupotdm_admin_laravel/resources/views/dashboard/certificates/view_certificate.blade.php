@@ -44,7 +44,8 @@ $user = Auth::user();
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">DESPACHA</label>
-        <input required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_delivery }}" style="background-color: white; padding: 10px; width: 100%;">
+        <a href="{{ route('dashboard.users.view_user',$certificate->id_user_delivery) }}">
+        <input required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_delivery }}" style="background-color: white; padding: 10px; width: 100%;"></a>
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">DIRECCIÓN DE ENVIO</label>
@@ -63,8 +64,10 @@ $user = Auth::user();
 
           <div class="mb-3">
             <label for="formFile" class="form-label">USUARIO A RECIBIR</label>
+            <a href="{{ route('dashboard.users.view_user',$certificate->id_user_receives) }}">
             <input required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_receives }}" style="background-color: white; padding: 10px; width: 100%;">
-          </div>
+        </a>
+        </div>
 
 
           <div class="mb-3">
@@ -84,30 +87,29 @@ $user = Auth::user();
 
         <table class="table" style="font-size: 14px; width: 100%;border: 1px solid black;">
             <thead class="table-dark">
-            <th>ID</th>
-            <th>CANTIDAD</th>
-            <th>DESCRIPCIÓN - MODELO</th>
+            <th>ID PRODUCTO</th>
+            <th>NOMBRE/DESCRIPCION</th>
             <th>MARCA</th>
             <th>SERIAL</th>
             <th>TIPO DE COMPONENTE</th>
             <th>ORIGEN</th>
             <th>ESTADO</th>
             <th>ACCESORIOS</th>
+            <th>VER PRODUCTO</th>
         </thead>
 
         <tbody class="table-light" style="height: auto">
             @foreach ($rows_certificate as $r)
                 <tr style="border-bottom: 4px solid black; text-align: center;">
                     <td>{{ $r->id }}</td>
-                    <td>{{ $r->amount }}</td>
-                    <td>{{ $r->description }}</td>
+                    <td>{{ $r->name }}</td>
                     <td>{{ $r->brand }}</td>
                     <td>{{ $r->serie }}</td>
                     <td>{{ $r->type_component }}</td>
                     <td>{{ $r->origin_certificate }}</td>
                     <td>{{ $r->state_certificate }}</td>
                     <td>{{ $r->accessories }}</td>
-
+                    <td><a href="{{ route('dashboard.inventories.view_product',$r->id_product) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
                 </tr>
                 @endforeach
         </tbody>
@@ -161,15 +163,14 @@ $user = Auth::user();
         </div>
     </div>
 </div>
-
-    @if(($user->id == $certificate_full->id_user_receives || $user->id_area == 16) && $certificate_full->id_state != 12)
+    @if((($user->id_area == 16 || $user->id == $certificate_full->id_user_receives) && $certificate_full->id_state == 11)  || ($user->id_area == 16 && $certificate_full->id_state == 3) && $certificate_full->id_state != 12)
 
     <form action="{{ route('dashboard.certificates.view_certificate.state_certificate') }}" method="post" enctype="multipart/form-data">
     @csrf
 
     <div class="mb-3">
         @if ($certificate_full->id_state == 3 &&  $user->id_area == 16)
-        <label for="formFile" class="form-label">DAR SALIDA DE ACTIVOS</label>
+        <label for="formFile" class="form-label">DAR SALIDA DE ACTIVOS </label>
         @elseif ($certificate_full->id_state == 11)
         <label for="formFile" class="form-label">DAR ENTRADA DE ACTIVOS</label>
         @endif

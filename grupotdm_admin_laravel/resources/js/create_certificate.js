@@ -39,6 +39,8 @@ function loading_buttons_rows() {
 
         btn_delete_row.addEventListener('click',function (e) {
             e.preventDefault();
+            const id_product = row.querySelector('#id_product');
+            id_product.value = "";
             row.remove();
         })
 
@@ -50,10 +52,11 @@ function loading_validate_button_Row() {
     const rows =  document.querySelectorAll('.row_certificate');
     rows.forEach(row => {
 
-        validate_dates = false;
+
     const btn_validate = row.querySelector('#btn_validate');
 
     btn_validate.addEventListener('click', function (e) {
+        let validate_dates = 0;
         e.preventDefault();
         const id_product = row.querySelector('#id_product');
         const description = row.querySelector('#description');
@@ -66,9 +69,20 @@ function loading_validate_button_Row() {
 
                         rows.forEach(row2 => {
                             const id_product2 = row2.querySelector('#id_product').value;
-
+                            if (id_product2 == id_product.value) {
+                                validate_dates = validate_dates + 1;
+                                console.log(validate_dates)
+                            }
                         });
-        if (id_product.value == "") {
+                        console.log("Toltal : " + validate_dates)
+        if (validate_dates>1) {
+            id_product.value = "";
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Ya asociaste ese producto al acta!"
+              });
+        }else if (id_product.value == "") {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -81,7 +95,7 @@ function loading_validate_button_Row() {
             success: function (response) {
 
                if (response['product']) {
-                console.log(response['product'])
+                id_product.setAttribute('Disabled', 'true');
                 description.value = response['product']['name']
                 brand.value = response['product']['brand']
                 serie.value = response['product']['serie']
@@ -163,6 +177,7 @@ function loading_validate_button_Row() {
     const label_error = document.querySelector('#label_error');
     let validation = false;
 
+
     const date = document.querySelector("#date").value;
     const id_proceeding = document.querySelector("#id_proceeding").value;
     const id_user_receives = document.querySelector("#id_user_receives").value;
@@ -193,8 +208,6 @@ function loading_validate_button_Row() {
 
     rows.forEach(row => {
         counter +=1;
-
-        const amount = row.querySelector('#amount').value;
         const description = row.querySelector('#description').value;
         const brand = row.querySelector('#brand').value;
         const serie = row.querySelector('#serie').value;
@@ -202,37 +215,9 @@ function loading_validate_button_Row() {
         const id_origin_certificate = row.querySelector('#id_origin_certificate').value;
         const id_state_certificate = row.querySelector('#id_state_certificate').value;
         const accessories = row.querySelector('#accessories').value;
-        if (amount == "") {
+       if (description == "" || brand == ""||serie == ""||id_type_component == ""||id_origin_certificate == ""||id_state_certificate == ""||accessories == "" ) {
             label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de CANTIDAD no completado en fila #"+ counter;
-            validation = true;
-        }else if (description == "") {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de DESCRIPCIÓN no completado en fila #"+ counter;
-            validation = true;
-        } else if (brand == "") {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de MARCA no completado en fila #"+ counter;
-            validation = true;
-        }else if (serie == "" ) {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de DESCRIPCIÓN no completado en fila #"+ counter;
-            validation = true;
-        } else if (id_type_component == "" ) {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de TIPO DE COMPONENTE no completado en fila #"+ counter;
-            validation = true;
-        } else if (id_origin_certificate == "" ) {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de ESTADO DE ORIGEN no completado en fila #"+ counter;
-            validation = true;
-        }else if (id_state_certificate == "") {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de ESTADO no completado en fila #"+ counter;
-            validation = true;
-        } else if (accessories == "") {
-            label_error.removeAttribute('hidden');
-            label_error.textContent = "Campo de ACCESORIOS no completado en fila #"+ counter;
+            label_error.textContent = "Campos de fila #"+ counter + " incompletos";
             validation = true;
         }
     });
@@ -247,6 +232,7 @@ function loading_validate_button_Row() {
         content_loading.removeAttribute('hidden');
         const label_success = document.querySelector('#label_success');
         const _token = document.querySelector("input[name=_token]").value;
+        const element_loading = document.querySelector("#element_loading");
         label_success.textContent = "Creando acta y enviando notificación..... 40%";
         $.ajax({
             type: "POST",
@@ -268,27 +254,13 @@ function loading_validate_button_Row() {
                     rows.forEach(row => {
 
                         label_success.textContent = "Guardando fila..... 80%";
-                        const amount = row.querySelector('#amount').value;
-                        const description = row.querySelector('#description').value;
-                        const brand = row.querySelector('#brand').value;
-                        const serie = row.querySelector('#serie').value;
-                        const id_type_component = row.querySelector('#id_type_component').value;
-                        const id_origin_certificate = row.querySelector('#id_origin_certificate').value;
-                        const id_state_certificate = row.querySelector('#id_state_certificate').value;
-                        const accessories = row.querySelector('#accessories').value;
+                        const id_product = row.querySelector('#id_product').value;
                         $.ajax({
                             type: "POST",
                             url: "create/save_rows",
                             data: {
-                                amount: amount,
-                                description: description,
-                                brand: brand,
-                                serie: serie,
                                 id_certificate:id_certificate,
-                                id_type_component	:id_type_component,
-                                id_origin_certificate	:id_origin_certificate,
-                                id_state_certificate	:id_state_certificate,
-                                accessories	:accessories,
+                                id_product: id_product,
                                 _token: _token,
                             },
                             success: function (response) {
@@ -301,6 +273,7 @@ function loading_validate_button_Row() {
                                     setTimeout(() => {
 
                                             label_success.textContent = "Filas insertadas..... 100%";
+                                            element_loading.remove();
                                             setTimeout(() => {
                                                 Swal.fire({
                                                     icon: "success",

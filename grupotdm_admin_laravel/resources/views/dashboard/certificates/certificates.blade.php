@@ -46,14 +46,14 @@
     <tbody>
         @foreach ($certificates as $c)
         @if($c->id_user_delivery == $user->id || $c->id_user_receives == $user->id || $user->id_area == 2 || $user->id_area == 1 || $user->id_area == 16)
-        <tr>
+        <tr id="certificate">
         <td>{{ $c->id }}</td>
         <td>{{ $c->proceeding }}</td>
         <td>{{ $c->date }}</td>
         <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $c->id_user_delivery) }}">{{ $c->name_delivery }}</a></td>
         <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $c->id_user_receives) }}">{{ $c->name_receives }}</a></td>
         <td>{{ $c->state }}</td>
-        <td><a href="{{ route('dashboard.certificates.view_certificate', $c->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if ($c->id_user_delivery == $user->id)
+        <td><input type="number" hidden id="id_state" value="{{ $c->id_state }}"><a href="{{ route('dashboard.certificates.view_certificate', $c->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if ($c->id_user_delivery == $user->id)
             <form action="{{ route('dashboard.certificates.delete') }}" method="post"  onsubmit="return confirmarEnvio()">
                 @csrf
                 <input type="number" value="{{ $c->id }}" hidden name="id_certificate">
@@ -70,6 +70,7 @@
 
 
 @section('js')
+@vite(['resources/js/certificates.js'])
 <script>
     function confirmarEnvio() {
       // Mostrar un mensaje de confirmación

@@ -28,6 +28,7 @@ function obtenerFechaActual() {
 
   try {
     const date = document.querySelector('#date');
+    
     date.value = obtenerFechaActual();
   } catch (error) {
     console.log('fecha no insertada')

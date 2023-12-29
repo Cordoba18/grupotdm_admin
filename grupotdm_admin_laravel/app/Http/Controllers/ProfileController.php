@@ -23,6 +23,7 @@ use App\Models\State_Certificate;
 use App\Models\Type_Component;
 use App\Models\Calification;
 use App\Models\Charge;
+use App\Models\Report_product;
 use App\Models\Comment;
 use App\Models\Image_product;
 use App\Models\Companie;
@@ -988,7 +989,7 @@ $new_permission->id_user_collaborator = $user->id;
 $new_permission->observations = $request->observations;
 $new_permission->id_reason = $request->id_reason;
 $new_permission->id_replenish_time = $request->id_replenish_time;
-$new_permission->id_state = 8;
+$new_permission->id_state = 3;
 $new_permission->save();
 if ($jefe){
     Mail::to($jefe->email)->send(new create_permission($jefe, $new_permission, $user));
@@ -1132,17 +1133,19 @@ public function save_certificate(Request $request){
 
 public function save_rows_certificate(Request $request){
 $user = Auth::user();
+
+
 $new_rows_certificate = new Row_Certificate();
-$new_rows_certificate->amount = $request->amount;
-$new_rows_certificate->description = $request->description;
-$new_rows_certificate->brand = $request->brand;
-$new_rows_certificate->serie = $request->serie;
+$new_rows_certificate->id_product = $request->id_product;
 $new_rows_certificate->id_certificate = $request->id_certificate;
-$new_rows_certificate->id_type_component = $request->id_type_component;
-$new_rows_certificate->id_origin_certificate = $request->id_origin_certificate;
-$new_rows_certificate->id_state_certificate	 = $request->id_state_certificate;
-$new_rows_certificate->accessories = $request->accessories;
 $new_rows_certificate->save();
+
+$certificate = Certificate::find($request->id_certificate);
+$new_report_product = new Report_product();
+$new_report_product->id_product = $request->id_product;
+$new_report_product->id_certificate = $request->id_certificate;
+$new_report_product->report = "El producto se encuentra pendiente asignado al acta  con ID $request->id_certificate  para la direcciòn $certificate->address";
+$new_report_product->save();
 return response()->json(['message'=> true],200);
 }
 
@@ -1150,6 +1153,17 @@ public function delete_certificate(Request $request){
     $user = Auth::user();
     $id_certificate = $request->id_certificate;
     $certificate = Certificate::find($id_certificate);
+    $rows_certificates = Row_Certificate::all()->where('id_certificate','=',$id_certificate);
+
+    foreach ($rows_certificates as $r) {
+        $new_report_product = new Report_product();
+        $new_report_product->id_product = $r->id_product;
+        $new_report_product->id_certificate = $id_certificate;
+        $new_report_product->report = "El producto ya NO se encuentra asignado al acta  con ID $id_certificate";
+        $new_report_product->save();
+    }
+
+
     $certificate->id_state = 2;
     $certificate->save();
     $user_receive = User::find($certificate->id_user_receives);
@@ -1160,7 +1174,7 @@ public function delete_certificate(Request $request){
 
 public function view_certificate($id){
 
-    $certificate = DB::selectOne("SELECT c.general_remarks, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.name AS name_receives, ar.area AS area_receives, ud.name AS name_delivery, ad.area AS area_delivery
+    $certificate = DB::selectOne("SELECT c.general_remarks, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.id AS id_user_receives, ud.id AS id_user_delivery, ur.name AS name_receives, ar.area AS area_receives, ud.name AS name_delivery, ad.area AS area_delivery
     FROM certificates c
     INNER JOIN proceedings p ON c.id_proceeding = p.id
     INNER JOIN states s ON c.id_state = s.id
@@ -1173,11 +1187,12 @@ public function view_certificate($id){
     $user_reception = DB::selectOne("SELECT * FROM users u
     INNER JOIN certificates c ON u.id = c.id_user_reception WHERE c.id = $id");
     $certificate_full = Certificate::find($id);
- $rows_certificate = DB::select("SELECT r.id, r.amount, r.description, r.brand, r.serie, o.origin_certificate, s.state_certificate, t.type_component, r.accessories
+ $rows_certificate = DB::select("SELECT r.id, p.id AS id_product, p.name, p.brand, p.serie, o.origin_certificate, s.state_certificate, t.type_component, p.accessories
  FROM rows_certificates r
- INNER JOIN origins_certificates o ON r.id_origin_certificate = o.id
- INNER JOIN states_certificates s ON r.id_state_certificate = s.id
- INNER JOIN type_components t ON r.id_type_component = t.id WHERE r.id_certificate = $id");
+ INNER JOIN products p ON r.id_product = p.id
+ INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+ INNER JOIN states_certificates s ON p.id_state_certificate = s.id
+ INNER JOIN type_components t ON p.id_type_component = t.id WHERE r.id_certificate = $id");
  return view('dashboard.certificates.view_certificate',compact('certificate','user_reception','certificate_full','rows_certificate'));
 }
 
@@ -1212,6 +1227,18 @@ $user = Auth::user();
 
 
     $certificate->save();
+
+    $rows_certificates = Row_Certificate::all()->where('id_certificate','=',$id_certificate);
+    $state_certificate = DB::selectOne("SELECT s.state FROM certificates c INNER JOIN states s ON c.id_state = s.id WHERE c.id=$id_certificate")->state;
+
+    foreach ($rows_certificates as $r) {
+        $new_report_product = new Report_product();
+        $new_report_product->id_product = $r->id_product;
+        $new_report_product->id_certificate = $id_certificate;
+        $new_report_product->report = "El producto asociado al acta con ID $certificate->id y fecha $certificate->address esta en estado $state_certificate";
+        $new_report_product->save();
+    }
+
     return redirect()->route('dashboard.certificates.view_certificate',$id_certificate)->with('message', 'Accion realizada con exito');
 }
 
@@ -1296,11 +1323,37 @@ $validation_product = DB::select("SELECT * FROM products p
  INNER JOIN rows_certificates rs ON p.id = rs.id_product
 INNER JOIN certificates c ON rs.id_certificate = c.id
 INNER JOIN type_components t ON p.id_type_component = t.id
-WHERE p.id = $id AND p.id_state = 1 AND (c.id_state = 8 AND c.id_state = 11 )");
+WHERE p.id = $id AND p.id_state = 1 AND (c.id_state = 3 || c.id_state = 11 )");
  if($product && !$validation_product){
     return response()->json(['product' => $product], 200);
  }else{
     return response()->json(['product' => false], 200);
  }
 }
+
+
+public function delete_product(Request $request){
+
+
+    $product = Product::find($request->id_product);
+    $product->id_state =2;
+    $product->save();
+    return redirect()->back()->with('message','Producto eliminado con exito');
+}
+
+public function view_product($id){
+
+    $user = Auth::user();
+
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+
+        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
+        $origins_certificates = Origin_Certificate::all();
+        $states_certificates = State_Certificate::all();
+        $types_components = Type_Component::all();
+        $product = Product::find($id);
+        $reports_product = Report_Product::orderBy('id', 'desc')->get();
+        return view('dashboard.inventories.view_products',compact('reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
+}
+
 }
