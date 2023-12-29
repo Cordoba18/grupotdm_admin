@@ -8,7 +8,7 @@
 @stop
 @section('content_header')
 
-<h1>INVETARIOS</h1>
+<h1>INVENTARIOS</h1>
 <br>
 @if (session('message'))
 
