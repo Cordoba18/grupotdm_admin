@@ -105,3 +105,7 @@ Route::get('/dashboard/inventories/create', [ProfileController::class, 'create_p
 Route::post('/dashboard/inventories/create/save', [ProfileController::class, 'save_product'])->name('dashboard.inventories.create.save');
 Route::post('/dashboard/inventories/delete', [ProfileController::class, 'delete_product'])->name('dashboard.inventories.delete');
 Route::get('/dashboard/inventories/view_product/{id}', [ProfileController::class, 'view_product'])->name('dashboard.inventories.view_product');
+Route::get('/dashboard/inventories/view_product/images_product/{id}', [ProfileController::class, 'images_product'])->name('dashboard.inventories.view_product.images_product');
+Route::post('/dashboard/inventories/view_product/images_product/save', [ProfileController::class, 'save_image_product'])->name('dashboard.inventories.view_product.save_image_product');
+Route::post('/dashboard/inventories/view_product/images_product/delete', [ProfileController::class, 'delete_image_product'])->name('dashboard.inventories.view_product.delete_image_product');
+Route::post('/dashboard/inventories/view_product/save_changes', [ProfileController::class, 'save_changes_view_product'])->name('dashboard.inventories.view_product.save_changes_view_product');

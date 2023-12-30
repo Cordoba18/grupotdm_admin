@@ -3,13 +3,8 @@
 @section('title', 'GRUPO TDM')
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+@vite(['resources/css/view_product.css'])
 
-<style>
-    select{
-   width: 100%; border: 0; padding: 10px;
-}
-
-</style>
 
 
 
@@ -36,17 +31,20 @@
 @section('content')
 
 <br>
-<div style="background-color: black; text-align: center" id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+<div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
     <div class="carousel-inner">
+        @php
+            $acumulador = 1;
+        @endphp
         @foreach($images_product as $ip)
         @php
-            $suma = 1;
-        @endphp
-         <div class="@if ($suma == 1){{ "carousel-item active"}}@else{{ "carousel-item"}}@endif">
+        $suma = 1;
+    @endphp
+         <div class="@if ($acumulador == 1){{ "carousel-item active"}}@else{{ "carousel-item"}}@endif">
         @if($product->id == $ip->id_product && $suma == 1)
         @php
         $suma = $suma + 1;
-
+        $acumulador = $acumulador + 1;
     @endphp
  @if($suma == 1)
  <img src="{{ asset('storage/icons/logo.png') }}" alt="">
@@ -62,16 +60,21 @@
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
+      <span class="visually-hidden"></span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
+      <span class="visually-hidden"></span>
     </button>
   </div>
 <br>
-<form action="" method="POST" enctype="multipart/form-data">
+<form action="{{ route('dashboard.inventories.view_product.save_changes_view_product') }}" method="POST" enctype="multipart/form-data">
     @csrf
+    <input readonly hidden type="text" required name="id_product" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->id }}">
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">ID</label>
+        <input  disabled readonly type="text" required name="id" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->id }}">
+      </div>
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Nombre/Descripción</label>
     <input  type="text" required name="name" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->name }}">
@@ -162,75 +165,39 @@ $state_certificate = $s->state_certificate;
   @if ($validate_user_sistemas)
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">CAMBIAR IMAGEN PRINCIPAL</label>
-    <input required type="file" name="file" id="" accept="image/*" style="width: 100%">
+    <input type="file" name="file" id="" accept="image/*" style="width: 100%">
   </div>
 
   <button class="btn btn-success">Guardar Cambios</button>
+  <a href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS </a>
   <br>
 
 </form>
-  <h1>IMAGENES SECUNDARIAS</h1>
-<br>
-<table class="table">
-
-    <thead class="table-dark">
-        <th>IMAGEN</th>
-        <th>ELIMINAR</th>
-    </thead>
-    <tbody>
-
-        @foreach($images_product as $ip)
-        @php
-            $suma = 0;
-        @endphp
-        @if($product->id == $ip->id_product)
-        @php
-        $suma = $suma + 1;
-    @endphp
-    @if ($suma > 1)
-    <td>
- <img src="{{ asset('storage/files/'.$ip->image) }}" alt="">
-</td>
-<td>
-    <form action="" method="post" onsubmit="return confirmarEnvio()">
-        @csrf
-        <input type="text" hidden value="{{ $ip->id }}" name="id_image_product">
-        <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-    </form>
-</td>
- @endif
- @endif
 
 
-
-        @endforeach
-
-    </tbody>
-</table>
-<br>
-<br>
-<h1>ZONA DE REPORTES</h1>
-<br>
-<table class="table">
-
-    <thead class="table-dark">
-        <th>ID DE REPORTE</th>
-        <th>REPORTE</th>
-        <th>VER ACTA ASOCIADA</th>
-    </thead>
-    <tbody>
-        @foreach ($reports_product as $r)
-        <tr>
-            <td>{{ $r->id }}</td>
-            <td><b>{{ $r->report }}</b></td>
-            <td><a href="{{ route('dashboard.certificates.view_certificate', $r->id_certificate ) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
   @endif
 
 
+  <br>
+  <h1>ZONA DE REPORTES</h1>
+  <br>
+  <table class="table">
+
+      <thead class="table-dark">
+          <th>ID DE REPORTE</th>
+          <th>REPORTE</th>
+          <th>VER ACTA ASOCIADA</th>
+      </thead>
+      <tbody>
+          @foreach ($reports_product as $r)
+          <tr>
+              <td>{{ $r->id }}</td>
+              <td><b>{{ $r->report }}</b></td>
+              <td><a href="{{ route('dashboard.certificates.view_certificate', $r->id_certificate ) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
+          </tr>
+          @endforeach
+      </tbody>
+  </table>
 
 @stop
 

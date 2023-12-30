@@ -9,6 +9,7 @@ use App\Mail\calification_ticket;
 use App\Mail\comment_ticket;
 use App\Mail\create_certificate;
 use App\Mail\create_permission;
+use App\Mail\create_product;
 use App\Mail\create_ticket;
 use App\Mail\create_user;
 use App\Mail\edit_ticket;
@@ -831,9 +832,9 @@ public function save_file(Request $request){
             $new_file->id_user = $user->id;
             $new_file->date_create = $fechaColombiana;
             $new_file->date_update = $fechaColombiana;
-            Mail::to($user->email)->send(new new_file($user, $directory, $new_file));
             ReportController::create_report("Se ha creado un nuevo archivo con llamado $request->name en el directorio con ID $directory->id", $user->id, 14);
             $new_file->save();
+            Mail::to($user->email)->send(new new_file($user, $directory, $new_file));
             return back()->with('message','Archivo creado con exito');
         }
     }else{
@@ -1116,6 +1117,7 @@ public function get_users_areas($id){
 
 public function save_certificate(Request $request){
     $user = Auth::user();
+    $user_receive = User::find($request->id_user_receives);
     $new_certificate = new Certificate();
     $new_certificate->id_proceeding = $request->id_proceeding;
     $new_certificate->date = $request->date;
@@ -1127,6 +1129,7 @@ public function save_certificate(Request $request){
     $new_certificate->save();
     $certificate = DB::selectOne("SELECT * FROM certificates WHERE date = '$request->date' AND id_user_delivery = $user->id AND address = '$request->address'");
     $user_receive = User::find($request->id_user_receives);
+    ReportController::create_report("El usuario $user->name ha creado un acta para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
     Mail::to($user_receive->email)->send(new create_certificate($user_receive, $user,$certificate));
     return response()->json(['id_certificate'=> $certificate->id],200);
 }
@@ -1167,6 +1170,7 @@ public function delete_certificate(Request $request){
     $certificate->id_state = 2;
     $certificate->save();
     $user_receive = User::find($certificate->id_user_receives);
+    ReportController::create_report("El usuario $user->name ha eliminado el acta con ID $id_certificate para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
     Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el usuario $user->name ha eliminado el certificado con ID $certificate->id y fecha $certificate->date"));
     return redirect()->route('dashboard.certificates')->with('message','Certificado eliminado con exito!');
 
@@ -1217,12 +1221,14 @@ $user = Auth::user();
         $certificate->image_exit = $name_file;
         $certificate->date_exit = $date;
         $certificate->id_user_reception = $user->id;
+        ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
         Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date salio de las instalaciones para la direccion expecificada: $certificate->address"));
     }else{
         $certificate->id_state = 12;
         $certificate->image_delivery = $name_file;
         $certificate->date_delivery = $date;
-        Mail::to($user_delivery->email)->send(new notification_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
+        ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $request->address", $user->id, 17);
+        Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
     }
 
 
@@ -1244,13 +1250,36 @@ $user = Auth::user();
 
 
 public function show_inventories(Request $request){
-
-    $products = Product::all()->where('id_state','=',1);
+$search = $request->search;
+    if($request->search !== null && $request->filter !== null){
+        $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+        INNER JOIN states_certificates s ON p.id_state_certificate = s.id
+        INNER JOIN type_components t ON p.id_type_component = t.id
+        INNER JOIN rows_certificates rs ON p.id = rs.id_product
+        INNER JOIN certificates c ON rs.id_certificate = c.id
+        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
+        AND c.id_state = $request->filter AND p.id_state = 1";
+    }else if($request->search !== null){
+        $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+        INNER JOIN states_certificates s ON p.id_state_certificate = s.id
+        INNER JOIN type_components t ON p.id_type_component = t.id
+        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
+        AND p.id_state = 1";
+    }else if($request->filter !== null){
+        $sql = "INNER JOIN rows_certificates rs ON p.id = rs.id_product
+        INNER JOIN certificates c ON rs.id_certificate = c.id
+        INNER JOIN type_components t ON p.id_type_component = t.id
+        WHERE c.id_state = $request->filter AND p.id_state = 1";
+    }else{
+        $sql = "WHERE p.id_state = 1";
+    }
+    $products = DB::select("SELECT p.id, p.name, p.serie FROM products p $sql");
     $images_products = Image_product::all()->where('id_state','=',1);
     $user = Auth::user();
+    $filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=11");
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     if($validate_user_sistemas){
-    return view('dashboard.inventories.inventories', compact('products', 'images_products'));
+    return view('dashboard.inventories.inventories', compact('products', 'images_products','filters','search'));
     }else{
         return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
     }
@@ -1297,6 +1326,13 @@ public function save_product(Request $request){
             $image_product->id_product = $id_product;
             $image_product->id_state = 1;
             $image_product->save();
+            ReportController::create_report("El usuario $user->name ha creado un producto con la siguiente serial $request->serie", $user->id, 18);
+            $users_sistemas = DB::select("SELECT * FROM users WHERE id_area = 2 AND id=$user->id AND id_state = 1");
+            if($users_sistemas){
+            foreach ($users_sistemas as $u) {
+                Mail::to($u->email)->send(new create_product($u, $product));
+            }
+        }
             return redirect()->route('dashboard.inventories')->with('message','Producto guardado con exito');
         }else{
 
@@ -1334,10 +1370,11 @@ WHERE p.id = $id AND p.id_state = 1 AND (c.id_state = 3 || c.id_state = 11 )");
 
 public function delete_product(Request $request){
 
-
+    $user = Auth::user();
     $product = Product::find($request->id_product);
     $product->id_state =2;
     $product->save();
+    ReportController::create_report("El usuario $user->name ha eliminado el producto con la siguiente serial $product->serie", $user->id, 18);
     return redirect()->back()->with('message','Producto eliminado con exito');
 }
 
@@ -1346,14 +1383,94 @@ public function view_product($id){
     $user = Auth::user();
 
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-
-        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
         $origins_certificates = Origin_Certificate::all();
         $states_certificates = State_Certificate::all();
         $types_components = Type_Component::all();
         $product = Product::find($id);
+        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
         $reports_product = Report_Product::orderBy('id', 'desc')->get();
         return view('dashboard.inventories.view_products',compact('reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
 }
 
+
+public function images_product($id){
+
+    $user = Auth::user();
+    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    if($validate_user_sistemas){
+    $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
+    $product = Product::find($id);
+    return view('dashboard.inventories.images_product',compact('images_product','product'));
+}
+    else{
+        return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
+    }
+}
+
+public function save_image_product(Request $request){
+
+    $user = Auth::user();
+    $id_product = $request->id_product;
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $fechaHoraActual = now()->format('Y-m-d_H-i-s');
+        $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
+        $rutaImagen = public_path('storage/files/' . $name_file);
+        $file->move(public_path('storage/files'), $name_file);
+        $image_product = new Image_product();
+        $image_product->image = $name_file;
+        $image_product->id_product = $id_product;
+        $image_product->id_state = 1;
+        $image_product->save();
+        return redirect()->route('dashboard.inventories.view_product.images_product', $id_product)->with('message','Imagen guardada con exito');
+    }else{
+        return redirect()->route('dashboard.inventories.view_product.images_product', $id_product)->with('message_error','Imagen no insertada');
+    }
+}
+
+public function delete_image_product(Request $request){
+    $user = Auth::user();
+    $id_product = $request->id_product;
+    $id_image_product = $request->id_image_product;
+    $image_product = Image_product::find($id_image_product);
+        $image_product->id_state = 2;
+        $image_product->save();
+        return redirect()->route('dashboard.inventories.view_product.images_product', $id_product)->with('message','Imagen eliminada con exito');
+}
+
+public function save_changes_view_product(Request $request){
+
+    $user = Auth::user();
+    $id_product = $request->id_product;
+    $product = Product::find($id_product);
+    $validation_serie = DB::select("SELECT * FROM products WHERE serie LIKE '%$request->serie%'");
+    $product->name = $request->name;
+    $product->brand = $request->brand;
+    $product->accessories = $request->accessories;
+    $product->id_type_component = $request->id_type_component;
+    $product->id_state_certificate = $request->id_state_certificate;
+    $product->id_origin_certificate = $request->id_origin_certificate;
+    $message = "";
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $fechaHoraActual = now()->format('Y-m-d_H-i-s');
+        $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
+        $rutaImagen = public_path('storage/files/' . $name_file);
+        $file->move(public_path('storage/files'), $name_file);
+        $image_product = DB::selectOne("SELECT * FROM images_products WHERE id_product = $id_product AND id_state = 1");
+        $image_product->image = $name_file;
+        $image_product->save();
+
+        $message = "CON IMAGEN PRINCIPAL NUEVA";
+    }
+    if  (!$validation_serie){
+        $product->serie = $request->serie;
+        $message = "CON SERIAL NUEVA";
+    }else if($validation_serie){
+        $message = "SIN CAMBIO DE SERIAL (Puede ser por existencia en otro producto o porque ya lo tiene este mismo producto)";
+    }
+    ReportController::create_report("El usuario $user->name ha cambiado los datos del producto con la siguiente serial $product->serie con ID $product->id", $user->id, 18);
+    $product->save();
+    return redirect()->route('dashboard.inventories.view_product', $id_product)->with('message',"datos ingresados correctamente $message");
+}
 }

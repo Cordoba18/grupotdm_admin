@@ -8,7 +8,7 @@
 @stop
 @section('content_header')
 
-<h1>INVENTARIOS</h1>
+<h1>INVENTARIO</h1>
 <br>
 @if (session('message'))
 
@@ -25,10 +25,22 @@
     <br><br>
 
     <div class="content_search">
-        <form action="" method="get">
-            <input type="text" name="search" placeholder="Buscar productos" style="width: 80%">
-            <button id="btn_search" class="btn btn-primary">Buscar</button></form>
-        </div>
+        <form action="{{ route('dashboard.inventories') }}" method="get">
+
+            @if ($search)
+            <input type="text" name="search" placeholder="Buscar" id="Buscar productos" value="{{ $search }}">
+            @else
+            <input type="text" name="search" placeholder="Buscar" id="Buscar productos">
+            @endif
+            <select name="filter" id="" >
+                <option value="">Seleccione un filtro</option>
+                @foreach ($filters as $f)
+                <option value="{{ $f->id }}">{{ $f->state }}</option>
+                @endforeach
+            </select>
+    <button id="btn_search" class="btn btn-primary">Buscar</button>
+</form>
+</div>
 <br>
 @stop
 
@@ -38,24 +50,20 @@
 <div class="content_products">
 
     @foreach ($products as $p)
-
+    @php $suma = 1; @endphp
     <div class="content_product">
         <div class="content_image_product">
             <a href="{{ route('dashboard.inventories.view_product',$p->id) }}">
             @foreach($images_products as $ip)
-            @php
-                $suma = 1;
-            @endphp
-            @if($p->id == $ip->id_product && $suma == 1)
-            @php
-            $suma = $suma + 1;
 
-        @endphp
+
+            @if($p->id == $ip->id_product)
         @if($suma == 1)
-        <img src="{{ asset('storage/icons/logo.png') }}" alt="">
-        @else
         <img src="{{ asset('storage/files/'.$ip->image) }}" alt="">
         @endif
+        @php
+        $suma = $suma + 1;
+    @endphp
             @endif
 
             @endforeach
@@ -63,6 +71,9 @@
         </div>
         <div class="content_info">
             <div>
+            <p>ID :</p><b>{{ $p->id }}</b>
+        </div>
+        <div>
             <p>Nombre:</p><b>{{ $p->name }}</b>
         </div>
         <div>

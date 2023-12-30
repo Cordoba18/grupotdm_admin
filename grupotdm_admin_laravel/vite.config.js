@@ -13,6 +13,8 @@ export default defineConfig({
                 'resources/css/create_certificate.css',
                 'resources/css/view_certificate.css',
                 'resources/css/inventories.css',
+                'resources/css/view_product.css',
+                'resources/css/images_product.css',
                 'resources/js/register.js',
                 'resources/js/app.js',
                 'resources/js/recovery_password.js',
