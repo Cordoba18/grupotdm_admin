@@ -361,21 +361,25 @@ public function delete_ticket(Request $request){
 public function state(Request $request){
     $user = Auth::user();
     $Ticket = Ticket::find($request->id_ticket);
-
-    if ($Ticket->id_state == 4) {
-        $Ticket->id_state =5;
-        ReportController::create_report("El usuario $user->email inicio la ejecución del ticket con id $Ticket->id", $user->id, 7);
-
-    }else if ($Ticket->id_state == 5) {
-        $Ticket->id_state =7;
-        ReportController::create_report("El usuario $user->email finalizo la ejecución del ticket con id $Ticket->id", $user->id, 7);
-
-    }
-    $Ticket->save();
-    $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
     $user_sender = User::find($Ticket->id_user_sender);
     $user_destination = User::find($Ticket->id_user_destination);
-    Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+    if ($Ticket->id_state == 4) {
+        $Ticket->id_state =5;
+        $Ticket->save();
+        $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
+        ReportController::create_report("El usuario $user->email inicio la ejecución del ticket con id $Ticket->id", $user->id, 7);
+        Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+    }else if ($Ticket->id_state == 5 || $Ticket->id_state == 6) {
+        $Ticket->id_state =7;
+        $Ticket->save();
+        $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
+        ReportController::create_report("El usuario $user->email finalizo la ejecución del ticket con id $Ticket->id", $user->id, 7);
+        Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+    }
+
+
+
+
 
     return redirect()->route('dashboard.tickets')->with('message', 'Peticion realizada');
 }

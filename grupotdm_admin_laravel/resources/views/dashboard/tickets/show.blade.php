@@ -178,8 +178,14 @@
                             @else
                             <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                             @endif
-
                         </form>
+                        @if (($t->id_state == 5 || $t->id_state == 6 ))
+                        <form action="{{ route('dashboard.tickets.state') }}" method="post">
+                            @csrf
+                            <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
+                            <button class="btn btn-success">TERMINAR</button>
+                        </form>
+                        @endif
 
                         @else
                         <form action="{{ route('dashboard.tickets.state') }}" method="post">
@@ -187,8 +193,6 @@
                             <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
                         @if ($t->id_state == 4 && $t->id_user_destination == $user->id)
                         <button  class="btn btn-dark">EJECUTAR</button>
-                        @elseif ($t->id_state == 5 && $t->id_user_destination == $user->id)
-                        <button class="btn btn-success">TERMINAR</button>
                         @endif
                     </form>
                         @endif

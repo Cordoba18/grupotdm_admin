@@ -128,21 +128,28 @@
     @endif
     <a class="btn btn-primary" href="{{ route('dashboard.tickets') }}">Volver</a>
     <br><br>
+    <div style="display: flex; flex-wrap: wrap;">
     @if ($ticket->id_user_sender == $user->id)
     <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
         @csrf
         <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
         <button class="btn btn-danger">ELIMINAR</button>
     </form>
+    @if (($ticket->id_state == 5 || $ticket->id_state == 6 ) && $ticket->id_user_sender == $user->id)
+    <form action="{{ route('dashboard.tickets.state') }}" method="post">
+        @csrf
+        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+    <button class="btn btn-success">TERMINAR</button>
+</form>
+    @endif
     @else
     <form action="{{ route('dashboard.tickets.state') }}" method="post">
         @csrf
         <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
     @if ($ticket->id_state == 4 && $ticket->id_user_destination == $user->id)
     <button  class="btn btn-dark">EJECUTAR</button>
-    @elseif ($ticket->id_state == 5 && $ticket->id_user_destination == $user->id)
-    <button class="btn btn-success">TERMINAR</button>
     @endif
+</div>
 </form>
     @endif
 
