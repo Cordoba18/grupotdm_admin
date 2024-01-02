@@ -101,7 +101,7 @@ $user = Auth::user();
         <tbody class="table-light" style="height: auto">
             @foreach ($rows_certificate as $r)
                 <tr style="border-bottom: 4px solid black; text-align: center;">
-                    <td>{{ $r->id }}</td>
+                    <td>{{ $r->id_product }}</td>
                     <td>{{ $r->name }}</td>
                     <td>{{ $r->brand }}</td>
                     <td>{{ $r->serie }}</td>

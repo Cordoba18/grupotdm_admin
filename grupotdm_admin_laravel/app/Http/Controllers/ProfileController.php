@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Mail\accept_certificate;
 use App\Mail\action_permission;
 use App\Mail\ActionUser;
 use App\Mail\calification_ticket;
@@ -54,6 +55,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Directory;
 
 class ProfileController extends Controller
@@ -1221,13 +1223,13 @@ $user = Auth::user();
         $certificate->image_exit = $name_file;
         $certificate->date_exit = $date;
         $certificate->id_user_reception = $user->id;
-        ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
-        Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date salio de las instalaciones para la direccion expecificada: $certificate->address"));
+        ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $user_receive->name para la siguiente dirección $certificate->address", $user->id, 17);
+        Mail::to($user_receive->email)->send(new accept_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date salio de las instalaciones para la direccion expecificada: $certificate->address", $certificate));
     }else{
         $certificate->id_state = 12;
         $certificate->image_delivery = $name_file;
         $certificate->date_delivery = $date;
-        ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $request->address", $user->id, 17);
+        ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user->id, 17);
         Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
     }
 
@@ -1315,6 +1317,13 @@ public function save_product(Request $request){
         $product->id_state = 1;
         $product->save();
         $id_product = DB::selectOne("SELECT * FROM products WHERE serie = '$request->serie' AND id_state = 1")->id;
+        ReportController::create_report("El usuario $user->name ha creado un producto con la siguiente serial $request->serie", $user->id, 18);
+            $jefe_sistemas = DB::selectOne("SELECT * FROM users u
+            INNER JOIN charges c ON u.id_chargy = c.id
+            WHERE c.chargy = 'JEFE DE AREA' AND u.id_area = 2 AND u.id_state = 1");
+            Mail::to($jefe_sistemas->email)->send(new create_product($jefe_sistemas, $product));
+
+    }
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fechaHoraActual = now()->format('Y-m-d_H-i-s');
@@ -1326,21 +1335,10 @@ public function save_product(Request $request){
             $image_product->id_product = $id_product;
             $image_product->id_state = 1;
             $image_product->save();
-            ReportController::create_report("El usuario $user->name ha creado un producto con la siguiente serial $request->serie", $user->id, 18);
-            $users_sistemas = DB::select("SELECT * FROM users WHERE id_area = 2 AND id=$user->id AND id_state = 1");
-            if($users_sistemas){
-            foreach ($users_sistemas as $u) {
-                Mail::to($u->email)->send(new create_product($u, $product));
-            }
-        }
             return redirect()->route('dashboard.inventories')->with('message','Producto guardado con exito');
         }else{
-
             return redirect()->route('dashboard.inventories')->with('message','Producto guardado sin imagen!');
         }
-
-
-    }
 
 }else{
     return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
@@ -1388,7 +1386,7 @@ public function view_product($id){
         $types_components = Type_Component::all();
         $product = Product::find($id);
         $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
-        $reports_product = Report_Product::orderBy('id', 'desc')->get();
+        $reports_product = Report_Product::orderBy('id', 'desc')->where('id_product','=',$id)->get();
         return view('dashboard.inventories.view_products',compact('reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
 }
 
@@ -1457,10 +1455,9 @@ public function save_changes_view_product(Request $request){
         $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
         $rutaImagen = public_path('storage/files/' . $name_file);
         $file->move(public_path('storage/files'), $name_file);
-        $image_product = DB::selectOne("SELECT * FROM images_products WHERE id_product = $id_product AND id_state = 1");
+        $image_product = Image_product::where('id_product','=',"$id_product")->where('id_state','=','1')->first();
         $image_product->image = $name_file;
         $image_product->save();
-
         $message = "CON IMAGEN PRINCIPAL NUEVA";
     }
     if  (!$validation_serie){
@@ -1472,5 +1469,19 @@ public function save_changes_view_product(Request $request){
     ReportController::create_report("El usuario $user->name ha cambiado los datos del producto con la siguiente serial $product->serie con ID $product->id", $user->id, 18);
     $product->save();
     return redirect()->route('dashboard.inventories.view_product', $id_product)->with('message',"datos ingresados correctamente $message");
+}
+
+public function get_serie(){
+
+    $finish = false;
+    while(!$finish){
+    $alfanumerico = str::random(4);
+    $serie = "REF".$alfanumerico;
+    $validation = Product::where('serie','=',"$serie")->where('id_state', 1)->first();
+    if(!$validation){
+        $finish = true;
+        return response()->json(['serie' => $serie], 200);
+    }
+    }
 }
 }

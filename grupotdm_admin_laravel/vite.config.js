@@ -26,6 +26,7 @@ export default defineConfig({
                 'resources/js/create_certificate.js',
                 'resources/js/show_certificate.js',
                 'resources/js/certificates.js',
+                'resources/js/create_product.js',
             ],
             refresh: true,
         }),

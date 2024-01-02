@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\RecoveryPasswordController;
+use App\Http\Controllers\Mails_Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -109,3 +110,7 @@ Route::get('/dashboard/inventories/view_product/images_product/{id}', [ProfileCo
 Route::post('/dashboard/inventories/view_product/images_product/save', [ProfileController::class, 'save_image_product'])->name('dashboard.inventories.view_product.save_image_product');
 Route::post('/dashboard/inventories/view_product/images_product/delete', [ProfileController::class, 'delete_image_product'])->name('dashboard.inventories.view_product.delete_image_product');
 Route::post('/dashboard/inventories/view_product/save_changes', [ProfileController::class, 'save_changes_view_product'])->name('dashboard.inventories.view_product.save_changes_view_product');
+Route::get('/dashboard/inventories/create/get_serie', [ProfileController::class, 'get_serie'])->name('dashboard.inventories.create.get_serie');
+
+
+Route::get('/dashboard/certificates/accept_certificate', [Mails_Controller::class, 'accept_certificate'])->name('dashboard.certificates.accept_certificate');

@@ -43,7 +43,8 @@
   </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Serial</label>
-    <input type="text" required  name="serie" class="form-control" id="exampleFormControlInput1" placeholder="" value="">
+    <input type="text" required id="input_serie" name="serie" class="form-control"  placeholder="" value="">
+    <button class="btn btn-dark" id="btn_serie">GENERAR SERIAL ALEATORIA</button>
     <span style="color: red;">El serial no debe pertenecer a ningun otro producto</span>
 </div>
   <div class="mb-3">
@@ -91,5 +92,8 @@
 
 
 @section('js')
-@vite(['resources/js/create_permissions.js'])
+
+
+@vite(['resources/js/create_product.js'])
+
 @stop
