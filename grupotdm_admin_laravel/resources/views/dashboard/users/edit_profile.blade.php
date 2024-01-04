@@ -32,6 +32,10 @@
     <input type="number" name="nit" class="form-control" required id="exampleFormControlInput1" value="{{ $user->nit }}">
   </div>
   <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">TÉLEFONO</label>
+    <input type="number" name="phone" class="form-control" id="exampleFormControlInput1" value="{{ $user->phone }}" placeholder="Ingrese su telefono">
+  </div>
+  <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Correo</label>
     <input disabled type="email" name="email" class="form-control" required id="exampleFormControlInput1" value="{{ $user->email }}">
   </div>

@@ -7,7 +7,8 @@
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-@stop
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    @stop
     <h1>EDITAR ARCHIVO</h1>
 
     @if (session('message'))
@@ -70,7 +71,7 @@
     <br>
     <b>OTROS CAMBIOS</b>
     <br>
-    <table class="table">
+    <table id="miTabla" class="table table-bordered table-striped dataTable">
         <thead>
             <th>ID</th>
             <th>NOMBRE</th>
@@ -100,5 +101,18 @@
 
 
 @section('js')
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('#miTabla').DataTable({
+        "paging": true,  // Habilita la paginación
+        "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
+        "searching": false, // Deshabilita la función de búsqueda
+        "ordering": true, // Habilita la ordenación de columnas
+        "info": true, // Muestra información sobre la paginación
+        "autoWidth": true // Deshabilita el ajuste automático del ancho de las columnas
 
+      });
+    });
+  </script>
 @stop

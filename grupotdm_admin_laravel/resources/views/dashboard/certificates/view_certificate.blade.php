@@ -45,7 +45,7 @@ $user = Auth::user();
       <div class="mb-3">
         <label for="formFile" class="form-label">DESPACHA</label>
         <a href="{{ route('dashboard.users.view_user',$certificate->id_user_delivery) }}">
-        <input required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_delivery }}" style="background-color: white; padding: 10px; width: 100%;"></a>
+        <input required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_delivery }}" style="background-color: white; padding: 10px; width: 100%;font-weight: bold; border-bottom: 3px solid black;"></a>
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label">DIRECCIÓN DE ENVIO</label>
@@ -65,19 +65,14 @@ $user = Auth::user();
           <div class="mb-3">
             <label for="formFile" class="form-label">USUARIO A RECIBIR</label>
             <a href="{{ route('dashboard.users.view_user',$certificate->id_user_receives) }}">
-            <input required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_receives }}" style="background-color: white; padding: 10px; width: 100%;">
+            <input  required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="{{ $certificate->name_receives }}" style="background-color: white; padding: 10px; width: 100%;font-weight: bold; border-bottom: 3px solid black;">
         </a>
         </div>
 
 
           <div class="mb-3">
             <label for="formFile" class="form-label">RECEPCIONISTA ENCARGADO DE DAR SALIDA</label>
-            <input style="width: 100%;background-color: white; padding: 10px;" required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="
-            @if ($user_reception)
-            {{ $user_reception->name }}
-            @else
-            {{ "No ha sido accionado por un recepcionista" }}
-            @endif">
+            <input style="width: 100%;background-color: white; padding: 10px;" required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext" value="@if ($user_reception){{ $user_reception->name }}@else{{ "No ha sido accionado por un recepcionista" }}@endif">
           </div>
     </div>
 </div>

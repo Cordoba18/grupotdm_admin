@@ -26,6 +26,10 @@
     <input type="number" name="" class="form-control" disabled id="exampleFormControlInput1" value="{{ $user->nit }}">
   </div>
   <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">TÉLEFONO</label>
+    <input type="number" name="" class="form-control" disabled id="exampleFormControlInput1" value="@if($phone){{ $phone }}@else{{ "TELEFONO NO REGISTRADO" }}@endif">
+  </div>
+  <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Correo</label>
     <input disabled type="email" name="" class="form-control" disabled id="exampleFormControlInput1" value="{{ $user->email }}">
   </div>

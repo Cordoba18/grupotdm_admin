@@ -472,6 +472,9 @@ public function save_changes(Request $request){
     if ($request->id_theme_user) {
         $user->id_theme_user = $request->id_theme_user;
     }
+    if($request->phone){
+        $user->phone = $request->phone;
+    }
     ReportController::create_report("Se han modificado los datos del usuario $user->email", $my_user->id, 2);
     $user->save();
     return redirect()->route('dashboard.users.edit_profile', $request->id)->with("message","Usuario actualizado con exito!");
@@ -567,14 +570,21 @@ public function view_user($id){
     INNER JOIN areas a ON u.id_area = a.id
     INNER JOIN charges ch ON u.id_chargy = ch.id
     WHERE u.id = $id");
+    $phone = DB::selectOne("SELECT u.phone FROM users u WHERE u.id = $id");
+
     $shop = DB::selectOne("SELECT s.shop FROM users u INNER JOIN shops s ON u.id_shop = s.id WHERE u.id = $id");
     if ($shop) {
         $shop = $shop->shop;
     }else{
         $shop = null;
     }
+    if ($phone) {
+        $phone = $phone->phone;
+    }else{
+        $phone = null;
+    }
 
-    return view('dashboard.users.view_user', compact('user', 'shop'));
+    return view('dashboard.users.view_user', compact('user', 'shop','phone'));
 }
 
 public function ticket_detail($id){

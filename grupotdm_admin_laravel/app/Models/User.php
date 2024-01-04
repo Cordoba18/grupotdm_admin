@@ -19,6 +19,7 @@ class User extends Model implements Authenticatable
         'name',
         'email',
         'nit',
+        'phone',
         'password',
         'id_company',
         'id_area',

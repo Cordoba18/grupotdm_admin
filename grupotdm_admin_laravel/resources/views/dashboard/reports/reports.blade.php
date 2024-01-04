@@ -2,6 +2,7 @@
 
 @section('title', 'GRUPO TDM')
 @section('css')
+<link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 @stop
 @php
     $user = Auth::user();
@@ -30,7 +31,7 @@
 @if ($reports)
 
 
-<table class="table">
+<table id="miTabla" class="table table-bordered table-striped dataTable">
 
     <thead class="table-dark">
         <th>ID</th>
@@ -63,4 +64,18 @@
 
 
 @section('js')
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('#miTabla').DataTable({
+        "paging": true,  // Habilita la paginación
+        "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
+        "searching": false, // Deshabilita la función de búsqueda
+        "ordering": true, // Habilita la ordenación de columnas
+        "info": false, // Muestra información sobre la paginación
+        "autoWidth": true, // Deshabilita el ajuste automático del ancho de las columnas
+        "order": [[0, 'asc']],
+      });
+    });
+  </script>
 @stop

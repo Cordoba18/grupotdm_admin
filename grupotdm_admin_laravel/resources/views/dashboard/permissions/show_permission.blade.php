@@ -50,6 +50,22 @@
     <label for="formFile" class="form-label">FECHA DE LLEGADA EN LA MAÑANA</label>
     <input style="width: 100%" required disabled type="text" value="{{ $dates_permission->date_tomorrow }}" id="" name="" readonly class="form-control-plaintext">
   </div>
+  <div class="mb-3">
+    <label for="formFile" class="form-label">FECHA DE LLEGADA</label>
+     @if($dates_permission->time_return)
+    <input style="width: 100%" required disabled type="text" value="{{ $dates_permission->time_return }}" id="" name="" readonly class="form-control-plaintext">
+    @else
+    <input style="width: 100%" required disabled type="text" value="No ha llegado" id="" name="" readonly class="form-control-plaintext">
+    @if ($dates_permission->date_tomorrow != 0 && $user->id_area == 16 && $permission->id_state == 10)
+    <form action="{{ route('dashboard.permissions.view_permission.permission_user_return') }}" method="post">
+        @csrf
+        <input style="width: 100%" type="text" id="date" name="time_return" hidden>
+        <input  style="width: 100%" type="number" value="{{ $permission->id }}" name="id_permission" hidden required>
+        <button class="btn btn-success">DAR LLEGADA</button>
+    </form>
+    @endif
+  @endif
+</div>
   @else
   <div class="mb-3">
     <label for="formFile" class="form-label">FECHA DE SALIDA</label>
@@ -75,11 +91,10 @@
 <div class="mb-3">
     <label for="formFile" class="form-label">FECHA DE LLEGADA</label>
   @if($dates_permission->time_return)
-
     <input style="width: 100%" required disabled type="text" value="{{ $dates_permission->time_return }}" id="" name="" readonly class="form-control-plaintext">
     @else
     <input style="width: 100%" required disabled type="text" value="No ha llegado" id="" name="" readonly class="form-control-plaintext">
-    @if ($dates_permission->time_exit && $user->id_area == 16 && $permission->id_state == 10)
+    @if (($dates_permission->time_exit && $user->id_area == 16 && $permission->id_state == 10) || ($dates_permission->date_tomorrow != 0 && $user->id_area == 16 && $permission->id_state == 10))
     <form action="{{ route('dashboard.permissions.view_permission.permission_user_return') }}" method="post">
         @csrf
         <input style="width: 100%" type="text" id="date" name="time_return" hidden>

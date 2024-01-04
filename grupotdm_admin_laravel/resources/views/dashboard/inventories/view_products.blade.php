@@ -4,7 +4,7 @@
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 @vite(['resources/css/view_product.css'])
-
+<link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 
 
 
@@ -181,7 +181,7 @@ $state_certificate = $s->state_certificate;
   <br>
   <h1>ZONA DE REPORTES</h1>
   <br>
-  <table class="table">
+  <table id="miTabla" class="table table-bordered table-striped dataTable">
 
       <thead class="table-dark">
           <th>ID DE REPORTE</th>
@@ -204,6 +204,20 @@ $state_certificate = $s->state_certificate;
 
 
 @section('js')
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('#miTabla').DataTable({
+        "paging": true,  // Habilita la paginación
+        "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
+        "searching": false, // Deshabilita la función de búsqueda
+        "ordering": true, // Habilita la ordenación de columnas
+        "info": true, // Muestra información sobre la paginación
+        "autoWidth": true // Deshabilita el ajuste automático del ancho de las columnas
+
+      });
+    });
+  </script>
 @if (!$validate_user_sistemas)
 <script>
 var inputsAndSelects = document.querySelectorAll('input, select, textarea');

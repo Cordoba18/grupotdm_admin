@@ -8,6 +8,7 @@
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 @stop
 
 @section('content_header')
@@ -37,7 +38,7 @@
 @section('content')
 @if ($validation_jefe)
 
-    <table class="table">
+    <table id="miTabla" class="table table-bordered table-striped dataTable">
         <thead class="table-dark">
          <th>ID</th>
          <th>NOMBRE</th>
@@ -54,7 +55,7 @@
             <div class="content_users">
 
                 @foreach ($users as $u)
-                <tr class="table-light">
+                <tr>
                 <td>{{ $u->id }}</td>
                 <td>{{ $u->name }}</td>
                 <td>{{ $u->nit }}</td>
@@ -87,5 +88,18 @@
 
 
 @section('js')
+<script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+      $('#miTabla').DataTable({
+        "paging": true,  // Habilita la paginación
+        "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
+        "searching": false, // Deshabilita la función de búsqueda
+        "ordering": true, // Habilita la ordenación de columnas
+        "info": false, // Muestra información sobre la paginación
+        "autoWidth": true // Deshabilita el ajuste automático del ancho de las columnas
 
+      });
+    });
+  </script>
 @stop
