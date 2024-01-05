@@ -12,6 +12,7 @@ use App\Mail\create_certificate;
 use App\Mail\create_permission;
 use App\Mail\create_product;
 use App\Mail\create_ticket;
+use App\Mail\notificate_finish_ticket;
 use App\Mail\create_user;
 use App\Mail\edit_ticket;
 use App\Mail\modificate_ticket;
@@ -122,6 +123,15 @@ class ProfileController extends Controller
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
         $users = ProfileController::users($user, null);
         return view('dashboard.users.users', compact('users', 'validation_jefe'));
+    }
+
+    public function getcharges($id){
+        $charges = DB::select("SELECT c.chargy, c.id FROM charges c WHERE c.id_area = $id");
+        return response()->json(['charges' => $charges], 200);
+    }
+    public function getshops($id){
+        $shops = DB::select("SELECT s.shop, s.id FROM shops s WHERE s.id_company = $id");
+        return response()->json(['shops' => $shops], 200);
     }
     public function delete_user(Request $request){
         $my_user = Auth::user();
@@ -298,12 +308,6 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
     foreach ($tickets_all as $t) {
         $ticket = Ticket::find($t->id);
         $action = false;
-        if ($t->id_user_destination == $user->id  && $t->id_state == 3) {
-            $ticket->id_state = 4;
-            $action = true;
-            ReportController::create_report("El usuario $user->email ha visto el ticket con id $ticket->id", $user->id, 7);
-        }
-
         // Fecha y hora actual
     $fechaActual = new DateTime();
 
@@ -599,6 +603,23 @@ public function ticket_detail($id){
     $file = DB::selectOne("SELECT t.file FROM tickets t WHERE t.id = $id")->file;
     $comments = DB::select("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id_ticket = $id ORDER BY c.id DESC");
     $calification = Calification::where("id_ticket", $id)->first();
+    $user_sender = User::find($ticket->id_user_sender);
+    $user_destination = User::find($ticket->id_user_destination);
+
+    if ($ticket->id_user_destination == $user->id  && $ticket->id_state == 3) {
+        $save_ticket = Ticket::find($id);
+        $save_ticket->id_state = 4;
+        $save_ticket->save();
+        $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
+        FROM tickets t
+        INNER JOIN priorities p ON t.id_priority = p.id
+        INNER JOIN users us ON t.id_user_sender =us.id
+        INNER JOIN users ud ON t.id_user_destination = ud.id
+        INNER JOIN states s ON t.id_state = s.id WHERE t.id = $id");
+        ReportController::create_report("El usuario $user->email ha visto el ticket con id $ticket->id", $user->id, 7);
+        Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $ticket));
+
+    }
     return view("dashboard.tickets.view_ticket", compact("calification","validate_user_sistemas","ticket","file","comments"));
 
 }
@@ -681,6 +702,37 @@ public function edit_ticket($id){
 
 }
 
+public function notificate_finish_ticket_mail(Request $request){
+
+    $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
+        FROM tickets t
+        INNER JOIN priorities p ON t.id_priority = p.id
+        INNER JOIN users us ON t.id_user_sender =us.id
+        INNER JOIN users ud ON t.id_user_destination = ud.id
+        INNER JOIN states s ON t.id_state = s.id WHERE t.id = $request->id_ticket");
+         $user_sender = User::find($ticket->id_user_sender);
+         $user_destination = User::find($ticket->id_user_destination);
+        Mail::to($user_sender->email)->send(new notificate_finish_ticket($user_sender, $user_destination ,$ticket));
+        return redirect()->route("dashboard.tickets.ticket_detail", $ticket->id)->with('message','Usuario notificado!');
+
+}
+
+public function finish_ticket_mail(Request $request){
+    $ticket = Ticket::find($request->id_ticket);
+    if($ticket->id_state = 5){
+        $ticket->id_state =7;
+        $ticket->save();
+    $user_sender = User::find($ticket->id_user_sender);
+    $user_destination = User::find($ticket->id_user_destination);
+    $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $ticket->id");
+    ReportController::create_report("El usuario $user_sender->email finalizo la ejecución del ticket con id $ticket->id", $user_sender->id, 7);
+    Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+    return view('dashboard.accept_emails.view_finish_ticket_mail', compact('user_destination','ticket'));
+    }else{
+        return redirect()->route("dashboard.tickets.ticket_detail", $ticket->id)->with('message_error','La acción no esta disponible verifica que el usuario este ejecutando el ticket');
+    }
+
+}
 public function save_changes_ticket(Request $request){
     $user = Auth::user();
     $ticket = Ticket::find($request->id_ticket);
@@ -1204,7 +1256,7 @@ public function view_certificate($id){
     INNER JOIN areas ad ON ur.id_area = ad.id
     WHERE c.id = $id");
 
-    $user_reception = DB::selectOne("SELECT * FROM users u
+    $user_reception = DB::selectOne("SELECT u.name, u.id FROM users u
     INNER JOIN certificates c ON u.id = c.id_user_reception WHERE c.id = $id");
     $certificate_full = Certificate::find($id);
  $rows_certificate = DB::select("SELECT r.id, p.id AS id_product, p.name, p.brand, p.serie, o.origin_certificate, s.state_certificate, t.type_component, p.accessories
@@ -1289,7 +1341,7 @@ $search = $request->search;
     }else{
         $sql = "WHERE p.id_state = 1";
     }
-    $products = DB::select("SELECT p.id, p.name, p.serie FROM products p $sql");
+    $products = DB::select("SELECT p.id, p.name, p.serie FROM products p $sql ORDER BY p.id DESC");
     $images_products = Image_product::all()->where('id_state','=',1);
     $user = Auth::user();
     $filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=11");

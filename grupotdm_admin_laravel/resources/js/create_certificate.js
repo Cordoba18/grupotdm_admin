@@ -275,10 +275,20 @@ function loading_validate_button_Row() {
                                             label_success.textContent = "Filas insertadas..... 100%";
                                             element_loading.remove();
                                             setTimeout(() => {
-                                                Swal.fire({
+                                                const Toast = Swal.mixin({
+                                                    toast: true,
+                                                    position: "top-end",
+                                                    showConfirmButton: false,
+                                                    timer: 2000,
+                                                    timerProgressBar: true,
+                                                    didOpen: (toast) => {
+                                                      toast.onmouseenter = Swal.stopTimer;
+                                                      toast.onmouseleave = Swal.resumeTimer;
+                                                    }
+                                                  });
+                                                  Toast.fire({
                                                     icon: "success",
-                                                    title: "ACTA CREADA",
-                                                    text: "La acta ha sido generada con exito"
+                                                    title: "Acta creada correctamente. Redireccionando......."
                                                   });
                                                   setTimeout(() => {
 

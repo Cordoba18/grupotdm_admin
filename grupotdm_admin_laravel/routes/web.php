@@ -40,6 +40,14 @@ Route::post('/dashboard/users/edit_profile/change_password/save_changes', [Profi
 Route::get('/dashboard/users/new_user', [ProfileController::class, 'new_user'])->name('dashboard.users.new_user');
 Route::post('/dashboard/users/new_user/save_user', [ProfileController::class, 'save_user'])->name('dashboard.users.save_user');
 
+
+
+
+Route::get('/dashboard/users/getcharges/{id}', [ProfileController::class, 'getcharges'])->name('dashboard.users.getcharges');
+Route::get('/dashboard/users/getshops/{id}', [ProfileController::class, 'getshops'])->name('dashboard.users.getshops');
+
+
+
 Route::get('/dashboard/tickets', [ProfileController::class, 'show_tickets'])->name('dashboard.tickets');
 Route::get('/dashboard/tickets/show_tickets_filter_search', [ProfileController::class, 'show_tickets_filter_search'])->name('dashboard.show_tickets_filter_search');
 Route::get('/dashboard/tickets/create', [ProfileController::class, 'create_ticket'])->name('dashboard.tickets.create');
@@ -49,6 +57,8 @@ Route::post('/dashboard/tickets/delete_ticket', [ProfileController::class, 'dele
 Route::get('/dashboard/tickets/ticket_detail/{id}', [ProfileController::class, 'ticket_detail'])->name('dashboard.tickets.ticket_detail');
 Route::get('/dashboard/tickets/edit_ticket/{id}', [ProfileController::class, 'edit_ticket'])->name('dashboard.tickets.edit_ticket');
 Route::post('/dashboard/tickets/edit_ticket/save_changes_ticket', [ProfileController::class, 'save_changes_ticket'])->name('dashboard.tickets.save_changes_ticket');
+Route::post('/dashboard/tickets/notificate_finish_ticket', [ProfileController::class, 'notificate_finish_ticket_mail'])->name('dashboard.tickets.notificate_finish_ticket_mail');
+Route::get('/dashboard/tickets/notificate_finish_ticket/finish_ticket_mail', [ProfileController::class, 'finish_ticket_mail'])->name('dashboard.tickets.notificate_finish_ticket.finish_ticket_mail');
 Route::post('/dashboard/tickets/create/save_ticket', [ProfileController::class, 'save_ticket'])->name('dashboard.tickets.save_ticket');
 Route::post('/dashboard/tickets/comment_create', [ProfileController::class, 'comment_create'])->name('dashboard.tickets.comment_create');
 Route::post('/dashboard/tickets/calification_ticket', [ProfileController::class, 'calification_ticket'])->name('dashboard.tickets.calification_ticket');
@@ -99,7 +109,7 @@ Route::get('/dashboard/certificates/create/get_users_areas/{id}', [ProfileContro
 Route::get('/dashboard/certificates/view_certificate/{id}', [ProfileController::class, 'view_certificate'])->name('dashboard.certificates.view_certificate');
 Route::post('/dashboard/certificates/view_certificate/state_certificate', [ProfileController::class, 'state_certificate'])->name('dashboard.certificates.view_certificate.state_certificate');
 Route::get('/dashboard/certificates/create/get_dates_product/{id}', [ProfileController::class, 'get_dates_product'])->name('dashboard.certificates.create.get_dates_product');
-
+Route::get('/dashboard/certificates/accept_certificate', [Mails_Controller::class, 'accept_certificate'])->name('dashboard.certificates.accept_certificate');
 
 Route::get('/dashboard/inventories', [ProfileController::class, 'show_inventories'])->name('dashboard.inventories');
 Route::get('/dashboard/inventories/create', [ProfileController::class, 'create_product'])->name('dashboard.inventories.create');
@@ -113,4 +123,4 @@ Route::post('/dashboard/inventories/view_product/save_changes', [ProfileControll
 Route::get('/dashboard/inventories/create/get_serie', [ProfileController::class, 'get_serie'])->name('dashboard.inventories.create.get_serie');
 
 
-Route::get('/dashboard/certificates/accept_certificate', [Mails_Controller::class, 'accept_certificate'])->name('dashboard.certificates.accept_certificate');
+

@@ -5,13 +5,72 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 @vite(['resources/css/view_product.css'])
 <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
+<style>
+    body{
+background-color: white;
+margin: 0;
+}
 
+.content_loading{
+background-color: rgba(2, 2, 2, 0.3);
+width: 100vw; /* 100% del ancho del viewport */
+height: 100vh;
+position: fixed;
+z-index: 10000;
+}
+.content_loading .content_logo{
+
+position: fixed;
+transform: translate(-50%, -50%);
+left: 50%;
+top: 50%;
+border-radius: 50px;
+border: 6px solid;
+padding: 20px;
+background-color: white;
+animation: start_loading 0.5s;
+
+}
+.content_loading .content_logo img{
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+@keyframes start_loading{
+
+0%{
+    opacity: 0;
+   transform: translateX(-50%) translateY(-100%);
+}
+100%{
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%);
+}
+}
+@media (max-width:700px){
+.content_loading .content_logo{
+    width: 100vw; /* 100% del ancho del viewport */
+height: 100vh;
+
+}
+.content_loading .content_logo{
+    border-radius: 0;
+}
+.content_loading .content_logo img{
+object-fit: contain;
+}
+}
+</style>
 
 
 @stop
 @php
     $user = Auth::user();
 @endphp
+<div class="content_loading" hidden>
+
+</div>
 @section('content_header')
 
 <h1>DETALLE DEL PRODUCTO</h1>
@@ -68,7 +127,7 @@
     </button>
   </div>
 <br>
-<form action="{{ route('dashboard.inventories.view_product.save_changes_view_product') }}" method="POST" enctype="multipart/form-data">
+<form id="miFormulario" action="{{ route('dashboard.inventories.view_product.save_changes_view_product') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <input readonly hidden type="text" required name="id_product" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->id }}">
     <div class="mb-3">
@@ -211,8 +270,8 @@ $state_certificate = $s->state_certificate;
         "paging": true,  // Habilita la paginación
         "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
         "searching": false, // Deshabilita la función de búsqueda
-        "ordering": true, // Habilita la ordenación de columnas
-        "info": true, // Muestra información sobre la paginación
+        "ordering": false, // Habilita la ordenación de columnas
+        "info": false, // Muestra información sobre la paginación
         "autoWidth": true // Deshabilita el ajuste automático del ancho de las columnas
 
       });
@@ -227,8 +286,32 @@ console.log(inputsAndSelects);
 inputsAndSelects.forEach(function (element) {
     element.setAttribute('disabled', 'true');
 });
+
 </script>
 
 @endif
+
+<script>
+
+    let content_logo_loading = '<div class="content_logo">'+
+        '<img src="{{ asset('storage/icons/loading_logo.gif') }}" alt="">'+
+    '</div>';
+    const content_loading = document.querySelector(".content_loading");
+    document.addEventListener('DOMContentLoaded', function () {
+            var formulario = document.getElementById('miFormulario');
+
+            formulario.addEventListener('submit', function (event) {
+                if (validarFormulario()) {
+                    content_loading.removeAttribute('hidden');
+                    content_loading.innerHTML = content_logo_loading;
+                }
+            });
+
+            function validarFormulario() {
+
+                return true;
+            }
+        });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 @stop

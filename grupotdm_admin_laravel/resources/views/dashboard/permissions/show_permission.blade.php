@@ -7,6 +7,68 @@
 @php
     $user = Auth::user();
 @endphp
+@section('css')
+<style>
+    body{
+background-color: white;
+margin: 0;
+}
+
+.content_loading{
+background-color: rgba(2, 2, 2, 0.3);
+width: 100vw; /* 100% del ancho del viewport */
+height: 100vh;
+position: fixed;
+z-index: 10000;
+}
+.content_loading .content_logo{
+
+position: fixed;
+transform: translate(-50%, -50%);
+left: 50%;
+top: 50%;
+border-radius: 50px;
+border: 6px solid;
+padding: 20px;
+background-color: white;
+animation: start_loading 0.5s;
+
+}
+.content_loading .content_logo img{
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+@keyframes start_loading{
+
+0%{
+    opacity: 0;
+   transform: translateX(-50%) translateY(-100%);
+}
+100%{
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%);
+}
+}
+@media (max-width:700px){
+.content_loading .content_logo{
+    width: 100vw; /* 100% del ancho del viewport */
+height: 100vh;
+
+}
+.content_loading .content_logo{
+    border-radius: 0;
+}
+.content_loading .content_logo img{
+object-fit: contain;
+}
+}
+</style>
+@stop
+<div class="content_loading" hidden>
+
+</div>
 @section('content_header')
 @if (session('message'))
 
@@ -75,7 +137,7 @@
     @else
     <input style="width: 100%" required disabled type="text" value="No ha salido" id="" name="" readonly class="form-control-plaintext">
     @if($user->id_area == 16  && $permission->id_state == 10)
-    <form action="{{ route('dashboard.permissions.view_permission.permission_user_exit') }}" method="post">
+    <form id="miFormulario" action="{{ route('dashboard.permissions.view_permission.permission_user_exit') }}" method="post">
         @csrf
         <input style="width: 100%" type="text" id="date" name="time_exit" hidden>
         <input style="width: 100%" type="number" value="{{ $permission->id }}" name="id_permission" hidden required>
@@ -95,7 +157,7 @@
     @else
     <input style="width: 100%" required disabled type="text" value="No ha llegado" id="" name="" readonly class="form-control-plaintext">
     @if (($dates_permission->time_exit && $user->id_area == 16 && $permission->id_state == 10) || ($dates_permission->date_tomorrow != 0 && $user->id_area == 16 && $permission->id_state == 10))
-    <form action="{{ route('dashboard.permissions.view_permission.permission_user_return') }}" method="post">
+    <form  id="miFormulario" action="{{ route('dashboard.permissions.view_permission.permission_user_return') }}" method="post">
         @csrf
         <input style="width: 100%" type="text" id="date" name="time_return" hidden>
         <input  style="width: 100%" type="number" value="{{ $permission->id }}" name="id_permission" hidden required>
@@ -144,12 +206,12 @@
   @if($validation_jefe && !$user_boss && $permission->id_state == 3 && $user->id_area != 16)
   <div class="mb-3">
     <label for="formFile" class="form-label">¿Deseas aprobar el permiso?</label>
-    <form action="{{ route('dashboard.permissions.view_permission.permission_approve') }}" method="post">
+    <form id="miFormulario" action="{{ route('dashboard.permissions.view_permission.permission_approve') }}" method="post">
         @csrf
         <input style="width: 100%" type="number" value="{{ $permission->id }}" name="id_permission" hidden required>
         <button  class="btn btn-success">APROBAR PERMISO</button>
     </form>
-    <form action="{{ route('dashboard.permissions.view_permission.permission_disapprove') }}" method="post">
+    <form id="miFormulario" action="{{ route('dashboard.permissions.view_permission.permission_disapprove') }}" method="post">
         @csrf
         <input style="width: 100%" type="number" value="{{ $permission->id }}" name="id_permission" hidden required>
         <button  class="btn btn-danger">DESAPROBAR PERMISO</button>
@@ -179,4 +241,26 @@
     }
   </script>
 @vite(['resources/js/show_permission.js'])
+<script>
+
+    let content_logo_loading = '<div class="content_logo">'+
+        '<img src="{{ asset('storage/icons/loading_logo.gif') }}" alt="">'+
+    '</div>';
+    const content_loading = document.querySelector(".content_loading");
+    document.addEventListener('DOMContentLoaded', function () {
+            var formulario = document.getElementById('miFormulario');
+
+            formulario.addEventListener('submit', function (event) {
+                if (validarFormulario()) {
+                    content_loading.removeAttribute('hidden');
+                    content_loading.innerHTML = content_logo_loading;
+                }
+            });
+
+            function validarFormulario() {
+
+                return true;
+            }
+        });
+</script>
 @stop

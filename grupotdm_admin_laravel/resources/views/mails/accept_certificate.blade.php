@@ -42,8 +42,8 @@ height: auto;">
 
                 <form action="{{ route('dashboard.certificates.accept_certificate') }}" method="GET">
                 <input type="text" name="id_certificate" value="{{ $certificate->id }}" hidden readonly style="opacity: 0;">
-                <input type="text" name="id_user_receives" value="{{ $user_receive->id }}" hidden readonly style="opacity: 0;">
-                <button style="padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;"> DAR LLEGADA DE ACTIVOS </button>
+                <input type="text" name="id_user_receives" value="{{ $user_receive->id }}" hidden readonly style="opacity: 0;"><br>
+                <button style="width: 100%; padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;"> DAR LLEGADA DE ACTIVOS </button>
             </form>
                 <b>POV: No responder a este correo ya que es un correo automatico</b>
             </div>

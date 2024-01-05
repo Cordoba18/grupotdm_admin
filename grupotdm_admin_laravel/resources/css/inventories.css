@@ -39,6 +39,20 @@
     transition: 0.5s all;
 
 }
+.content_search{
+    width: 100%;
+}
+.content_search input{
+    width: 100%;
+    border: 1px solid black;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.content_search select{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+}
 .content_product:hover{
    transform: scale(0.9);
 }
@@ -60,4 +74,20 @@
 .content_product .content_buttons{
     margin-left: 30px;
     margin-bottom: 20px;
+}
+
+@media (max-width:800px){
+    .content_search input{
+        width: 100%;
+    }
+    .content_search select{
+        width: 100%;
+        margin: 0;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .content_search button{
+        width: 100%;
+        margin-top: 10px;
+    }
 }

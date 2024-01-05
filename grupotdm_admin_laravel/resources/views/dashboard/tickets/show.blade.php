@@ -220,7 +220,7 @@
         "paging": true,  // Habilita la paginación
         "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
         "searching": false, // Deshabilita la función de búsqueda
-        "ordering": false, // Habilita la ordenación de columnas
+        "ordering": true, // Habilita la ordenación de columnas
         "info": false, // Muestra información sobre la paginación
         "autoWidth": true // Deshabilita el ajuste automático del ancho de las columnas
 

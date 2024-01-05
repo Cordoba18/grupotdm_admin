@@ -143,14 +143,23 @@
 </form>
     @endif
     @else
+
+    @if ($ticket->id_state == 4 && $ticket->id_user_destination == $user->id)
     <form action="{{ route('dashboard.tickets.state') }}" method="post">
         @csrf
         <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
-    @if ($ticket->id_state == 4 && $ticket->id_user_destination == $user->id)
     <button  class="btn btn-dark">EJECUTAR</button>
-    @endif
 </div>
 </form>
+@elseif($ticket->id_state == 5 && $ticket->id_user_destination == $user->id)
+<form action="{{ route('dashboard.tickets.notificate_finish_ticket_mail') }}" method="post">
+    @csrf
+    <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+<button  class="btn btn-success">NOTIFICAR SOBRE FINALIZACIÓN</button>
+</div>
+</form>
+    @endif
+
     @endif
 
 <div class="content_comments">

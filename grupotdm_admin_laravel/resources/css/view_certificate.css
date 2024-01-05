@@ -22,3 +22,21 @@ th{
 }
 
 
+.content_images{
+    display: flex;
+    flex-wrap: wrap;
+}
+.content_images .content_left_images{
+    width: 50%;
+    }
+    .content_images .content_right_images{
+        width: 50%;
+    }
+@media (max-width:800px){
+.content_images .content_left_images{
+width: 100%;
+}
+.content_images .content_right_images{
+    width: 100%;
+}
+}

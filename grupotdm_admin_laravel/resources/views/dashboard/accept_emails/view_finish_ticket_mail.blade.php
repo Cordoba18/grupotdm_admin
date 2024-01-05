@@ -17,8 +17,8 @@
     </div>
     <div class="content-info">
         <h1>GRACIAS POR TU COLABORACIÒN!<i class="bi bi-check-circle-fill" style="color: green;font-size: 30px;"></i></h1>
-        <b>El usuario {{ $user_delivery->name }} ha sido notificado con la confirmacion de llegada de tu pedido de acta.</b>
-        <br><a href="{{ route('dashboard.certificates.view_certificate', $certificate->id) }}">VER ACTA</a>
+        <b>El usuario {{ $user_destination->name }} ha sido notificado con la finalización del ticket.</b>
+        <br><a href="{{ route('dashboard.tickets.ticket_detail', $ticket->id) }}">VER TICKET</a>
     </div>
 
     </div>

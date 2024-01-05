@@ -66,6 +66,7 @@ btn_register.addEventListener('click', function (e) {
             error_form.innerHTML = "VALIDANDO USUARIO....";
             error_form.removeAttribute('hidden');
             error_form.classList.remove('alert-danger');
+            btn_register.disabled = true;
         error_form.classList.add('alert-success');
             $.ajax({
                 type: "POST",
@@ -82,6 +83,7 @@ btn_register.addEventListener('click', function (e) {
                     error_form.classList.add('alert-danger');
 
                     if (response['message'] == true) {
+                        btn_register.disabled = false;
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -138,7 +140,7 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
         let error_code = document.querySelector('#error_code');
         if (verify_code.value == code) {
             error_code.setAttribute('hidden', 'true');
-
+            btn_verificar.disabled = true;
             $.ajax({
                 type: "POST",
                 url: "register/new_user",
@@ -160,6 +162,7 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
                             text: 'Hemos notificado al administrador para validar tu creación',
                           })
                     } else {
+                        btn_verificar.disabled = false;
                         alert('HUBO UN ERROR EN SU CONSULTA. Intentalo nuevamente')
                     }
                     setTimeout(() => {

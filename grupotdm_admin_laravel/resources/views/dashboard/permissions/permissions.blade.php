@@ -64,7 +64,7 @@
             <td>
                 <input type="number" hidden id="id_state" value="{{ $p->id_state }}">
                 <a href="{{ route('dashboard.permissions.view_permission', $p->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if($p->id_user_collaborator == $user->id)
-                <form action="{{ route('dashboard.permissions.delete') }}" method="post">
+                <form action="{{ route('dashboard.permissions.delete') }}" method="post" onsubmit="return confirmarEnvio()">
                     @csrf
                     <input type="number" hidden name="id_permission" value="{{ $p->id }}">
                     <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
@@ -86,6 +86,14 @@
 @section('js')
 @vite(['resources/js/permissions.js'])
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+<script>
+    function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de eliminar este permiso?");
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
+</script>
 <script>
     $(document).ready(function() {
       $('#miTabla').DataTable({
