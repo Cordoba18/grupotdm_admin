@@ -1550,4 +1550,16 @@ public function get_serie(){
     }
     }
 }
+
+public function reports_certificate($id){
+
+    $id_certificate = $id;
+
+    $reports_certificates = DB::select("SELECT r.id, r.description, r.image, r.date, u.name FROM reports_certificate r
+    INNER JOIN users u ON r.id_user = u.id
+    WHERE r.id_state = 1 AND r.id_certificate = $id_certificate");
+
+    return view("dashboard.certificates.view_reports_certificate", compact('reports_certificates', 'id_certificate'));
+
+}
 }

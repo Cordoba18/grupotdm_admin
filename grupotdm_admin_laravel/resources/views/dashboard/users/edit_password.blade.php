@@ -5,11 +5,11 @@
 @php
     $my_user = Auth::user();
 @endphp
+
+@section('content_header')
 <div class="content_loading" hidden>
 
 </div>
-@section('content_header')
-
 <h1>Perfil de <b> {{ $user->name }}</b></h1>
 
 @if (session('message'))
@@ -64,10 +64,12 @@
 
 .content_loading{
     background-color: rgba(2, 2, 2, 0.3);
-    width: 100vw; /* 100% del ancho del viewport */
-    height: 100vh;
-    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 10000;
+    position: fixed;
 }
 .content_loading .content_logo{
 

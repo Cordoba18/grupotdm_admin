@@ -41,6 +41,7 @@
     overflow-y: auto;
     margin: 10px;
     width: 100%;
+
   }
   .coments .comment{
     display: flex; flex-direction: column; width: 98%; background-color: white; padding: 10px;
@@ -57,6 +58,7 @@
     border: 0.5px solid black;
     box-shadow: 0px 0px 5px;
     width: 100%;
+    margin-bottom: 30px;
   }
 .content_comments .header_comments{
     padding: 10px;
@@ -67,4 +69,7 @@
     border: 0;
     padding: 5px;
     margin-bottom: 20px;
+}
+.form_starts textarea{
+    width: 100%;
 }

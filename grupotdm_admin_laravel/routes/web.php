@@ -63,6 +63,7 @@ Route::post('/dashboard/tickets/create/save_ticket', [ProfileController::class, 
 Route::post('/dashboard/tickets/comment_create', [ProfileController::class, 'comment_create'])->name('dashboard.tickets.comment_create');
 Route::post('/dashboard/tickets/calification_ticket', [ProfileController::class, 'calification_ticket'])->name('dashboard.tickets.calification_ticket');
 Route::post('/dashboard/tickets/comment_delete', [ProfileController::class, 'comment_delete'])->name('dashboard.tickets.comment_delete');
+
 Route::get('/recover', [RecoveryPasswordController::class, 'index'])->name('recover');
 Route::post('/recover/sendcode',[RecoveryPasswordController::class, 'sendcode'])->name('recover.sendcode');
 Route::post('/recover/validecode',[RecoveryPasswordController::class, 'validecode'])->name('recover.validecode');
@@ -110,6 +111,8 @@ Route::get('/dashboard/certificates/view_certificate/{id}', [ProfileController::
 Route::post('/dashboard/certificates/view_certificate/state_certificate', [ProfileController::class, 'state_certificate'])->name('dashboard.certificates.view_certificate.state_certificate');
 Route::get('/dashboard/certificates/create/get_dates_product/{id}', [ProfileController::class, 'get_dates_product'])->name('dashboard.certificates.create.get_dates_product');
 Route::get('/dashboard/certificates/accept_certificate', [Mails_Controller::class, 'accept_certificate'])->name('dashboard.certificates.accept_certificate');
+
+Route::get('/dashboard/certificates/view_certificate/reports_certificate/{id}', [ProfileController::class, 'reports_certificate'])->name('dashboard.certificates.view_certificate.reports_certificate');
 
 Route::get('/dashboard/inventories', [ProfileController::class, 'show_inventories'])->name('dashboard.inventories');
 Route::get('/dashboard/inventories/create', [ProfileController::class, 'create_product'])->name('dashboard.inventories.create');

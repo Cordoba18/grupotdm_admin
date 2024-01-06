@@ -84,11 +84,16 @@
 
             <div class="mb-3">
                 <label for="formFile" class="form-label">RECEPCIONISTA ENCARGADO DE DAR SALIDA</label>
-                @if($user_reception)
-                <a href="{{ route('dashboard.users.view_user',$user_reception->id) }}">
-                @endif<input style="width: 100%;background-color: white; padding: 10px; font-weight: bold;border-bottom: 3px solid black;" required type="text"
-                    id="deveices" name="user_delivery" readonly class="form-control-plaintext"
-                    value="@if ($user_reception) {{ $user_reception->name }}@else{{ 'No ha sido accionado por un recepcionista' }} @endif">@if($user_reception)</a>@endif
+                @if ($user_reception)
+                    <a href="{{ route('dashboard.users.view_user', $user_reception->id) }}">
+                @endif
+                <input
+                    style="width: 100%;background-color: white; padding: 10px; font-weight: bold;border-bottom: 3px solid black;"
+                    required type="text" id="deveices" name="user_delivery" readonly class="form-control-plaintext"
+                    value="@if ($user_reception) {{ $user_reception->name }}@else{{ 'No ha sido accionado por un recepcionista' }} @endif">
+                @if ($user_reception)
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -203,7 +208,12 @@
     </form>
 @endif
 <div class="mb-3">
-    <button onclick="imprimirDiv()" class="btn btn-dark">Imprimir ACTA</button>
+    <div class="content_buttons" style="flex-direction: column;">
+    <button onclick="imprimirDiv()" class="btn btn-dark btn-lg">Imprimir acta</button>
+    @if ($user->id == $certificate_full->id_user_receives || $user->id == $certificate_full->id_user_delivery)
+    <a href="{{ route('dashboard.certificates.view_certificate.reports_certificate',$certificate_full->id) }}" class="btn btn-outline-light btn-lg" style="color: black">Reportar novedades</a>
+    </div>
+    @endif
 </div>
 @stop
 
@@ -219,7 +229,7 @@
         var ventanaImpresion = window.open('', '_blank');
         ventanaImpresion.document.write(
             '<html><head><title>ACTA GRUPO TDM</title></head><body style="font-size:10px;"><style>  input{ padding: 0; } </style>'
-            );
+        );
         ventanaImpresion.document.write(contenidoDiv);
         ventanaImpresion.document.write('</body></html>');
         ventanaImpresion.document.close();

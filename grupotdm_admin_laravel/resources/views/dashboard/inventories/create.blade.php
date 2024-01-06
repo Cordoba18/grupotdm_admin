@@ -15,11 +15,13 @@ margin: 0;
 }
 
 .content_loading{
-background-color: rgba(2, 2, 2, 0.3);
-width: 100vw; /* 100% del ancho del viewport */
-height: 100vh;
-position: fixed;
-z-index: 10000;
+    background-color: rgba(2, 2, 2, 0.3);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    position: fixed;
 }
 .content_loading .content_logo{
 
@@ -69,11 +71,11 @@ object-fit: contain;
 @php
     $user = Auth::user();
 @endphp
+
+@section('content_header')
 <div class="content_loading" hidden>
 
 </div>
-@section('content_header')
-
 <h1>CREAR UN NUEVO PRODUCTO</h1>
 
 @if (session('message'))

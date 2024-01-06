@@ -6,16 +6,77 @@
     $user = Auth::user();
 @endphp
 
-
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
 
     @vite(['resources/css/view_ticket.css'])
+    <style>
+        body{
+    background-color: white;
+    margin: 0;
+}
+
+.content_loading{
+    background-color: rgba(2, 2, 2, 0.6);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    position: fixed;
+}
+.content_loading .content_logo{
+
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 50px;
+    border: 6px solid;
+    padding: 20px;
+    background-color: white;
+    animation: start_loading 0.5s;
+
+}
+.content_loading .content_logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes start_loading{
+
+    0%{
+        opacity: 0;
+       transform: translateX(-50%) translateY(-100%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(-50%) translateY(-50%);
+    }
+}
+@media (max-width:700px){
+    .content_loading .content_logo{
+        width: 100vw; /* 100% del ancho del viewport */
+    height: 100vh;
+
+    }
+    .content_loading .content_logo{
+        border-radius: 0;
+    }
+    .content_loading .content_logo img{
+    object-fit: contain;
+}
+}
+    </style>
 
 @stop
-@section('content_header')
 
+@section('content_header')
+<div class="content_loading" hidden>
+
+</div>
 <h1>Ticket</h1>
 @if (session('message'))
 
@@ -58,19 +119,23 @@
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Prioridad</label>
     <div class="col-sm-10">
-      <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->priority }}">
+      <input disabled type="text" name="" id="" readonly class="form-control-plaintext" value="{{ $ticket->priority }}">
     </div>
 </div>
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Usuario remitente</label>
     <div class="col-sm-10">
-      <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->name_sender }}">
+        <a href="{{ route('dashboard.users.view_user', $ticket->id_user_sender) }}">
+      <input style="font-weight: bold;"  type="text" name="" id=""   class="form-control-plaintext"value="{{ $ticket->name_sender }} (PRESIONA PARA VER)">
+    </a>
     </div>
 </div>
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Usuario de destino</label>
     <div class="col-sm-10">
-      <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->name_destination }}">
+        <a href="{{ route('dashboard.users.view_user', $ticket->id_user_destination) }}">
+      <input  style="font-weight: bold;" type="text" name="" id=""  class="form-control-plaintext" value="{{ $ticket->name_destination }} (PRESIONA PARA VER)">
+    </a>
     </div>
 </div>
 
@@ -169,7 +234,7 @@
         <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
         <br>
         <div class="col-sm-10">
-            <form action="{{ route('dashboard.tickets.comment_create') }}" method="post">
+            <form id="miFormulario"  action="{{ route('dashboard.tickets.comment_create') }}" method="post">
                 @csrf
                 <input type="number" value="{{ $ticket->id }}" hidden name="id_ticket">
                 <input type="text" required placeholder="Agregar un comentario" name="comment" style="width: 90%">
@@ -208,15 +273,17 @@
 </div>
     @if ($ticket->id_user_sender == $user->id)
 
-    <br><br>
+    <br>
     <form id="form_starts" action="{{ route('dashboard.tickets.calification_ticket') }}" method="post">
         @csrf
+        <div class="mb-3">
         @if ($calification)
         <b>EDITAR CALIFICACIÓN</b>
         @else
         <b>AGREGAR CALIFICACIÓN</b>
         @endif
-
+</div>
+<div class="mb-3">
         <p class="clasificacion">
           <input id="radio1" type="radio" name="estrellas" value="5"><!--
           --><label for="radio1">★</label><!--
@@ -230,6 +297,7 @@
           --><label for="radio5">★</label>
         </p>
         <input type="number" hidden name="id_ticket" value="{{ $ticket->id }}">
+        </div>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Agrega una opinion</label>
             @if($calification)
@@ -248,5 +316,27 @@
 
 
 @section('js')
+<script>
 
+    let content_logo_loading = '<div class="content_logo">'+
+        '<img src="{{ asset('storage/icons/loading_logo.gif') }}" alt="">'+
+    '</div>';
+    const content_loading = document.querySelector(".content_loading");
+    document.addEventListener('DOMContentLoaded', function () {
+            var formulario = document.getElementById('miFormulario');
+
+            formulario.addEventListener('submit', function (event) {
+                if (validarFormulario()) {
+                    content_loading.removeAttribute('hidden');
+                    content_loading.innerHTML = content_logo_loading;
+                }
+            });
+
+            function validarFormulario() {
+
+                return true;
+            }
+        });
+</script>
 @stop
+

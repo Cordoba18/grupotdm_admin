@@ -6,11 +6,11 @@
     $my_user = Auth::user();
 @endphp
 
+
+@section('content_header')
 <div class="content_loading" hidden>
 
 </div>
-@section('content_header')
-
 <h1>Crear nuevo usuario para <b>{{ $area->area }}</b> </h1>
 @if (session('message_error'))
 
@@ -109,10 +109,12 @@
 
 .content_loading{
     background-color: rgba(2, 2, 2, 0.3);
-    width: 100vw; /* 100% del ancho del viewport */
-    height: 100vh;
-    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 10000;
+    position: fixed;
 }
 .content_loading .content_logo{
 

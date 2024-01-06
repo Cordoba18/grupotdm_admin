@@ -2,10 +2,6 @@
 
 @section('title', 'GRUPO TDM')
 
-<div class="content_loading" hidden>
-
-</div>
-@section('content_header')
 @section('css')
 <style>
     body{
@@ -14,11 +10,13 @@ margin: 0;
 }
 
 .content_loading{
-background-color: rgba(2, 2, 2, 0.3);
-width: 100vw; /* 100% del ancho del viewport */
-height: 100vh;
-position: fixed;
-z-index: 10000;
+    background-color: rgba(2, 2, 2, 0.3);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    position: fixed;
 }
 .content_loading .content_logo{
 
@@ -69,6 +67,10 @@ object-fit: contain;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
     @stop
+@section('content_header')
+<div class="content_loading" hidden>
+
+</div>
     <h1>EDITAR ARCHIVO</h1>
 
     @if (session('message'))

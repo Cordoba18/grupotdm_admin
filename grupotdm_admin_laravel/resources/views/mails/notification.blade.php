@@ -8,8 +8,6 @@
 </head>
 
 <body>
-
-
     <div class="content_full"
         style="width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
     justify-content: center;
