@@ -1,0 +1,4 @@
+Poner 
+upload_max_filesize = 3072M
+post_max_size = 3072M
+En php init

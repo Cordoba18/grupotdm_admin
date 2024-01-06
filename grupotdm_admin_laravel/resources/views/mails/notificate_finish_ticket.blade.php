@@ -57,7 +57,7 @@
             </center>
                 <form action="{{ route('dashboard.tickets.notificate_finish_ticket.finish_ticket_mail') }}" method="GET">
                     <input type="text" name="id_ticket" value="{{ $ticket->id }}" hidden readonly style="opacity: 0;">
-                    <button style=" width: 100%; padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;"> CERRAR TICKET</button>
+                    <button style="width: 100%; padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;"> CERRAR TICKET</button>
                 </form>
                 <br>
                 <b>POV: No responder a este correo ya que es un correo automatico</b>

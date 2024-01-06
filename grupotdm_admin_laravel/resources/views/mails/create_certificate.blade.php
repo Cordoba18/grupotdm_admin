@@ -55,8 +55,11 @@
                         </div>
                         <div style="display: flex; align-items: center">
                             <p style="margin-right: 10px">OBSERVACIONES GENERALES</p>
-                            <a style="padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;" href="{{ route('dashboard.certificates.view_certificate', $certificate->id) }}"> VER CERTIFICADO </a>
+                            <a style="width: 100%; padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;" href="{{ route('dashboard.certificates.view_certificate', $certificate->id) }}"> VER CERTIFICADO </a>
                             </div>
+                            <br>
+
+                            <br>
                 <b>POV: No responder a este correo ya que es un correo automatico</b>
             </div>
 <center>

@@ -16,6 +16,7 @@
     border-radius: 15px;
     transition: 0.5s all;
     border: 0.5px gray solid;
+    box-shadow: 0px 0px 10px;
 
 }
 
