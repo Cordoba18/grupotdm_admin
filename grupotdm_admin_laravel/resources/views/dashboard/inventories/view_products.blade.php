@@ -146,8 +146,25 @@ object-fit: contain;
   </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Serial</label>
-    <input disabled  type="text" required  name="serie" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->serie }}">
+
+    <div class="content_code_references" id="content_code_references" style="width: 100%; height: 200px; display: flex; flex-wrap: wrap; align-items: center;">
+        <div class="content_code_refences_header" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div class="content_logo" style="width: 500px; height: 100px;">
+                <img style="width: 100%; height: 100%; object-fit: contain;" src="{{ asset('storage/icons/logo.png') }}" alt="">
+            </div>
+            <div class="content_references_img">
+                {!! DNS1D::getBarcodeHTML("$product->serie", 'C93') !!}
+                <div class="content_text_references" style="text-align: center; width: 100%"> <b>{{ $product->serie }}</b>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
 </div>
+<button type="button" href="" onclick="imprimirDiv()" class="btn btn-dark" style="width: 100%">Imprimir REFERENCIA</button>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Accesorios</label>
     <textarea  required class="form-control" id="exampleFormControlTextarea1" rows="3" name="accessories" placeholder="Ingrese observaciones" maxlength="500">{{ $product->accessories }}</textarea>
@@ -271,7 +288,9 @@ $state_certificate = $s->state_certificate;
 
 
 @section('js')
+
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
     $(document).ready(function() {
       $('#miTabla').DataTable({
@@ -298,7 +317,25 @@ inputsAndSelects.forEach(function (element) {
 </script>
 
 @endif
+<script>
+    function imprimirDiv() {
+        var contenidoDiv = document.getElementById('content_code_references');
 
+        // Usa html2canvas para tomar una captura de pantalla del contenidoDiv
+        html2canvas(contenidoDiv).then(function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+
+            var ventanaImpresion = window.open('', '_blank');
+            ventanaImpresion.document.write('<html><head><title>REFERENCIA GRUPO TDM</title></head><body>');
+            ventanaImpresion.document.write('<img src="' + imgData + '" style="width:300px; height: 190px; object-fit: contain;">');
+            ventanaImpresion.document.write('</body></html>');
+            ventanaImpresion.document.close();
+
+            // Luego, puedes imprimir la ventana de impresión
+            ventanaImpresion.print();
+        });
+    }
+  </script>
 <script>
 
     let content_logo_loading = '<div class="content_logo">'+

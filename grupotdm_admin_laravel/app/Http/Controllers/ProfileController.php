@@ -59,7 +59,8 @@ use Illuminate\View\View;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Directory;
-
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Intervention\Image\ImageManagerStatic as Image;
 class ProfileController extends Controller
 {
     /**
@@ -1426,7 +1427,6 @@ WHERE p.id = $id AND p.id_state = 1 AND (c.id_state = 3 || c.id_state = 11 )");
     return response()->json(['product' => false], 200);
  }
 }
-
 
 public function delete_product(Request $request){
 
