@@ -162,7 +162,6 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
                             text: 'Hemos notificado al administrador para validar tu creación',
                           })
                     } else {
-                        btn_verificar.disabled = false;
                         alert('HUBO UN ERROR EN SU CONSULTA. Intentalo nuevamente')
                     }
                     setTimeout(() => {
