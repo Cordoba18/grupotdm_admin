@@ -38,6 +38,7 @@ use App\Models\Prioritie;
 use App\Models\Proceeding;
 use App\Models\Reason;
 use App\Models\Replenish_time;
+use App\Models\Report_certificate;
 use App\Models\Report_detail;
 use App\Models\Row_Certificate;
 use App\Models\Shop;
@@ -445,6 +446,7 @@ public function edit_profile($id){
 
     $user = User::find($id);
     $id = Auth::user()->id;
+    $validate_user_administrator = DB::selectOne("SELECT * FROM users WHERE id_area = 1 AND id=$id");
     $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $id");
@@ -457,7 +459,7 @@ public function edit_profile($id){
     $shops = Shop::all();
     $themes_users = Theme_user::all();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-    return view("dashboard.users.edit_profile", compact("themes_users","user", "validation_jefe", "companies", "areas", "charges", "shops", "validate_user_sistemas"));
+    return view("dashboard.users.edit_profile", compact("validate_user_administrator","themes_users","user", "validation_jefe", "companies", "areas", "charges", "shops", "validate_user_sistemas"));
 
 }
 
@@ -766,20 +768,7 @@ public function search_users(Request $request){
 }
 public function show_profile(){
     $user = Auth::user();
-    $id = Auth::user()->id;
-    $validation_jefe = DB::selectOne("SELECT * FROM users u
-        INNER JOIN charges c ON u.id_chargy = c.id
-        WHERE c.chargy = 'JEFE DE AREA' AND u.id = $id");
-        if (!$validation_jefe) {
-            $validation_jefe == null;
-        }
-    $areas = Area::all()->where('id', '<>', '1');
-    $companies = Companie::all();
-    $charges = Charge::all();
-    $shops = Shop::all();
-    $themes_users = Theme_user::all();
-    $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-    return view("dashboard.users.edit_profile", compact("themes_users","validate_user_sistemas","user", "validation_jefe", "companies", "areas", "charges", "shops"));
+    return redirect()->route('dashboard.users.edit_profile', $user->id);
 }
 public function show_directories(){
 
@@ -1246,7 +1235,14 @@ public function delete_certificate(Request $request){
 
 public function view_certificate($id){
 
-    $certificate = DB::selectOne("SELECT c.general_remarks, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.id AS id_user_receives, ud.id AS id_user_delivery, ur.name AS name_receives, ar.area AS area_receives, ud.name AS name_delivery, ad.area AS area_delivery
+    $certificate = DB::selectOne("SELECT c.general_remarks, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.id
+    AS id_user_receives, ud.id
+    AS id_user_delivery, ur.name
+    AS name_receives, ur.id_area
+    AS id_area_user_receives ,ar.area
+    AS area_receives, ud.name
+    AS name_delivery, ad.area
+    AS area_delivery
     FROM certificates c
     INNER JOIN proceedings p ON c.id_proceeding = p.id
     INNER JOIN states s ON c.id_state = s.id
@@ -1326,25 +1322,24 @@ $search = $request->search;
         INNER JOIN rows_certificates rs ON p.id = rs.id_product
         INNER JOIN certificates c ON rs.id_certificate = c.id
         WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
-        AND c.id_state = $request->filter AND p.id_state = 1";
+        AND (c.id_state = $request->filter OR p.id_state = $request->filter)";
     }else if($request->search !== null){
         $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
         INNER JOIN states_certificates s ON p.id_state_certificate = s.id
         INNER JOIN type_components t ON p.id_type_component = t.id
-        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
-        AND p.id_state = 1";
+        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')";
     }else if($request->filter !== null){
         $sql = "INNER JOIN rows_certificates rs ON p.id = rs.id_product
         INNER JOIN certificates c ON rs.id_certificate = c.id
         INNER JOIN type_components t ON p.id_type_component = t.id
-        WHERE c.id_state = $request->filter AND p.id_state = 1";
+        WHERE (c.id_state = $request->filter OR p.id_state = $request->filter)";
     }else{
-        $sql = "WHERE p.id_state = 1";
+        $sql = "";
     }
-    $products = DB::select("SELECT p.id, p.name, p.serie FROM products p $sql ORDER BY p.id DESC");
+    $products = DB::select("SELECT DISTINCT p.id, p.name, p.serie, p.id_state FROM products p $sql ORDER BY p.id DESC");
     $images_products = Image_product::all()->where('id_state','=',1);
     $user = Auth::user();
-    $filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=11");
+    $filters = DB::select("SELECT * FROM states WHERE id= 1 OR id = 3 OR id=11");
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     if($validate_user_sistemas){
     return view('dashboard.inventories.inventories', compact('products', 'images_products','filters','search'));
@@ -1381,6 +1376,7 @@ public function save_product(Request $request){
         $product->id_state_certificate = $request->id_state_certificate;
         $product->id_origin_certificate = $request->id_origin_certificate;
         $product->id_state = 1;
+        $product->id_user = $user->id;
         $product->save();
         $id_product = DB::selectOne("SELECT * FROM products WHERE serie = '$request->serie' AND id_state = 1")->id;
         ReportController::create_report("El usuario $user->name ha creado un producto con la siguiente serial $request->serie", $user->id, 18);
@@ -1436,9 +1432,16 @@ public function delete_product(Request $request){
 
     $user = Auth::user();
     $product = Product::find($request->id_product);
-    $product->id_state =2;
+    if( $product->id_state == 1){
+        $product->id_state =2;
+        ReportController::create_report("El usuario $user->name ha eliminado el producto con la siguiente serial $product->serie", $user->id, 18);
+    }else{
+        $product->id_state =1;
+        ReportController::create_report("El usuario $user->name ha activado el producto con la siguiente serial $product->serie", $user->id, 18);
+    }
+
     $product->save();
-    ReportController::create_report("El usuario $user->name ha eliminado el producto con la siguiente serial $product->serie", $user->id, 18);
+
     return redirect()->back()->with('message','Producto eliminado con exito');
 }
 
@@ -1451,9 +1454,10 @@ public function view_product($id){
         $states_certificates = State_Certificate::all();
         $types_components = Type_Component::all();
         $product = Product::find($id);
+        $user_create_product = DB::selectOne("SELECT u.id, u.name FROM users u WHERE u.id = $product->id_user");
         $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
         $reports_product = Report_Product::orderBy('id', 'desc')->where('id_product','=',$id)->get();
-        return view('dashboard.inventories.view_products',compact('reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
+        return view('dashboard.inventories.view_products',compact('user_create_product','reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
 }
 
 
@@ -1555,11 +1559,47 @@ public function reports_certificate($id){
 
     $id_certificate = $id;
 
-    $reports_certificates = DB::select("SELECT r.id, r.description, r.image, r.date, u.name FROM reports_certificate r
+    $reports_certificates = DB::select("SELECT r.id, r.description, r.image, r.date, u.name, u.id AS id_user FROM reports_certificate r
     INNER JOIN users u ON r.id_user = u.id
-    WHERE r.id_state = 1 AND r.id_certificate = $id_certificate");
-
+    WHERE r.id_state = 1 AND r.id_certificate = $id_certificate ORDER BY r.id DESC");
     return view("dashboard.certificates.view_reports_certificate", compact('reports_certificates', 'id_certificate'));
 
+}
+public function reports_certificate_create(Request $request)
+{
+
+    $id_certificate = $request->id_certificate;
+    $new_report_certificate = new Report_certificate();
+$user = Auth::user();
+
+if ($request->hasFile('file')) {
+    $file = $request->file('file');
+    $fechaHoraActual = now()->format('Y-m-d_H-i-s');
+    $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
+    $rutaImagen = public_path('storage/files/' . $name_file);
+    $file->move(public_path('storage/files'), $name_file);
+    $new_report_certificate->image = $name_file;
+    $new_report_certificate->description = $request->description;
+    $fechaActual = Carbon::now('America/Bogota');
+    $fechaColombiana = $fechaActual->format('d-m-Y H:i:s');
+    $new_report_certificate->id_certificate = $id_certificate;
+    $new_report_certificate->date = $fechaColombiana;
+    $new_report_certificate->id_user = $user->id;
+    $new_report_certificate->id_state = 1;
+    $new_report_certificate->save();
+    return redirect()->route('dashboard.certificates.view_certificate.reports_certificate', $id_certificate)->with('message','El reporte ha sido generado con exito');
+}else{
+    return redirect()->route('dashboard.certificates.view_certificate.reports_certificate', $id_certificate)->with('message_error','Hubo un error en el reporte');
+}
+
+}
+public function reports_certificate_delete(Request $request){
+
+    $id_report_certificate = $request->id_report_certificate;
+    $id_certificate = $request->id_certificate;
+    $report_certificate = Report_certificate::find($id_report_certificate);
+    $report_certificate->id_state = 2;
+    $report_certificate->save();
+    return redirect()->route('dashboard.certificates.view_certificate.reports_certificate', $id_certificate)->with('message','El reporte ha sido eliminado con exito');
 }
 }

@@ -184,7 +184,7 @@
     </div>
 </div>
 @if (
-    (($user->id_area == 16 || $user->id == $certificate_full->id_user_receives) && $certificate_full->id_state == 11) ||
+    (($user->id_area == 16 || $user->id == $certificate_full->id_user_receives || $user->id_area == $certificate->id_area_user_receives) && $certificate_full->id_state == 11) ||
         ($user->id_area == 16 && $certificate_full->id_state == 3 && $certificate_full->id_state != 12))
 
     <form action="{{ route('dashboard.certificates.view_certificate.state_certificate') }}" method="post"

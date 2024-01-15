@@ -70,8 +70,7 @@
 </div>
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Area</label>
-  <select required name="id_area" id="id_area"
-  disabled
+  <select required name="id_area" id="id_area"@if(!$validate_user_administrator){{ "disabled" }}@endif
  style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
     @php
     $area = null;

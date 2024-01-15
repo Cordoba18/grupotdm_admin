@@ -30,6 +30,7 @@ export default defineConfig({
                 'resources/js/create_product.js',
                 'resources/js/edit_user.js',
                 'resources/js/new_user.js',
+                'resources/js/dashboard.js',
             ],
             refresh: true,
         }),

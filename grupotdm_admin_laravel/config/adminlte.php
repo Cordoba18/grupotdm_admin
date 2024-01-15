@@ -17,7 +17,6 @@ return [
     'title' => 'GRUPO TDM',
     'title_prefix' => '',
     'title_postfix' => '',
-
     /*
     |--------------------------------------------------------------------------
     | Favicon
@@ -30,8 +29,8 @@ return [
     |
     */
 
-    'use_ico_only' => false,
-    'use_full_favicon' => false,
+    'use_ico_only' => true,
+    'use_full_favicon' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -131,7 +130,7 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
@@ -276,7 +275,7 @@ return [
 
     'enabled_laravel_mix' => false,
     'laravel_mix_css_path' => 'css/app.css',
-    'laravel_mix_js_path' => 'js/app.js',
+    'laravel_mix_js_path' => 'css/app.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -340,6 +339,13 @@ return [
             'text' => 'Reportes',
             'url'  => 'dashboard/reports',
             'icon' => 'fas fa-solid fa-wrench',
+        ],
+        [
+            'text' => '',
+            'url'  => '#',  // Puedes cambiar esto a la URL deseada para las notificaciones
+            'icon' => 'fas fa-bell',  // Usa el icono de FontAwesome que prefieras
+            'topnav_right' => true,
+            'label' => 0,  // Esto es importante para colocar el ícono en la parte superior
         ],
 
     ],
@@ -483,6 +489,7 @@ return [
             'use_navbar_items' => true,
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

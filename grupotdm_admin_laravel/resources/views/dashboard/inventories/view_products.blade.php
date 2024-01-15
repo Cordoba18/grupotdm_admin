@@ -146,7 +146,7 @@ object-fit: contain;
   </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Serial</label>
-    <input  type="text" required  name="serie" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->serie }}">
+    <input disabled  type="text" required  name="serie" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->serie }}">
 </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Accesorios</label>
@@ -223,6 +223,12 @@ $state_certificate = $s->state_certificate;
     @endforeach
         </select>
   </div>
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">USUARIO CREADOR DEL PRODUCTO</label>
+    <a href="{{ route('dashboard.users.view_user',$user_create_product->id) }}">
+    <input  type="text" required style="width: 100%; padding: 10px; background-color: white; border: 1px solid black; font-weight: bold;"  name="" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $user_create_product->name }}">
+</a>
+</div>
   @if ($validate_user_sistemas)
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">CAMBIAR IMAGEN PRINCIPAL</label>

@@ -106,7 +106,7 @@ object-fit: contain;
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Serial</label>
     <input type="text" required id="input_serie" name="serie" class="form-control"  placeholder="" value="">
-    <button class="btn btn-dark" id="btn_serie">GENERAR SERIAL ALEATORIA</button>
+    <button type="button" class="btn btn-dark" id="btn_serie">GENERAR SERIAL ALEATORIA</button>
     <span style="color: red;">El serial no debe pertenecer a ningun otro producto</span>
 </div>
   <div class="mb-3">

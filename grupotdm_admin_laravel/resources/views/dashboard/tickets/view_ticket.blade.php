@@ -216,7 +216,7 @@
     <button  class="btn btn-dark">EJECUTAR</button>
 </div>
 </form>
-@elseif($ticket->id_state == 5 && $ticket->id_user_destination == $user->id)
+@elseif(( $ticket->id_state == 6||$ticket->id_state == 5) && $ticket->id_user_destination == $user->id)
 <form action="{{ route('dashboard.tickets.notificate_finish_ticket_mail') }}" method="post">
     @csrf
     <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>

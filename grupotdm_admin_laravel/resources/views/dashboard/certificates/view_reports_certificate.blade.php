@@ -14,22 +14,30 @@
 @php
     $user = Auth::user();
 @endphp
+
+
+<h1>Generar un reporte</h1>
 <br>
 @if (session('message'))
     <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
+@endif
+
+<br>
+@if (session('message_error'))
+    <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
 @endif
 @stop
 
 @section('content')
 
-<h1>Generar un reporte</h1>
 
-<form action="" method="post">
+<form action="{{ route('dashboard.certificates.view_certificate.reports_certificate.create') }}" method="post" enctype="multipart/form-data">
     @csrf
+    <input type="text" hidden readonly name="id_certificate" value="{{ $id_certificate }}">
     <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Descripción del reporte</label>
         <textarea required style=" width: 100%; background-color: white; padding: 10px;"
-            class="form-control form-control-plaintext" id="observations" rows="3" name="observations"
+            class="form-control form-control-plaintext" id="description" rows="3" name="description"
             placeholder="Ingrese una descripcion" maxlength="500"></textarea>
     </div>
     <div class="mb-3">
@@ -37,7 +45,7 @@
         <input required type="file" name="file" id="" accept="image/*" style="width: 100%">
       </div>
       <div class="mb-3">
-        <button class="btn btn-success">GENERAR</button>
+        <button class="btn btn-success">GENERAR</button> <a href="{{ route('dashboard.certificates.view_certificate', $id_certificate) }}" class="btn btn-primary">VOLVER AL CERTIFICADO</a>
       </div>
 </form>
 <h1>Reportes </h1>
@@ -48,6 +56,7 @@
         <th>IMAGEN</th>
         <th>FECHA</th>
         <th>USUARIO DE REPORTE</th>
+        <th>ACCIÓN</th>
 
     </thead>
     <tbody>
@@ -55,9 +64,23 @@
         <tr>
         <td>{{ $r->id }}</td>
         <td>{{ $r->description }}</td>
-        <td>{{ $r->image }}</td>
+        <td> <img style="width: 100%; height: 100%; object-fit: contain"
+            src="{{ asset('storage/files/'.$r->image ) }}" alt=""></td>
         <td>{{ $r->date }}</td>
         <td>{{ $r->name }}</td>
+        @if($r->id_user)
+        <td>
+
+            <form action="{{ route('dashboard.certificates.view_certificate.reports_certificate.delete') }}" method="post">
+                @csrf
+                <input type="text" hidden readonly name="id_report_certificate" value="{{ $r->id }}">
+                <input type="text" hidden readonly name="id_certificate" value="{{ $id_certificate }}">
+                <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+            </form>
+
+        </td>
+        @endif
+
     </tr>
         @endforeach
 

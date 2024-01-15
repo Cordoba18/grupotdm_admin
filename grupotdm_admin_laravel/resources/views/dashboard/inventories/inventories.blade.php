@@ -8,7 +8,7 @@
 @stop
 @section('content_header')
 
-<h1>INVENTARIO</h1>
+<h1>INVENTARIO SISTEMAS</h1>
 <br>
 @if (session('message'))
 
@@ -81,10 +81,16 @@
         </div>
     </div>
     <div class="content_buttons">
-        <form action="{{ route('dashboard.inventories.delete') }}" method="post" onsubmit="return confirmarEnvio()">
+        <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($p->id_state == 1) onsubmit="return confirmarEnvio()@endif">
             @csrf
             <input type="text" hidden value="{{ $p->id }}" name="id_product">
+            @if($p->id_state == 1)
             <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+            @else
+            <button class="btn btn-success">ACTIVAR</button>
+            @endif
+
+
         </form>
     </div>
 </div>

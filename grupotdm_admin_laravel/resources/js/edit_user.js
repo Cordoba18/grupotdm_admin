@@ -7,7 +7,7 @@ id_company.addEventListener('change', function (e) {
 
     $.ajax({
         type: "GET",
-        url: "users/getshops/"+id_company.value,
+        url: "getshops/"+id_company.value,
         success: function (response) {
             id_shop.innerHTML = "";
            if (response['shops']) {
@@ -34,7 +34,7 @@ id_area.addEventListener('change', function (e) {
 
     $.ajax({
         type: "GET",
-        url: "users/getcharges/"+id_area.value,
+        url: "getcharges/"+id_area.value,
         success: function (response) {
             id_chargy.innerHTML = "";
            if (response['charges']) {

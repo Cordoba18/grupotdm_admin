@@ -43,8 +43,8 @@ Route::post('/dashboard/users/new_user/save_user', [ProfileController::class, 's
 
 
 
-Route::get('/dashboard/users/getcharges/{id}', [ProfileController::class, 'getcharges'])->name('dashboard.users.getcharges');
-Route::get('/dashboard/users/getshops/{id}', [ProfileController::class, 'getshops'])->name('dashboard.users.getshops');
+Route::get('/dashboard/users/profile/edit_profile/getcharges/{id}', [ProfileController::class, 'getcharges'])->name('dashboard.users.getcharges');
+Route::get('/dashboard/users/profile/edit_profile/getshops/{id}', [ProfileController::class, 'getshops'])->name('dashboard.users.getshops');
 
 
 
@@ -113,6 +113,8 @@ Route::get('/dashboard/certificates/create/get_dates_product/{id}', [ProfileCont
 Route::get('/dashboard/certificates/accept_certificate', [Mails_Controller::class, 'accept_certificate'])->name('dashboard.certificates.accept_certificate');
 
 Route::get('/dashboard/certificates/view_certificate/reports_certificate/{id}', [ProfileController::class, 'reports_certificate'])->name('dashboard.certificates.view_certificate.reports_certificate');
+Route::post('/dashboard/certificates/view_certificate/reports_certificate/create', [ProfileController::class, 'reports_certificate_create'])->name('dashboard.certificates.view_certificate.reports_certificate.create');
+Route::post('/dashboard/certificates/view_certificate/reports_certificate/delete', [ProfileController::class, 'reports_certificate_delete'])->name('dashboard.certificates.view_certificate.reports_certificate.delete');
 
 Route::get('/dashboard/inventories', [ProfileController::class, 'show_inventories'])->name('dashboard.inventories');
 Route::get('/dashboard/inventories/create', [ProfileController::class, 'create_product'])->name('dashboard.inventories.create');
