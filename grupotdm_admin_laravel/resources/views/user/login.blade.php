@@ -33,3 +33,5 @@
     </div>
     </div>
 @endsection
+
+@extends('layouts.config')

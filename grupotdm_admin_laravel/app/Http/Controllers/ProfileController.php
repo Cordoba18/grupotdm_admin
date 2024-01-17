@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CreateTicket;
+use App\Events\CreateTicketEvent;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Mail\accept_certificate;
 use App\Mail\action_permission;
@@ -438,6 +440,13 @@ public function save_ticket(Request $request){
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$new_ticket->id_user_destination");
     Mail::to($user_destination->email)->send(new create_ticket($user, $user_destination, $new_ticket));
     $new_ticket->save();
+    $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $new_ticket->id");
+    broadcast(new CreateTicket($ticket))->toOthers();
     return redirect()->route('dashboard.tickets')->with("message","Ticket generado con exito!");
 
 }

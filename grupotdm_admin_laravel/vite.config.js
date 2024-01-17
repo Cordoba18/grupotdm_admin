@@ -31,6 +31,7 @@ export default defineConfig({
                 'resources/js/edit_user.js',
                 'resources/js/new_user.js',
                 'resources/js/dashboard.js',
+                'resources/js/notifications.js',
             ],
             refresh: true,
         }),

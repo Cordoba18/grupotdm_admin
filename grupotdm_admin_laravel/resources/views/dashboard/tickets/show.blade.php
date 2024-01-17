@@ -5,13 +5,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
-    @vite(['resources/css/tickets.css'])
+    @vite(['resources/css/tickets.css','resources/css/app.css', 'resources/js/app.js'])
 @stop
 @php
     $user = Auth::user();
 @endphp
 @section('content_header')
 
+<p id="id_user" hidden>{{ $user->id }}</p>
+<p id="id_area_user" hidden>{{ $user->id_area }}</p>
 <h1>Tickets</h1>
     <br>
     <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark">GENERAR UN TICKET</a>
@@ -153,8 +155,8 @@
 
 
         </thead>
-        <tbody style="overflow-y: 300px;">
-            <div class="content_tickets" >
+        <tbody id="content_tickets" style="overflow-y: 300px;">
+
                 @foreach ($tickets as $t)
                 <tr id="tickets">
                     <td>{{ $t->id }}</td>
@@ -202,7 +204,7 @@
                     </td>
                 </tr>
                 @endforeach
-                </div>
+
 
         </tbody>
     </table>
@@ -212,9 +214,16 @@
 
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    let route_user = "{{ route('dashboard.users.view_user', 0)}}".slice(0, -1);
+let route_ticket = "{{ route('dashboard.tickets.ticket_detail',0)}}".slice(0, -1);
+</script>
 @vite(['resources/js/show_tickets.js'])
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
 <script>
+
+
     $(document).ready(function() {
       $('#miTabla').DataTable({
         "paging": true,  // Habilita la paginación

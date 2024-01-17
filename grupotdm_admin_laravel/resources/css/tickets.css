@@ -60,3 +60,39 @@ margin-bottom: 10px;
             width: 100%;
         }
 }
+
+#tickets{
+    background-color: antiquewhite;
+
+    background-color: yellow;
+
+}
+.animation_ticket{
+    animation: animation_tickets 3s ;
+    animation: titilar_ticket infinite 1s;
+}
+@keyframes animation_tickets{
+
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+
+    }
+}
+
+@keyframes titilar_ticket{
+
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: yellow;
+
+    }
+    100%{
+        background-color: orange;
+
+    }
+}
