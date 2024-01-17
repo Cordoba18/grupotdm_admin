@@ -127,6 +127,38 @@ function loading_validate_button_Row() {
 
 });
 }
+
+
+const input_validate_users = document.querySelectorAll("#input_validate_user");
+
+input_validate_users.forEach(input_validate_user => {
+
+    input_validate_user.addEventListener('click', function (e) {
+        const id_area_receives = document.querySelector("#id_area_receives");
+        const id_user_receives = document.querySelector("#id_user_receives");
+        const content_user_dates = document.querySelector(".content_user_dates");
+        const content_user_anonimo = document.querySelector(".content_user_anonimo");
+        const name_user_receive = document.querySelector("#name_user_receive");
+        if (input_validate_user.value == 1) {
+
+            content_user_dates.removeAttribute("hidden");
+            content_user_anonimo.setAttribute("hidden", "true");
+            id_area_receives.disabled = false;
+            id_user_receives.disabled = false;
+            name_user_receive.disabled = true;
+            name_user_receive.value = "";
+        } else {
+            content_user_dates.setAttribute("hidden","true");
+            content_user_anonimo.removeAttribute("hidden");
+            id_area_receives.disabled = true;
+            id_user_receives.disabled = true;
+            name_user_receive.disabled = false;
+        }
+    })
+});
+
+
+
   const date = document.querySelector('#date');
   date.value = obtenerFechaActual();
 
@@ -183,6 +215,7 @@ function loading_validate_button_Row() {
     const id_user_receives = document.querySelector("#id_user_receives").value;
     const address = document.querySelector("#address").value;
     const observations = document.querySelector("#observations").value;
+    const name_user_receive = document.querySelector("#name_user_receive");
 
     if (date == "") {
         label_error.removeAttribute('hidden');
@@ -192,7 +225,11 @@ function loading_validate_button_Row() {
         label_error.removeAttribute('hidden');
         label_error.textContent = "Campo de TIPO DE ACTA no completado";
         validation = true;
-    }else if (id_user_receives == "") {
+    }else if (id_user_receives == "" && name_user_receive.disabled) {
+        label_error.removeAttribute('hidden');
+        label_error.textContent = "Campo de USUARIO A RECIBIR no completado";
+        validation = true;
+    }else if (name_user_receive == "" && !name_user_receive.disabled) {
         label_error.removeAttribute('hidden');
         label_error.textContent = "Campo de USUARIO A RECIBIR no completado";
         validation = true;
@@ -243,6 +280,7 @@ function loading_validate_button_Row() {
                 address: address,
                 id_user_receives: id_user_receives,
                 general_remarks	:observations,
+                name_user_receives:  name_user_receive.value,
                 _token: _token,
             },
             success: function (response) {

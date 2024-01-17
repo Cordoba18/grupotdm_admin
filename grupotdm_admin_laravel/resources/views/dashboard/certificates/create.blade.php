@@ -48,6 +48,19 @@
                 @endforeach
             </select>
           </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">¿El usuario hace parte de la organización?</label><br>
+
+    <label>
+        <input checked type="radio" name="input_validate_user" id="input_validate_user" value="1" required>
+        SI
+      </label>
+      <label>
+        <input type="radio" name="input_validate_user" id="input_validate_user" value="2" required>
+        NO
+      </label>
+            </div>
+          <div class="content_user_dates">
         <div class="mb-3">
             <label for="formFile" class="form-label">AREA DEL USUARIO A RECIBIR</label>
             <select name="" id="id_area_receives" style="width: 100%;border: 0; padding: 10px" required>
@@ -63,6 +76,13 @@
                 <option value="">Seleccione un area</option>
             </select>
           </div>
+        </div>
+        <div class="content_user_anonimo" hidden>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">NOMBRE DE USUARIO A RECIBIR</label>
+                <input required disabled type="text" id="name_user_receive" name="name_user_receive" class="form-control-plaintext" placeholder="Ingrese un nombre" style="background-color: white; padding: 10px">
+              </div>
+        </div>
     </div>
 </div>
 <div class="mb-3">

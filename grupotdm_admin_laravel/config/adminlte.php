@@ -15,7 +15,7 @@ return [
     */
 
     'title' => 'GRUPO TDM',
-    'title_prefix' => '',
+    'title_prefix' => ' ',
     'title_postfix' => '',
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ return [
     */
 
     'use_ico_only' => true,
-    'use_full_favicon' => true,
+    'use_full_favicon' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -62,12 +62,12 @@ return [
     |
     */
 
-    'logo' => '<b>GRUPO TDM</b>',
+    'logo' => '<b>GRUPO </b>TDM',
     'logo_img' => 'storage/icons/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-1',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'GRUPO TDM',
 
     /*
     |--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ return [
             'effect' => 'animation__fade',
             'width' => 50,
             'height' => 50,
-            'animation_time' => 1000,
+            'animation_time' => 500,
         ],
     ],
 
@@ -131,10 +131,10 @@ return [
 
     'usermenu_enabled' => true,
     'usermenu_header' => true,
-    'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
+    'usermenu_header_class' => 'bg-red',
+    'usermenu_image' => true,
     'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -150,8 +150,8 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => null,
+    'layout_fixed_sidebar' => true,
+    'layout_fixed_navbar' => true,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
 
@@ -187,14 +187,14 @@ return [
     */
 
     'classes_body' => '',
-    'classes_brand' => '',
+    'classes_brand' => 'bg-dark',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-dark navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -342,10 +342,10 @@ return [
         ],
         [
             'text' => '',
-            'url'  => '#',  // Puedes cambiar esto a la URL deseada para las notificaciones
-            'icon' => 'fas fa-bell',  // Usa el icono de FontAwesome que prefieras
+            'url'  => '#',
+            'icon' => 'fas fa-bell',
             'topnav_right' => true,
-            'label' => 0,  // Esto es importante para colocar el ícono en la parte superior
+            'label' => 0,
         ],
 
     ],

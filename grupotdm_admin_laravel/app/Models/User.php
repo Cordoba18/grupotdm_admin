@@ -27,4 +27,12 @@ class User extends Model implements Authenticatable
         'id_state',
     ];
 
+    public function adminlte_image(){
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/480px-User_icon_2.svg.png";
+    }
+
+    public function adminlte_profile_url(){
+        return 'dashboard/profile';
+    }
+
 }

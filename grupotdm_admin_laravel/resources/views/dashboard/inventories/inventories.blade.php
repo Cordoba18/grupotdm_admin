@@ -33,9 +33,31 @@
             <input type="text" name="search" placeholder="Buscar" id="Buscar productos">
             @endif
             <select name="filter" id="" >
+                @php
+                $f = "";
+                @endphp
+
+                @if($filter)
+
+                @foreach ($filters as $frs)
+                @if($frs->id == $filter)
+                @php
+                    $f = $frs->state;
+                @endphp
+                @endif
+                @endforeach
+                <option value="{{ $filter }}">{{ $f }}</option>
+                <option value="">SIN FILTRO</option>
+                @else
                 <option value="">Seleccione un filtro</option>
+
+                @endif
+
                 @foreach ($filters as $f)
+                @if($filter != $f->id)
                 <option value="{{ $f->id }}">{{ $f->state }}</option>
+                @endif
+
                 @endforeach
             </select>
     <button id="btn_search" class="btn btn-primary">Buscar</button>
@@ -86,7 +108,7 @@
             <input type="text" hidden value="{{ $p->id }}" name="id_product">
             @if($p->id_state == 1)
             <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-            @else
+            @elseif ($p->id_state == 2)
             <button class="btn btn-success">ACTIVAR</button>
             @endif
 

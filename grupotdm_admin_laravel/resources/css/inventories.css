@@ -59,6 +59,7 @@
 }
 .content_product .content_info{
     margin-left: 30px;
+    margin-right: 30px;
     font-size: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -90,5 +91,16 @@
     .content_search button{
         width: 100%;
         margin-top: 10px;
+    }
+
+
+}
+
+@media (max-width:600px){
+    .content_product{
+        width: 100%;
+    }
+    .content_product b{
+        font-size: 15px;
     }
 }

@@ -146,15 +146,18 @@ object-fit: contain;
   </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Serial</label>
+    @if($product->id_type_component == 2)
+    <input  type="text" disabled  name="" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $product->serie }}">
+    @else
 
-    <div class="content_code_references" id="content_code_references" style="width: 100%; height: 200px; display: flex; flex-wrap: wrap; align-items: center;">
+    <div class="content_code_references" id="content_code_references" style="width: 100%; height: 300px; display: flex; flex-wrap: wrap; align-items: center;">
         <div class="content_code_refences_header" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <div class="content_logo" style="width: 500px; height: 100px;">
+            <div class="content_logo" style="width: 300px; height: 100px;">
                 <img style="width: 100%; height: 100%; object-fit: contain;" src="{{ asset('storage/icons/logo.png') }}" alt="">
             </div>
-            <div class="content_references_img">
-                {!! DNS1D::getBarcodeHTML("$product->serie", 'C93') !!}
-                <div class="content_text_references" style="text-align: center; width: 100%"> <b>{{ $product->serie }}</b>
+            <div class="content_references_img" style="display: flex; flex-wrap: wrap; justify-content: center">
+                {!! DNS1D::getBarcodeHTML("$product->serie", 'C128') !!}
+                <div class="content_text_references" style="text-align: center; width: 100%; flex-direction: column; display: flex;"><b style="font-size: 40px;">{{ $product->serie }}</b><b style="width: 100%;font-size: 25px;">{{ $product->name }} ID  {{ $product->id }} </b>
                 </div>
             </div>
         </div>
@@ -163,8 +166,10 @@ object-fit: contain;
 
 
     </div>
+    <button type="button" href="" onclick="imprimirDiv()" class="btn btn-dark" style="width: 100%">Imprimir REFERENCIA</button>
+    @endif
 </div>
-<button type="button" href="" onclick="imprimirDiv()" class="btn btn-dark" style="width: 100%">Imprimir REFERENCIA</button>
+
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Accesorios</label>
     <textarea  required class="form-control" id="exampleFormControlTextarea1" rows="3" name="accessories" placeholder="Ingrese observaciones" maxlength="500">{{ $product->accessories }}</textarea>
@@ -218,7 +223,7 @@ $origin_certificate = $o->origin_certificate;
 </select>
   </div>
   <div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">Estado</label>
+    <label for="exampleFormControlTextarea1" class="form-label">Estado de vida</label>
     <select required name="id_state_certificate" id="id_state_certificate">
         @php
         $state_certificate = null;
@@ -241,6 +246,10 @@ $state_certificate = $s->state_certificate;
         </select>
   </div>
   <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Estado</label>
+    <input  type="text" required  disabled readonly name="" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $state }}">
+  </div>
+  <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">USUARIO CREADOR DEL PRODUCTO</label>
     <a href="{{ route('dashboard.users.view_user',$user_create_product->id) }}">
     <input  type="text" required style="width: 100%; padding: 10px; background-color: white; border: 1px solid black; font-weight: bold;"  name="" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{ $user_create_product->name }}">
@@ -251,11 +260,21 @@ $state_certificate = $s->state_certificate;
     <label for="exampleFormControlTextarea1" class="form-label">CAMBIAR IMAGEN PRINCIPAL</label>
     <input type="file" name="file" id="" accept="image/*" style="width: 100%">
   </div>
-
-  <button class="btn btn-success">Guardar Cambios</button>
-  <a href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS </a>
+<div class="content_buttons" style="display: flex; flex-wrap: wrap;">
+  <button style="margin: 5px;" class="btn btn-success">Guardar Cambios</button>
+  <a style="margin: 5px;" href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS </a>
   <br>
+  <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($product->id_state == 1) onsubmit="return confirmarEnvio()@endif">
+    @csrf
+    <input type="text" hidden value="{{ $product->id }}" name="id_product">
+    @if($product->id_state == 1)
+    <button style="margin: 5px;" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+    @elseif ($product->id_state == 2)
+    <button style="margin: 5px;" class="btn btn-success">ACTIVAR</button>
+    @endif
+</div>
 
+</form>
 </form>
 
 
@@ -327,12 +346,17 @@ inputsAndSelects.forEach(function (element) {
 
             var ventanaImpresion = window.open('', '_blank');
             ventanaImpresion.document.write('<html><head><title>REFERENCIA GRUPO TDM</title></head><body>');
-            ventanaImpresion.document.write('<img src="' + imgData + '" style="width:300px; height: 190px; object-fit: contain;">');
+                ventanaImpresion.document.write('<div style="width:100%;height: 150px;">');
+            ventanaImpresion.document.write('<img src="' + imgData + '" style="width:100%; height: 100%;object-fit: contain;">');
+            ventanaImpresion.document.write('</div>');
             ventanaImpresion.document.write('</body></html>');
             ventanaImpresion.document.close();
 
             // Luego, puedes imprimir la ventana de impresión
+
+            setTimeout(() => {
             ventanaImpresion.print();
+        }, 1000);
         });
     }
   </script>

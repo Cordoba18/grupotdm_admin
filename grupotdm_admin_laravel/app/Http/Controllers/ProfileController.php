@@ -1091,9 +1091,9 @@ public function permission_approve(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
-    ReportController::create_report("El jefe $user->name ha aprovado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
-    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha aprovado su permiso con ID $id_permission"));
-    return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso aprovado correctamente!');
+    ReportController::create_report("El jefe $user->name ha aprobado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
+    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha aprobado su permiso con ID $id_permission"));
+    return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso aprobado correctamente!');
 }
 public function permission_disapprove(Request $request){
     $user = Auth::user();
@@ -1103,8 +1103,8 @@ public function permission_disapprove(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
-    ReportController::create_report("El jefe $user->name ha desaprovado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
-    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha desaprobado su permiso con ID $id_permission"));
+    ReportController::create_report("El jefe $user->name ha rechazado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
+    Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha rechazado su permiso con ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso rechazado correctamente!');
 }
 public function permission_user_exit(Request $request){
@@ -1136,21 +1136,28 @@ public function permission_user_return(Request $request){
 
 public function show_certificates(Request $request){
 $user = Auth::user();
-
-if($request->search){
-    $search = "AND (p.proceeding LIKE '%$request->search%' OR c.date LIKE '%$request->search%' OR ud.name LIKE '%$request->search%' OR ur.name LIKE '%$request->search%' OR s.state LIKE '%$request->search%')";
-}else{
-$search = "";
+$filters = DB::select("SELECT * FROM states WHERE id= 2  OR id = 3 OR id=11 OR id=12");
+$search = $request->search;
+$filter = $request->filter;
+if($request->search !== null && $request->filter !== null){
+    $sql = " WHERE (p.proceeding LIKE '%$request->search%' OR c.date LIKE '%$request->search%' OR ud.name LIKE '%$request->search%' OR ur.name LIKE '%$request->search%' OR s.state LIKE '%$request->search%')
+    AND c.id_state = $request->filter";
+}else if($request->search !== null){
+    $sql = " WHERE (p.proceeding LIKE '%$request->search%' OR c.date LIKE '%$request->search%' OR ud.name LIKE '%$request->search%' OR ur.name LIKE '%$request->search%' OR s.state LIKE '%$request->search%')";
+}else if($request->filter !== null){
+    $sql = " WHERE c.id_state = $request->filter";
+} else{
+$sql = "WHERE c.id_state <> 12 AND c.id_state <> 2";
 }
-$certificates = DB::select("SELECT c.id, p.proceeding, c.date, ud.name AS name_delivery, ud.id AS id_user_delivery, ur.name AS name_receives, ur.id AS id_user_receives, s.state, c.id_state
+$certificates = DB::select("SELECT c.name_user_receives, c.id, p.proceeding, c.date, ud.name AS name_delivery, ud.id AS id_user_delivery, ur.name AS name_receives, ur.id AS id_user_receives, s.state, c.id_state
 FROM certificates c
 INNER JOIN proceedings p ON c.id_proceeding = p.id
 INNER JOIN users ud ON c.id_user_delivery = ud.id
-INNER JOIN users ur ON c.id_user_receives = ur.id
+LEFT JOIN users ur ON c.id_user_receives = ur.id
 INNER JOIN states s ON c.id_state = s.id
-WHERE c.id_state <> 2 $search ORDER BY c.id DESC");
+$sql ORDER BY c.id DESC");
 
-return view('dashboard.certificates.certificates', compact('user','certificates'));
+return view('dashboard.certificates.certificates', compact('user','search','filter','filters','certificates'));
 }
 
 
@@ -1181,14 +1188,23 @@ public function save_certificate(Request $request){
     $new_certificate->date = $request->date;
     $new_certificate->address = $request->address;
     $new_certificate->id_user_delivery = $user->id;
-    $new_certificate->id_user_receives = $request->id_user_receives;
+    if($request->name_user_receives == ""){
+        $new_certificate->id_user_receives = $request->id_user_receives;
+
+    }else{
+        $new_certificate->name_user_receives = $request->name_user_receives;
+    }
+
     $new_certificate->general_remarks = $request->general_remarks	;
     $new_certificate->id_state = 3;
     $new_certificate->save();
     $certificate = DB::selectOne("SELECT * FROM certificates WHERE date = '$request->date' AND id_user_delivery = $user->id AND address = '$request->address'");
-    $user_receive = User::find($request->id_user_receives);
+
+    if($request->name_user_receives == ""){
+        $user_receive = User::find($request->id_user_receives);
     ReportController::create_report("El usuario $user->name ha creado un acta para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
     Mail::to($user_receive->email)->send(new create_certificate($user_receive, $user,$certificate));
+    }
     return response()->json(['id_certificate'=> $certificate->id],200);
 }
 
@@ -1201,7 +1217,12 @@ $new_rows_certificate->id_product = $request->id_product;
 $new_rows_certificate->id_certificate = $request->id_certificate;
 $new_rows_certificate->save();
 
+
 $certificate = Certificate::find($request->id_certificate);
+$product = Product::find($request->id_product);
+$product->id_state = $certificate->id_state;
+$product->save();
+
 $new_report_product = new Report_product();
 $new_report_product->id_product = $request->id_product;
 $new_report_product->id_certificate = $request->id_certificate;
@@ -1219,6 +1240,9 @@ public function delete_certificate(Request $request){
     foreach ($rows_certificates as $r) {
         $new_report_product = new Report_product();
         $new_report_product->id_product = $r->id_product;
+        $product = Product::find($r->id_product);
+        $product->id_state = 1;
+        $product->save();
         $new_report_product->id_certificate = $id_certificate;
         $new_report_product->report = "El producto ya NO se encuentra asignado al acta  con ID $id_certificate";
         $new_report_product->save();
@@ -1227,16 +1251,21 @@ public function delete_certificate(Request $request){
 
     $certificate->id_state = 2;
     $certificate->save();
-    $user_receive = User::find($certificate->id_user_receives);
-    ReportController::create_report("El usuario $user->name ha eliminado el acta con ID $id_certificate para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
-    Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el usuario $user->name ha eliminado el certificado con ID $certificate->id y fecha $certificate->date"));
+    if($certificate->name_user_receives){
+        ReportController::create_report("El usuario $user->name ha eliminado el acta con ID $id_certificate para $certificate->name_user_receives para la siguiente dirección $request->address", $user->id, 17);
+    }else{
+        $user_receive = User::find($certificate->id_user_receives);
+        ReportController::create_report("El usuario $user->name ha eliminado el acta con ID $id_certificate para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
+        Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el usuario $user->name ha eliminado el certificado con ID $certificate->id y fecha $certificate->date"));
+    }
+
     return redirect()->route('dashboard.certificates')->with('message','Certificado eliminado con exito!');
 
 }
 
 public function view_certificate($id){
 
-    $certificate = DB::selectOne("SELECT c.general_remarks, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.id
+    $certificate = DB::selectOne("SELECT c.name_user_receives, c.general_remarks, c.id_proceeding, c.id, p.proceeding, c.date, c.address, s.state, c.id_state, ur.id
     AS id_user_receives, ud.id
     AS id_user_delivery, ur.name
     AS name_receives, ur.id_area
@@ -1247,10 +1276,10 @@ public function view_certificate($id){
     FROM certificates c
     INNER JOIN proceedings p ON c.id_proceeding = p.id
     INNER JOIN states s ON c.id_state = s.id
-    INNER JOIN users ur ON c.id_user_receives = ur.id
-    INNER JOIN areas ar ON ur.id_area = ar.id
+    LEFT JOIN users ur ON c.id_user_receives = ur.id
+    LEFT JOIN areas ar ON ur.id_area = ar.id
     INNER JOIN users ud ON c.id_user_delivery = ud.id
-    INNER JOIN areas ad ON ur.id_area = ad.id
+    INNER JOIN areas ad ON ud.id_area = ad.id
     WHERE c.id = $id");
 
     $user_reception = DB::selectOne("SELECT u.name, u.id FROM users u
@@ -1285,15 +1314,32 @@ $user = Auth::user();
         $certificate->id_state = 11;
         $certificate->image_exit = $name_file;
         $certificate->date_exit = $date;
-        $certificate->id_user_reception = $user->id;
-        ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $user_receive->name para la siguiente dirección $certificate->address", $user->id, 17);
-        Mail::to($user_receive->email)->send(new accept_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date salio de las instalaciones para la direccion expecificada: $certificate->address", $certificate));
+        if($certificate->name_user_receives){
+            ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $certificate->name_user_receives para la siguiente dirección $certificate->address", $user->id, 17);
+            if ($certificate->id_proceeding == 1){
+                $certificate->id_user_reception = $user->id;
+            }
+        }else{
+            $user_receive = User::find($certificate->id_user_receives);
+            $certificate->id_user_reception = $user->id;
+            ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $user_receive->name para la siguiente dirección $certificate->address", $user->id, 17);
+            Mail::to($user_receive->email)->send(new accept_certificate($user_receive, "que el acta con ID $certificate->id y fecha $certificate->date salio de las instalaciones para la direccion expecificada: $certificate->address", $certificate));
+
+        }
+
     }else{
         $certificate->id_state = 12;
         $certificate->image_delivery = $name_file;
         $certificate->date_delivery = $date;
-        ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user->id, 17);
-        Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
+        if($certificate->name_user_receives){
+            ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user->id, 17);
+            Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha sido devuelto por el usuario con nombre $certificate->name_user_receives"));
+        }else{
+
+            ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user->id, 17);
+            Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
+        }
+
     }
 
 
@@ -1301,10 +1347,22 @@ $user = Auth::user();
 
     $rows_certificates = Row_Certificate::all()->where('id_certificate','=',$id_certificate);
     $state_certificate = DB::selectOne("SELECT s.state FROM certificates c INNER JOIN states s ON c.id_state = s.id WHERE c.id=$id_certificate")->state;
+    $rows_certificates = Row_Certificate::all()->where('id_certificate','=',$id_certificate);
+
+
+
 
     foreach ($rows_certificates as $r) {
         $new_report_product = new Report_product();
         $new_report_product->id_product = $r->id_product;
+        $product = Product::find($r->id_product);
+        if  ($certificate->id_state == 12){
+            $product->id_state = 1;
+        }else{
+            $product->id_state = $certificate->id_state;
+        }
+
+        $product->save();
         $new_report_product->id_certificate = $id_certificate;
         $new_report_product->report = "El producto asociado al acta con ID $certificate->id y fecha $certificate->address esta en estado $state_certificate";
         $new_report_product->save();
@@ -1316,34 +1374,38 @@ $user = Auth::user();
 
 public function show_inventories(Request $request){
 $search = $request->search;
+$filter = $request->filter;
     if($request->search !== null && $request->filter !== null){
-        $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
-        INNER JOIN states_certificates s ON p.id_state_certificate = s.id
-        INNER JOIN type_components t ON p.id_type_component = t.id
-        INNER JOIN rows_certificates rs ON p.id = rs.id_product
-        INNER JOIN certificates c ON rs.id_certificate = c.id
-        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
-        AND (c.id_state = $request->filter OR p.id_state = $request->filter)";
+            $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+            INNER JOIN states_certificates s ON p.id_state_certificate = s.id
+            INNER JOIN type_components t ON p.id_type_component = t.id
+            WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
+            AND  p.id_state = $request->filter";
+
+
     }else if($request->search !== null){
         $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
         INNER JOIN states_certificates s ON p.id_state_certificate = s.id
         INNER JOIN type_components t ON p.id_type_component = t.id
-        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')";
+        WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
+        AND p.id_state = 1";
     }else if($request->filter !== null){
-        $sql = "INNER JOIN rows_certificates rs ON p.id = rs.id_product
-        INNER JOIN certificates c ON rs.id_certificate = c.id
-        INNER JOIN type_components t ON p.id_type_component = t.id
-        WHERE (c.id_state = $request->filter OR p.id_state = $request->filter)";
+
+            $sql = " WHERE p.id_state = $request->filter";
+
+
     }else{
         $sql = "";
     }
-    $products = DB::select("SELECT DISTINCT p.id, p.name, p.serie, p.id_state FROM products p $sql ORDER BY p.id DESC");
+
+
+    $products = DB::select("SELECT p.id, p.name, p.serie, p.id_state FROM products p $sql ORDER BY p.id DESC");
     $images_products = Image_product::all()->where('id_state','=',1);
     $user = Auth::user();
-    $filters = DB::select("SELECT * FROM states WHERE id= 1 OR id = 3 OR id=11");
+    $filters = DB::select("SELECT * FROM states WHERE id=1 OR id= 2  OR id = 3 OR id=11");
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     if($validate_user_sistemas){
-    return view('dashboard.inventories.inventories', compact('products', 'images_products','filters','search'));
+    return view('dashboard.inventories.inventories', compact('products', 'images_products','filters','search' , 'filter'));
     }else{
         return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
     }
@@ -1435,29 +1497,29 @@ public function delete_product(Request $request){
     if( $product->id_state == 1){
         $product->id_state =2;
         ReportController::create_report("El usuario $user->name ha eliminado el producto con la siguiente serial $product->serie", $user->id, 18);
+        $message = "Producto eliminado con exito!";
     }else{
         $product->id_state =1;
         ReportController::create_report("El usuario $user->name ha activado el producto con la siguiente serial $product->serie", $user->id, 18);
+        $message = "Producto activado con exito!";
     }
-
     $product->save();
-
-    return redirect()->back()->with('message','Producto eliminado con exito');
+    return redirect()->back()->with('message',$message);
 }
 
 public function view_product($id){
 
     $user = Auth::user();
-
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
         $origins_certificates = Origin_Certificate::all();
         $states_certificates = State_Certificate::all();
         $types_components = Type_Component::all();
         $product = Product::find($id);
+        $state = DB::selectOne("SELECT s.state FROM products p INNER JOIN states s ON p.id_state = s.id WHERE p.id = $id")->state;
         $user_create_product = DB::selectOne("SELECT u.id, u.name FROM users u WHERE u.id = $product->id_user");
-        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
+        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id");
         $reports_product = Report_Product::orderBy('id', 'desc')->where('id_product','=',$id)->get();
-        return view('dashboard.inventories.view_products',compact('user_create_product','reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
+        return view('dashboard.inventories.view_products',compact('state','user_create_product','reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
 }
 
 

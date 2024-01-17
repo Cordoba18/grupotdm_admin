@@ -39,13 +39,8 @@ Route::get('/dashboard/users/edit_profile/change_password/{id}', [ProfileControl
 Route::post('/dashboard/users/edit_profile/change_password/save_changes', [ProfileController::class, 'save_changes_password'])->name('dashboard.users.change_password.save_changes');
 Route::get('/dashboard/users/new_user', [ProfileController::class, 'new_user'])->name('dashboard.users.new_user');
 Route::post('/dashboard/users/new_user/save_user', [ProfileController::class, 'save_user'])->name('dashboard.users.save_user');
-
-
-
-
 Route::get('/dashboard/users/profile/edit_profile/getcharges/{id}', [ProfileController::class, 'getcharges'])->name('dashboard.users.getcharges');
 Route::get('/dashboard/users/profile/edit_profile/getshops/{id}', [ProfileController::class, 'getshops'])->name('dashboard.users.getshops');
-
 
 
 Route::get('/dashboard/tickets', [ProfileController::class, 'show_tickets'])->name('dashboard.tickets');
@@ -111,7 +106,6 @@ Route::get('/dashboard/certificates/view_certificate/{id}', [ProfileController::
 Route::post('/dashboard/certificates/view_certificate/state_certificate', [ProfileController::class, 'state_certificate'])->name('dashboard.certificates.view_certificate.state_certificate');
 Route::get('/dashboard/certificates/create/get_dates_product/{id}', [ProfileController::class, 'get_dates_product'])->name('dashboard.certificates.create.get_dates_product');
 Route::get('/dashboard/certificates/accept_certificate', [Mails_Controller::class, 'accept_certificate'])->name('dashboard.certificates.accept_certificate');
-
 Route::get('/dashboard/certificates/view_certificate/reports_certificate/{id}', [ProfileController::class, 'reports_certificate'])->name('dashboard.certificates.view_certificate.reports_certificate');
 Route::post('/dashboard/certificates/view_certificate/reports_certificate/create', [ProfileController::class, 'reports_certificate_create'])->name('dashboard.certificates.view_certificate.reports_certificate.create');
 Route::post('/dashboard/certificates/view_certificate/reports_certificate/delete', [ProfileController::class, 'reports_certificate_delete'])->name('dashboard.certificates.view_certificate.reports_certificate.delete');

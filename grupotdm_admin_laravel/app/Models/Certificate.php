@@ -16,6 +16,7 @@ class Certificate extends Model
         'address',
         'id_user_delivery',
         'id_user_receives',
+        'name_user_receives',
         'id_user_reception',
         'general_remarks',
         'image_exit',

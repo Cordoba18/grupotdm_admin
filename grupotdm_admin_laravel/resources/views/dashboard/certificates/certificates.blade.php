@@ -27,9 +27,43 @@
 
     <div class="content_search">
         <form action="{{ route('dashboard.certificates') }}" method="get">
-            <input type="text" name="search" placeholder="Buscar actas" style="width: 80%">
-            <button id="btn_search" class="btn btn-primary">Buscar</button></form>
-        </div>
+
+            @if ($search)
+            <input type="text" name="search" placeholder="Buscar" id="Buscar productos" value="{{ $search }}">
+            @else
+            <input type="text" name="search" placeholder="Buscar" id="Buscar productos">
+            @endif
+            <select name="filter" id="" >
+                @php
+                $f = "";
+                @endphp
+
+                @if($filter)
+
+                @foreach ($filters as $frs)
+                @if($frs->id == $filter)
+                @php
+                    $f = $frs->state;
+                @endphp
+                @endif
+                @endforeach
+                <option value="{{ $filter }}">{{ $f }}</option>
+                <option value="">SIN FILTRO</option>
+                @else
+                <option value="">Seleccione un filtro</option>
+
+                @endif
+
+                @foreach ($filters as $f)
+                @if($filter != $f->id)
+                <option value="{{ $f->id }}">{{ $f->state }}</option>
+                @endif
+
+                @endforeach
+            </select>
+    <button id="btn_search" class="btn btn-primary">Buscar</button>
+</form>
+</div>
 <br>
 @stop
 
@@ -52,9 +86,15 @@
         <td>{{ $c->proceeding }}</td>
         <td>{{ $c->date }}</td>
         <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $c->id_user_delivery) }}">{{ $c->name_delivery }}</a></td>
+        @if($c->name_user_receives)
+        <td>{{ $c->name_user_receives }}</td>
+        @else
         <td><a  style="font-weight: bold;color: black" href="{{ route('dashboard.users.view_user', $c->id_user_receives) }}">{{ $c->name_receives }}</a></td>
+        @endif
+
         <td>{{ $c->state }}</td>
-        <td><input type="number" hidden id="id_state" value="{{ $c->id_state }}"><a href="{{ route('dashboard.certificates.view_certificate', $c->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if ($c->id_user_delivery == $user->id)
+        <td><input type="number" hidden id="id_state" value="{{ $c->id_state }}"><a href="{{ route('dashboard.certificates.view_certificate', $c->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+            @if ($c->id_user_delivery == $user->id && $c->id_state !== 2 && $c->id_state !== 12)
             <form action="{{ route('dashboard.certificates.delete') }}" method="post"  onsubmit="return confirmarEnvio()">
                 @csrf
                 <input type="number" value="{{ $c->id }}" hidden name="id_certificate">

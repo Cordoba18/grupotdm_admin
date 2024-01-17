@@ -65,6 +65,14 @@
                     class="form-control-plaintext" value="{{ $certificate->proceeding }}"
                     style="background-color: white; padding: 10px; width: 100%;">
             </div>
+            @if ($certificate->name_user_receives)
+            <div class="mb-3">
+                <label for="formFile" class="form-label">USUARIO A RECIBIR</label>
+                <input required type="text" id="" name="" readonly
+                    class="form-control-plaintext" value="{{ $certificate->name_user_receives }}"
+                    style="background-color: white; padding: 10px; width: 100%">
+            </div>
+            @else
             <div class="mb-3">
                 <label for="formFile" class="form-label">AREA DE USUARIO A RECIBIR</label>
                 <input required type="text" id="deveices" name="user_delivery" readonly
@@ -80,10 +88,12 @@
                         style="background-color: white; padding: 10px; width: 100%;font-weight: bold; border-bottom: 3px solid black;">
                 </a>
             </div>
+            @endif
+
 
 
             <div class="mb-3">
-                <label for="formFile" class="form-label">RECEPCIONISTA ENCARGADO DE DAR SALIDA</label>
+                <label for="formFile" class="form-label">USUARIO/RECEPCIONISTA ENCARGADO DE DAR SALIDA</label>
                 @if ($user_reception)
                     <a href="{{ route('dashboard.users.view_user', $user_reception->id) }}">
                 @endif
@@ -148,7 +158,12 @@
 
     <div class="content_images">
         <div class="content_left_images">
+            @if($certificate->id_proceeding == 1)
             <b style="width: 100%">Prueba de despacho de activos:</b>
+            @else
+            <b style="width: 100%">Prueba de prestamo de activos:</b>
+            @endif
+
             <br>
             @if ($certificate_full->image_exit)
                 <div class="content_image" style="width: 100%; height: 240px;">
@@ -165,7 +180,11 @@
             @endif
         </div>
         <div class="content_right_images">
+            @if($certificate->id_proceeding == 1)
             <b style="width: 100%">Prueba de llegada de activos:</b>
+            @else
+            <b style="width: 100%">Prueba de devolución de activos:</b>
+            @endif
             <br>
             @if ($certificate_full->image_delivery)
                 <div class="content_image" style="width: 100%; height: 240px;">
@@ -184,15 +203,14 @@
     </div>
 </div>
 @if (
-    (($user->id_area == 16 || $user->id == $certificate_full->id_user_receives || $user->id_area == $certificate->id_area_user_receives) && $certificate_full->id_state == 11) ||
+    (($user->id ==  $certificate_full->id_user_delivery && $certificate_full->id_state == 3 && $certificate_full->id_proceeding == 2)  || ($user->id_area == 16 || $user->id == $certificate_full->id_user_receives || $user->id_area == $certificate->id_area_user_receives) && $certificate_full->id_state == 11) ||
         ($user->id_area == 16 && $certificate_full->id_state == 3 && $certificate_full->id_state != 12))
 
     <form action="{{ route('dashboard.certificates.view_certificate.state_certificate') }}" method="post"
         enctype="multipart/form-data">
         @csrf
-
         <div class="mb-3">
-            @if ($certificate_full->id_state == 3 && $user->id_area == 16)
+            @if ($certificate_full->id_state == 3)
                 <label for="formFile" class="form-label">DAR SALIDA DE ACTIVOS </label>
             @elseif ($certificate_full->id_state == 11)
                 <label for="formFile" class="form-label">DAR ENTRADA DE ACTIVOS</label>
@@ -208,12 +226,28 @@
     </form>
 @endif
 <div class="mb-3">
-    <div class="content_buttons" style="flex-direction: column;">
-    <button onclick="imprimirDiv()" class="btn btn-dark btn-lg">Imprimir acta</button>
+    <div class="content_buttons" style="display: flex;flex-direction: column; justify-content: space-around;flex-wrap: wrap; justify-items: center;">
+    <button onclick="imprimirDiv()" class="btn btn-dark btn-lg">Imprimir acta <i class="bi bi-printer"></i></button>
     @if ($user->id == $certificate_full->id_user_receives || $user->id == $certificate_full->id_user_delivery)
-    <a href="{{ route('dashboard.certificates.view_certificate.reports_certificate',$certificate_full->id) }}" class="btn btn-outline-light btn-lg" style="color: black">Reportar novedades</a>
-    </div>
+    <a href="{{ route('dashboard.certificates.view_certificate.reports_certificate',$certificate_full->id) }}" class="btn btn-outline-light btn-lg" style="color: black">Reportar novedades <i class="bi bi-person-raised-hand"></i></a>
+
     @endif
+    @if($user->id == $certificate_full->id_user_delivery && $certificate_full->id_state == 11 )
+    <form action="" method="post">
+        @csrf
+        <input type="text" name="id_certificate" value="{{ $certificate_full->id }}" hidden>
+        <button class="btn btn-success btn-lg" style="width: 100%">PEDIR A USUARIO CONFIRMACIÓN DE ACTIVOS <i class="bi bi-bell-fill"></i></button>
+    </form>
+    @endif
+    @if ($certificate_full->id_user_delivery == $user->id && $certificate_full->id_state !== 2 && $certificate_full->id_state !== 12)
+    <form action="{{ route('dashboard.certificates.delete') }}" method="post"  onsubmit="return confirmarEnvio()">
+        @csrf
+        <input type="number" value="{{ $certificate_full->id }}" hidden name="id_certificate">
+        <button class="btn btn-danger btn-lg" style="width: 100%">ELIMINAR<i class="bi bi-trash3"></i></button>
+    </form>
+    @endif
+</div>
+
 </div>
 @stop
 
@@ -221,6 +255,15 @@
 
 
 @section('js')
+<script>
+    function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de eliminar esta acta?");
+
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
+</script>
 
 @vite(['resources/js/show_certificate.js'])
 <script>
