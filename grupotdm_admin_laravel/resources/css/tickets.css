@@ -67,22 +67,39 @@ margin-bottom: 10px;
     background-color: yellow;
 
 }
-.animation_ticket{
+.animation_ticket_create{
     animation: animation_tickets 3s ;
-    animation: titilar_ticket infinite 1s;
+    animation: titilar_ticket_create infinite 1s;
 }
+
+.animation_ticket_modificate{
+    animation: animation_tickets 3s ;
+    animation: titilar_ticket_modificate infinite 1s;
+}
+
+.animation_ticket_finish{
+    animation: animation_tickets 3s ;
+    animation: titilar_ticket_finish infinite 4s;
+}
+.animation_ticket_delete{
+    animation: animation_tickets 3s ;
+    animation: titilar_ticket_delete infinite 1s;
+}
+
 @keyframes animation_tickets{
 
     0%{
         opacity: 0;
+        transform: translateY(-100%);
     }
     100%{
         opacity: 1;
+        transform: translateY(-0%);
 
     }
 }
 
-@keyframes titilar_ticket{
+@keyframes titilar_ticket_create{
 
     0%{
         background-color: white;
@@ -93,6 +110,43 @@ margin-bottom: 10px;
     }
     100%{
         background-color: orange;
+
+    }
+}
+
+@keyframes titilar_ticket_modificate{
+
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: yellow;
+
+    }
+    100%{
+        background-color: green;
+
+    }
+}
+
+@keyframes titilar_ticket_finish{
+
+    0%{
+        background-color: white;
+    }
+    100%{
+        background-color: green;
+
+    }
+}
+
+@keyframes titilar_ticket_delete{
+
+    0%{
+        background-color: white;
+    }
+    100%{
+        background-color: rgb(255, 0, 0);
 
     }
 }

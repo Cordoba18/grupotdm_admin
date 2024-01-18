@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
-    @vite(['resources/css/tickets.css','resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/tickets.css', 'resources/js/app.js'])
 @stop
 @php
     $user = Auth::user();
@@ -41,7 +41,6 @@
         <button id="btn_search" class="btn btn-primary">Buscar</button>
     </form>
     </div>
-@if($validate_user_sistemas)
 
 
 <div class="content_info_tickets">
@@ -51,13 +50,13 @@
         $total_v_P = 0;
         @endphp
         @foreach ($tickets_all as $t)
-        @if($t->id_user_destination == $user->id && ($t->id_state == 3 || $t->id_state == 4))
+        @if(($t->id_user_sender == $user->id && ($t->id_state == 3 || $t->id_state == 4)) || ($t->id_user_destination == $user->id && ($t->id_state == 3 || $t->id_state == 4)))
         @php
         $total_v_P += 1;
         @endphp
         @endif
         @endforeach
-        <b>{{ $total_v_P }}</b>
+        <b id="total_pendientes">{{ $total_v_P }}</b>
     </div>
     <div class="content_amount">
         <h1>En ejecución </h1>
@@ -65,13 +64,13 @@
         $total_e = 0;
         @endphp
         @foreach ($tickets_all as $t)
-        @if($t->id_user_destination == $user->id && $t->id_state == 5 )
+        @if( ($t->id_user_sender == $user->id && $t->id_state == 5 ) ||($t->id_user_destination == $user->id && $t->id_state == 5) )
         @php
         $total_e += 1;
         @endphp
         @endif
         @endforeach
-        <b>{{ $total_e }}</b>
+        <b id="total_ejecuciones">{{ $total_e }}</b>
     </div>
     <div class="content_amount">
         <h1>Vencidos </h1>
@@ -79,63 +78,16 @@
         $total_v = 0;
         @endphp
         @foreach ($tickets_all as $t)
-        @if($t->id_user_destination == $user->id && $t->id_state == 6 )
+        @if(($t->id_user_sender == $user->id && $t->id_state == 6 ) || ($t->id_user_destination == $user->id && $t->id_state == 6 ))
         @php
         $total_v += 1;
         @endphp
         @endif
         @endforeach
-        <b>{{ $total_v }}</b>
+        <b id="total_vencidos">{{ $total_v }}</b>
     </div>
 
  </div>
-@else
-<div class="content_info_tickets">
-    <div class="content_amount">
-        <h1>Vistos/pendientes </h1>
-        @php
-        $total_v_P = 0;
-        @endphp
-        @foreach ($tickets_all as $t)
-        @if($t->id_user_sender == $user->id && ($t->id_state == 3 || $t->id_state == 4))
-        @php
-        $total_v_P += 1;
-        @endphp
-        @endif
-        @endforeach
-        <b>{{ $total_v_P }}</b>
-    </div>
-    <div class="content_amount">
-        <h1>En ejecución </h1>
-        @php
-        $total_e = 0;
-        @endphp
-        @foreach ($tickets_all as $t)
-        @if($t->id_user_sender == $user->id && $t->id_state == 5 )
-        @php
-        $total_e += 1;
-        @endphp
-        @endif
-        @endforeach
-        <b>{{ $total_e }}</b>
-    </div>
-    <div class="content_amount">
-        <h1>Vencidos </h1>
-        @php
-        $total_v = 0;
-        @endphp
-        @foreach ($tickets_all as $t)
-        @if($t->id_user_sender == $user->id && $t->id_state == 6 )
-        @php
-        $total_v += 1;
-        @endphp
-        @endif
-        @endforeach
-        <b>{{ $total_v }}</b>
-    </div>
-
- </div>
-@endif
 
 @stop
 
@@ -171,36 +123,8 @@
                     <td>{{ $t->state }}</td>
                     <td>
                         <input type="number" value="{{ $t->id_state }}" disabled hidden id="id_state">
-
-                        @if ($t->id_user_sender == $user->id)
-                        <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
-                            @csrf
-                            <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
-                            @if($t->id_state == 7)
-                            <button class="btn btn-success">RE ABRIR</button>
-                            @else
-                            <button class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-                            @endif
-                        </form>
-                        @if (($t->id_state == 5 || $t->id_state == 6 ))
-                        <form action="{{ route('dashboard.tickets.state') }}" method="post">
-                            @csrf
-                            <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
-                            <button class="btn btn-success">TERMINAR</button>
-                        </form>
-                        @endif
-
-                        @else
-                        <form action="{{ route('dashboard.tickets.state') }}" method="post">
-                            @csrf
-                            <input type="number" name="id_ticket" value="{{ $t->id }}" hidden>
-                        @if ($t->id_state == 4 && $t->id_user_destination == $user->id)
-                        <button  class="btn btn-dark">EJECUTAR</button>
-                        @endif
-                    </form>
-                        @endif
+                        <input type="number" value="{{ $t->id }}" disabled hidden id="id_ticket">
                         <a href="{{ route('dashboard.tickets.ticket_detail', $t->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-
                     </td>
                 </tr>
                 @endforeach
@@ -229,7 +153,7 @@ let route_ticket = "{{ route('dashboard.tickets.ticket_detail',0)}}".slice(0, -1
         "paging": true,  // Habilita la paginación
         "lengthChange": false, // Oculta el control para cambiar el número de elementos por página
         "searching": false, // Deshabilita la función de búsqueda
-        "ordering": true, // Habilita la ordenación de columnas
+        "ordering": false, // Habilita la ordenación de columnas
         "info": false, // Muestra información sobre la paginación
         "autoWidth": true // Deshabilita el ajuste automático del ancho de las columnas
 

@@ -50,6 +50,7 @@ Route::get('/dashboard/tickets/get_id/{id}', [ProfileController::class, 'get_id'
 Route::post('/dashboard/tickets/state', [ProfileController::class, 'state'])->name('dashboard.tickets.state');
 Route::post('/dashboard/tickets/delete_ticket', [ProfileController::class, 'delete_ticket'])->name('dashboard.tickets.delete_ticket');
 Route::get('/dashboard/tickets/ticket_detail/{id}', [ProfileController::class, 'ticket_detail'])->name('dashboard.tickets.ticket_detail');
+Route::post('/dashboard/tickets/ticket_detail/writting_ticket', [ProfileController::class, 'writting_ticket'])->name('dashboard.tickets.ticket_detail.writting_ticket');
 Route::get('/dashboard/tickets/edit_ticket/{id}', [ProfileController::class, 'edit_ticket'])->name('dashboard.tickets.edit_ticket');
 Route::post('/dashboard/tickets/edit_ticket/save_changes_ticket', [ProfileController::class, 'save_changes_ticket'])->name('dashboard.tickets.save_changes_ticket');
 Route::post('/dashboard/tickets/notificate_finish_ticket', [ProfileController::class, 'notificate_finish_ticket_mail'])->name('dashboard.tickets.notificate_finish_ticket_mail');

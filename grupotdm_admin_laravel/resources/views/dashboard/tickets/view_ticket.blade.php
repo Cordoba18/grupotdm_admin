@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
 
-    @vite(['resources/css/view_ticket.css'])
+    @vite(['resources/css/view_ticket.css', 'resources/js/app.js'])
     <style>
         body{
     background-color: white;
@@ -76,6 +76,7 @@
 @section('content_header')
 <div class="content_loading" hidden>
 
+    <p id="id_user" hidden>{{ $user->id }}</p>
 </div>
 <h1>Ticket</h1>
 @if (session('message'))
@@ -88,19 +89,23 @@
 @section('content')
 
 <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">ID</label>
+    <input disabled type="text" id="id_ticket" name="" class="form-control"  value="{{ $ticket->id }}">
+  </div>
+<div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Nombre</label>
-    <input disabled type="text" name="" class="form-control" id="exampleFormControlInput1" value="{{ $ticket->name }}">
+    <input disabled type="text" id="name" name="" class="form-control"  value="{{ $ticket->name }}">
   </div>
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Descripciòn</label>
-    <textarea  disabled class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" >{{ $ticket->description }}</textarea>
+    <textarea  disabled  class="form-control"id="description" rows="3" name="description" >{{ $ticket->description }}</textarea>
   </div>
 
   @if ($file)
   <div class="mb-3">
     <label for="exampleFormControlTextarea1" class="form-label">Archivo</label>
     <div class="col-sm-10">
-    <a class="btn btn-dark" href="{{ asset('storage/files/'.$file) }}" download="">Descargar archivo de {{$ticket->name }} <i class="bi bi-download"></i></a>
+    <a id="file" class="btn btn-dark" href="{{ asset('storage/files/'.$file) }}" download="">Descargar archivo de {{$ticket->name }} <i class="bi bi-download"></i></a>
 </div>
 </div>
   @endif
@@ -119,22 +124,24 @@
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Prioridad</label>
     <div class="col-sm-10">
-      <input disabled type="text" name="" id="" readonly class="form-control-plaintext" value="{{ $ticket->priority }}">
+      <input id="priority" disabled type="text" name="" id="" readonly class="form-control-plaintext" value="{{ $ticket->priority }}">
     </div>
 </div>
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Usuario remitente</label>
     <div class="col-sm-10">
         <a href="{{ route('dashboard.users.view_user', $ticket->id_user_sender) }}">
-      <input style="font-weight: bold;"  type="text" name="" id=""   class="form-control-plaintext"value="{{ $ticket->name_sender }} (PRESIONA PARA VER)">
+            <p id="id_user_sender" hidden>{{ $ticket->id_user_sender }}</p>
+      <input style="font-weight: bold;"  type="text" name="" id="name_user_sender"   class="form-control-plaintext"value="{{ $ticket->name_sender }} (PRESIONA PARA VER)">
     </a>
     </div>
 </div>
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Usuario de destino</label>
     <div class="col-sm-10">
+        <p id="id_user_destination" hidden>{{ $ticket->id_user_destination }}</p>
         <a href="{{ route('dashboard.users.view_user', $ticket->id_user_destination) }}">
-      <input  style="font-weight: bold;" type="text" name="" id=""  class="form-control-plaintext" value="{{ $ticket->name_destination }} (PRESIONA PARA VER)">
+      <input  style="font-weight: bold;" type="text" name="" id="name_user_destination"  class="form-control-plaintext" value="{{ $ticket->name_destination }} (PRESIONA PARA VER)">
     </a>
     </div>
 </div>
@@ -142,7 +149,8 @@
 <div class="mb-3 row">
     <label for="staticEmail" class="col-sm-2 col-form-label">Estado</label>
     <div class="col-sm-10">
-      <input disabled type="text" name="" id="input_date_finally" readonly class="form-control-plaintext" value="{{ $ticket->state }}">
+
+      <input disabled type="text" name="" id="state" readonly class="form-control-plaintext" value="{{ $ticket->state }}">
     </div>
 </div>
 @if ($calification)
@@ -188,62 +196,23 @@
 </div>
  <br>
 @endif
-    @if ($ticket->id_user_sender == $user->id || $validate_user_sistemas)
-    <a href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-success"> EDITAR TICKET </a>
-    @endif
-    <a class="btn btn-primary" href="{{ route('dashboard.tickets') }}">Volver</a>
-    <br><br>
-    <div style="display: flex; flex-wrap: wrap;">
-    @if ($ticket->id_user_sender == $user->id)
-    <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
-        @csrf
-        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
-        <button class="btn btn-danger">ELIMINAR</button>
-    </form>
-    @if (($ticket->id_state == 5 || $ticket->id_state == 6 ) && $ticket->id_user_sender == $user->id)
-    <form action="{{ route('dashboard.tickets.state') }}" method="post">
-        @csrf
-        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
-    <button class="btn btn-success">TERMINAR</button>
-</form>
-    @endif
-    @else
-
-    @if ($ticket->id_state == 4 && $ticket->id_user_destination == $user->id)
-    <form action="{{ route('dashboard.tickets.state') }}" method="post">
-        @csrf
-        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
-    <button  class="btn btn-dark">EJECUTAR</button>
-</div>
-</form>
-@elseif(( $ticket->id_state == 6||$ticket->id_state == 5) && $ticket->id_user_destination == $user->id)
-<form action="{{ route('dashboard.tickets.notificate_finish_ticket_mail') }}" method="post">
-    @csrf
-    <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
-<button  class="btn btn-success">NOTIFICAR SOBRE FINALIZACIÓN</button>
-</div>
-</form>
-    @endif
-
-    @endif
-
-<div class="content_comments">
 @if ($ticket->id_user_destination == $user->id || $ticket->id_user_sender == $user->id)
+<div class="content_comments">
+
 <div class="header_comments">
     <div class="mb-3 row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
         <br>
         <div class="col-sm-10">
-            <form id="miFormulario"  action="{{ route('dashboard.tickets.comment_create') }}" method="post">
-                @csrf
+            <form>
                 <input type="number" value="{{ $ticket->id }}" hidden name="id_ticket">
-                <input type="text" required placeholder="Agregar un comentario" name="comment" style="width: 90%">
-                <button class="btn btn-light" >Guardar</button>
+                <input type="text" required placeholder="Agregar un comentario" name="comment" id="comment" style="width: 90%">
+                <button class="btn btn-light" id="btn_save_comment">Guardar</button>
             </form>
         </div>
     </div>
 </div>
-@endif
+
 
     <div class="coments">
         @foreach ($comments as $c)
@@ -253,24 +222,34 @@
         {{ "align-items: start; background-color:#DDDDDD;" }}
         @endif">
             <div class="comment_header">
-            <b style="margin-right: 30px">{{ $c->name }}</b>
+            <b>{{ $c->name }}</b>
             <p>{{ $c->date }}</p>
         </div>
             <p>{{ $c->comment }}</p>
             <br>
             @if ($c->id_user == $user->id)
-            <form action="{{ route('dashboard.tickets.comment_delete') }}" method="post">
-                @csrf
+
                 <input type="number" value="{{ $ticket->id }}" name="id_ticket" hidden>
                 <input type="number" value="{{ $c->id }}" name="id_comment" hidden>
                 <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-            </form>
+
 
             @endif
         </div>
         @endforeach
+
+
+        </div>
+        <div class="content_comment_fooder">
+            <div class="comment_fooder">
+            <b id="validate_conection" >DESCONECTADO <i class="bi bi-wifi"></i></b>
+            <b id="validate_writting"></b>
+        </div>
     </div>
 </div>
+@endif
+
+
     @if ($ticket->id_user_sender == $user->id)
 
     <br>
@@ -301,10 +280,9 @@
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Agrega una opinion</label>
             @if($calification)
-
-            <textarea  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion.......">{{ $calification->comment }}</textarea>
+            <textarea required  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion.......">{{ $calification->comment }}</textarea>
             @else
-            <textarea  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion......."></textarea>
+            <textarea required  class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Opinion......."></textarea>
             @endif
 
           </div>
@@ -312,31 +290,84 @@
           <button class="btn btn-success" style="margin-bottom:20px;">CALIFICAR</button>
       </form>
     @endif
+    <div class="content_buttons">
+        @if ($ticket->id_user_sender == $user->id || $validate_user_sistemas)
+        <a  href="{{ route('dashboard.tickets.edit_ticket', $ticket->id) }}" class="btn btn-light"> EDITAR TICKET <i class="bi bi-pencil-fill"></i></a>
+        @endif
+        <a class="btn btn-light" href="{{ route('dashboard.tickets') }}">Volver <i class="bi bi-arrow-return-left"></i></a>
+
+        @if ($ticket->id_user_sender == $user->id)
+        <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
+            @csrf
+            <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+            @if($ticket->id_state == 7)
+            <button class="btn btn-success">RE ABRIR TICKET </button>
+            @else
+            <button class="btn btn-danger">ELIMINAR <i class="bi bi-trash3-fill"></i> </button>
+            @endif
+
+        </form>
+        @if (($ticket->id_state == 5 || $ticket->id_state == 6 ) && $ticket->id_user_sender == $user->id)
+        <form action="{{ route('dashboard.tickets.state') }}" method="post">
+            @csrf
+            <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+        <button class="btn btn-success">TERMINAR <i class="bi bi-check-circle-fill"></i></button>
+    </form>
+        @endif
+        @else
+
+        @if ($ticket->id_state == 4 && $ticket->id_user_destination == $user->id)
+        <form action="{{ route('dashboard.tickets.state') }}" method="post">
+            @csrf
+            <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+        <button  class="btn btn-dark">EJECUTAR <i class="bi bi-info"></i></button>
+    </div>
+    </form>
+    @elseif(( $ticket->id_state == 6||$ticket->id_state == 5) && $ticket->id_user_destination == $user->id)
+    <form action="{{ route('dashboard.tickets.notificate_finish_ticket_mail') }}" method="post">
+        @csrf
+        <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
+    <button  class="btn btn-light">NOTIFICAR SOBRE FINALIZACIÓN <i class="bi bi-exclamation-triangle-fill"></i></button>
+    </div>
+    </form>
+        @endif
+
+        @endif
+    </div>
 @stop
 
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@vite(['resources/js/view_ticket.js'])
+
 <script>
 
     let content_logo_loading = '<div class="content_logo">'+
         '<img src="{{ asset('storage/icons/loading_logo.gif') }}" alt="">'+
     '</div>';
     const content_loading = document.querySelector(".content_loading");
-    document.addEventListener('DOMContentLoaded', function () {
-            var formulario = document.getElementById('miFormulario');
 
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            var formulario = document.getElementById('miFormulario');
             formulario.addEventListener('submit', function (event) {
                 if (validarFormulario()) {
                     content_loading.removeAttribute('hidden');
                     content_loading.innerHTML = content_logo_loading;
                 }
             });
+        } catch (error) {
 
+}
             function validarFormulario() {
 
                 return true;
             }
         });
+
 </script>
 @stop
 

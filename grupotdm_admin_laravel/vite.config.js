@@ -32,6 +32,7 @@ export default defineConfig({
                 'resources/js/new_user.js',
                 'resources/js/dashboard.js',
                 'resources/js/notifications.js',
+                'resources/js/view_ticket.js',
             ],
             refresh: true,
         }),

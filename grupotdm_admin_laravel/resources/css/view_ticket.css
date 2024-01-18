@@ -37,15 +37,28 @@
   }
 
   .coments{
-    max-height: 400px;
+    max-height: 300px;
     overflow-y: auto;
-    margin: 10px;
     width: 100%;
 
   }
   .coments .comment{
-    display: flex; flex-direction: column; width: 98%; background-color: white; padding: 10px;
+    display: flex; flex-direction: column; width: 100%; background-color: white;
     margin-bottom: 3px;
+    padding: 20px;
+    animation: animation_comment 2s ;
+  }
+
+  @keyframes animation_comment{
+
+    0%{
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(-0%);
+    }
   }
 
   #content_starts i{
@@ -55,14 +68,15 @@
 
   .content_comments {
     margin-top: 10px;
-    border: 0.5px solid black;
+    border: 0.1px solid gray;
     box-shadow: 0px 0px 5px;
     width: 100%;
     margin-bottom: 30px;
+
   }
 .content_comments .header_comments{
     padding: 10px;
-    background-color: rgb(255, 124, 124);
+    background-color: rgb(205, 202, 202);
 }
 .content_comments .header_comments input[type="text"]{
 
@@ -73,3 +87,61 @@
 .form_starts textarea{
     width: 100%;
 }
+
+.content_buttons a, .content_buttons button{
+    width: 100%;
+    margin: 2px;
+}
+.content_buttons {
+width: 100%;
+margin-bottom: 40px;
+
+}
+
+.content_comment_fooder{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: rgb(205, 202, 202);
+
+
+}
+.content_comment_fooder .comment_fooder{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.content_comment_fooder .comment_fooder b{
+
+    font-size: 20px;
+    width: 50%;
+    padding: 10px;
+
+}
+
+@media(max-width : 600px){
+
+    .content_comment_fooder .comment_fooder b{
+        width: 100%;
+        font-size: 10px;
+    }
+    .content_comment_fooder .comment_fooder{
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+}
+.content_comment_fooder .comment_fooder #validate_writting{
+
+    text-align: end;
+}
+
+.comment_state_offline{
+
+color: red;
+}
+.comment_state_online{
+
+   color: green;
+}
+

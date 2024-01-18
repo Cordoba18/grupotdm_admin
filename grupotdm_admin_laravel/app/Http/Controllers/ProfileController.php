@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Comment_Ticket as EventsComment_Ticket;
 use App\Events\CreateTicket;
 use App\Events\CreateTicketEvent;
+use App\Events\StateTicket;
+use App\Events\Writting_Comment;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Mail\accept_certificate;
 use App\Mail\action_permission;
@@ -335,7 +338,21 @@ public static function get_tickets($validate_user_sistemas, $user, $search, $fil
     if ($ticket->id_state != 6) {
         ReportController::create_report("El ticket con ID $ticket->id para el usuario $user->email ha vencido", $user->id, 7);
         Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+           $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $ticket->id");
+    broadcast(new StateTicket($ticket))->toOthers();
     }else{
+        $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+        FROM tickets t
+        INNER JOIN priorities p ON t.id_priority = p.id
+        INNER JOIN users us ON t.id_user_sender =us.id
+        INNER JOIN users ud ON t.id_user_destination = ud.id
+        INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $ticket->id");
+        broadcast(new StateTicket($ticket))->toOthers();
         Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
         Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
     }
@@ -351,7 +368,7 @@ public function delete_ticket(Request $request){
     $user = Auth::user();
     $Ticket = Ticket::find($request->id_ticket);
     if($Ticket->id_state == 7){
-        $Ticket->id_state =3;
+        $Ticket->id_state = 3;
         ReportController::create_report("El usuario $user->email Re abrio el ticket con id $Ticket->id", $user->id, 11);
     }else{
         $Ticket->id_state =2;
@@ -363,6 +380,13 @@ public function delete_ticket(Request $request){
     $user_sender = User::find($Ticket->id_user_sender);
     $user_destination = User::find($Ticket->id_user_destination);
     Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+    $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $Ticket->id");
+    broadcast(new StateTicket($ticket))->toOthers();
     return redirect()->route('dashboard.tickets')->with('message', 'Ticket eliminado con exito');
 }
 
@@ -386,10 +410,15 @@ public function state(Request $request){
     }
 
 
+    $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $Ticket->id");
 
-
-
-    return redirect()->route('dashboard.tickets')->with('message', 'Peticion realizada');
+    broadcast(new StateTicket($ticket))->toOthers();
+    return redirect()->route('dashboard.tickets.ticket_detail', $ticket->id)->with('message', 'Peticion realizada');
 }
 
 public function create_ticket(){
@@ -606,12 +635,12 @@ public function view_user($id){
 public function ticket_detail($id){
     $user = Auth::user();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-    $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
+    $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
     FROM tickets t
     INNER JOIN priorities p ON t.id_priority = p.id
     INNER JOIN users us ON t.id_user_sender =us.id
     INNER JOIN users ud ON t.id_user_destination = ud.id
-    INNER JOIN states s ON t.id_state = s.id WHERE t.id = $id");
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $id");
     $file = DB::selectOne("SELECT t.file FROM tickets t WHERE t.id = $id")->file;
     $comments = DB::select("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id_ticket = $id ORDER BY c.id DESC");
     $calification = Calification::where("id_ticket", $id)->first();
@@ -622,16 +651,17 @@ public function ticket_detail($id){
         $save_ticket = Ticket::find($id);
         $save_ticket->id_state = 4;
         $save_ticket->save();
-        $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination , us.id AS id_user_sender
+        $ticket = DB::selectOne("SELECT t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
         FROM tickets t
         INNER JOIN priorities p ON t.id_priority = p.id
         INNER JOIN users us ON t.id_user_sender =us.id
         INNER JOIN users ud ON t.id_user_destination = ud.id
-        INNER JOIN states s ON t.id_state = s.id WHERE t.id = $id");
+        INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $id");
         ReportController::create_report("El usuario $user->email ha visto el ticket con id $ticket->id", $user->id, 7);
         Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $ticket));
-
+        broadcast(new StateTicket($ticket))->toOthers();
     }
+
     return view("dashboard.tickets.view_ticket", compact("calification","validate_user_sistemas","ticket","file","comments"));
 
 }
@@ -688,10 +718,23 @@ public function comment_create(Request $request){
         $user = User::find($validate_sender->id_user_sender);
      }
      ReportController::create_report("Se ha agregado un comentario para el ticket con ID $ticket->id", $user->id, 7);
-     Mail::to($user->email)->send(new comment_ticket($user, $ticket));
-     $new_comment->save();
-     return redirect()->route('dashboard.tickets.ticket_detail', $request->id_ticket)->with("message","Comentario agregado con exito!");
+     if (!$request->conection){
+        Mail::to($user->email)->send(new comment_ticket($user, $ticket));
+     }
 
+     $new_comment->save();
+    $comment = DB::selectOne("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id = $new_comment->id");
+    $user = Auth::user();
+    broadcast(new EventsComment_Ticket($comment, $user))->toOthers();
+    return $comment;
+
+}
+
+public function writting_ticket(Request $request){
+    $ticket = Ticket::find($request->id_ticket);
+    $user = Auth::user();
+    broadcast(new Writting_Comment($ticket, $user))->toOthers();
+    return true;
 }
 public function comment_delete(Request $request){
     $user = Auth::user();
@@ -765,6 +808,13 @@ public function save_changes_ticket(Request $request){
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$ticket->id_user_destination");
     Mail::to($user_destination->email)->send(new edit_ticket($user_destination, $ticket));
     $ticket->save();
+    $ticket = DB::selectOne("SELECT  t.id, t.name,t.file, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $ticket->id");
+    broadcast(new StateTicket($ticket))->toOthers();
     return redirect()->route('dashboard.tickets.ticket_detail', $request->id_ticket)->with("message","Ticket editado con exito!");
 }
 

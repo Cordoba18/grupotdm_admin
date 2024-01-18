@@ -23,3 +23,25 @@ Broadcast::channel('createticket', function ($user){
         return $user;
 
 });
+
+
+Broadcast::channel('stateticket', function ($user){
+    return $user;
+
+});
+
+Broadcast::channel('commentticket.{id_ticket}', function ($user, $id_ticket){
+    if  (DB::selectOne("SELECT * FROM tickets WHERE id=$id_ticket AND (id_user_sender = $user->id || id_user_destination = $user->id)")){
+        return $user;
+    }
+
+});
+
+Broadcast::channel('writtingcomment.{id_ticket}', function ($user, $id_ticket){
+    if  (DB::selectOne("SELECT * FROM tickets WHERE id=$id_ticket AND (id_user_sender = $user->id || id_user_destination = $user->id)")){
+        return $user;
+    }
+
+});
+
+

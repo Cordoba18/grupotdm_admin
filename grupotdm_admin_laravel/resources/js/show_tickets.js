@@ -51,9 +51,18 @@ catch (error) {
 
 const id_user = document.querySelector("#id_user").textContent;
 const id_area_user = document.querySelector("#id_area_user").textContent;
-const content_tickets = document.querySelector("#content_tickets");
-function read_ticket(ticket) {
-    const info_ticket =`<tr id="tickets" class="animation_ticket">
+
+function read_ticket(ticket, accion, animation) {
+    let row_action = "";
+    if (accion == false) {
+        row_action = ` <a href="${route_ticket+ ticket['id']}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>`;
+    }else if (accion == "finish") {
+        row_action = ` <i class="bi bi-check-circle-fill"></i>`;
+    } else {
+        row_action = `<i class="bi bi-x-lg"></i>`;
+    }
+    // animation_ticket
+    const info_ticket =`<tr id="tickets" class="${ animation }">
     <td>${ ticket['id'] }</td>
     <td>${ ticket['name'] }</td>
     <td id="date_start">${ ticket['date_start'] }</td>
@@ -65,8 +74,9 @@ function read_ticket(ticket) {
     <td><a  style="font-weight: bold;color: black" href="${route_user+ ticket['id_user_destination']}">${ticket['name_destination']}</a> <p hidden id="id_destination"> ${ ticket['id_user_destination'] }</p></td>
     <td>${ ticket['state'] }</td>
     <td>
-        <a href="${route_ticket+ ticket['id']}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
-
+        ${row_action}
+        <input type="number" value="${ ticket['id_state'] }" disabled hidden id="id_state">
+        <input type="number" value="${ ticket['id'] }" disabled hidden id="id_ticket">
     </td>
     </tr>`;
 
@@ -78,6 +88,7 @@ Echo.join(`createticket`)
     const ticket = e.ticket;
 
     if (id_user == ticket['id_user_destination'] || id_area_user == ticket['id_area_user_destination']) {
+        const content_tickets = document.querySelector("#content_tickets");
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -95,8 +106,79 @@ Echo.join(`createticket`)
           });
 
           setTimeout(() => {
-            content_tickets.innerHTML =  read_ticket(ticket) + content_tickets.innerHTML ;
+            content_tickets.innerHTML =  read_ticket(ticket, false, "animation_ticket_create") + content_tickets.innerHTML ;
           }, 2000);
+          const total_pendientes = document.querySelector("#total_pendientes");
+
+          total_pendientes.textContent = parseInt(total_pendientes.textContent) + 1;
+    }
+
+})
+
+
+Echo.join(`stateticket`)
+.listen('StateTicket', (e)=>{
+    const ticket = e.ticket;
+
+    if (id_user == ticket['id_user_sender'] || id_user == ticket['id_user_destination'] || id_area_user == ticket['id_area_user_destination']) {
+        const content_tickets = document.querySelector("#content_tickets");
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "warning",
+            title: `Ha habido una modificación en ticket # ${ ticket['id']}`
+          });
+          setTimeout(() => {
+            const tickets  = document.querySelectorAll("#tickets");
+            tickets.forEach(t => {
+                const id_ticket = t.querySelector("#id_ticket").value;
+                console.log("Ticket de tabla : "+id_ticket)
+                console.log("Ticket de base de datos : "+ticket['id'])
+                if (id_ticket == ticket['id']) {
+                    t.remove();
+                }
+            });
+            const total_pendientes = document.querySelector("#total_pendientes");
+            const total_ejecuciones = document.querySelector("#total_ejecuciones");
+            const total_vencidos = document.querySelector("#total_vencidos");
+            if (ticket['id_state'] == 2) {
+                content_tickets.innerHTML =  read_ticket(ticket, "delete", "animation_ticket_delete") + content_tickets.innerHTML;
+            }else if (ticket['id_state'] == 7) {
+                total_ejecuciones.textContent = parseInt(total_ejecuciones.textContent) - 1;
+                content_tickets.innerHTML =  read_ticket(ticket, "finish", "animation_ticket_finish") + content_tickets.innerHTML;
+            }else if(ticket['id_state'] == 5){
+                total_ejecuciones.textContent = parseInt(total_ejecuciones.textContent) + 1;
+                total_pendientes.textContent = parseInt(total_pendientes.textContent) - 1;
+                content_tickets.innerHTML =  read_ticket(ticket, false, "animation_ticket_modificate") + content_tickets.innerHTML;
+            }
+            else{
+                content_tickets.innerHTML =  read_ticket(ticket, false, "animation_ticket_modificate") + content_tickets.innerHTML;
+            }
+
+          }, 1000);
+
+
+          setTimeout(() => {
+            if (ticket['id_state'] == 2) {
+                const tickets  = document.querySelectorAll("#tickets");
+                tickets.forEach(t => {
+                    const id_ticket = t.querySelector("#id_ticket").value;
+                    if (id_ticket == ticket['id']) {
+                        t.remove();
+                    }
+                });
+            }
+          }, 5000);
+
     }
 
 })
