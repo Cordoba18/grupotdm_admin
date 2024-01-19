@@ -7,17 +7,17 @@
 @endphp
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/css/admin_custom.css">
+
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    @vite(['resources/css/view_users.css'])
 @stop
 
 @section('content_header')
-@if (!$validation_jefe)
-<h1>No estas autorizado para ver usuarios</h1>
-@else
+
 <h1>Usuarios</h1>
 <br>
-<a href="{{ route('dashboard.users.new_user') }}" class="btn btn-primary">CREAR NUEVO USUARIO</a>
+@if ($validation_jefe)
+<a href="{{ route('dashboard.users.new_user') }}" class="btn btn-primary" id="btn_create_user">CREAR NUEVO USUARIO</a>
     <br>
     @if (session('message'))
 
@@ -27,8 +27,8 @@
 <br>
     <div class="content_search">
         <form action="{{ route('dashboard.users.search_users') }}" method="get">
-    <input type="text" name="search" placeholder="Buscar" id="Buscar usuarios" style="width: 90%">
-    <button id="btn_search" class="btn btn-primary">Buscar</button>
+    <input type="text" name="search" placeholder="Buscar" id="Buscar usuarios">
+    <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button>
 </form>
 </div>
 @endif
@@ -36,7 +36,6 @@
 @stop
 
 @section('content')
-@if ($validation_jefe)
 
     <table id="miTabla" class="table table-bordered table-striped dataTable">
         <thead class="table-dark">
@@ -48,7 +47,9 @@
          <th>AREA</th>
          <th>CARGO</th>
          <th>ESTADO</th>
+         @if ($validation_jefe || $validate_user_sistemas)
          <th>EDITAR</th>
+         @endif
 
         </thead>
         <tbody>
@@ -64,7 +65,7 @@
                 <td>{{ $u->area }}</td>
                 <td>{{ $u->chargy }}</td>
                 <td>{{ $u->state }}</td>
-                <td>
+                @if ($validation_jefe || $validate_user_sistemas) <td>
                     <form action="{{ route('dashboard.users.edit_profile' , $u->id)}}" method="get">
                     <button href="" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i></button>
                 </form>
@@ -78,12 +79,12 @@
                     <button class="btn btn-outline-success" href="">ACTIVAR</button></td>
                 @endif
             </form>
+            @endif
             </tr>
                 @endforeach
             </div>
         </tbody>
     </table>
-    @endif
 @stop
 
 

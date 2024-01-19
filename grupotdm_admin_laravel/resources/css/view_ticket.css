@@ -47,6 +47,7 @@
     margin-bottom: 3px;
     padding: 20px;
     animation: animation_comment 2s ;
+    transition: all 2s;
   }
 
   @keyframes animation_comment{
@@ -123,7 +124,7 @@ margin-bottom: 40px;
 
     .content_comment_fooder .comment_fooder b{
         width: 100%;
-        font-size: 10px;
+        font-size: 20px;
     }
     .content_comment_fooder .comment_fooder{
         justify-content: center;

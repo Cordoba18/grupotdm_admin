@@ -264,7 +264,8 @@ $state_certificate = $s->state_certificate;
   <button style="margin: 5px;" class="btn btn-success">Guardar Cambios</button>
   <a style="margin: 5px;" href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS </a>
   <br>
-  <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($product->id_state == 1) onsubmit="return confirmarEnvio()@endif">
+</form>
+<form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($product->id_state == 1) onsubmit="return confirmarEnvio()@endif">
     @csrf
     <input type="text" hidden value="{{ $product->id }}" name="id_product">
     @if($product->id_state == 1)
@@ -272,10 +273,10 @@ $state_certificate = $s->state_certificate;
     @elseif ($product->id_state == 2)
     <button style="margin: 5px;" class="btn btn-success">ACTIVAR</button>
     @endif
-</div>
+
 
 </form>
-</form>
+</div>
 
 
   @endif

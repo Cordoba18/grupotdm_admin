@@ -201,12 +201,12 @@
 
 <div class="header_comments">
     <div class="mb-3 row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Comentarios</label>
+        <label for="staticEmail" class="col-sm-2 col-form-label">Chat</label>
         <br>
         <div class="col-sm-10">
             <form>
                 <input type="number" value="{{ $ticket->id }}" hidden name="id_ticket">
-                <input type="text" required placeholder="Agregar un comentario" name="comment" id="comment" style="width: 90%">
+                <input type="text" required placeholder="Agregar un mensaje" name="comment" id="comment" style="width: 90%">
                 <button class="btn btn-light" id="btn_save_comment">Guardar</button>
             </form>
         </div>
@@ -227,11 +227,12 @@
         </div>
             <p>{{ $c->comment }}</p>
             <br>
-            @if ($c->id_user == $user->id)
 
                 <input type="number" value="{{ $ticket->id }}" name="id_ticket" hidden>
-                <input type="number" value="{{ $c->id }}" name="id_comment" hidden>
-                <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                <input type="number" value="{{ $c->id }}" name="id_comment" id="id_comment" hidden>
+                @if ($c->id_user == $user->id)
+
+                <button href="" class="btn btn-danger" id="btn_comment_delete"><i class="bi bi-trash3"></i></button>
 
 
             @endif
@@ -338,6 +339,10 @@
 
 
 @section('js')
+<script>
+
+const route_sond_notification = "{{ asset('storage/sonds/iphone-notificacion.mp3') }}";
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @vite(['resources/js/view_ticket.js'])
 

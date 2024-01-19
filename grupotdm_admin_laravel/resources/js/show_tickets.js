@@ -89,6 +89,13 @@ Echo.join(`createticket`)
 
     if (id_user == ticket['id_user_destination'] || id_area_user == ticket['id_area_user_destination']) {
         const content_tickets = document.querySelector("#content_tickets");
+        try {
+            let sond_notification  = new Audio(route_sond_notification);
+            sond_notification.play();
+        } catch (error) {
+
+        }
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -122,6 +129,12 @@ Echo.join(`stateticket`)
 
     if (id_user == ticket['id_user_sender'] || id_user == ticket['id_user_destination'] || id_area_user == ticket['id_area_user_destination']) {
         const content_tickets = document.querySelector("#content_tickets");
+        try {
+            let sond_notification  = new Audio(route_sond_notification);
+            sond_notification.play();
+        } catch (error) {
+
+        }
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",

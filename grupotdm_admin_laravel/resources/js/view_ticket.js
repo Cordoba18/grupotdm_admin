@@ -5,6 +5,7 @@ const id_ticket = document.querySelector("#id_ticket").value;
 const id_user = document.querySelector("#id_user").textContent;
 let conection = false;
 
+
 const btn_save_comment = document.querySelector("#btn_save_comment");
 
 // {{ "align-items: end;" }}
@@ -16,22 +17,19 @@ const btn_save_comment = document.querySelector("#btn_save_comment");
             <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
         </form> */
 function writting_comment(comment, align, btn_delete) {
-    let write_btn_delete = "";
+    let write_btn_delete = `<input type="number" value="${id_ticket}" name="id_ticket" hidden>
+    <input type="number" value="${comment['id']}" name="id_comment" id="id_comment" hidden>`;
     if (btn_delete) {
-        write_btn_delete = `<input type="number" value="${id_ticket}" name="id_ticket" hidden>
-        <input type="number" value="${comment['id']}" name="id_comment" hidden>
-        <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>`;
+        write_btn_delete = write_btn_delete + `<button href="" class="btn btn-danger" id="btn_comment_delete"><i class="bi bi-trash3"></i></button>`;
     }
     let content_coment = `<div class="comment" style="${align}">
-    <form>
         <div class="comment_header">
         <b>${comment['name']}</b>
         <p>${comment['date']}</p>
     </div>
         <p>${comment['comment']}</p>
         <br>
-        ${write_btn_delete}
-        </form></div>`;
+        ${write_btn_delete} </div>`;
     return content_coment;
 }
 
@@ -39,6 +37,7 @@ btn_save_comment.addEventListener('click', function (e) {
 
     e.preventDefault();
     const content_comment = document.querySelector("#comment");
+
     const comments = document.querySelector(".coments");
 
     axios.post('../comment_create',{
@@ -62,6 +61,20 @@ btn_save_comment.addEventListener('click', function (e) {
         console.log("Ha ocurrido un error : " +error);
       });
 
+      if (!conection) {
+
+        Swal.fire({
+            title: "EL USUARIO NO ESTA CONECTADO",
+            text: "Hemos enviado un correo al usuario notificando tu mensaje (Favor no enviar mas mensajes hasta que el usuario se conecte)",
+            icon: "info"
+          });
+      }
+      setTimeout(() => {
+        const comment = document.querySelectorAll(".comment");
+        activa_btn_deletes(comment);
+
+      }, 2000);
+
 
 })
 
@@ -74,7 +87,8 @@ try {
 
 Echo.join(`commentticket.${id_ticket}`)
 .listen('Comment_Ticket', (e)=>{
-
+    let sond_notification  = new Audio(route_sond_notification);
+    sond_notification.play();
     let comment = e.comment;
     const comments = document.querySelector(".coments");
     const Toast = Swal.mixin({
@@ -92,6 +106,8 @@ Echo.join(`commentticket.${id_ticket}`)
         icon: "info",
         title: "Nuevo comentario"
       });
+
+
     if (comment['id_user'] == id_user) {
         comments.innerHTML = writting_comment(comment,"align-items: end;", true) + comments.innerHTML;
 
@@ -100,6 +116,14 @@ Echo.join(`commentticket.${id_ticket}`)
         comments.innerHTML = writting_comment(comment,"align-items: start; background-color:#DDDDDD;", false) + comments.innerHTML;
 
     }
+
+
+    setTimeout(() => {
+        const comment = document.querySelectorAll(".comment");
+        activa_btn_deletes(comment);
+
+      }, 2000);
+
 
 
 }).here(users =>{
@@ -202,4 +226,65 @@ Echo.join(`writtingcomment.${id_ticket}`)
 
         }, 1000);
 
+})
+
+const comment = document.querySelectorAll(".comment");
+    activa_btn_deletes(comment);
+
+
+function activa_btn_deletes(comment) {
+
+
+    comment.forEach(c => {
+        const btn_comment_delete = c.querySelector("#btn_comment_delete");
+
+        if (btn_comment_delete !== null) {
+
+
+        btn_comment_delete.addEventListener('click', function (e) {
+            e.preventDefault();
+            const id_comment = c.querySelector("#id_comment").value;
+            axios.post('../comment_delete',{
+                id_ticket: id_ticket,
+                id_comment:id_comment,
+              }).then(res=>{
+
+                c.style.opacity = '0';
+
+                setTimeout(() => {
+                    c.remove();
+                }, 2000);
+
+              }).catch(error=>{
+                console.log("Ha ocurrido un error : " +error);
+              });
+
+
+        })
+
+    }
+    });
+
+}
+Echo.join(`deletecomment.${id_ticket}`)
+.listen('Delete_Comment', (e)=>{
+
+    let id_comment = e.comment.id;
+    const comment = document.querySelectorAll(".comment");
+    comment.forEach(c => {
+
+        const id = c.querySelector("#id_comment").value;
+        if (id_comment == id) {
+            c.style.opacity = '0';
+            setTimeout(() => {
+                c.remove();
+                setTimeout(() => {
+                    const comment = document.querySelectorAll(".comment");
+                    activa_btn_deletes(comment);
+
+                  }, 2000);
+            }, 2000);
+
+        }
+    });
 })

@@ -16,7 +16,7 @@
 <p id="id_area_user" hidden>{{ $user->id_area }}</p>
 <h1>Tickets</h1>
     <br>
-    <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark">GENERAR UN TICKET</a>
+    <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark" id="id_create_ticket">GENERAR UN TICKET</a>
     <br>
     @if (session('message'))
 
@@ -38,7 +38,7 @@
                     <option value="{{ $f->id }}">{{ $f->state }}</option>
                     @endforeach
                 </select>
-        <button id="btn_search" class="btn btn-primary">Buscar</button>
+        <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button>
     </form>
     </div>
 
@@ -138,6 +138,9 @@
 
 
 @section('js')
+<script>
+const route_sond_notification = "{{ asset('storage/sonds/iphone-notificacion.mp3') }}";
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     let route_user = "{{ route('dashboard.users.view_user', 0)}}".slice(0, -1);

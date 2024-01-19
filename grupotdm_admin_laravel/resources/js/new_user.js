@@ -7,7 +7,7 @@ id_company.addEventListener('change', function (e) {
 
     $.ajax({
         type: "GET",
-        url: "getshops/"+id_company.value,
+        url: "profile/edit_profile/getshops/"+id_company.value,
         success: function (response) {
             id_shop.innerHTML = "";
            if (response['shops']) {

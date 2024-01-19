@@ -21,7 +21,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.inventories.create') }}" class="btn btn-dark">CREAR PRODUCTO</a>
+    <a href="{{ route('dashboard.inventories.create') }}" class="btn btn-dark" id="btn_create_product">CREAR PRODUCTO</a>
     <br><br>
 
     <div class="content_search">
@@ -60,7 +60,7 @@
 
                 @endforeach
             </select>
-    <button id="btn_search" class="btn btn-primary">Buscar</button>
+    <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button>
 </form>
 </div>
 <br>
@@ -101,6 +101,26 @@
         <div>
             <p>Serial:</p><b>{{ $p->serie }}</b>
         </div>
+        @php
+            $validate_report = false;
+        @endphp
+        @foreach($reports as $r)
+
+        @if($r->id_product == $p->id && !$validate_report)
+        <div><p>Reporte: </p> <b>{{ $r->report }}
+        </b></div>
+        @php
+            $validate_report = true;
+        @endphp
+        @endif
+        @endforeach
+
+        @if(!$validate_report)
+
+        <div><p>Reporte: </p> <b> No tiene reportes</b></div>
+
+        @endif
+
     </div>
     <div class="content_buttons">
         <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($p->id_state == 1) onsubmit="return confirmarEnvio()@endif">

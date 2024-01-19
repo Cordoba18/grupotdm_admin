@@ -121,13 +121,13 @@
             <th>ORIGEN</th>
             <th>ESTADO</th>
             <th>ACCESORIOS</th>
-            <th>VER PRODUCTO</th>
         </thead>
 
         <tbody class="table-light" style="height: auto">
             @foreach ($rows_certificate as $r)
                 <tr style="border-bottom: 4px solid black; text-align: center;">
-                    <td>{{ $r->id_product }}</td>
+                    <td>{{ $r->id_product }} <br><a href="{{ route('dashboard.inventories.view_product', $r->id_product) }}"
+                        class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
                     <td>{{ $r->name }}</td>
                     <td>{{ $r->brand }}</td>
                     <td>{{ $r->serie }}</td>
@@ -135,8 +135,6 @@
                     <td>{{ $r->origin_certificate }}</td>
                     <td>{{ $r->state_certificate }}</td>
                     <td>{{ $r->accessories }}</td>
-                    <td><a href="{{ route('dashboard.inventories.view_product', $r->id_product) }}"
-                            class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
                 </tr>
             @endforeach
         </tbody>

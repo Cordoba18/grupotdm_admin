@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\Comment_Ticket as EventsComment_Ticket;
 use App\Events\CreateTicket;
+use App\Events\Delete_Comment;
 use App\Events\CreateTicketEvent;
 use App\Events\StateTicket;
 use App\Events\Writting_Comment;
@@ -128,8 +129,9 @@ class ProfileController extends Controller
         $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
+        $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
         $users = ProfileController::users($user, null);
-        return view('dashboard.users.users', compact('users', 'validation_jefe'));
+        return view('dashboard.users.users', compact('users', 'validation_jefe', 'validate_user_sistemas'));
     }
 
     public function getcharges($id){
@@ -158,61 +160,33 @@ class ProfileController extends Controller
     }
 
     public function users($user , $search){
-        $validation_jefe = DB::selectOne("SELECT * FROM users u
-        INNER JOIN charges c ON u.id_chargy = c.id
-        WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
-        if ($validation_jefe) {
             if ($search != null) {
-                if($user->id_area == 1){
-                    $users = DB::select("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy, u.id_state
-                    FROM users u
-                    INNER JOIN companies c ON u.id_company = c.id
-                    INNER JOIN states s ON u.id_state = s.id
-                    INNER JOIN areas a ON u.id_area = a.id
-                    INNER JOIN charges ch ON u.id_chargy = ch.id
-                    WHERE u.id <> $user->id AND
-                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%') ORDER BY u.id DESC");
+                if($user->id_area == 1 || $user->id_area == 2){
+                    $sql = " WHERE u.id <> $user->id AND u.id <> 2 AND
+                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%') ORDER BY u.id DESC";
 
 
                 }else{
-                $users = DB::select("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy, u.id_state
-                 FROM users u
-                INNER JOIN companies c ON u.id_company = c.id
-                INNER JOIN states s ON u.id_state = s.id
-                INNER JOIN areas a ON u.id_area = a.id
-                INNER JOIN charges ch ON u.id_chargy = ch.id
-                WHERE u.id_area = $user->id_area AND u.id <> $user->id AND
-                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%') ORDER BY u.id DESC");
+                $sql = " WHERE u.id_area = $user->id_area AND u.id <> $user->id AND u.id <> 2 AND
+                    (u.name LIKE '%$search%' OR u.email LIKE '%$search%' OR u.nit LIKE '%$search%' OR c.company LIKE '%$search%' OR ch.chargy LIKE '%$search%' OR u.id LIKE '%$search%' OR a.area LIKE '%$search%' OR s.state LIKE '%$search%') ORDER BY u.id DESC";
 
                 }
             }else{
-        if($user->id_area == 1){
-            $users = DB::select("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy, u.id_state
-            FROM users u
-            INNER JOIN companies c ON u.id_company = c.id
-            INNER JOIN states s ON u.id_state = s.id
-            INNER JOIN areas a ON u.id_area = a.id
-            INNER JOIN charges ch ON u.id_chargy = ch.id
-            WHERE u.id <> $user->id ORDER BY u.id DESC");
+        if($user->id_area == 1 || $user->id_area == 2){
+            $sql = " WHERE u.id <> $user->id AND u.id <> 2 ORDER BY u.id DESC";
 
 
         }else{
-        $users = DB::select("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy, u.id_state
-         FROM users u
-        INNER JOIN companies c ON u.id_company = c.id
-        INNER JOIN states s ON u.id_state = s.id
-        INNER JOIN areas a ON u.id_area = a.id
-        INNER JOIN charges ch ON u.id_chargy = ch.id
-        WHERE u.id_area = $user->id_area AND u.id <> $user->id ORDER BY u.id DESC");
+        $sql = "WHERE u.id_area = $user->id_area AND u.id <> $user->id AND u.id <> 2 ORDER BY u.id DESC";
 
         }
     }
-
-            # code...
-        }else{
-            $users = null;
-        }
-
+    $users = DB::select("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy, u.id_state
+    FROM users u
+    INNER JOIN companies c ON u.id_company = c.id
+    INNER JOIN states s ON u.id_state = s.id
+    INNER JOIN areas a ON u.id_area = a.id
+    INNER JOIN charges ch ON u.id_chargy = ch.id $sql");
         return $users;
     }
 
@@ -739,8 +713,10 @@ public function writting_ticket(Request $request){
 public function comment_delete(Request $request){
     $user = Auth::user();
     $comment = Comment::find($request->id_comment);
+    broadcast(new Delete_Comment($comment, $user))->toOthers();
     ReportController::create_report("Se ha eliminado el comentario con ID $comment->id para el ticket con ID $comment->id_ticket", $user->id, 7);
     $comment->delete();
+
     return redirect()->route('dashboard.tickets.ticket_detail', $request->id_ticket)->with("message","Comentario eliminado con exito!");
 }
 public function edit_ticket($id){
@@ -1459,12 +1435,16 @@ $filter = $request->filter;
 
 
     $products = DB::select("SELECT p.id, p.name, p.serie, p.id_state FROM products p $sql ORDER BY p.id DESC");
+
+    $reports = Report_Product::orderBy('id', 'desc')->get();
+
+
     $images_products = Image_product::all()->where('id_state','=',1);
     $user = Auth::user();
     $filters = DB::select("SELECT * FROM states WHERE id=1 OR id= 2  OR id = 3 OR id=11");
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     if($validate_user_sistemas){
-    return view('dashboard.inventories.inventories', compact('products', 'images_products','filters','search' , 'filter'));
+    return view('dashboard.inventories.inventories', compact('products', 'reports', 'images_products','filters','search' , 'filter'));
     }else{
         return redirect()->route('dashboard')->with('message_error','No tienes acceso a ese apartado');
     }

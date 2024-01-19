@@ -2,9 +2,9 @@
 
 @section('title', 'GRUPO TDM')
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    @vite(['resources/css/certificates.css'])
     @stop
 
 @section('content_header')
@@ -22,7 +22,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.certificates.create') }}" class="btn btn-dark">CREAR UNA ACTA</a>
+    <a href="{{ route('dashboard.certificates.create') }}" class="btn btn-dark" id="btn_create_certificate">CREAR UNA ACTA</a>
     <br><br>
 
     <div class="content_search">
@@ -61,7 +61,7 @@
 
                 @endforeach
             </select>
-    <button id="btn_search" class="btn btn-primary">Buscar</button>
+    <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button>
 </form>
 </div>
 <br>

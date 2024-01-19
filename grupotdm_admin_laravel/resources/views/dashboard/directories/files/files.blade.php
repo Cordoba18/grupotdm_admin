@@ -6,8 +6,9 @@
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/css/admin_custom.css">
+
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    @vite( 'resources/css/files.css')
 @stop
 <h1>Archivos</h1>
 <br>
@@ -22,15 +23,15 @@
 
          @endif
 
-    <a href="{{ route('dashboard.create_file',$id) }}" class="btn btn-dark">CREAR ARCHIVO</a>
-    <a href="{{ route('dashboard.directories') }}" class="btn btn-success" >Volver</a>
+    <a href="{{ route('dashboard.create_file',$id) }}" class="btn btn-dark" id="btn_create_file">CREAR ARCHIVO</a>
+    <a href="{{ route('dashboard.directories') }}" class="btn btn-success" id="btn_return_directorie">Volver</a>
     <br>
 <br>
 <div class="content_search">
     <form action="{{ route('dashboard.view_directory.search') }}" method="get">
         <input type="number" name="id" placeholder="Buscar archivos" value="{{ $id }}" hidden>
-        <input type="text" name="search" placeholder="Buscar archivos" style="width: 80%">
-        <button id="btn_search" class="btn btn-primary">Buscar</button></form>
+        <input type="text" name="search" placeholder="Buscar archivos">
+        <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button></form>
 </div>
 @stop
 

@@ -2,9 +2,10 @@
 
 @section('title', 'GRUPO TDM')
 @section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
+
 <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+@vite(['resources/css/permissions.css'])
 @stop
 @php
     $user = Auth::user();
@@ -13,7 +14,7 @@
 
 <h1>PERMISOS</h1>
 <br>
-<a href="{{ route('dashboard.permissions.create') }}" class="btn btn-dark">GENERAR UN PERMISO</a>
+<a href="{{ route('dashboard.permissions.create') }}" class="btn btn-dark" id="btn_create_permission">GENERAR UN PERMISO</a>
 <br>
 <br>
 @if (session('message'))
@@ -25,9 +26,9 @@
     <div class="content_search">
             <form action="{{ route('dashboard.permissions') }}" method="get">
 
-                <input type="text" name="search" placeholder="Buscar permiso" style="width: 80%">
+                <input type="text" name="search" placeholder="Buscar permiso">
 
-        <button id="btn_search" class="btn btn-primary">Buscar</button>
+        <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button>
     </form>
     </div>
     <br>
