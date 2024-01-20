@@ -22,7 +22,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.create_repository') }}" class="btn btn-dark" id="btn_create_directory">CREAR DIRECTORIO</a>
+    <a href="{{ route('dashboard.create_repository') }}" class="btn btn-dark" id="btn_create_directory">CREAR DIRECTORIO <i class="bi bi-folder-plus"></i></a>
     <br><br>
 
     <div class="content_search">

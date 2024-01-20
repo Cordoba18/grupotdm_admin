@@ -22,7 +22,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.certificates.create') }}" class="btn btn-dark" id="btn_create_certificate">CREAR UNA ACTA</a>
+    <a href="{{ route('dashboard.certificates.create') }}" class="btn btn-dark" id="btn_create_certificate">CREAR UNA ACTA  <i class="bi bi-file-earmark-plus"></i></a>
     <br><br>
 
     <div class="content_search">

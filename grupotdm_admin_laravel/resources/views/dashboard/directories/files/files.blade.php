@@ -23,7 +23,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.create_file',$id) }}" class="btn btn-dark" id="btn_create_file">CREAR ARCHIVO</a>
+    <a href="{{ route('dashboard.create_file',$id) }}" class="btn btn-dark" id="btn_create_file">CREAR ARCHIVO <i class="bi bi-file-earmark-plus"></i></a>
     <a href="{{ route('dashboard.directories') }}" class="btn btn-success" id="btn_return_directorie">Volver</a>
     <br>
 <br>

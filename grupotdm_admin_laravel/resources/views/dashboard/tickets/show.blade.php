@@ -16,7 +16,7 @@
 <p id="id_area_user" hidden>{{ $user->id_area }}</p>
 <h1>Tickets</h1>
     <br>
-    <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark" id="id_create_ticket">GENERAR UN TICKET</a>
+    <a href="{{ route('dashboard.tickets.create') }}" class="btn btn-dark" id="id_create_ticket">GENERAR UN TICKET <i class="bi bi-person-raised-hand"></i></a>
     <br>
     @if (session('message'))
 

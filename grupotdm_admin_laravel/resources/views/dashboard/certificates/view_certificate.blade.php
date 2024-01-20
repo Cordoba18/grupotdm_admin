@@ -231,7 +231,7 @@
 
     @endif
     @if($user->id == $certificate_full->id_user_delivery && $certificate_full->id_state == 11 )
-    <form action="" method="post">
+    <form action="{{  route('dashboard.certificates.view_certificate.notificate_user_finish_certificate') }}" method="post">
         @csrf
         <input type="text" name="id_certificate" value="{{ $certificate_full->id }}" hidden>
         <button class="btn btn-success btn-lg" style="width: 100%">PEDIR A USUARIO CONFIRMACIÓN DE ACTIVOS <i class="bi bi-bell-fill"></i></button>

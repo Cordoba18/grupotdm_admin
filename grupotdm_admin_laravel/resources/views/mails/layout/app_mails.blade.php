@@ -1,27 +1,3 @@
-@extends('mails.layout.app_mails')
-@section('content')
-<p>Hola, <b>{{ $nombre }}</b> {{ $mensaje }}</p>
-<br>
-<center>
-    <div class="content_code"
-        style=" border: 3px solid black; width: 250px;
-background-color: white;
-height: auto;">
-        <h1 style=" background-color: red;
-height: 50px; margin: 0;">CODIGO</h1>
-        <p style="font-weight: bold; margin: 0;
-font-size: 30px;
-height: 60px;">
-            {{ $cod }}</p>
-    </div>
-</center>
-<div class="danger"
-    style="font-weight: bold;
-text-align: center;
-font-size: 20px;">
-<p>Recuerda que el codigo sera borrado despues de 10 minutos</p>
-@endsection
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -32,17 +8,15 @@ font-size: 20px;">
 </head>
 
 <body>
-
-
     <div class="content_full"
-        style="width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
+        style="width: 700px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex;
     justify-content: center;
     align-items: center;
     align-content: center; align-self: center; justify-self: center; justify-items: center;">
         <div class="content_mail"
             style="background-color: white;
-    padding: 30px 120px;
-    width: 400px;
+    padding: 30px 20px;
+    width: 100%;
     height: auto;">
             <div class="content_page" style="text-align: center;">
                 <div class="content_logo" style="width: 100%;
@@ -55,11 +29,15 @@ font-size: 20px;">
             </div>
 
             <div class="info">
+                <br>
 
+                @yield('content')
+                <br>
+                <b>POV: No responder a este correo ya que es un correo automatico</b>
             </div>
-
-
-            </div>
+<center>
+            <p style="text-align: center; color: red;border-top: solid black 1px; padding: 2px">Informacion enviada por el area de administración GRUPO TDM</p>
+        </center>
         </div>
     </div>
 </body>

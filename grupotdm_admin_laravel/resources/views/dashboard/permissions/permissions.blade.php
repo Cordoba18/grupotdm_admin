@@ -14,7 +14,7 @@
 
 <h1>PERMISOS</h1>
 <br>
-<a href="{{ route('dashboard.permissions.create') }}" class="btn btn-dark" id="btn_create_permission">GENERAR UN PERMISO</a>
+<a href="{{ route('dashboard.permissions.create') }}" class="btn btn-dark" id="btn_create_permission">GENERAR UN PERMISO <i class="bi bi-file-earmark-plus"></i></a>
 <br>
 <br>
 @if (session('message'))

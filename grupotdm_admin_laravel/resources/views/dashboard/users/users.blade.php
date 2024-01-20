@@ -17,7 +17,7 @@
 <h1>Usuarios</h1>
 <br>
 @if ($validation_jefe)
-<a href="{{ route('dashboard.users.new_user') }}" class="btn btn-primary" id="btn_create_user">CREAR NUEVO USUARIO</a>
+<a href="{{ route('dashboard.users.new_user') }}" class="btn btn-primary" id="btn_create_user">CREAR NUEVO USUARIO <i class="bi bi-person-plus"></i></a>
     <br>
     @if (session('message'))
 

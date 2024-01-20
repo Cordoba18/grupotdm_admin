@@ -21,7 +21,7 @@
 
          @endif
 
-    <a href="{{ route('dashboard.inventories.create') }}" class="btn btn-dark" id="btn_create_product">CREAR PRODUCTO</a>
+    <a href="{{ route('dashboard.inventories.create') }}" class="btn btn-dark" id="btn_create_product">CREAR PRODUCTO  <i class="bi bi-newspaper"></i></a>
     <br><br>
 
     <div class="content_search">

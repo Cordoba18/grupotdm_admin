@@ -261,8 +261,8 @@ $state_certificate = $s->state_certificate;
     <input type="file" name="file" id="" accept="image/*" style="width: 100%">
   </div>
 <div class="content_buttons" style="display: flex; flex-wrap: wrap;">
-  <button style="margin: 5px;" class="btn btn-success">Guardar Cambios</button>
-  <a style="margin: 5px;" href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS </a>
+  <button style="margin: 5px;" class="btn btn-success">Guardar Cambios <i class="bi bi-box-arrow-down"></i></button>
+  <a style="margin: 5px;" href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS  <i class="bi bi-image"></i></a>
   <br>
 </form>
 <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($product->id_state == 1) onsubmit="return confirmarEnvio()@endif">
