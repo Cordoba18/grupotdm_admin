@@ -142,7 +142,7 @@ public function ticket_detail($id){
     INNER JOIN users ud ON t.id_user_destination = ud.id
     INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $id");
     $file = DB::selectOne("SELECT t.file FROM tickets t WHERE t.id = $id")->file;
-    $comments = DB::select("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id_ticket = $id ORDER BY c.id DESC");
+    $comments = DB::select("SELECT c.id, c.comment, c.date, u.name, u.id AS id_user, c.id_ticket FROM comments c INNER JOIN users u ON c.id_user = u.id WHERE c.id_ticket = $id");
     $calification = Calification::where("id_ticket", $id)->first();
     $user_sender = User::find($ticket->id_user_sender);
     $user_destination = User::find($ticket->id_user_destination);
@@ -288,8 +288,8 @@ public function save_ticket(Request $request){
     }
     ReportController::create_report("El usuario $user->email creo un ticket llamado $new_ticket->name", $user->id, 4);
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$new_ticket->id_user_destination");
-    Mail::to($user_destination->email)->send(new create_ticket($user, $user_destination, $new_ticket));
     $new_ticket->save();
+    Mail::to($user_destination->email)->send(new create_ticket($user, $user_destination, $new_ticket));
     $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
     FROM tickets t
     INNER JOIN priorities p ON t.id_priority = p.id

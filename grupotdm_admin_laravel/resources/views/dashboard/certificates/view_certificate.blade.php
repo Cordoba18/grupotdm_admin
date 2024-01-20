@@ -178,11 +178,7 @@
             @endif
         </div>
         <div class="content_right_images">
-            @if($certificate->id_proceeding == 1)
             <b style="width: 100%">Prueba de llegada de activos:</b>
-            @else
-            <b style="width: 100%">Prueba de devolución de activos:</b>
-            @endif
             <br>
             @if ($certificate_full->image_delivery)
                 <div class="content_image" style="width: 100%; height: 240px;">

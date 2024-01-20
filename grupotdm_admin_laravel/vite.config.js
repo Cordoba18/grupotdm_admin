@@ -19,6 +19,8 @@ export default defineConfig({
                 'resources/css/view_users.css',
                 'resources/css/directories.css',
                 'resources/css/files.css',
+                'resources/css/content_loading.css',
+                'resources/css/dashboard.css',
                 'resources/css/permissions.css',
                 'resources/css/certificates.css',
                 'resources/css/reports.css',

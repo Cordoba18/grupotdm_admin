@@ -302,6 +302,9 @@ public function state_certificate(Request $request){
             $state_certificate = DB::selectOne("SELECT s.state FROM certificates c INNER JOIN states s ON c.id_state = s.id WHERE c.id=$id_certificate")->state;
             foreach ($rows_certificates as $r) {
                 $new_report_product = new Report_product();
+                $product = Product::find($r->id_product);
+                $product->id_state = 1;
+                $product->save();
                 $new_report_product->id_product = $r->id_product;
                 $new_report_product->id_certificate = $id_certificate;
                 $new_report_product->report = "El producto asociado al acta con ID $certificate->id y fecha $certificate->address esta en estado $state_certificate";

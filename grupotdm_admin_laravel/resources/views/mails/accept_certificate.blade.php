@@ -16,12 +16,4 @@
             </form>
 @endsection
 
-                <b>POV: No responder a este correo ya que es un correo automatico</b>
-            </div>
-<center>
-            <p style="text-align: center; color: red;border-top: solid black 1px; padding: 2px">Informacion enviada por el area de administración GRUPO TDM</p>
-        </center>
-        </div>
-    </div>
-</body>
-</html>
+

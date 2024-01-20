@@ -93,13 +93,13 @@
         </div>
         <div class="content_info">
             <div>
-            <p>ID :</p><b>{{ $p->id }}</b>
+            <p>ID </p><b>{{ $p->id }}</b>
         </div>
         <div>
-            <p>Nombre:</p><b>{{ $p->name }}</b>
+            <p>Nombre </p><b>{{ $p->name }}</b>
         </div>
         <div>
-            <p>Serial:</p><b>{{ $p->serie }}</b>
+            <p>Serial </p><b>{{ $p->serie }}</b>
         </div>
         @php
             $validate_report = false;
@@ -107,8 +107,7 @@
         @foreach($reports as $r)
 
         @if($r->id_product == $p->id && !$validate_report)
-        <div><p>Reporte: </p> <b>{{ $r->report }}
-        </b></div>
+        <div><p>Reporte </p> <b>{{ $r->report }}</b></div>
         @php
             $validate_report = true;
         @endphp
@@ -120,10 +119,7 @@
         <div><p>Reporte: </p> <b> No tiene reportes</b></div>
 
         @endif
-
-    </div>
-    <div class="content_buttons">
-        <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($p->id_state == 1) onsubmit="return confirmarEnvio()@endif">
+        <form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($p->id_state == 1) onsubmit="return confirmarEnvio()"@endif>
             @csrf
             <input type="text" hidden value="{{ $p->id }}" name="id_product">
             @if($p->id_state == 1)
@@ -135,6 +131,7 @@
 
         </form>
     </div>
+
 </div>
     @endforeach
 </div>
@@ -149,7 +146,7 @@
 <script>
     function confirmarEnvio() {
       // Mostrar un mensaje de confirmación
-      var confirmacion = confirm("¿Estás seguro de eliminar este producto?");
+      var confirmacion = confirm("¿Estás seguro de DESACTIVAR este producto?");
       // Si el usuario hace clic en "Aceptar", el formulario se enviará
       return confirmacion;
   }

@@ -21,4 +21,9 @@
 <div style="display: flex; justify-content: center; align-items: center">
     <p>Fecha final :  </p> <b>{{ $ticket->date_finally }}</b>
     </div>
+
+    <div style="display: flex; align-items: center">
+        <a style=" text-align: center;  width: 100%; padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;" href="{{ route('dashboard.tickets.ticket_detail', $ticket->id) }}"> VER TICKET </a>
+        </div>
+
 @endsection

@@ -4,8 +4,8 @@ const id_user_sender = document.querySelector("#id_user_sender").textContent;
 const id_ticket = document.querySelector("#id_ticket").value;
 const id_user = document.querySelector("#id_user").textContent;
 let conection = false;
-
-
+const comments = document.querySelector(".coments");
+comments.scrollTop = comments.scrollHeight;
 const btn_save_comment = document.querySelector("#btn_save_comment");
 
 // {{ "align-items: end;" }}
@@ -47,16 +47,16 @@ btn_save_comment.addEventListener('click', function (e) {
       }).then(res=>{
         let comment = res.data;
         if (comment['id_user'] == id_user) {
-            comments.innerHTML = writting_comment(comment,"align-items: end;", true) + comments.innerHTML;
+            comments.insertAdjacentHTML("beforeend", writting_comment(comment,"align-items: end;", true));
 
 
         }else{
-            comments.innerHTML = writting_comment(comment,"align-items: start; background-color:#DDDDDD;", false) + comments.innerHTML;
+            comments.insertAdjacentHTML("beforeend", writting_comment(comment,"align-items: start; background-color:#DDDDDD;", false));
 
         }
         content_comment.value = "";
 
-
+        comments.scrollTop = comments.scrollHeight;
       }).catch(error=>{
         console.log("Ha ocurrido un error : " +error);
       });
@@ -109,14 +109,14 @@ Echo.join(`commentticket.${id_ticket}`)
 
 
     if (comment['id_user'] == id_user) {
-        comments.innerHTML = writting_comment(comment,"align-items: end;", true) + comments.innerHTML;
+        comments.insertAdjacentHTML("beforeend",  writting_comment(comment,"align-items: end;", true));
 
 
     }else{
-        comments.innerHTML = writting_comment(comment,"align-items: start; background-color:#DDDDDD;", false) + comments.innerHTML;
+        comments.insertAdjacentHTML("beforeend", writting_comment(comment,"align-items: start; background-color:#DDDDDD;", false));
 
     }
-
+    comments.scrollTop = comments.scrollHeight;
 
     setTimeout(() => {
         const comment = document.querySelectorAll(".comment");

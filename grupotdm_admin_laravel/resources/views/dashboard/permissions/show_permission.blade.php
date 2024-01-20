@@ -8,65 +8,7 @@
     $user = Auth::user();
 @endphp
 @section('css')
-<style>
-    body{
-background-color: white;
-margin: 0;
-}
-
-.content_loading{
-    background-color: rgba(2, 2, 2, 0.3);
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    position: fixed;
-}
-.content_loading .content_logo{
-
-position: fixed;
-transform: translate(-50%, -50%);
-left: 50%;
-top: 50%;
-border-radius: 50px;
-border: 6px solid;
-padding: 20px;
-background-color: white;
-animation: start_loading 0.5s;
-
-}
-.content_loading .content_logo img{
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
-
-@keyframes start_loading{
-
-0%{
-    opacity: 0;
-   transform: translateX(-50%) translateY(-100%);
-}
-100%{
-    opacity: 1;
-    transform: translateX(-50%) translateY(-50%);
-}
-}
-@media (max-width:700px){
-.content_loading .content_logo{
-    width: 100vw; /* 100% del ancho del viewport */
-height: 100vh;
-
-}
-.content_loading .content_logo{
-    border-radius: 0;
-}
-.content_loading .content_logo img{
-object-fit: contain;
-}
-}
-</style>
+@vite('resources/css/content_loading.css')
 @stop
 
 @section('content_header')
