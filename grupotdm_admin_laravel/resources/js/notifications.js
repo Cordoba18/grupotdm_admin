@@ -127,13 +127,19 @@ icon_notification.addEventListener('click', function (e) {
 
 })
 
-
 Echo.join(`notifications_users`)
 .listen('Notification_Users', (e)=>{
 
     let user = e.user;
     let notification = e.notification;
     if (notification.id_user == id_user) {
+        try {
+
+            let sond_notification  = new Audio(route_sond_notification);
+            sond_notification.play();
+        } catch (error) {
+
+        }
         const amount_notifications = icon_notification.querySelector(".badge ");
         amount_notifications.innerHTML = parseInt(amount_notifications.innerHTML) + 1;
 const Toast = Swal.mixin({
