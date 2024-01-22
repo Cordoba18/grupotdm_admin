@@ -85,12 +85,14 @@ public function state(Request $request){
         $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
         ReportController::create_report("El usuario $user->email inicio la ejecución del ticket con id $Ticket->id", $user->id, 7);
         Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $infoticket));
+        NotificationController::create_notification("Su ticket ha sido ejecutado", $Ticket->id_user_sender , route('dashboard.tickets.ticket_detail', $Ticket->id));
     }else if ($Ticket->id_state == 5 || $Ticket->id_state == 6) {
         $Ticket->id_state =7;
         $Ticket->save();
         $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $Ticket->id");
         ReportController::create_report("El usuario $user->email finalizo la ejecución del ticket con id $Ticket->id", $user->id, 7);
         Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+        NotificationController::create_notification("Su ticket ha sido cerrado con exito!", $Ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $Ticket->id));
     }
 
 
@@ -112,9 +114,11 @@ public function delete_ticket(Request $request){
     if($Ticket->id_state == 7){
         $Ticket->id_state = 3;
         ReportController::create_report("El usuario $user->email Re abrio el ticket con id $Ticket->id", $user->id, 11);
+        NotificationController::create_notification("El ticket impuesto para ti ha sido re abierto!", $Ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $Ticket->id));
     }else{
         $Ticket->id_state =2;
         ReportController::create_report("El usuario $user->email ha eliminado el ticket con id $Ticket->id", $user->id, 6);
+        NotificationController::create_notification("El ticket impuesto para ti ha sido eliminado!", $Ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $Ticket->id));
     }
 
     $Ticket->save();
@@ -122,6 +126,7 @@ public function delete_ticket(Request $request){
     $user_sender = User::find($Ticket->id_user_sender);
     $user_destination = User::find($Ticket->id_user_destination);
     Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+    NotificationController::create_notification("El ticket #$Ticket->id del cual haces parte ha sido eliminado", $Ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $Ticket->id));
     $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
     FROM tickets t
     INNER JOIN priorities p ON t.id_priority = p.id
@@ -159,6 +164,7 @@ public function ticket_detail($id){
         INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $id");
         ReportController::create_report("El usuario $user->email ha visto el ticket con id $ticket->id", $user->id, 7);
         Mail::to($user_sender->email)->send(new modificate_ticket($user_sender,$user_destination, $ticket));
+        NotificationController::create_notification("Su ticket ha sido VISTO y esta previo a ejecución", $ticket->id_user_sender , route('dashboard.tickets.ticket_detail', $ticket->id));
         broadcast(new StateTicket($ticket))->toOthers();
     }
 
@@ -203,6 +209,7 @@ public function save_changes_ticket(Request $request){
         $file->move(public_path('storage/files'), $name_file);
         $ticket->file = $name_file;
     }
+    NotificationController::create_notification("El ticket ha sido modificado", $ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $ticket->id));
     ReportController::create_report("Se ha editado el ticket con ID $ticket->id", $user->id, 7);
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$ticket->id_user_destination");
     Mail::to($user_destination->email)->send(new edit_ticket($user_destination, $ticket));
@@ -243,6 +250,7 @@ public function finish_ticket_mail(Request $request){
     $infoticket = DB::selectOne("SELECT t.id, s.state FROM tickets t INNER JOIN states s ON t.id_state = s.id WHERE t.id = $ticket->id");
     ReportController::create_report("El usuario $user_sender->email finalizo la ejecución del ticket con id $ticket->id", $user_sender->id, 7);
     Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
+    NotificationController::create_notification("Su ticket ha sido cerrado con exito!", $ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $ticket->id));
     return view('dashboard.accept_emails.view_finish_ticket_mail', compact('user_destination','ticket'));
     }else{
         return redirect()->route("dashboard.tickets.ticket_detail", $ticket->id)->with('message_error','La acción no esta disponible verifica que el usuario este ejecutando el ticket');
@@ -286,9 +294,11 @@ public function save_ticket(Request $request){
         $file->move(public_path('storage/files'), $name_file);
         $new_ticket->file = $name_file;
     }
+
     ReportController::create_report("El usuario $user->email creo un ticket llamado $new_ticket->name", $user->id, 4);
     $user_destination = DB::selectOne("SELECT * FROM users WHERE id=$new_ticket->id_user_destination");
     $new_ticket->save();
+    NotificationController::create_notification("Se ha creado un nuevo ticket para ti", $new_ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $new_ticket->id));
     Mail::to($user_destination->email)->send(new create_ticket($user, $user_destination, $new_ticket));
     $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
     FROM tickets t
@@ -322,6 +332,7 @@ public function comment_create(Request $request){
      ReportController::create_report("Se ha agregado un comentario para el ticket con ID $ticket->id", $user->id, 7);
      if (!$request->conection){
         Mail::to($user->email)->send(new comment_ticket($user, $ticket));
+        NotificationController::create_notification("Tienes un nuevo comentario en ticket", $user->id , route('dashboard.tickets.ticket_detail', $ticket->id));
      }
 
      $new_comment->save();
@@ -358,6 +369,7 @@ public function calification_ticket(Request $request){
         $new_calification->save();
     }
     $ticket = Ticket::find($id_ticket);
+    NotificationController::create_notification("Tu ticket ha sido calificado !Hechale un vistaso!", $ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $ticket->id));
     ReportController::create_report("Se ha agregado una calificacion de $estrellas estrellas para el ticket con ID $ticket->id", $user->id, 7);
     $user_sender = User::find($ticket->id_user_destination);
     Mail::to($user_sender->email)->send(new calification_ticket($user_sender, $ticket));

@@ -93,7 +93,8 @@ class CertificatesController extends Controller
                 $user_receive = User::find($request->id_user_receives);
             ReportController::create_report("El usuario $user->name ha creado un acta para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
             Mail::to($user_receive->email)->send(new create_certificate($user_receive, $user,$certificate));
-            }
+            NotificationController::create_notification("Se ha creado una nueva acta para ti", $request->id_user_receives , route('dashboard.certificates.view_certificate',$certificate->id));
+        }
             return response()->json(['id_certificate'=> $certificate->id],200);
         }
         public function delete_certificate(Request $request){
@@ -119,6 +120,7 @@ class CertificatesController extends Controller
             if($certificate->name_user_receives){
                 ReportController::create_report("El usuario $user->name ha eliminado el acta con ID $id_certificate para $certificate->name_user_receives para la siguiente dirección $request->address", $user->id, 17);
             }else{
+                NotificationController::create_notification("Se ha eliminado el acta el cual ibas a recibir", $certificate->id_user_receives , route('dashboard.certificates.view_certificate',$certificate->id));
                 $user_receive = User::find($certificate->id_user_receives);
                 ReportController::create_report("El usuario $user->name ha eliminado el acta con ID $id_certificate para $user_receive->name para la siguiente dirección $request->address", $user->id, 17);
                 Mail::to($user_receive->email)->send(new notification_certificate($user_receive, "que el usuario $user->name ha eliminado el certificado con ID $certificate->id y fecha $certificate->date"));
@@ -215,6 +217,7 @@ public function state_certificate(Request $request){
                     $certificate->id_user_reception = $user->id;
                 }
             }else{
+                NotificationController::create_notification("El acta el cual recibiras se encuentra despachada", $certificate->id_user_receives , route('dashboard.certificates.view_certificate',$certificate->id));
                 $user_receive = User::find($certificate->id_user_receives);
                 $certificate->id_user_reception = $user->id;
                 ReportController::create_report("El usuario $user->name ha Despachado los componentes asignados al acta con ID $id_certificate para $user_receive->name para la siguiente dirección $certificate->address", $user->id, 17);
@@ -230,7 +233,7 @@ public function state_certificate(Request $request){
                 ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user->id, 17);
                 Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha sido devuelto por el usuario con nombre $certificate->name_user_receives"));
             }else{
-
+                NotificationController::create_notification("Su acta ha sido ENTREGADA con exito!", $certificate->id_user_delivery , route('dashboard.certificates.view_certificate',$certificate->id));
                 ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user->id, 17);
                 Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
             }
@@ -310,6 +313,7 @@ public function state_certificate(Request $request){
                 $new_report_product->report = "El producto asociado al acta con ID $certificate->id y fecha $certificate->address esta en estado $state_certificate";
                 $new_report_product->save();
             }
+            NotificationController::create_notification("Su acta ha sido ENTREGADA con exito!", $certificate->id_user_delivery , route('dashboard.certificates.view_certificate',$certificate->id));
             ReportController::create_report("El usuario $user_delivery->name ha recibido los componentes asignados al acta con ID $id_certificate para la siguiente dirección $certificate->address", $user_delivery->id, 17);
             Mail::to($user_delivery->email)->send(new notification_certificate($user_delivery, "que el acta con ID $certificate->id y fecha $certificate->date ha llegado al punto y ha sido recibido con exito!"));
         return view('dashboard.accept_emails.view_return_certificate', compact('user_delivery', 'certificate'));
@@ -351,6 +355,7 @@ if ($request->hasFile('file')) {
     $new_report_certificate->date = $fechaColombiana;
     $new_report_certificate->id_user = $user->id;
     $new_report_certificate->id_state = 1;
+
     $new_report_certificate->save();
     return redirect()->route('dashboard.certificates.view_certificate.reports_certificate', $id_certificate)->with('message','El reporte ha sido generado con exito');
 }else{

@@ -111,6 +111,7 @@ public function permission_approve(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     ReportController::create_report("El jefe $user->name ha aprobado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
+    NotificationController::create_notification("El jefe de area $user->name ha aprobado su permiso :) ", $permission->id_user_collaborator , route('dashboard.permissions.view_permission', $permission->id));
     Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha aprobado su permiso con ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso aprobado correctamente!');
 }
@@ -123,6 +124,7 @@ public function permission_disapprove(Request $request){
     $permission->id_user_boss = $user->id;
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
+    NotificationController::create_notification("El jefe de area $user->name ha desaprovado su permiso :(", $permission->id_user_collaborator , route('dashboard.permissions.view_permission', $permission->id));
     ReportController::create_report("El jefe $user->name ha rechazado el permiso del colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_colaborator->email)->send(new action_permission($user_colaborator, " que el jefe de area $user->name ha rechazado su permiso con ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Permiso rechazado correctamente!');
@@ -136,6 +138,7 @@ public function permission_user_exit(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     $user_boss = User::find($permission->id_user_boss);
+    NotificationController::create_notification("El usuario $user_colaborator->name ha salido de la instalaciones con permiso", $permission->id_user_boss , route('dashboard.permissions.view_permission', $permission->id));
     ReportController::create_report("El recepcionista $user->name ha dado salida al colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  $user_colaborator->name ha salido de las instalaciones con permiso de ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Hora de salida registrada correctamente!');
@@ -150,6 +153,7 @@ public function permission_user_return(Request $request){
     $permission->save();
     $user_colaborator = User::find($permission->id_user_collaborator);
     $user_boss = User::find($permission->id_user_boss);
+    NotificationController::create_notification("El usuario $user_colaborator->name ha regresado a las instalaciones con permiso", $permission->id_user_boss , route('dashboard.permissions.view_permission', $permission->id));
     ReportController::create_report("El recepcionista $user->name ha dado entrada al colaborador $user_colaborator->name ", $user->id, 9);
     Mail::to($user_boss->email)->send(new action_permission($user_boss, " que el colaborador  $user_colaborator->name  ha regresado a las instalaciones con permiso de ID $id_permission"));
     return redirect()->route('dashboard.permissions.view_permission', $id_permission)->with('message','Hora de entrada registrada correctamente!');

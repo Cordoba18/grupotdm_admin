@@ -57,6 +57,7 @@ function new_user(Request $request){
     $company = DB::selectOne("SELECT c.company FROM companies c WHERE c.id = $request->id_company");
     $area = DB::selectOne("SELECT a.area FROM areas a WHERE a.id = $request->id_area");
     Mail::to("soporte@eltemplodelamoda.com.co")->send(new Notification($request->name, $request->email ,  $company->company, $area->area));
+    NotificationController::create_notification("El usuario $user->email esta esperando que lo ACTIVES", 2 , route('dashboard.users'));
     $user->save();
     return response()->json(['message' => true], 200);
 
