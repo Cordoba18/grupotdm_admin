@@ -147,3 +147,4 @@
 @vite(['resources/js/create_certificate.js'])
 
 @stop
+@extends('layouts.content_notifications')

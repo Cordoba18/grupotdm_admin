@@ -304,10 +304,7 @@ public function save_ticket(Request $request){
 public function comment_create(Request $request){
 
     $new_comment = new Comment();
-
-    $fechaActual = Carbon::now('America/Bogota');
-    $fechaActual->locale('es');
-    $fechaColombiana = $fechaActual->format('d F Y');
+    $fechaColombiana = Carbon::now('America/Bogota')->format('d F Y H:i:s');
     $new_comment->comment = $request->comment;
     $new_comment->date = $fechaColombiana;
      $new_comment->id_user = Auth::user()->id;

@@ -346,6 +346,7 @@ return [
             'icon' => 'fas fa-bell',
             'topnav_right' => true,
             'label' => 0,
+            'id' => 'icon_notification',
         ],
 
     ],

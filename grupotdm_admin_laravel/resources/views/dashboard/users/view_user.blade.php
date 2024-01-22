@@ -64,3 +64,4 @@
 @section('js')
 
 @stop
+@extends('layouts.content_notifications')

@@ -317,3 +317,4 @@ const route_sond_notification = "{{ asset('storage/sonds/iphone-notificacion.mp3
 </script>
 @stop
 
+@extends('layouts.content_notifications')

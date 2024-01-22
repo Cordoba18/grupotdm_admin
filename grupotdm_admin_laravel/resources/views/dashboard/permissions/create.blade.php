@@ -119,3 +119,4 @@
         });
 </script>
 @stop
+@extends('layouts.content_notifications')

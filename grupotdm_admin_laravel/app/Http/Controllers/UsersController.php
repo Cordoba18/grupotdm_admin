@@ -131,6 +131,10 @@ public function save_changes(Request $request){
     $user->id_company = $request->id_company;
     $user->id_chargy = $request->id_chargy;
 
+    if ($request->id_area) {
+        $user->id_area = $request->id_area;
+    }
+
     if ($request->id_shop){
         $user->id_shop = $request->id_shop;
     }

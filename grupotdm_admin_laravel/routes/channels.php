@@ -50,3 +50,9 @@ Broadcast::channel('deletecomment.{id_ticket}', function ($user, $id_ticket){
     }
 
 });
+
+Broadcast::channel('notifications_users', function ($user){
+    return $user;
+
+});
+

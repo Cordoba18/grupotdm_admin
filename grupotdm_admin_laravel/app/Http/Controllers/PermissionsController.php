@@ -84,6 +84,7 @@ public function save_permission(Request $request){
     $new_permission->save();
     if ($jefe){
         Mail::to($jefe->email)->send(new create_permission($jefe, $new_permission, $user));
+        NotificationController::create_notification("El usuario $user->name ha solicitado un permiso", $jefe->id, route('dashboard.permissions.view_permission',$new_permission->id));
     }
     ReportController::create_report("Ha generado un permiso por/para $new_permission->observations", $user->id, 9);
     return redirect()->route('dashboard.permissions')->with('message','Permiso generado con exito!');

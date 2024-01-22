@@ -1,0 +1,125 @@
+.content_notifications{
+
+    background-color: rgba(2, 2, 2, 0.6);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    position: fixed;
+}
+.content_notifications .content_notifications_full{
+    position: fixed;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    width: 900px;
+    padding: 10px;
+    max-height: 600px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 50px black;
+    background-color: #FFF5C2;
+    animation: animation_notification 1s;
+    transition: all 1s;
+
+}
+
+.content_notifications .notifications{
+    overflow-y: auto;
+    max-height: 400px;
+}
+.content_notifications .content_btn_close_notifications{
+    width: 100%;
+    text-align: end;
+}
+.content_notifications  .content_notifications_full #btn_close_notifications{
+
+    font-size: 50px;
+    margin: 10px;
+
+}
+
+.content_notifications .content_notifications_full .content_btn_close_notifications #btn_close_notifications:hover{
+
+    transform: scale(1.2);
+}
+
+.content_notifications .notifications .notification_no_view,.content_notifications .notifications .notification_view{
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-shadow: 0px 0px 10px black;
+
+
+
+}
+
+.content_notifications .notifications .notification_no_view{
+
+    background-color: #FFF5C2;
+}
+
+.content_notifications .notifications .notification_view{
+
+    background-color: #D0F288;
+}
+
+.content_notifications .notifications .content_info_notification{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    padding: 10px;
+}
+.content_notifications .notifications .notification_no_view .content_date,.content_notifications .notifications .notification_view .content_date{
+
+    width: 100%;
+    text-align: center;
+    background-color: white;
+
+}
+
+.content_notifications .notifications .notification_no_view i,.content_notifications .notifications .notification_view i{
+
+    font-size: 40px;
+    color: black;
+
+}
+
+.content_notifications .notifications .notification_no_view i:hover,.content_notifications .notifications .notification_view i:hover{
+
+    transform: scale(1.2);
+}
+@keyframes animation_notification{
+
+    0%{
+        transform: translateX(-50%) translateY(-100%);
+    }
+
+    100%{
+        transform: translateX(-50%) translateY(-50%);
+    }
+}
+
+@media (max-width:800px){
+
+    .content_notifications .content_notifications_full{
+        width: 90%;
+        height: 100%;
+
+    }
+    .content_notifications .content_notifications_full{
+       font-size: 10px;
+       padding: 5px;
+
+    }
+
+    .content_notifications .notifications .notification_no_view i,.content_notifications .notifications .notification_view i{
+
+        font-size: 20px;
+    }
+}

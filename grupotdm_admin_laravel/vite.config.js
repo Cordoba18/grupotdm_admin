@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/css/view_product.css',
                 'resources/css/images_product.css',
                 'resources/css/view_users.css',
+                'resources/css/notifications.css',
                 'resources/css/directories.css',
                 'resources/css/files.css',
                 'resources/css/content_loading.css',

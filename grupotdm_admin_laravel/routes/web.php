@@ -12,6 +12,7 @@ use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RecoveryPasswordController;
 use App\Http\Controllers\Mails_Controller;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -131,4 +132,5 @@ Route::post('/dashboard/inventories/view_product/save_changes', [InventoriesCont
 Route::get('/dashboard/inventories/create/get_serie', [ProfileController::class, 'get_serie'])->name('dashboard.inventories.create.get_serie');
 
 
-
+Route::post('/dashboard/get_notifications', [NotificationController::class, 'get_notifications'])->name('dashboard.get_notifications');
+Route::post('/dashboard/view_notification', [NotificationController::class, 'view_notification'])->name('dashboard.view_notification');
