@@ -14,6 +14,9 @@
 <div style="align-items: center; display: flex">
     <p style="margin: 5px">OBSERVACIONES : </p><b>{{ $permission->observations }}</b>
     </div>
+    <div style="align-items: center; display: flex">
+        <a style=" text-align: center;  width: 100%; padding: 10px; background-color: black; color: white; font-size: 10px; border-radius: 20px; text-decoration: none; font-weight: bold;" href="{{ route('dashboard.permissions.view_permission', $permission->id) }}"> VER PERMISO </a>
+    </div>
 @endsection
 
 

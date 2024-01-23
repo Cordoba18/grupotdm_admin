@@ -105,6 +105,7 @@ icon_notification.addEventListener('click', function (e) {
         let all_notifications = res.data;
 
         notifications.innerHTML = "";
+        if (all_notifications.length > 0) {
 
         all_notifications.forEach(n => {
 
@@ -115,11 +116,16 @@ icon_notification.addEventListener('click', function (e) {
             }
         });
 
-        setTimeout(() => {
-            activate_button_remove();
-            activate_button_view_notification();
-        }, 1000);
 
+
+    }else{
+        notifications.innerHTML = "<h1>No tienes ninguna notificación aún !</h1>";
+    }
+
+    setTimeout(() => {
+        activate_button_remove();
+        activate_button_view_notification();
+    }, 1000);
       }).catch(error=>{
 
       });
@@ -132,6 +138,7 @@ Echo.join(`notifications_users`)
 
     let user = e.user;
     let notification = e.notification;
+
     if (notification.id_user == id_user) {
         try {
 
@@ -140,6 +147,12 @@ Echo.join(`notifications_users`)
         } catch (error) {
 
         }
+        const fas =  icon_notification.querySelector(".fas");
+        try {
+        fas.classList.add('animar_campana');
+    } catch (error) {
+        console.log("Error en animacion =" + error)
+    }
         const amount_notifications = icon_notification.querySelector(".badge ");
         amount_notifications.innerHTML = parseInt(amount_notifications.innerHTML) + 1;
 const Toast = Swal.mixin({

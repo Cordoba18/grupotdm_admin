@@ -51,7 +51,7 @@
         <th>DETALLE</th>
     </thead>
 
-    <tbody>
+    <tbody id="permissions">
         @foreach ($permissions as $p)
         @if ($p->id_area == $user->id_area || $validation_jefe || $p->id_user_collaborator == $user->id || $user->id_area == 16 || $user->id_area == 9 || $user->id_area == 1)
         <tr id="permission">
@@ -64,15 +64,8 @@
             <td><b>{{ $p->state }}</b></td>
             <td>
                 <input type="number" hidden id="id_state" value="{{ $p->id_state }}">
-                <a href="{{ route('dashboard.permissions.view_permission', $p->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a> @if($p->id_user_collaborator == $user->id)
-                <form action="{{ route('dashboard.permissions.delete') }}" method="post" onsubmit="return confirmarEnvio()">
-                    @csrf
-                    <input type="number" hidden name="id_permission" value="{{ $p->id }}">
-                    <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-
-                </form>
-
-            @endif</td>
+                <a href="{{ route('dashboard.permissions.view_permission', $p->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a>
+             </td>
         </tr>
 
         @endif
@@ -85,6 +78,12 @@
 
 
 @section('js')
+
+<script>
+var route_view_user = "{{ route('dashboard.users.view_user', 0) }}".slice(0, -1);
+var route_view_permission = "{{ route('dashboard.permissions.view_permission', 0) }}".slice(0, -1);
+
+</script>
 @vite(['resources/js/permissions.js'])
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
 <script>

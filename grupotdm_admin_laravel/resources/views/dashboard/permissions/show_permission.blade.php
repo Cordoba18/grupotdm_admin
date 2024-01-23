@@ -2,19 +2,18 @@
 
 @section('title', 'GRUPO TDM')
 @section('css')
-
+@vite('resources/css/content_loading.css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 @stop
 @php
     $user = Auth::user();
 @endphp
-@section('css')
-@vite('resources/css/content_loading.css')
-@stop
 
-@section('content_header')
 <div class="content_loading" hidden>
 
 </div>
+@section('content_header')
+
 @if (session('message'))
 
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
@@ -167,13 +166,35 @@
 </div>
 </div>
 </div>
-<button onclick="imprimirDiv()" class="btn btn-dark">Imprimir PERMISO</button>
+<div class="content_buttons" style="width: 100%;display: flex; flex-wrap: wrap;">
+<button style="width: 100%; margin-bottom: 5px;" onclick="imprimirDiv()" class="btn btn-dark">Imprimir PERMISO</button>
+@if($permission->id_user_collaborator == $user->id )
+
+<form style="width: 100%;" action="{{ route('dashboard.permissions.delete') }}" method="post" onsubmit="return confirmarEnvio()">
+    @csrf
+    <input type="number" hidden name="id_permission" value="{{ $permission->id }}">
+    <button style="width: 100%;" href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+
+</form>
+
+@endif
+</div>
+
 <br><br><br>
 @stop
 
 
 
 @section('js')
+
+<script>
+    function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de eliminar este permiso?");
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
+</script>
 <script>
     function imprimirDiv() {
       var contenidoDiv = document.getElementById('content_form_permission').innerHTML;

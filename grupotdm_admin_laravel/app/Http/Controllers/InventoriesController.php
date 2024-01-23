@@ -203,14 +203,12 @@ public function save_changes_view_product(Request $request){
     $user = Auth::user();
     $id_product = $request->id_product;
     $product = Product::find($id_product);
-    $validation_serie = DB::select("SELECT * FROM products WHERE serie LIKE '%$request->serie%'");
     $product->name = $request->name;
     $product->brand = $request->brand;
     $product->accessories = $request->accessories;
     $product->id_type_component = $request->id_type_component;
     $product->id_state_certificate = $request->id_state_certificate;
     $product->id_origin_certificate = $request->id_origin_certificate;
-    $message = "";
     if ($request->hasFile('file')) {
         $file = $request->file('file');
         $fechaHoraActual = now()->format('Y-m-d_H-i-s');
@@ -220,25 +218,18 @@ public function save_changes_view_product(Request $request){
         $image_product = Image_product::where('id_product','=',"$id_product")->where('id_state','=','1')->first();
         $image_product->image = $name_file;
         $image_product->save();
-        $message = "CON IMAGEN PRINCIPAL NUEVA";
-    }
-    if  (!$validation_serie){
-        $product->serie = $request->serie;
-        $message = "CON SERIAL NUEVA";
-    }else if($validation_serie){
-        $message = "SIN CAMBIO DE SERIAL (Puede ser por existencia en otro producto o porque ya lo tiene este mismo producto)";
     }
     ReportController::create_report("El usuario $user->name ha cambiado los datos del producto con la siguiente serial $product->serie con ID $product->id", $user->id, 18);
     $product->save();
-    return redirect()->route('dashboard.inventories.view_product', $id_product)->with('message',"datos ingresados correctamente $message");
+    return redirect()->route('dashboard.inventories.view_product', $id_product)->with('message',"datos ingresados correctamente!");
 }
 
 public function get_serie(){
 
     $finish = false;
     while(!$finish){
-    $alfanumerico = str::random(4);
-    $serie = "REF".$alfanumerico;
+    $alfanumerico = str::random(7);
+    $serie = "TDM".$alfanumerico;
     $validation = Product::where('serie','=',"$serie")->where('id_state', 1)->first();
     if(!$validation){
         $finish = true;

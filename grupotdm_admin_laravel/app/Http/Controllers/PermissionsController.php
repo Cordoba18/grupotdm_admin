@@ -45,7 +45,7 @@ class PermissionsController extends Controller
         $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
-        $permission = DB::selectOne("SELECT p.id, uc.name AS name_user, uc.nit, p.date_application, r.reason, re.replenish_time, s.state, p.id_state, p.observations
+        $permission = DB::selectOne("SELECT p.id, uc.name AS name_user, uc.nit, p.date_application, r.reason, re.replenish_time, s.state, p.id_state, p.observations, p.id_user_collaborator
         FROM permissions p
         INNER JOIN users uc ON p.id_user_collaborator = uc.id
         INNER JOIN reasons r ON p.id_reason = r.id

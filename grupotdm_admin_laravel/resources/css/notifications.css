@@ -123,3 +123,19 @@
         font-size: 20px;
     }
 }
+
+.animar_campana{
+
+animation: titilar_campana 1s infinite;
+}
+@keyframes titilar_campana{
+
+
+    0%{
+        color: yellow;
+    }
+    100%{
+        color: green;
+        font-size: 15px;
+    }
+}

@@ -30,3 +30,87 @@
         margin-top: 10px;
     }
 }
+
+.animation_permission_create{
+    animation: animation_permissions 3s ;
+    animation: titilar_permission_create infinite 1s;
+}
+
+.animation_permission_modificate{
+    animation: animation_permissions 3s ;
+    animation: titilar_permission_modificate infinite 1s;
+}
+
+.animation_permission_finish{
+    animation: animation_permissions 3s ;
+    animation: titilar_permission_finish infinite 4s;
+}
+.animation_permission_delete{
+    animation: animation_permissions 3s ;
+    animation: titilar_permission_delete infinite 1s;
+}
+
+@keyframes animation_permissions{
+
+    0%{
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(-0%);
+
+    }
+}
+
+@keyframes titilar_permission_create{
+
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: yellow;
+
+    }
+    100%{
+        background-color: orange;
+
+    }
+}
+
+@keyframes titilar_permission_modificate{
+
+    0%{
+        background-color: white;
+    }
+    50%{
+        background-color: yellow;
+
+    }
+    100%{
+        background-color: green;
+
+    }
+}
+
+@keyframes titilar_permission_finish{
+
+    0%{
+        background-color: white;
+    }
+    100%{
+        background-color: green;
+
+    }
+}
+
+@keyframes titilar_permission_delete{
+
+    0%{
+        background-color: white;
+    }
+    100%{
+        background-color: rgb(255, 0, 0);
+
+    }
+}

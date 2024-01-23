@@ -140,7 +140,12 @@
 @section('js')
 
 <script>
-const route_sond_notification = "{{ asset('storage/sonds/iphone-notificacion.mp3') }}";
+    try {
+        const route_sond_notification = "{{ asset('storage/sonds/iphone-notificacion.mp3') }}";
+    } catch (error) {
+
+    }
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

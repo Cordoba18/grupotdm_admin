@@ -4,6 +4,13 @@
 
 @section('content_header')
 <h1>Bienvenido al panel de administraciòn del GRUPO TDM</h1>
+
+@if (session('message_error'))
+
+              <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
+
+         @endif
+
 @stop
 
 @section('content')

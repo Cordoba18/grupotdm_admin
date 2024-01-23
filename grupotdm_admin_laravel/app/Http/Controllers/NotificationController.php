@@ -36,8 +36,9 @@ class NotificationController extends Controller
     public function get_notifications(Request $request){
 
         $notifications = Notification::where('id_user', $request->id_user)
-    ->orderBy('id', 'desc')
-    ->get();
+        ->orderBy('id', 'desc')
+        ->take(40)
+        ->get();
 
         return $notifications;
     }
