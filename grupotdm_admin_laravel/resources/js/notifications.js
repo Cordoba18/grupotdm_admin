@@ -102,6 +102,12 @@ icon_notification.addEventListener('click', function (e) {
         id_user: id_user,
       }).then(res=>{
 
+        try {
+            const fas =  icon_notification.querySelector(".fas");
+            fas.classList.remove('animar_campana');
+        } catch (error) {
+
+        }
         let all_notifications = res.data;
 
         notifications.innerHTML = "";

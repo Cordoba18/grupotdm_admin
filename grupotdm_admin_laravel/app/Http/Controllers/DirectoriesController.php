@@ -1,7 +1,7 @@
 <?php
+//importaciones
 
 namespace App\Http\Controllers;
-
 use App\Mail\new_file;
 use App\Mail\new_repository;
 use App\Models\Directorie;
@@ -13,13 +13,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use App\Models\File as ModelsFile;
+
+//declaración de clase
 class DirectoriesController extends Controller
 {
+
+    //validacion de autenticacion de usuario
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    //funcion que sirve para ver los directorios
     public function show_directories(){
 
         $user = Auth::user();
@@ -35,6 +40,7 @@ class DirectoriesController extends Controller
 
     }
 
+    //funcion que recibe un busqueda para los directorios
     public function show_directories_search(Request $request){
         $user = Auth::user();
         $search = $request->search;
@@ -51,22 +57,26 @@ class DirectoriesController extends Controller
     }
 
 
+    //funcion que retorna la vista para crear un directorio
 public function create_repository(){
     return view("dashboard.directories.create");
 }
 
+
+//funcion que guarda un directorio
 public function save_directory(Request $request){
     $user = Auth::user();
     $directorie = new Directorie();
-
     $fechaActual = Carbon::now('America/Bogota');
 $fechaColombiana = $fechaActual->format('d-m-Y H-i-s');
 $code = ProfileController::randNumer();
 
+//vemos si la ruta de reporsitorio a crear existe para no clonarla
     $ruta = public_path('storage/files/'.$fechaColombiana."/".$user->id);
     if (!File::exists($ruta)) {
+        //generamos la carpeta
         File::makeDirectory($ruta, 0777, true, true);
-
+        //guardamos el directorio en base de datos
         $directorie->name = $request->name;
         $directorie->code = $code;
         $directorie->directory = $fechaColombiana."/".$user->id;
@@ -74,7 +84,10 @@ $code = ProfileController::randNumer();
         $directorie->date_update =$fechaColombiana;
         $directorie->id_user =$user->id;
         $directorie->id_state =1;
+
+        //enviamos el correo
         Mail::to($user->email)->send(new new_repository($user, $directorie));
+        //guardamos en reporte
         ReportController::create_report("Se ha creado un nuevo repositorio con llamado $request->name", $user->id, 12);
         $directorie->save();
 
@@ -84,6 +97,7 @@ $code = ProfileController::randNumer();
 
 }
 
+//funcion que muestra la vista del directorio respondiendo a un request
 public function view_directory(Request $request){
 
     $user = Auth::user();
@@ -97,6 +111,7 @@ public function view_directory(Request $request){
 
 }
 
+//funcion que buscar dentro de un directorio
 public function view_directory_search(Request $request){
     $user = Auth::user();
     $id =  $request->id;
@@ -109,7 +124,7 @@ public function view_directory_search(Request $request){
     return view('dashboard.directories.files.files', compact('files', 'user', 'id'));
 }
 
-
+//funcion que desactiva un directorio
 public function delete_directory(Request $request){
 
     $id_directory = $request->id_directory;
@@ -120,7 +135,9 @@ public function delete_directory(Request $request){
     $directory->save();
 
     return back()->with('message','Directorio eliminado con exito');
+
 }
+//funcion que desactiva un archivo
 public function delete_file(Request $request){
 
     $id_file = $request->id_file;
