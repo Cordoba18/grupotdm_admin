@@ -1,5 +1,5 @@
 <?php
-
+//importaciones
 namespace App\Http\Controllers;
 
 use App\Mail\create_product;
@@ -15,18 +15,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Intervention\Image\ImageManagerStatic as Image;
 
+//declarar clases
 class InventoriesController extends Controller
 {
+
+    //validamos autenticacion del usuario
     public function __construct()
     {
         $this->middleware('auth');
     }
+
+    //funcion que muestra los productos del inventario
     public function show_inventories(Request $request){
         $search = $request->search;
         $filter = $request->filter;
+        //verificamos existencias de busqueda o filtros
             if($request->search !== null && $request->filter !== null){
                     $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
                     INNER JOIN states_certificates s ON p.id_state_certificate = s.id
@@ -60,6 +64,7 @@ class InventoriesController extends Controller
             $user = Auth::user();
             $filters = DB::select("SELECT * FROM states WHERE id=1 OR id= 2  OR id = 3 OR id=11");
             $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+            //verificamos si es un usuario de sistemas para mostrar el inventario o no
             if($validate_user_sistemas){
             return view('dashboard.inventories.inventories', compact('products', 'reports', 'images_products','filters','search' , 'filter'));
             }else{
@@ -69,8 +74,8 @@ class InventoriesController extends Controller
 
 
 
+        //funcion que muestra la vista para crear un producto
 public function create_product(){
-
     $areas = Area::all();
     $origins_certificates = Origin_Certificate::all();
     $states_certificates = State_Certificate::all();
@@ -78,6 +83,8 @@ public function create_product(){
     return view('dashboard.inventories.create', compact('areas','origins_certificates','states_certificates','types_components'));
 }
 
+
+//funcion para guardar un producto
 public function save_product(Request $request){
 
 
@@ -85,10 +92,14 @@ public function save_product(Request $request){
     $validation = DB::selectOne("SELECT * FROM products WHERE id_state = 1 AND serie  LIKE '%$request->serie%'");
     $user = Auth::user();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    //validamos si es un usuario de sistemas
     if($validate_user_sistemas){
+        //validamos si hay un producto con la misma serial
     if($validation){
         return redirect()->back()->with('message_error','Ya existe un producto con esa serial');
     }else{
+
+        //guardamos el producto
         $product->name = $request->name;
         $product->brand = $request->brand;
         $product->serie = $request->serie;
@@ -100,19 +111,23 @@ public function save_product(Request $request){
         $product->id_user = $user->id;
         $product->save();
         $id_product = DB::selectOne("SELECT * FROM products WHERE serie = '$request->serie' AND id_state = 1")->id;
+        //creamos un reporte
         ReportController::create_report("El usuario $user->name ha creado un producto con la siguiente serial $request->serie", $user->id, 18);
             $jefe_sistemas = DB::selectOne("SELECT * FROM users u
             INNER JOIN charges c ON u.id_chargy = c.id
             WHERE c.chargy = 'JEFE DE AREA' AND u.id_area = 2 AND u.id_state = 1");
-            Mail::to($jefe_sistemas->email)->send(new create_product($jefe_sistemas, $product));
+          //notificamos con un correo al jefe de sistemas sobre la creacion de un producto
+          Mail::to($jefe_sistemas->email)->send(new create_product($jefe_sistemas, $product));
 
     }
+    //Validamos si existe un archivo
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fechaHoraActual = now()->format('Y-m-d_H-i-s');
             $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
             $rutaImagen = public_path('storage/files/' . $name_file);
             $file->move(public_path('storage/files'), $name_file);
+            //guardamos la nueva imagen del producto
             $image_product = new Image_product();
             $image_product->image = $name_file;
             $image_product->id_product = $id_product;
@@ -128,25 +143,31 @@ public function save_product(Request $request){
 }
 }
 
-
+//funcion que me permite activar/eliminar un producto
 public function delete_product(Request $request){
 
     $user = Auth::user();
     $product = Product::find($request->id_product);
+    //validamos si el producto esta activo para desactivarlo
     if( $product->id_state == 1){
         $product->id_state =2;
+        //generamos el reporte
         ReportController::create_report("El usuario $user->name ha eliminado el producto con la siguiente serial $product->serie", $user->id, 18);
+       //configuramos el mensaje de respuesta al usuario
         $message = "Producto eliminado con exito!";
     }else{
+        //si no esta activo se activa
         $product->id_state =1;
+        //generamos el reporte
         ReportController::create_report("El usuario $user->name ha activado el producto con la siguiente serial $product->serie", $user->id, 18);
+         //configuramos el mensaje de respuesta al usuario
         $message = "Producto activado con exito!";
     }
     $product->save();
     return redirect()->back()->with('message',$message);
 }
 
-
+//funcion que permite retornar la vista para ver un producto
 public function view_product($id){
 
     $user = Auth::user();
@@ -163,10 +184,12 @@ public function view_product($id){
 }
 
 
+//funcion que permite ver las imagenes secundarias de un producto
 public function images_product($id){
 
     $user = Auth::user();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    //validamos si es un usuario de sistemas para mostrar la informacion
     if($validate_user_sistemas){
     $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
     $product = Product::find($id);
@@ -177,6 +200,7 @@ public function images_product($id){
     }
 }
 
+//funcion que permite guardar una nueva imagen secundaria para un producto
 public function save_image_product(Request $request){
 
     $user = Auth::user();
@@ -187,6 +211,7 @@ public function save_image_product(Request $request){
         $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
         $rutaImagen = public_path('storage/files/' . $name_file);
         $file->move(public_path('storage/files'), $name_file);
+        //Guardamos la imagen
         $image_product = new Image_product();
         $image_product->image = $name_file;
         $image_product->id_product = $id_product;
@@ -198,6 +223,9 @@ public function save_image_product(Request $request){
     }
 }
 
+
+
+//funcion que permite guardar los cambios en un producto
 public function save_changes_view_product(Request $request){
 
     $user = Auth::user();
@@ -209,6 +237,7 @@ public function save_changes_view_product(Request $request){
     $product->id_type_component = $request->id_type_component;
     $product->id_state_certificate = $request->id_state_certificate;
     $product->id_origin_certificate = $request->id_origin_certificate;
+    //si existe una imagen lo guarda
     if ($request->hasFile('file')) {
         $file = $request->file('file');
         $fechaHoraActual = now()->format('Y-m-d_H-i-s');
@@ -219,20 +248,26 @@ public function save_changes_view_product(Request $request){
         $image_product->image = $name_file;
         $image_product->save();
     }
+    //generamos un reporte
     ReportController::create_report("El usuario $user->name ha cambiado los datos del producto con la siguiente serial $product->serie con ID $product->id", $user->id, 18);
     $product->save();
     return redirect()->route('dashboard.inventories.view_product', $id_product)->with('message',"datos ingresados correctamente!");
 }
 
+
+//funcion que me permite obtener una serial personalizada y aleatoria para los productos
 public function get_serie(){
 
     $finish = false;
     while(!$finish){
+        //generamos la serial aleatoria
     $alfanumerico = str::random(7);
     $serie = "TDM".$alfanumerico;
+    //validamos si ya existe esa serial
     $validation = Product::where('serie','=',"$serie")->where('id_state', 1)->first();
     if(!$validation){
         $finish = true;
+        //si no existe la serial retornamos a archivo JS
         return response()->json(['serie' => $serie], 200);
     }
     }

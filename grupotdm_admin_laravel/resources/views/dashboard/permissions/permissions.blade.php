@@ -86,14 +86,7 @@ var route_view_permission = "{{ route('dashboard.permissions.view_permission', 0
 </script>
 @vite(['resources/js/permissions.js'])
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
-<script>
-    function confirmarEnvio() {
-      // Mostrar un mensaje de confirmación
-      var confirmacion = confirm("¿Estás seguro de eliminar este permiso?");
-      // Si el usuario hace clic en "Aceptar", el formulario se enviará
-      return confirmacion;
-  }
-</script>
+
 <script>
     $(document).ready(function() {
       $('#miTabla').DataTable({

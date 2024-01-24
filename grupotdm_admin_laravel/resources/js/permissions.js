@@ -1,5 +1,5 @@
 const permissions = document.querySelectorAll('#permission');
-
+//verificar estado de los permisos y asignar un color
 permissions.forEach(permission => {
     const id_state = permission.querySelector('#id_state').value;
     console.log(id_state)

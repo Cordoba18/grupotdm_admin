@@ -1,7 +1,6 @@
 <?php
-
+//Importaciones
 namespace App\Http\Controllers;
-
 use App\Mail\ActionUser;
 use App\Mail\create_user;
 use App\Models\Area;
@@ -16,24 +15,29 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
+//Declaracion de clase
 class UsersController extends Controller
 {
 
+    //validar autenticacion del usuario
     public function __construct()
     {
         $this->middleware('auth');
     }
 
+    //funcion que me permite obtener los usuarios y mostrarlos
     public function show_users(){
         $user = Auth::user();
         $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
         $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+        //usuarios obtenidos de una funcion
         $users = UsersController::users($user, null);
         return view('dashboard.users.users', compact('users', 'validation_jefe', 'validate_user_sistemas'));
     }
 
+    //funcion que me permite buscar los usuarios
     public function users($user , $search){
         if ($search != null) {
             if($user->id_area == 1 || $user->id_area == 2){
@@ -65,18 +69,20 @@ INNER JOIN charges ch ON u.id_chargy = ch.id $sql");
     return $users;
 }
 
+//funcion que me permite buscar usuarios y mostrarlos
 public function search_users(Request $request){
     $user = Auth::user();
     $validation_jefe = DB::selectOne("SELECT * FROM users u
     INNER JOIN charges c ON u.id_chargy = c.id
     WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
+     //usuarios obtenidos de una funcion
     $users = UsersController::users($user,$request->search);
     return view('dashboard.users.users', compact('users', 'validation_jefe'));
 }
 
 
+//Funcion que me permite retornar la vista para editar el perfil de un usuario
 public function edit_profile($id){
-
 
     $user = User::find($id);
     $id = Auth::user()->id;
@@ -85,7 +91,7 @@ public function edit_profile($id){
         INNER JOIN charges c ON u.id_chargy = c.id
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $id");
         if (!$validation_jefe) {
-            $validation_jefe == null;
+            $validation_jefe = null;
         }
     $areas = Area::all()->where('id', '<>', '1');
     $companies = Companie::all();
@@ -97,6 +103,8 @@ public function edit_profile($id){
 
 }
 
+
+//funcion que me permite obtener los datos necesario para ver la informacion del usuario
 public function view_user($id){
 
     $user = DB::selectOne("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy
@@ -123,6 +131,8 @@ public function view_user($id){
     return view('dashboard.users.view_user', compact('user', 'shop','phone'));
 }
 
+
+//funcion que me permite guardar los cambios del usuario
 public function save_changes(Request $request){
     $my_user = Auth::user();
     $user = User::find($request->id);
@@ -151,6 +161,7 @@ public function save_changes(Request $request){
 
 }
 
+//funcion que me permite eliminar un usuario
 public function delete_user(Request $request){
     $my_user = Auth::user();
     $user = User::find($request->id);
@@ -172,6 +183,7 @@ public function change_password($id){
     return view("dashboard.users.edit_password", compact("user"));
 }
 
+//funcion que me permite guardar la nueva contraseña de un usuario
 public function save_changes_password(Request $request){
     $user = User::find($request->id);
     $my_user = Auth::user();
@@ -190,6 +202,7 @@ public function save_changes_password(Request $request){
     }
 }
 
+//funcion que me permite ir a crear un usuariopara el area
 public function new_user(){
 
     $user = User::find(Auth::user()->id);
@@ -203,6 +216,7 @@ public function new_user(){
 }
 
 
+//funion que me permite guardar el usuario
 public function save_user(Request $request){
     $my_user = User::find(Auth::user()->id);
     $validation_email = DB::selectOne("SELECT * FROM users WHERE email ='$request->email'");
@@ -244,14 +258,16 @@ public function save_user(Request $request){
 
 }
 
+
+//Funcion que me permite obtener los cargos y retornarlos a un archivo JS
 public function getcharges($id){
     $charges = DB::select("SELECT c.chargy, c.id FROM charges c WHERE c.id_area = $id");
     return response()->json(['charges' => $charges], 200);
 }
+
+//funcion que me permite obtener las tiendas y retornarlos a un archivo JS
 public function getshops($id){
     $shops = DB::select("SELECT s.shop, s.id FROM shops s WHERE s.id_company = $id");
     return response()->json(['shops' => $shops], 200);
 }
-
-
 }

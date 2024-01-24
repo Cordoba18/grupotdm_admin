@@ -1,6 +1,6 @@
 const id_company = document.querySelector('#id_company');
 
-
+//Si hay cambio en el select de la compañias se obtienen las tiendas y se aplican en el select de dichas tiendas
 id_company.addEventListener('change', function (e) {
 
     const id_shop = document.querySelector('#id_shop');

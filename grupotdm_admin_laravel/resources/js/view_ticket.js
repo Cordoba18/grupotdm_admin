@@ -8,14 +8,7 @@ const comments = document.querySelector(".coments");
 comments.scrollTop = comments.scrollHeight;
 const btn_save_comment = document.querySelector("#btn_save_comment");
 
-// {{ "align-items: end;" }}
-// {{ "align-items: start; background-color:#DDDDDD;" }}
-/* <form action="{{ route('dashboard.tickets.comment_delete') }}" method="post">
-            @csrf
-            <input type="number" value="{{ $ticket->id }}" name="id_ticket" hidden>
-            <input type="number" value="{{ $c->id }}" name="id_comment" hidden>
-            <button href="" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
-        </form> */
+//Funcion que contiene la escritura del componente del comentario
 function writting_comment(comment, align, btn_delete) {
     let write_btn_delete = `<input type="number" value="${id_ticket}" name="id_ticket" hidden>
     <input type="number" value="${comment['id']}" name="id_comment" id="id_comment" hidden>`;
@@ -33,6 +26,8 @@ function writting_comment(comment, align, btn_delete) {
     return content_coment;
 }
 
+//boton que permite guardar el comentario
+
 btn_save_comment.addEventListener('click', function (e) {
 
     e.preventDefault();
@@ -45,6 +40,7 @@ btn_save_comment.addEventListener('click', function (e) {
         id_ticket: id_ticket,
         conection: conection,
       }).then(res=>{
+        //Al crealo es retornado y se pinta en la vista
         let comment = res.data;
         if (comment['id_user'] == id_user) {
             comments.insertAdjacentHTML("beforeend", writting_comment(comment,"align-items: end;", true));
@@ -69,6 +65,8 @@ btn_save_comment.addEventListener('click', function (e) {
             icon: "info"
           });
       }
+
+      //Despues de dos segundos se automatizan los botones de eliminacion de comentarios
       setTimeout(() => {
         const comment = document.querySelectorAll(".comment");
         activa_btn_deletes(comment);
@@ -84,13 +82,15 @@ try {
 
 }
 
-
+//Escuchado de comentarios en ticket
 Echo.join(`commentticket.${id_ticket}`)
 .listen('Comment_Ticket', (e)=>{
+    //route_sond_notification Se encuentra en la vista declarado previamente
     let sond_notification  = new Audio(route_sond_notification);
     sond_notification.play();
     let comment = e.comment;
     const comments = document.querySelector(".coments");
+    //Mostrar animacion de nuevo comentario
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -107,7 +107,7 @@ Echo.join(`commentticket.${id_ticket}`)
         title: "Nuevo comentario"
       });
 
-
+//insertar comentario
     if (comment['id_user'] == id_user) {
         comments.insertAdjacentHTML("beforeend",  writting_comment(comment,"align-items: end;", true));
 
@@ -118,6 +118,7 @@ Echo.join(`commentticket.${id_ticket}`)
     }
     comments.scrollTop = comments.scrollHeight;
 
+    //despues de dos segundos cargamos las funciones para hacer funcionar los botones de eliminacion de comentarios
     setTimeout(() => {
         const comment = document.querySelectorAll(".comment");
         activa_btn_deletes(comment);
@@ -129,7 +130,7 @@ Echo.join(`commentticket.${id_ticket}`)
 }).here(users =>{
     let result = users.filter(user => user.id != id_user);
 
-
+//validar si el usuario esta desconectado o conectado y aplicar cambios en conexion
     if (result.length > 0) {
 
         result.forEach(u => {
@@ -146,6 +147,7 @@ Echo.join(`commentticket.${id_ticket}`)
 
     }
 }).joining(user => {
+    //validar si el usuario esta desconectado o conectado y aplicar cambios en conexion
     if (user.id != id_user) {
         if (user.id == id_user_destination.textContent || user.id == id_user_sender && user.id != id_user) {
         validate_conection.className = "comment_state_online";
@@ -155,6 +157,7 @@ Echo.join(`commentticket.${id_ticket}`)
 
     }
 }).leaving( user => {
+    //validar si el usuario esta desconectado o conectado y aplicar cambios en conexion
 if (user.id != id_user) {
 
     if (user.id == id_user_destination.textContent || user.id == id_user_sender && user.id != id_user) {
@@ -167,11 +170,12 @@ if (user.id != id_user) {
 });
 
 
-
+//Escuchador de cambio en ticket
 Echo.join(`stateticket`)
 .listen('StateTicket', (e)=>{
     const ticket = e.ticket;
 
+    //Verifica el usuario y recarga la pagina en caso de ser uno de los usuarios asociados al ticket
     if ((id_user == ticket['id_user_sender'] || id_user == ticket['id_user_destination'] || id_area_user == ticket['id_area_user_destination']) && ticket['id'] == id_ticket) {
 
           setTimeout(() => {
@@ -197,6 +201,7 @@ Echo.join(`stateticket`)
 
 const content_comment = document.querySelector("#comment");
 
+//emitir evento cada ves que teclea en el input
 content_comment.addEventListener('input', function (e) {
 
     axios.post('./writting_ticket',{
@@ -214,7 +219,7 @@ Echo.join(`writtingcomment.${id_ticket}`)
 
     let user = e.user;
 
-
+//mostrar Efecto visual de escritura en tiempo real
         count_write = count_write + 1;
         validate_writting.textContent = `${user.name} esta escribiendo....`;
 
@@ -229,9 +234,12 @@ Echo.join(`writtingcomment.${id_ticket}`)
 })
 
 const comment = document.querySelectorAll(".comment");
+//activar lo botones de eliminacion apenas cargue el documento
     activa_btn_deletes(comment);
 
 
+
+    //funcion que activa los botones de eliminacion del comentario
 function activa_btn_deletes(comment) {
 
 
@@ -266,13 +274,15 @@ function activa_btn_deletes(comment) {
     });
 
 }
+
+//Escuchador de eliminacion de comentario
 Echo.join(`deletecomment.${id_ticket}`)
 .listen('Delete_Comment', (e)=>{
 
     let id_comment = e.comment.id;
     const comment = document.querySelectorAll(".comment");
     comment.forEach(c => {
-
+        //Se recorren los comentarios y se elimina el que coincida con el que viene en el evento
         const id = c.querySelector("#id_comment").value;
         if (id_comment == id) {
             c.style.opacity = '0';

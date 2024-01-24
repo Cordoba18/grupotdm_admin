@@ -1,6 +1,6 @@
 
 const btn_serie = document.querySelector('#btn_serie');
-
+//Boton que trae la serial aleatoria
 btn_serie.addEventListener('click',
  function (e) {
     const input_serie = document.querySelector('#input_serie');

@@ -18,7 +18,7 @@ try {
 
 
 const tickets = document.querySelectorAll('#tickets');
-
+//Recorrer tickets y asignar color corespondiente al estado
 tickets.forEach(ticket => {
 
     const date_start = ticket.querySelector('#date_start').textContent;
@@ -52,6 +52,8 @@ catch (error) {
 const id_user = document.querySelector("#id_user").textContent;
 const id_area_user = document.querySelector("#id_area_user").textContent;
 
+//Funcion que contiene el ticket para formarlo en un formato de texto
+
 function read_ticket(ticket, accion, animation) {
     let row_action = "";
     if (accion == false) {
@@ -83,10 +85,13 @@ function read_ticket(ticket, accion, animation) {
     return info_ticket;
 }
 
+//Escuchador de creacion de ticket
 Echo.join(`createticket`)
 .listen('CreateTicket', (e)=>{
+    //ticket que viene en el evento
     const ticket = e.ticket;
 
+    //verifica el usuario, aplica el sonido y pinta el ticket creado
     if (id_user == ticket['id_user_destination'] || id_area_user == ticket['id_area_user_destination']) {
         const content_tickets = document.querySelector("#content_tickets");
         try {
@@ -123,6 +128,7 @@ Echo.join(`createticket`)
 })
 
 
+//Evento que escucha el cambio en un ticket
 Echo.join(`stateticket`)
 .listen('StateTicket', (e)=>{
     const ticket = e.ticket;
@@ -154,8 +160,6 @@ Echo.join(`stateticket`)
             const tickets  = document.querySelectorAll("#tickets");
             tickets.forEach(t => {
                 const id_ticket = t.querySelector("#id_ticket").value;
-                console.log("Ticket de tabla : "+id_ticket)
-                console.log("Ticket de base de datos : "+ticket['id'])
                 if (id_ticket == ticket['id']) {
                     t.remove();
                 }
@@ -163,6 +167,7 @@ Echo.join(`stateticket`)
             const total_pendientes = document.querySelector("#total_pendientes");
             const total_ejecuciones = document.querySelector("#total_ejecuciones");
             const total_vencidos = document.querySelector("#total_vencidos");
+            //valida el estado y inserta el ticket de una apariencia muy distinta
             if (ticket['id_state'] == 2) {
                 content_tickets.innerHTML =  read_ticket(ticket, "delete", "animation_ticket_delete") + content_tickets.innerHTML;
             }else if (ticket['id_state'] == 7) {

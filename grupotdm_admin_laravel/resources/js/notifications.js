@@ -4,6 +4,7 @@ const amount_notifications = icon_notification.querySelector(".badge ");
 
 const body = document.body;
 
+//Esta funcion carga el boton para eliminar el contenedor de las notificaciones
 function activate_button_remove() {
 const content_notifications = document.querySelector(".content_notifications")
 
@@ -24,6 +25,8 @@ setTimeout(() => {
 
 }
 
+
+//Esta funcion cambio el estado de la notificacion a VISTO al entrar en la notificación
 function activate_button_view_notification() {
 
     const notifications = document.querySelectorAll(".notification")
@@ -47,6 +50,8 @@ function activate_button_view_notification() {
     });
 }
 
+
+//Este contenedor contiene la escritura para agregar la notificacion retornando el componente a colocar
 function add_notification(notification, div_class, view_icon) {
 
     let content_notification = `<div class="${div_class}">
@@ -64,7 +69,7 @@ function add_notification(notification, div_class, view_icon) {
     return content_notification;
 }
 
-
+//Este metodo cuenta las notificaciones y las aplica en el label para un conteo visual
     axios.post(`${route_principal}/get_notifications`,{
         id_user: id_user,
       }).then(res=>{
@@ -82,6 +87,7 @@ function add_notification(notification, div_class, view_icon) {
       });
 
 
+      //Este boton al presionarlo agrega el contenedor de las notificaciones y muestra las notificaciones
 icon_notification.addEventListener('click', function (e) {
 
 
@@ -97,11 +103,12 @@ icon_notification.addEventListener('click', function (e) {
 
     notifications.classList.add("notifications");
     content_notifications_full.appendChild(notifications);
-
+//va a la ruta y trae las notificaciones del usuario el cual sale de la sesion
     axios.post(`${route_principal}/get_notifications`,{
         id_user: id_user,
       }).then(res=>{
 
+        //desanimar la campana con colores
         try {
             const fas =  icon_notification.querySelector(".fas");
             fas.classList.remove('animar_campana');
@@ -114,7 +121,7 @@ icon_notification.addEventListener('click', function (e) {
         if (all_notifications.length > 0) {
 
         all_notifications.forEach(n => {
-
+//si es el estado es PENDIENTE la agrega con una clase distinta a cuando esta VISTO
             if (n['id_state'] == 3) {
                 notifications.innerHTML = notifications.innerHTML + add_notification(n,"notification notification_no_view",`<i class="fa-solid fa-circle-exclamation"></i>` )
             }else{
@@ -125,9 +132,11 @@ icon_notification.addEventListener('click', function (e) {
 
 
     }else{
+        //Si no tiene notificaciones muestra un titulo
         notifications.innerHTML = "<h1>No tienes ninguna notificación aún !</h1>";
     }
 
+    //carga la funcion de los botones despues de 1 segundo
     setTimeout(() => {
         activate_button_remove();
         activate_button_view_notification();
@@ -139,13 +148,16 @@ icon_notification.addEventListener('click', function (e) {
 
 })
 
+
+//Escuchador de usuarios
 Echo.join(`notifications_users`)
 .listen('Notification_Users', (e)=>{
 
     let user = e.user;
     let notification = e.notification;
-
+//veritifica si la notificacion es para el usuario
     if (notification.id_user == id_user) {
+        //emite el sonido
         try {
 
             let sond_notification  = new Audio(route_sond_notification);
@@ -154,13 +166,16 @@ Echo.join(`notifications_users`)
 
         }
         const fas =  icon_notification.querySelector(".fas");
+        //anima la campana
         try {
         fas.classList.add('animar_campana');
     } catch (error) {
         console.log("Error en animacion =" + error)
     }
+    //aumentar nuemero de notificaciones
         const amount_notifications = icon_notification.querySelector(".badge ");
         amount_notifications.innerHTML = parseInt(amount_notifications.innerHTML) + 1;
+        //mostrar un mensaje emergente
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",

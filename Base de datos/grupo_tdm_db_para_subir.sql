@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 13, 2023 at 11:11 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 24-01-2024 a las 23:17:29
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `grupo_tdm_db`
+-- Base de datos: `grupo_tdm_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `areas`
+-- Estructura de tabla para la tabla `areas`
 --
 
 CREATE TABLE `areas` (
@@ -35,7 +35,7 @@ CREATE TABLE `areas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `areas`
+-- Volcado de datos para la tabla `areas`
 --
 
 INSERT INTO `areas` (`id`, `area`, `updated_at`, `created_at`) VALUES
@@ -46,19 +46,19 @@ INSERT INTO `areas` (`id`, `area`, `updated_at`, `created_at`) VALUES
 (5, 'DEMANDA', NULL, NULL),
 (6, 'MERCADEO', NULL, NULL),
 (7, 'TESORERÍA', NULL, NULL),
-(8, 'SISTEMAS DE INFORMACIÓN', NULL, NULL),
 (9, 'GESTIÓN HUMANA', NULL, NULL),
 (10, 'CONTABILIDAD', NULL, NULL),
 (11, 'CONTROL DE RIESGOS', NULL, NULL),
 (12, 'LOGÍSTICA', NULL, NULL),
 (13, 'VENTAS VIRTUALES', NULL, NULL),
 (14, 'VENTAS', NULL, NULL),
-(15, 'PRODUCCIÒN', NULL, NULL);
+(15, 'PRODUCCIÒN', NULL, NULL),
+(16, 'RECEPCION', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `califications`
+-- Estructura de tabla para la tabla `califications`
 --
 
 CREATE TABLE `califications` (
@@ -72,19 +72,10 @@ CREATE TABLE `califications` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `califications`
---
-
-INSERT INTO `califications` (`id`, `calification`, `comment`, `id_ticket`, `id_user`, `date`, `updated_at`, `created_at`) VALUES
-(1, 1, 'Pesima atencion', 11, 1, '13 December 2023', '2023-12-14 03:09:46', '2023-12-14 00:06:14'),
-(2, 5, 'Muy bien', 6, 1, '13 December 2023', '2023-12-14 00:57:14', '2023-12-14 00:57:14'),
-(3, 5, 'Todo esta muy bien gracias', 21, 2, '13 December 2023', '2023-12-14 01:04:25', '2023-12-14 01:04:25');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `certificates`
+-- Estructura de tabla para la tabla `certificates`
 --
 
 CREATE TABLE `certificates` (
@@ -93,8 +84,14 @@ CREATE TABLE `certificates` (
   `date` varchar(45) DEFAULT NULL,
   `address` varchar(45) DEFAULT NULL,
   `id_user_delivery` int(11) NOT NULL,
-  `id_user_receives` int(11) NOT NULL,
+  `id_user_receives` int(11) DEFAULT NULL,
+  `name_user_receives` varchar(100) DEFAULT NULL,
+  `id_user_reception` int(11) DEFAULT NULL,
   `general_remarks` varchar(500) DEFAULT NULL,
+  `image_exit` varchar(45) DEFAULT NULL,
+  `date_exit` varchar(45) DEFAULT NULL,
+  `image_delivery` varchar(45) DEFAULT NULL,
+  `date_delivery` varchar(45) DEFAULT NULL,
   `id_state` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
@@ -103,7 +100,7 @@ CREATE TABLE `certificates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `charges`
+-- Estructura de tabla para la tabla `charges`
 --
 
 CREATE TABLE `charges` (
@@ -115,7 +112,7 @@ CREATE TABLE `charges` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `charges`
+-- Volcado de datos para la tabla `charges`
 --
 
 INSERT INTO `charges` (`id`, `chargy`, `id_area`, `updated_at`, `created_at`) VALUES
@@ -145,11 +142,6 @@ INSERT INTO `charges` (`id`, `chargy`, `id_area`, `updated_at`, `created_at`) VA
 (24, 'TESORERO', 7, NULL, NULL),
 (25, 'MENSAJERO', 7, NULL, NULL),
 (26, 'AUXILIAR', 7, NULL, NULL),
-(27, 'JEFE DE AREA', 8, NULL, NULL),
-(28, 'COORDINADOR', 8, NULL, NULL),
-(29, 'ANALISTA DE INNOVACIÓN', 8, NULL, NULL),
-(30, 'ANALISTA DE SOPORTE', 8, NULL, NULL),
-(31, 'AUXILIAR', 8, NULL, NULL),
 (32, 'JEFE DE AREA', 9, NULL, NULL),
 (33, 'JEFE', 9, NULL, NULL),
 (34, 'ANALISTA SST', 9, NULL, NULL),
@@ -201,12 +193,13 @@ INSERT INTO `charges` (`id`, `chargy`, `id_area`, `updated_at`, `created_at`) VA
 (80, 'TALLERES', 15, NULL, NULL),
 (81, 'GESTORES DE PRODUCCIÒN', 15, NULL, NULL),
 (82, 'AUTORES DE CALIDAD', 15, NULL, NULL),
-(83, 'JEFE DE AREA', 1, NULL, NULL);
+(83, 'JEFE DE AREA', 1, NULL, NULL),
+(84, 'JEFE DE AREA', 16, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `codes`
+-- Estructura de tabla para la tabla `codes`
 --
 
 CREATE TABLE `codes` (
@@ -216,22 +209,10 @@ CREATE TABLE `codes` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `codes`
---
-
-INSERT INTO `codes` (`email`, `code`, `updated_at`, `created_at`) VALUES
-('csoporte@eltemplodelamoda.com.co', '271395', '2023-12-09 21:33:16', '2023-12-09 21:33:16'),
-('jccq12@eltemplodelamoda.com.co', '528815', '2023-12-09 18:50:00', '2023-12-09 18:50:00'),
-('jccq12@eltemplodelamodafresca.com.co', '984455', '2023-12-09 18:49:21', '2023-12-09 18:49:21'),
-('jccq12@gmail.com', '551555', '2023-12-07 20:40:26', '2023-12-07 20:40:26'),
-('sistemasaux8@eltemplodelamoda.com.co', '450521', '2023-12-07 18:38:05', '2023-12-07 18:38:05'),
-('soporte@eltemplodelamoda.com.co', '388343', '2023-12-07 20:24:41', '2023-12-07 20:24:41');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments`
+-- Estructura de tabla para la tabla `comments`
 --
 
 CREATE TABLE `comments` (
@@ -245,17 +226,10 @@ CREATE TABLE `comments` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`id`, `comment`, `date`, `id_user`, `id_ticket`, `id_state`, `updated_at`, `created_at`) VALUES
-(8, 'Porfavor enciende el equipo', '13 December 2023', 1, 11, 1, '2023-12-13 23:59:13', '2023-12-13 23:59:13');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `companies`
+-- Estructura de tabla para la tabla `companies`
 --
 
 CREATE TABLE `companies` (
@@ -266,7 +240,7 @@ CREATE TABLE `companies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `companies`
+-- Volcado de datos para la tabla `companies`
 --
 
 INSERT INTO `companies` (`id`, `company`, `updated_at`, `created_at`) VALUES
@@ -279,7 +253,7 @@ INSERT INTO `companies` (`id`, `company`, `updated_at`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `directories`
+-- Estructura de tabla para la tabla `directories`
 --
 
 CREATE TABLE `directories` (
@@ -295,18 +269,10 @@ CREATE TABLE `directories` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `directories`
---
-
-INSERT INTO `directories` (`id`, `name`, `code`, `directory`, `date_create`, `date_update`, `id_user`, `id_state`, `updated_at`, `created_at`) VALUES
-(2, 'ACTAS SALIDAS', '118974', '12-12-2023 16-03-31/1', '12-12-2023 16-03-31', '12-12-2023 16-14-45', 1, 1, '2023-12-13 02:14:45', '2023-12-13 02:03:34'),
-(3, 'OTRO', '560958', '12-12-2023 16-32-56/12', '12-12-2023 16-32-56', '12-12-2023 16-32-56', 12, 1, '2023-12-13 02:32:59', '2023-12-13 02:32:59');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files`
+-- Estructura de tabla para la tabla `files`
 --
 
 CREATE TABLE `files` (
@@ -322,18 +288,10 @@ CREATE TABLE `files` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `files`
---
-
-INSERT INTO `files` (`id`, `name`, `file`, `date_create`, `date_update`, `id_directory`, `id_state`, `id_user`, `updated_at`, `created_at`) VALUES
-(2, 'ACTA ENTRAGA', '2023-12-12_21-14-45.xlsx', '12-12-2023 16-04-15', '12-12-2023 16-14-45', 2, 1, 12, '2023-12-13 02:14:45', '2023-12-13 02:04:18'),
-(3, 'ACTIVACION DE MAC', '2023-12-12_21-14-01.jfif', '12-12-2023 16-14-01', '12-12-2023 16-14-01', 2, 1, 12, '2023-12-13 02:14:04', '2023-12-13 02:14:04');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files_modified`
+-- Estructura de tabla para la tabla `files_modified`
 --
 
 CREATE TABLE `files_modified` (
@@ -347,22 +305,17 @@ CREATE TABLE `files_modified` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `files_modified`
---
-
-INSERT INTO `files_modified` (`id`, `name`, `file`, `date_update`, `id_file`, `id_user`, `updated_at`, `created_at`) VALUES
-(2, 'ACTA ENTRAGA', '2023-12-12_21-04-15.xlsx', '12-12-2023 16-04-15', 2, 1, '2023-12-13 02:14:45', '2023-12-13 02:14:45');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `origins_cerficates`
+-- Estructura de tabla para la tabla `images_products`
 --
 
-CREATE TABLE `origins_cerficates` (
+CREATE TABLE `images_products` (
   `id` int(11) NOT NULL,
-  `origin_certificate` varchar(45) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -370,19 +323,76 @@ CREATE TABLE `origins_cerficates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `permissions`
+-- Estructura de tabla para la tabla `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '0000_00_00_000000_create_websockets_statistics_entries_table', 1),
+(2, '2019_12_14_000001_create_personal_access_tokens_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `notification` varchar(100) NOT NULL,
+  `date` varchar(100) NOT NULL,
+  `route` varchar(500) DEFAULT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `origins_certificates`
+--
+
+CREATE TABLE `origins_certificates` (
+  `id` int(11) NOT NULL,
+  `origin_certificate` varchar(45) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `origins_certificates`
+--
+
+INSERT INTO `origins_certificates` (`id`, `origin_certificate`, `updated_at`, `created_at`) VALUES
+(1, 'NUEVO', NULL, NULL),
+(2, 'USADO', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `permissions`
 --
 
 CREATE TABLE `permissions` (
   `id` int(11) NOT NULL,
-  `date_exit` varchar(45) DEFAULT NULL,
-  `date_permission` varchar(45) DEFAULT NULL,
+  `date_application` varchar(45) DEFAULT NULL,
+  `date_tomorrow` varchar(45) DEFAULT NULL,
   `time_exit` varchar(45) DEFAULT NULL,
   `time_return` varchar(45) DEFAULT NULL,
-  `time_tomorrow` varchar(45) DEFAULT NULL,
   `id_user_collaborator` int(11) DEFAULT NULL,
-  `id_user_boss` int(11) NOT NULL,
-  `id_user_reception` int(11) NOT NULL,
+  `id_user_boss` int(11) DEFAULT NULL,
+  `id_user_reception` int(11) DEFAULT NULL,
   `observations` varchar(500) DEFAULT NULL,
   `id_reason` int(11) NOT NULL,
   `id_replenish_time` int(11) NOT NULL,
@@ -394,7 +404,26 @@ CREATE TABLE `permissions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `priorities`
+-- Estructura de tabla para la tabla `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `priorities`
 --
 
 CREATE TABLE `priorities` (
@@ -406,7 +435,7 @@ CREATE TABLE `priorities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `priorities`
+-- Volcado de datos para la tabla `priorities`
 --
 
 INSERT INTO `priorities` (`id`, `priority`, `hour`, `updated_at`, `created_at`) VALUES
@@ -419,7 +448,7 @@ INSERT INTO `priorities` (`id`, `priority`, `hour`, `updated_at`, `created_at`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `proceedings`
+-- Estructura de tabla para la tabla `proceedings`
 --
 
 CREATE TABLE `proceedings` (
@@ -429,10 +458,40 @@ CREATE TABLE `proceedings` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `proceedings`
+--
+
+INSERT INTO `proceedings` (`id`, `proceeding`, `updated_at`, `created_at`) VALUES
+(1, 'SALIDA', NULL, NULL),
+(2, 'ENTREGA', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reasons`
+-- Estructura de tabla para la tabla `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `brand` varchar(45) NOT NULL,
+  `serie` varchar(45) NOT NULL,
+  `image_serie` varchar(500) DEFAULT NULL,
+  `accessories` varchar(100) NOT NULL,
+  `id_type_component` int(11) NOT NULL,
+  `id_state_certificate` int(11) NOT NULL,
+  `id_origin_certificate` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reasons`
 --
 
 CREATE TABLE `reasons` (
@@ -442,10 +501,20 @@ CREATE TABLE `reasons` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `reasons`
+--
+
+INSERT INTO `reasons` (`id`, `reason`, `updated_at`, `created_at`) VALUES
+(1, 'PERSONAL', NULL, NULL),
+(2, 'MEDICO', NULL, NULL),
+(3, 'CALAMIDAD', NULL, NULL),
+(4, 'TRABAJO', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `replenish_times`
+-- Estructura de tabla para la tabla `replenish_times`
 --
 
 CREATE TABLE `replenish_times` (
@@ -455,10 +524,18 @@ CREATE TABLE `replenish_times` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `replenish_times`
+--
+
+INSERT INTO `replenish_times` (`id`, `replenish_time`, `updated_at`, `created_at`) VALUES
+(1, 'SI', NULL, NULL),
+(2, 'NO', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reports`
+-- Estructura de tabla para la tabla `reports`
 --
 
 CREATE TABLE `reports` (
@@ -474,7 +551,25 @@ CREATE TABLE `reports` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `report_details`
+-- Estructura de tabla para la tabla `reports_certificate`
+--
+
+CREATE TABLE `reports_certificate` (
+  `id` int(11) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `image` varchar(45) DEFAULT NULL,
+  `date` varchar(45) DEFAULT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_certificate` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `report_details`
 --
 
 CREATE TABLE `report_details` (
@@ -484,23 +579,41 @@ CREATE TABLE `report_details` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `report_details`
+--
+
+INSERT INTO `report_details` (`id`, `report`, `updated_at`, `created_at`) VALUES
+(1, 'CREO UN USUARIO', NULL, NULL),
+(2, 'EDITO UN USUARIO', NULL, NULL),
+(3, 'ACTIVO/ELIMINO UN USUARIO', NULL, NULL),
+(4, 'CREO UN TICKET', NULL, NULL),
+(5, 'EDITO UN TICKET', NULL, NULL),
+(6, 'ELIMINO UN TICKET', NULL, NULL),
+(7, 'ACCIONÓ UN TICKET', NULL, NULL),
+(8, 'INGRESO AL SISTEMA', NULL, NULL),
+(9, 'PERMISO', NULL, NULL),
+(10, 'GENERO UNA ACTA', NULL, NULL),
+(11, 'RE ABRIO UN TICKET', NULL, NULL),
+(12, 'CREO UN DIRECTORIO', NULL, NULL),
+(13, 'ELIMINO DIRECTORIO', NULL, NULL),
+(14, 'CREO UN ARCHIVO', NULL, NULL),
+(15, 'ACCIÓN ARCHIVO', NULL, NULL),
+(16, 'ELIMINO ARCHIVO', NULL, NULL),
+(17, 'ACTAS', NULL, NULL),
+(18, 'INVENTARIO', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rows_certificates`
+-- Estructura de tabla para la tabla `report_products`
 --
 
-CREATE TABLE `rows_certificates` (
+CREATE TABLE `report_products` (
   `id` int(11) NOT NULL,
-  `amount` varchar(45) NOT NULL,
-  `description` varchar(100) NOT NULL,
-  `brand` varchar(45) NOT NULL,
-  `serie` varchar(45) DEFAULT NULL,
-  `rows_certificatescol` varchar(45) DEFAULT NULL,
-  `id_cetificate` int(11) NOT NULL,
-  `id_origin_certificate` int(11) NOT NULL,
-  `id_state_certificate` int(11) NOT NULL,
-  `accessories` varchar(100) NOT NULL,
+  `report` varchar(500) DEFAULT NULL,
+  `id_product` int(11) NOT NULL,
+  `id_certificate` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -508,7 +621,21 @@ CREATE TABLE `rows_certificates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shops`
+-- Estructura de tabla para la tabla `rows_certificates`
+--
+
+CREATE TABLE `rows_certificates` (
+  `id` int(11) NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `id_certificate` int(11) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `shops`
 --
 
 CREATE TABLE `shops` (
@@ -520,7 +647,7 @@ CREATE TABLE `shops` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `shops`
+-- Volcado de datos para la tabla `shops`
 --
 
 INSERT INTO `shops` (`id`, `shop`, `id_company`, `updated_at`, `created_at`) VALUES
@@ -551,12 +678,43 @@ INSERT INTO `shops` (`id`, `shop`, `id_company`, `updated_at`, `created_at`) VAL
 (25, 'CALI COSMOCENTRO - TEMPLO 32', 1, NULL, NULL),
 (26, 'NEIVA CENTRO - TEMPLO 33', 1, NULL, NULL),
 (27, 'BUENAVENTURA PACIFIC MALLL - TEMPLO 34', 1, NULL, NULL),
-(28, 'PALMIRA UNICENTRO - TEMPLO 35', 1, NULL, NULL);
+(28, 'PALMIRA UNICENTRO - TEMPLO 35', 1, NULL, NULL),
+(29, 'SHOPPING TEX 1', 2, NULL, NULL),
+(30, 'SHOPPING TEX 2', 2, NULL, NULL),
+(31, 'SHOPPING TEX 3', 2, NULL, NULL),
+(32, 'SHOPPING TEX 4', 2, NULL, NULL),
+(33, 'SHOPPING TEX 5', 2, NULL, NULL),
+(34, 'SHOPPING TEX 6', 2, NULL, NULL),
+(35, 'SHOPPING TEX 7', 2, NULL, NULL),
+(36, 'SHOPPING TEX 8', 2, NULL, NULL),
+(37, 'SHOPPING TEX 9', 2, NULL, NULL),
+(38, 'SHOPPING TEX 10', 2, NULL, NULL),
+(39, 'SHOPPING TEX 11', 2, NULL, NULL),
+(40, 'SHOPPING TEX 12', 2, NULL, NULL),
+(41, 'SHOPPING TEX 13', 2, NULL, NULL),
+(42, 'SHOPPING TEX 14', 2, NULL, NULL),
+(43, 'SHOPPING TEX 15', 2, NULL, NULL),
+(44, 'SHOPPING TEX 16', 2, NULL, NULL),
+(45, 'SHOPPING TEX 17', 2, NULL, NULL),
+(46, 'SHOPPING TEX 18', 2, NULL, NULL),
+(47, 'SHOPPING TEX 19', 2, NULL, NULL),
+(48, 'SHOPPING TEX 20', 2, NULL, NULL),
+(49, 'SHOPPING TEX 21', 2, NULL, NULL),
+(50, 'CEDI', 5, NULL, NULL),
+(51, 'OFICINA ADMINISTRATIVA', 5, NULL, NULL),
+(52, 'CEDI', 2, NULL, NULL),
+(53, 'OFICINA ADMINISTRATIVA', 2, NULL, NULL),
+(54, 'CEDI', 1, NULL, NULL),
+(55, 'OFICINA ADMINISTRATIVA', 1, NULL, NULL),
+(56, 'CEDI', 3, NULL, NULL),
+(57, 'OFICINA ADMINISTRATIVA', 3, NULL, NULL),
+(58, 'CEDI', 4, NULL, NULL),
+(59, 'OFICINA ADMINISTRATIVA', 4, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `states`
+-- Estructura de tabla para la tabla `states`
 --
 
 CREATE TABLE `states` (
@@ -567,7 +725,7 @@ CREATE TABLE `states` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `states`
+-- Volcado de datos para la tabla `states`
 --
 
 INSERT INTO `states` (`id`, `state`, `updated_at`, `created_at`) VALUES
@@ -577,12 +735,17 @@ INSERT INTO `states` (`id`, `state`, `updated_at`, `created_at`) VALUES
 (4, 'VISTO', NULL, NULL),
 (5, 'EN EJECUCIÒN', NULL, NULL),
 (6, 'VENCIDO', NULL, NULL),
-(7, 'TERMINADO', NULL, NULL);
+(7, 'TERMINADO', NULL, NULL),
+(8, 'PENDIENTE', NULL, NULL),
+(9, 'RECHAZADO', NULL, NULL),
+(10, 'APROBADO', NULL, NULL),
+(11, 'DESPACHADO', NULL, NULL),
+(12, 'ENTREGADO', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `states_certificates`
+-- Estructura de tabla para la tabla `states_certificates`
 --
 
 CREATE TABLE `states_certificates` (
@@ -592,32 +755,40 @@ CREATE TABLE `states_certificates` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `states_certificates`
+--
+
+INSERT INTO `states_certificates` (`id`, `state_certificate`, `updated_at`, `created_at`) VALUES
+(1, 'BUENO', NULL, NULL),
+(2, 'MALO', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `themes_users`
+-- Estructura de tabla para la tabla `themes_users`
 --
 
 CREATE TABLE `themes_users` (
   `id` int(11) NOT NULL,
-  `theme_user` varchar(45) NOT NULL,
+  `theme_user` varchar(100) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `themes_users`
+-- Volcado de datos para la tabla `themes_users`
 --
 
 INSERT INTO `themes_users` (`id`, `theme_user`, `updated_at`, `created_at`) VALUES
-(1, 'CAJAS', NULL, NULL),
-(2, 'BASE DE DATOS', NULL, NULL),
-(3, 'SERVIDOR', NULL, NULL);
+(1, 'CAJAS,MANTENIMIENTOS O COLABORACIONES CEDI', NULL, NULL),
+(2, 'CAJAS, MANTENIMIENTOS O COLABORACIONES OFICINA', NULL, NULL),
+(3, 'BASES DE DATOS Y SERVIDORES', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tickets`
+-- Estructura de tabla para la tabla `tickets`
 --
 
 CREATE TABLE `tickets` (
@@ -635,42 +806,37 @@ CREATE TABLE `tickets` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `tickets`
+-- Estructura de tabla para la tabla `type_components`
 --
 
-INSERT INTO `tickets` (`id`, `name`, `description`, `file`, `date_start`, `date_finally`, `id_priority`, `id_user_sender`, `id_user_destination`, `id_state`, `updated_at`, `created_at`) VALUES
-(1, 'ACTIVACION DE MAC', 'erfewrewr', '2023-12-11_21-22-56.jfif', '11/12/2023 16:22:18', '11/15/2023 20:22:18', 3, 1, 12, 2, '2023-12-13 00:20:19', '2023-12-12 02:22:59'),
-(2, 'ACTIVACION DE MAC', 'anydesk 444444585', NULL, '06/12/2023 16:14:31', '06/12/2023 18:14:31', 4, 1, 12, 6, '2023-12-08 01:41:34', '2023-12-07 07:14:46'),
-(3, 'HABILITACION MAC', 'SDDFSDFDSFDSFDS', NULL, '06/12/2023 16:18:50', '06/12/2023 17:18:50', 5, 1, 12, 6, '2023-12-08 02:39:05', '2023-12-07 07:19:11'),
-(4, 'FEWFEWF', 'WRWEREWRWER', NULL, '06/12/2023 16:20:00', '06/12/2023 20:20:00', 3, 1, 12, 6, '2023-12-08 02:44:01', '2023-12-07 07:20:14'),
-(5, '32423R423RWER', 'EWREWRWERWEREW', NULL, '06/12/2023 16:20:49', '06/12/2023 18:20:49', 4, 1, 12, 6, '2023-12-08 02:43:32', '2023-12-07 07:21:00'),
-(6, 'ACTIVACION DE MAC', 'w24e2424', NULL, '06/12/2023 16:33:04', '07/14/2023 22:33:04', 1, 1, 12, 7, '2023-12-08 01:57:03', '2023-12-07 07:33:16'),
-(7, 'ACTIVACION DE MAC', 'fsefesfw', NULL, '06/12/2023 16:58:51', '06/12/2023 18:58:51', 4, 1, 1, 6, '2023-12-13 02:00:36', '2023-12-07 07:59:05'),
-(8, 'ACTIVACION DE MAC', 'adsadasdsad', NULL, '06/12/2023 17:31:16', '06/12/2023 23:31:16', 1, 10, 1, 6, '2023-12-08 01:41:34', '2023-12-07 08:31:54'),
-(9, 'ACTIVACION DE MAC', '2werewrewre', NULL, '07/12/2023 11:44:35', '07/12/2023 12:44:35', 5, 1, 1, 6, '2023-12-13 01:57:35', '2023-12-08 02:44:48'),
-(10, 'EQUIPO LENTO', 'Equipo muy lento', NULL, '07/12/2023 14:24:18', '07/12/2023 15:24:18', 5, 1, 1, 6, '2023-12-09 23:01:48', '2023-12-08 05:24:52'),
-(11, 'Revisar actas de entrega', 'Lo mas pronto posible revisar lo siguiente', '2023-12-07_19-28-38.xlsx', '07/12/2023 14:27:56', '07/12/2023 15:27:56', 5, 1, 1, 6, '2023-12-09 23:01:44', '2023-12-08 05:28:40'),
-(12, 'ACTIVACION DE MAC', 'Activar mac con el siguiente anydesk porfavorrrr', '2023-12-07_19-36-08.jfif', '07/12/2023 14:35:43', '07/15/2023 15:35:43', 5, 1, 1, 2, '2023-12-13 19:41:05', '2023-12-08 05:36:10'),
-(13, 'ACTIVACION DE MAC', 'asdadawd', '2023-12-09_15-51-35.jfif', '09/12/2023 10:51:20', '09/12/2023 11:51:20', 5, 2, 1, 6, '2023-12-13 19:22:39', '2023-12-10 01:51:37'),
-(14, 'ACTIVACION DE MAC', 'Necesito esta tarea', '2023-12-09_16-46-22.jfif', '09/12/2023 11:43:36', '09/12/2023 12:43:36', 5, 13, 1, 6, '2023-12-13 19:22:44', '2023-12-10 02:46:24'),
-(15, 'SALIDA SPACE', 'Mañan 10 pm', NULL, '11/12/2023 11:44:39', '11/15/2023 15:44:39', 3, 13, 15, 2, '2023-12-13 00:17:28', '2023-12-12 02:44:59'),
-(16, 'ACTIVACION DE MAC', 'porfavor activar mac', '2023-12-12_19-19-20.jfif', '12/12/2023 14:18:45', '12/12/2023 15:18:45', 5, 13, 1, 6, '2023-12-13 19:22:46', '2023-12-13 00:19:22'),
-(17, 'ACTIVACION DE MAC', 'Descripcion de tarea', '2023-12-12_20-14-38.jfif', '12/12/2023 15:14:19', '12/12/2023 16:14:19', 5, 2, 11, 6, '2023-12-13 19:22:49', '2023-12-13 01:14:41'),
-(18, 'otro ticket', 'Descripcion del ticket', '2023-12-12_20-15-11.jfif', '12/12/2023 15:14:47', '12/12/2023 17:14:47', 4, 2, 15, 6, '2023-12-13 19:22:51', '2023-12-13 01:15:14'),
-(19, 'ACTIVACION DE MAC', 'arwar', '2023-12-12_20-15-34.xlsx', '12/12/2023 15:15:20', '12/12/2023 16:15:20', 5, 2, 13, 6, '2023-12-13 19:22:54', '2023-12-13 01:15:36'),
-(20, 'Regeneracion de base de datos', 'Activaciones', '2023-12-12_20-18-08.xlsx', '12/12/2023 15:17:44', '12/12/2023 19:17:44', 3, 2, 1, 6, '2023-12-13 19:22:56', '2023-12-13 01:18:10'),
-(21, 'ACTIVACION DE MAC', '32423423', '2023-12-12_20-32-08.xlsx', '12/12/2023 15:31:53', '12/12/2023 16:31:53', 5, 2, 1, 7, '2023-12-13 01:33:05', '2023-12-13 01:32:11');
+CREATE TABLE `type_components` (
+  `id` int(11) NOT NULL,
+  `type_component` varchar(45) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `type_components`
+--
+
+INSERT INTO `type_components` (`id`, `type_component`, `updated_at`, `created_at`) VALUES
+(1, 'PROPIO', NULL, NULL),
+(2, 'ALQUILADO', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `phone` varchar(45) DEFAULT NULL,
   `nit` varchar(20) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -685,30 +851,40 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `nit`, `email`, `password`, `id_company`, `id_state`, `id_area`, `id_chargy`, `id_shop`, `id_theme_user`, `updated_at`, `created_at`) VALUES
-(1, 'Jhan Carlos Cordoba', '1111663045', 'jccq12@gmail.com', '$2y$12$1iTANTEqugORQjx5fENwwOGrjYaCugfuZ8JdUDPt6sR4zOnns6c.S', 1, 1, 2, 1, NULL, 2, '2023-12-14 00:52:40', '2023-12-04 06:41:19'),
-(2, 'Administrador GRUPO TDM', '805027653', 'soporte@eltemplodelamoda.com.co', '$2y$12$URua6E9e.DoM3Nt2TzqadOQo0RG2QnM5Hk6a5A7EdemJZNaKMttVK', 3, 1, 1, 83, NULL, NULL, '2023-12-04 07:04:03', '2023-12-04 07:04:03'),
-(10, 'Anderson Cordoba', '1565654465', 'sistemasaux8@eltemplodelamoda.com.co', '$2y$12$RePEIqHaMsIdOsiT1VgfSOBZPhG3sCGXTFpCfAeOi2V8nBmRwFUI6', 5, 1, 2, 5, 2, 1, '2023-12-13 01:11:08', '2023-12-06 20:36:20'),
-(11, 'Kelly Gomez', '123456789', 'analistadesistemas@eltemplodelamoda.com.co', '$2y$12$DsPHFtMueUypFjuQyovIeuDIrr3HDOxvVSlEy4rcP6dt8gOnDPPMO', 1, 1, 2, 4, 2, 1, '2023-12-13 00:48:09', '2023-12-06 23:57:46'),
-(12, 'Jerson Henao', '987456123', 'sistemasaux4@eltemplodelamoda.com.co', '$2y$12$3HC5qCgFUCEYrSTJ/xA6X.Vo.i8ScF5atbOECjPIc3uB9GhgLPpou', 5, 1, 2, 3, 2, 1, '2023-12-13 01:10:51', '2023-12-06 23:59:07'),
-(13, 'Rodrigo Rodallega', '94495428', 'csoporte@eltemplodelamoda.com.co', '$2y$12$QHlRbbn8t9BP1NUuRB90oeZ7kQ/Q7lt1UuhAafWbnZjPvgLxnSYe2', 5, 1, 2, 1, NULL, 3, '2023-12-13 00:47:45', '2023-12-09 21:34:32'),
-(15, 'Adrian Garcia', '11929101283', 'sistemasaux10@eltemplodelamoda.com.co', '$2y$12$phLVMrVM7llr9rKXZhNiIuhlbEL7pfvnSk2q1yKmxdxcrnhwEjulK', 1, 1, 2, 5, NULL, 1, '2023-12-13 00:45:11', '2023-12-11 21:44:18');
+INSERT INTO `users` (`id`, `name`, `phone`, `nit`, `email`, `password`, `id_company`, `id_state`, `id_area`, `id_chargy`, `id_shop`, `id_theme_user`, `updated_at`, `created_at`) VALUES
+(2, 'Administrador GRUPO TDM', NULL, '805027653', 'soporte@eltemplodelamoda.com.co', '$2y$12$URua6E9e.DoM3Nt2TzqadOQo0RG2QnM5Hk6a5A7EdemJZNaKMttVK', 5, 1, 1, 83, NULL, NULL, '2023-12-21 15:29:01', '2023-12-04 07:04:03');
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Estructura de tabla para la tabla `websockets_statistics_entries`
+--
+
+CREATE TABLE `websockets_statistics_entries` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `app_id` varchar(255) NOT NULL,
+  `peak_connection_count` int(11) NOT NULL,
+  `websocket_message_count` int(11) NOT NULL,
+  `api_message_count` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `areas`
+-- Indices de la tabla `areas`
 --
 ALTER TABLE `areas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `califications`
+-- Indices de la tabla `califications`
 --
 ALTER TABLE `califications`
   ADD PRIMARY KEY (`id`),
@@ -716,30 +892,31 @@ ALTER TABLE `califications`
   ADD KEY `fk_califications_users1_idx` (`id_user`);
 
 --
--- Indexes for table `certificates`
+-- Indices de la tabla `certificates`
 --
 ALTER TABLE `certificates`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_departure_certificates_users1_idx` (`id_user_delivery`),
   ADD KEY `fk_departure_certificates_users2_idx` (`id_user_receives`),
   ADD KEY `fk_certificates_proceedings1_idx` (`id_proceeding`),
-  ADD KEY `fk_certificates_states1_idx` (`id_state`);
+  ADD KEY `fk_certificates_states1_idx` (`id_state`),
+  ADD KEY `fk_certificates_users1_idx` (`id_user_reception`);
 
 --
--- Indexes for table `charges`
+-- Indices de la tabla `charges`
 --
 ALTER TABLE `charges`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_charges_areas_idx` (`id_area`);
 
 --
--- Indexes for table `codes`
+-- Indices de la tabla `codes`
 --
 ALTER TABLE `codes`
   ADD PRIMARY KEY (`email`);
 
 --
--- Indexes for table `comments`
+-- Indices de la tabla `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
@@ -748,13 +925,13 @@ ALTER TABLE `comments`
   ADD KEY `fk_comments_states1_idx` (`id_state`);
 
 --
--- Indexes for table `companies`
+-- Indices de la tabla `companies`
 --
 ALTER TABLE `companies`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `directories`
+-- Indices de la tabla `directories`
 --
 ALTER TABLE `directories`
   ADD PRIMARY KEY (`id`),
@@ -762,7 +939,7 @@ ALTER TABLE `directories`
   ADD KEY `fk_directories_states1_idx` (`id_state`);
 
 --
--- Indexes for table `files`
+-- Indices de la tabla `files`
 --
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`),
@@ -771,7 +948,7 @@ ALTER TABLE `files`
   ADD KEY `fk_files_directories1_idx` (`id_directory`);
 
 --
--- Indexes for table `files_modified`
+-- Indices de la tabla `files_modified`
 --
 ALTER TABLE `files_modified`
   ADD PRIMARY KEY (`id`),
@@ -779,13 +956,35 @@ ALTER TABLE `files_modified`
   ADD KEY `fk_files_modified_users1_idx` (`id_user`);
 
 --
--- Indexes for table `origins_cerficates`
+-- Indices de la tabla `images_products`
 --
-ALTER TABLE `origins_cerficates`
+ALTER TABLE `images_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_images_products_products1_idx` (`id_product`),
+  ADD KEY `fk_images_products_states1_idx` (`id_state`);
+
+--
+-- Indices de la tabla `migrations`
+--
+ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `permissions`
+-- Indices de la tabla `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_notifications_users1_idx` (`id_user`),
+  ADD KEY `fk_notifications_states1_idx` (`id_state`);
+
+--
+-- Indices de la tabla `origins_certificates`
+--
+ALTER TABLE `origins_certificates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `permissions`
 --
 ALTER TABLE `permissions`
   ADD PRIMARY KEY (`id`),
@@ -797,31 +996,50 @@ ALTER TABLE `permissions`
   ADD KEY `fk_permissions_states1_idx` (`id_state`);
 
 --
--- Indexes for table `priorities`
+-- Indices de la tabla `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indices de la tabla `priorities`
 --
 ALTER TABLE `priorities`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `proceedings`
+-- Indices de la tabla `proceedings`
 --
 ALTER TABLE `proceedings`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `reasons`
+-- Indices de la tabla `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_products_type_components1_idx` (`id_type_component`),
+  ADD KEY `fk_products_states_certificates1_idx` (`id_state_certificate`),
+  ADD KEY `fk_products_origins_certificates1_idx` (`id_origin_certificate`),
+  ADD KEY `fk_products_states1_idx` (`id_state`),
+  ADD KEY `fk_products_users1_idx` (`id_user`);
+
+--
+-- Indices de la tabla `reasons`
 --
 ALTER TABLE `reasons`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `replenish_times`
+-- Indices de la tabla `replenish_times`
 --
 ALTER TABLE `replenish_times`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `reports`
+-- Indices de la tabla `reports`
 --
 ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`),
@@ -829,47 +1047,63 @@ ALTER TABLE `reports`
   ADD KEY `fk_reports_report_details1_idx` (`id_report_detail`);
 
 --
--- Indexes for table `report_details`
+-- Indices de la tabla `reports_certificate`
+--
+ALTER TABLE `reports_certificate`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_reports_certificate_certificates1_idx` (`id_certificate`),
+  ADD KEY `fk_reports_certificate_states1_idx` (`id_state`),
+  ADD KEY `fk_reports_certificate_users1_idx` (`id_user`);
+
+--
+-- Indices de la tabla `report_details`
 --
 ALTER TABLE `report_details`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `rows_certificates`
+-- Indices de la tabla `report_products`
+--
+ALTER TABLE `report_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_report_products_products1_idx` (`id_product`),
+  ADD KEY `fk_report_products_certificates1_idx` (`id_certificate`);
+
+--
+-- Indices de la tabla `rows_certificates`
 --
 ALTER TABLE `rows_certificates`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_rows_certificates_certificates1_idx` (`id_cetificate`),
-  ADD KEY `fk_rows_certificates_origins_cerficates1_idx` (`id_origin_certificate`),
-  ADD KEY `fk_rows_certificates_states_certificates1_idx` (`id_state_certificate`);
+  ADD KEY `fk_rows_certificates_certificates1_idx` (`id_certificate`),
+  ADD KEY `fk_rows_certificates_products1_idx` (`id_product`);
 
 --
--- Indexes for table `shops`
+-- Indices de la tabla `shops`
 --
 ALTER TABLE `shops`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_shops_companies1_idx` (`id_company`);
 
 --
--- Indexes for table `states`
+-- Indices de la tabla `states`
 --
 ALTER TABLE `states`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `states_certificates`
+-- Indices de la tabla `states_certificates`
 --
 ALTER TABLE `states_certificates`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `themes_users`
+-- Indices de la tabla `themes_users`
 --
 ALTER TABLE `themes_users`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tickets`
+-- Indices de la tabla `tickets`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
@@ -879,7 +1113,13 @@ ALTER TABLE `tickets`
   ADD KEY `fk_tickets_priorities1_idx` (`id_priority`);
 
 --
--- Indexes for table `users`
+-- Indices de la tabla `type_components`
+--
+ALTER TABLE `type_components`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -891,175 +1131,242 @@ ALTER TABLE `users`
   ADD KEY `fk_users_themes_users1_idx` (`id_theme_user`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Indices de la tabla `websockets_statistics_entries`
+--
+ALTER TABLE `websockets_statistics_entries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `areas`
+-- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `califications`
+-- AUTO_INCREMENT de la tabla `califications`
 --
 ALTER TABLE `califications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `certificates`
+-- AUTO_INCREMENT de la tabla `certificates`
 --
 ALTER TABLE `certificates`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `charges`
+-- AUTO_INCREMENT de la tabla `charges`
 --
 ALTER TABLE `charges`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT de la tabla `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `companies`
+-- AUTO_INCREMENT de la tabla `companies`
 --
 ALTER TABLE `companies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `directories`
+-- AUTO_INCREMENT de la tabla `directories`
 --
 ALTER TABLE `directories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `files`
---
-ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `files_modified`
---
-ALTER TABLE `files_modified`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `origins_cerficates`
---
-ALTER TABLE `origins_cerficates`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `permissions`
+-- AUTO_INCREMENT de la tabla `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `files_modified`
+--
+ALTER TABLE `files_modified`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `images_products`
+--
+ALTER TABLE `images_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `origins_certificates`
+--
+ALTER TABLE `origins_certificates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `priorities`
+-- AUTO_INCREMENT de la tabla `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `priorities`
 --
 ALTER TABLE `priorities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `proceedings`
+-- AUTO_INCREMENT de la tabla `proceedings`
 --
 ALTER TABLE `proceedings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `products`
+--
+ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `reasons`
+-- AUTO_INCREMENT de la tabla `reasons`
 --
 ALTER TABLE `reasons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `replenish_times`
+-- AUTO_INCREMENT de la tabla `replenish_times`
 --
 ALTER TABLE `replenish_times`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `reports`
+-- AUTO_INCREMENT de la tabla `reports`
 --
 ALTER TABLE `reports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `report_details`
+-- AUTO_INCREMENT de la tabla `reports_certificate`
+--
+ALTER TABLE `reports_certificate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `report_details`
 --
 ALTER TABLE `report_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de la tabla `report_products`
+--
+ALTER TABLE `report_products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `shops`
+-- AUTO_INCREMENT de la tabla `rows_certificates`
+--
+ALTER TABLE `rows_certificates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `shops`
 --
 ALTER TABLE `shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
--- AUTO_INCREMENT for table `states`
+-- AUTO_INCREMENT de la tabla `states`
 --
 ALTER TABLE `states`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `states_certificates`
+-- AUTO_INCREMENT de la tabla `states_certificates`
 --
 ALTER TABLE `states_certificates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `themes_users`
+--
+ALTER TABLE `themes_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `tickets`
+--
+ALTER TABLE `tickets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `themes_users`
+-- AUTO_INCREMENT de la tabla `type_components`
 --
-ALTER TABLE `themes_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `type_components`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `tickets`
---
-ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT de la tabla `websockets_statistics_entries`
+--
+ALTER TABLE `websockets_statistics_entries`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `califications`
+-- Filtros para la tabla `califications`
 --
 ALTER TABLE `califications`
   ADD CONSTRAINT `fk_califications_tickets1` FOREIGN KEY (`id_ticket`) REFERENCES `tickets` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_califications_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `certificates`
+-- Filtros para la tabla `certificates`
 --
 ALTER TABLE `certificates`
   ADD CONSTRAINT `fk_certificates_proceedings1` FOREIGN KEY (`id_proceeding`) REFERENCES `proceedings` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_certificates_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_certificates_users1` FOREIGN KEY (`id_user_reception`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_departure_certificates_users1` FOREIGN KEY (`id_user_delivery`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_departure_certificates_users2` FOREIGN KEY (`id_user_receives`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `charges`
+-- Filtros para la tabla `charges`
 --
 ALTER TABLE `charges`
   ADD CONSTRAINT `fk_charges_areas` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `comments`
+-- Filtros para la tabla `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `fk_comments_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1067,14 +1374,14 @@ ALTER TABLE `comments`
   ADD CONSTRAINT `fk_comments_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `directories`
+-- Filtros para la tabla `directories`
 --
 ALTER TABLE `directories`
   ADD CONSTRAINT `fk_directories_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_directories_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `files`
+-- Filtros para la tabla `files`
 --
 ALTER TABLE `files`
   ADD CONSTRAINT `fk_files_directories1` FOREIGN KEY (`id_directory`) REFERENCES `directories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1082,14 +1389,28 @@ ALTER TABLE `files`
   ADD CONSTRAINT `fk_files_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `files_modified`
+-- Filtros para la tabla `files_modified`
 --
 ALTER TABLE `files_modified`
   ADD CONSTRAINT `fk_files_modified_files1` FOREIGN KEY (`id_file`) REFERENCES `files` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_files_modified_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `permissions`
+-- Filtros para la tabla `images_products`
+--
+ALTER TABLE `images_products`
+  ADD CONSTRAINT `fk_images_products_products1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_images_products_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `fk_notifications_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_notifications_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `permissions`
 --
 ALTER TABLE `permissions`
   ADD CONSTRAINT `fk_permissions_reason1` FOREIGN KEY (`id_reason`) REFERENCES `reasons` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1100,28 +1421,52 @@ ALTER TABLE `permissions`
   ADD CONSTRAINT `fk_permissions_users3` FOREIGN KEY (`id_user_reception`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `reports`
+-- Filtros para la tabla `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `fk_products_origins_certificates1` FOREIGN KEY (`id_origin_certificate`) REFERENCES `origins_certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_products_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_products_states_certificates1` FOREIGN KEY (`id_state_certificate`) REFERENCES `states_certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_products_type_components1` FOREIGN KEY (`id_type_component`) REFERENCES `type_components` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_products_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `reports`
 --
 ALTER TABLE `reports`
   ADD CONSTRAINT `fk_reports_report_details1` FOREIGN KEY (`id_report_detail`) REFERENCES `report_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_reports_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `rows_certificates`
+-- Filtros para la tabla `reports_certificate`
 --
-ALTER TABLE `rows_certificates`
-  ADD CONSTRAINT `fk_rows_certificates_certificates1` FOREIGN KEY (`id_cetificate`) REFERENCES `certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_rows_certificates_origins_cerficates1` FOREIGN KEY (`id_origin_certificate`) REFERENCES `origins_cerficates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_rows_certificates_states_certificates1` FOREIGN KEY (`id_state_certificate`) REFERENCES `states_certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `reports_certificate`
+  ADD CONSTRAINT `fk_reports_certificate_certificates1` FOREIGN KEY (`id_certificate`) REFERENCES `certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_reports_certificate_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_reports_certificate_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `shops`
+-- Filtros para la tabla `report_products`
+--
+ALTER TABLE `report_products`
+  ADD CONSTRAINT `fk_report_products_certificates1` FOREIGN KEY (`id_certificate`) REFERENCES `certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_report_products_products1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `rows_certificates`
+--
+ALTER TABLE `rows_certificates`
+  ADD CONSTRAINT `fk_rows_certificates_certificates1` FOREIGN KEY (`id_certificate`) REFERENCES `certificates` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_rows_certificates_products1` FOREIGN KEY (`id_product`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `shops`
 --
 ALTER TABLE `shops`
   ADD CONSTRAINT `fk_shops_companies1` FOREIGN KEY (`id_company`) REFERENCES `companies` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `tickets`
+-- Filtros para la tabla `tickets`
 --
 ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_tickets_priorities1` FOREIGN KEY (`id_priority`) REFERENCES `priorities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1130,7 +1475,7 @@ ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_tickets_users2` FOREIGN KEY (`id_user_destination`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `users`
+-- Filtros para la tabla `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_areas1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,

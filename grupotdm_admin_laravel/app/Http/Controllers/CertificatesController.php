@@ -1,7 +1,6 @@
 <?php
 //importaciones
 namespace App\Http\Controllers;
-
 use App\Mail\accept_certificate;
 use App\Mail\create_certificate;
 use App\Mail\Notificate_Finish_Certificate;

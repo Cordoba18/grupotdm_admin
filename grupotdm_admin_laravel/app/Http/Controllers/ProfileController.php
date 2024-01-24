@@ -1,21 +1,14 @@
 <?php
-
+//importaciones
 namespace App\Http\Controllers;
-
-use App\Events\StateTicket;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Mail\modificate_ticket;
-use App\Models\Ticket;
-use App\Models\User;
-use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+//Declaracion de clase
 class ProfileController extends Controller
 {
     /**
@@ -72,70 +65,18 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    //funcion que me permite ver el perfil del usuario
 public function show_profile(){
     $user = Auth::user();
     return redirect()->route('dashboard.users.edit_profile', $user->id);
 }
 
+//funcion que me permite general un codigo aleatorio de 6 digitos
 public static function randNumer() {
     $d=rand(100000,999999);
     return $d;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

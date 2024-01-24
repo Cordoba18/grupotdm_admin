@@ -1,4 +1,5 @@
-
+//Contenedor para ingresar el codigo
+//La ruta "route_login" se encuentra en la vista
 let form_code = '<div class="content_form"><h1>INGRESE EL CODIGO</h1>' +
     '<form action="" method="POST">' +
     '<p id="message_code"></p>' +
@@ -9,10 +10,15 @@ let form_code = '<div class="content_form"><h1>INGRESE EL CODIGO</h1>' +
     '<a href="'+route_login+'">Si tengo cuenta</a></div>' +
     '</form></div>';
 
+
+
+
+
 let content_form = document.querySelector('.content_principal');
 const btn_register = document.querySelector('#btn_register');
 let error_form = document.querySelector('#message_error');
 
+//Boton para registrar al usuario
 btn_register.addEventListener('click', function (e) {
     e.preventDefault();
     const _token = document.querySelector("input[name=_token]").value;
@@ -25,7 +31,7 @@ btn_register.addEventListener('click', function (e) {
     const lastname = document.querySelector('#lastname');
     const password1 = document.querySelector('#password1');
     const password2 = document.querySelector('#password2');
-
+//validamos los campos
      if (largotextos(name.value)) {
         error_form.innerHTML = "NOMBRE NO VALIDO";
         error_form.removeAttribute('hidden');
@@ -68,6 +74,7 @@ btn_register.addEventListener('click', function (e) {
             error_form.classList.remove('alert-danger');
             btn_register.disabled = true;
         error_form.classList.add('alert-success');
+        //Validar la existencia del correo y enviar codigo
             $.ajax({
                 type: "POST",
                 url: "register/validate_email",
@@ -111,6 +118,7 @@ btn_register.addEventListener('click', function (e) {
                                 clearInterval(timerInterval)
                             }
                         }).then((result) => {
+                            //Activamos el formulario para el ingreso del codigo
                             activate_form_code(code, email.value, password1.value, name.value, area.value, nit.value, company.value, lastname.value, _token);
                         })
 
@@ -141,6 +149,7 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
         if (verify_code.value == code) {
             error_code.setAttribute('hidden', 'true');
             btn_verificar.disabled = true;
+            //Creamos el nuevo usuario en caso de que el codigo ingresado coincida con el de la base de datos
             $.ajax({
                 type: "POST",
                 url: "register/new_user",
@@ -187,7 +196,7 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
     })
 }
 
-
+//funciones para validar
 function validate_email(texto) {
     const patron1 = /@eltemplodelamoda\.com.co/;
 

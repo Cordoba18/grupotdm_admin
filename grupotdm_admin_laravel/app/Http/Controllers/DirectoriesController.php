@@ -149,20 +149,24 @@ public function delete_file(Request $request){
     return back()->with('message','Archivo eliminado con exito');
 }
 
-
+//funcion que retorna la vista para crear un nuevo archivo para un directorio
 public function create_file($id_directory){
 
     return view('dashboard.directories.files.create_file',compact('id_directory'));
 }
 
+//funcion que guarda el archivo en un directorio
 public function save_file(Request $request){
 
     $user = Auth::user();
     $new_file = new ModelsFile();
+    //obtenemos el id del directorio
     $id_directory = $request->id_directory;
     $fechaActual = Carbon::now('America/Bogota');
     $fechaColombiana = $fechaActual->format('d-m-Y H-i-s');
+    //buscamos el directorio
     $directory = DB::selectOne("SELECT * FROM directories WHERE id=$id_directory AND code=$request->code");
+    //validamos si existe
     if ($directory) {
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -170,6 +174,7 @@ public function save_file(Request $request){
             $name_file = $fechaHoraActual . '.' . $file->getClientOriginalExtension();
             $rutaImagen = public_path('storage/files/'.$directory->directory.'/'. $name_file);
             $file->move(public_path('storage/files/'.$directory->directory), $name_file);
+            //insertamos en archivo
             $new_file->name = $request->name;
             $new_file->file = $name_file;
             $new_file->id_directory = $id_directory;
@@ -177,10 +182,14 @@ public function save_file(Request $request){
             $new_file->id_user = $user->id;
             $new_file->date_create = $fechaColombiana;
             $new_file->date_update = $fechaColombiana;
-            ReportController::create_report("Se ha creado un nuevo archivo con llamado $request->name en el directorio con ID $directory->id", $user->id, 14);
             $new_file->save();
+            //creamos el reporte
+            ReportController::create_report("Se ha creado un nuevo archivo con llamado $request->name en el directorio con ID $directory->id", $user->id, 14);
+            //enviamos un correo
             Mail::to($user->email)->send(new new_file($user, $directory, $new_file));
             return back()->with('message','Archivo creado con exito');
+        }else{
+            return back()->with('message_error','Archivo no creado');
         }
     }else{
         return redirect()->route('dashboard.create_file', $id_directory)->with('message','Codigo de directorio incorrecto');
@@ -189,6 +198,8 @@ public function save_file(Request $request){
 
 }
 
+
+//funcion que permite ver el archivos con sus ultimas modificaciones
 public function view_file(Request $request){
 
     $id_directory = $request->id_directory;
@@ -201,12 +212,13 @@ public function view_file(Request $request){
     return  view('dashboard.directories.files.view_file',compact('directorie','files_modified','file'));
 }
 
-
+//funcion que permite guardar una nueva modificacion de archivo
 public function edit_file(Request $request){
     $user = Auth::user();
 
     $table_file = ModelsFile::find($request->id_file);
     $id_directory = $request->id_directory;
+    //buscamos el directorio por su codigo
     $directory = Directorie::where('id', $id_directory)
     ->where('code', $request->code)
     ->first();
@@ -214,8 +226,9 @@ public function edit_file(Request $request){
     $file_modified = new Files_modified();
     $fechaActual = Carbon::now('America/Bogota');
     $fechaColombiana = $fechaActual->format('d-m-Y H-i-s');
-
+//verificamos si el directorio existe
     if ($directory) {
+        //si existe un archivo nuevo lo guardamos
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fechaHoraActual = now()->format('Y-m-d_H-i-s');
@@ -225,20 +238,25 @@ public function edit_file(Request $request){
             $file_modified->file = $table_file->file;
             $table_file->file = $name_file;
         }else{
+            //si no conservamos el que ya esta
             $file_modified->file = $table_file->file;
         }
+
+        //guardamos la ultima modificacion anterior
         $file_modified->name = $table_file->name;
         $file_modified->date_update = $table_file->date_update;
         $file_modified->id_file = $table_file->id;
         $file_modified->id_user = $table_file->id_user;
 
+        //guardamos la nueva modificacion
         $table_file->name = $request->name;
         $table_file->date_update =$fechaColombiana;
         $table_file->id_user = $user->id;
 
+        //insertamos la ultima fecha de modificacion del directorio
         $directory->date_update =$fechaColombiana;
 
-
+        //guardamos todas las informaciones
         $table_file->save();
         $file_modified->save();
         $directory->save();

@@ -1,10 +1,9 @@
 const id_company = document.querySelector('#id_company');
 
-
+// Al presentarse un cambio en la compañia del usuario se obtienen las tiendas de la compañia
 id_company.addEventListener('change', function (e) {
 
     const id_shop = document.querySelector('#id_shop');
-
     $.ajax({
         type: "GET",
         url: "getshops/"+id_company.value,
@@ -25,6 +24,8 @@ id_company.addEventListener('change', function (e) {
         }
     });
 })
+
+//Si hay un cambio en el select de las areas se obtienen los cargos de esas areas para aplicarlos en el select de los cargos
 const id_area = document.querySelector('#id_area');
 
 

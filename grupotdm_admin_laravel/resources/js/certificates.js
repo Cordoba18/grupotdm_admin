@@ -1,5 +1,6 @@
 const certificates = document.querySelectorAll('#certificate');
 
+//Se recorren todos los certificados y dependiendo del estado se coloca un color de fondo para el certificado
 certificates.forEach(certificate => {
     const id_state = certificate.querySelector('#id_state').value;
     if (id_state == 3) {

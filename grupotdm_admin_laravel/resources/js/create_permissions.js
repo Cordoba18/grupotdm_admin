@@ -1,3 +1,4 @@
+//obtener fecha y hora actual
 function obtenerFechaActual() {
     // Obtener la fecha actual
     var fecha = new Date();
@@ -83,9 +84,11 @@ function obtenerFechaActual() {
     return formatoFecha;
 }
 
+//funcion que convierte formato especial de fecha en dos digitos
 function formatoDosDigitos(valor) {
     return valor < 10 ? '0' + valor : valor;
 }
+
 
 const date_aplicattion = document.querySelector('#date_application');
 
@@ -96,7 +99,7 @@ date_aplicattion.value = obtenerFechaActual();
 const id_days = document.querySelectorAll('#id_day');
 const input_time = document.querySelector('#input_time')
 
-
+//En caso de que haya un cambio en el dia de llegada si es hoy mañana activa los inputs para la hora o los desactiva
 input_time.addEventListener('change', function (e) {
 
     date_tomorrow.value =  obtenerFechaActualSinHoras() + " "+ input_time.value+":00";

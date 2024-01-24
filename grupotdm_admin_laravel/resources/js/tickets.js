@@ -98,6 +98,8 @@ check_today.addEventListener('click', function (e) {
       }
 })
 
+
+//la funcion obtiene la hora de la tabla de prioridades al momento de hace un cambio en cada SELECT
 function calcular(date_start, days) {
     const input_date_finally = document.querySelector('#input_date_finally');
     $.ajax({

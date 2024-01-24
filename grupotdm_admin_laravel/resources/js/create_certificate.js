@@ -1,4 +1,4 @@
-
+//funcion parar obtener fecha actual
 function obtenerFechaActual() {
     // Obtener la fecha actual
     var fecha = new Date();
@@ -31,6 +31,7 @@ const row =  document.querySelector('.row_certificate').innerHTML;
 
 
 loading_buttons_rows();
+//funcion que permite cargar el boton de eliminacion de un producto del certificado
 function loading_buttons_rows() {
     const rows =  document.querySelectorAll('.row_certificate');
     rows.forEach(row => {
@@ -48,6 +49,7 @@ function loading_buttons_rows() {
     loading_validate_button_Row();
 }
 
+//funcion que sirve para validar activar las validaciones de todas las filas de productos de acta
 function loading_validate_button_Row() {
     const rows =  document.querySelectorAll('.row_certificate');
     rows.forEach(row => {
@@ -66,7 +68,7 @@ function loading_validate_button_Row() {
                         const id_origin_certificate = row.querySelector('#id_origin_certificate');
                         const id_state_certificate = row.querySelector('#id_state_certificate');
                         const accessories = row.querySelector('#accessories');
-
+                        //valido cuando productos hay con ese mismo ID
                         rows.forEach(row2 => {
                             const id_product2 = row2.querySelector('#id_product').value;
                             if (id_product2 == id_product.value) {
@@ -74,7 +76,9 @@ function loading_validate_button_Row() {
                                 console.log(validate_dates)
                             }
                         });
-                        console.log("Toltal : " + validate_dates)
+                    //Si hay mas de uno lanzo una alerta de duplicidad
+
+
         if (validate_dates>1) {
             id_product.value = "";
             Swal.fire({
@@ -82,6 +86,7 @@ function loading_validate_button_Row() {
                 title: "Oops...",
                 text: "Ya asociaste ese producto al acta!"
               });
+              //si no hay nada escrito tambien lanzo una alerta para rellenar los campos
         }else if (id_product.value == "") {
             Swal.fire({
                 icon: "error",
@@ -130,7 +135,7 @@ function loading_validate_button_Row() {
 
 
 const input_validate_users = document.querySelectorAll("#input_validate_user");
-
+//Capturar los inputs para el usuario del sistema o usuario prescrito y aplicar cambios en su diferenciacion
 input_validate_users.forEach(input_validate_user => {
 
     input_validate_user.addEventListener('click', function (e) {
@@ -139,8 +144,8 @@ input_validate_users.forEach(input_validate_user => {
         const content_user_dates = document.querySelector(".content_user_dates");
         const content_user_anonimo = document.querySelector(".content_user_anonimo");
         const name_user_receive = document.querySelector("#name_user_receive");
-        if (input_validate_user.value == 1) {
 
+        if (input_validate_user.value == 1) {
             content_user_dates.removeAttribute("hidden");
             content_user_anonimo.setAttribute("hidden", "true");
             id_area_receives.disabled = false;
@@ -162,6 +167,7 @@ input_validate_users.forEach(input_validate_user => {
   const date = document.querySelector('#date');
   date.value = obtenerFechaActual();
 
+  //boton que ayuda a agregar una nueva fila para el certificado
   const btn_add_row = document.querySelector('#btn_add_row');
 
   btn_add_row.addEventListener('click', function (e) {
@@ -175,7 +181,7 @@ input_validate_users.forEach(input_validate_user => {
   })
   const id_area_receives = document.querySelector('#id_area_receives');
 
-
+//al hacer un cambio en el area del usuario cargo los usuarios pertenecientes a ese area
   id_area_receives.addEventListener('change', function (e) {
     const id_user_receives = document.querySelector('#id_user_receives');
     $.ajax({
@@ -202,6 +208,7 @@ input_validate_users.forEach(input_validate_user => {
 
   const btn_save = document.querySelector('#btn_save');
 
+  //Guardar acta
   btn_save.addEventListener('click', function (e) {
     e.preventDefault();
     const rows =  document.querySelectorAll('.row_certificate');
@@ -216,7 +223,7 @@ input_validate_users.forEach(input_validate_user => {
     const address = document.querySelector("#address").value;
     const observations = document.querySelector("#observations").value;
     const name_user_receive = document.querySelector("#name_user_receive");
-
+//se validan que los campos del usuario esten rellenos
     if (date == "") {
         label_error.removeAttribute('hidden');
         label_error.textContent = "Campo de FECHA no completado";
@@ -242,7 +249,7 @@ input_validate_users.forEach(input_validate_user => {
         label_error.textContent = "Campo de OBSERVACIONES no completado";
         validation = true;
     }else{
-
+//se validan las filas para que tambien esten rellenas
     rows.forEach(row => {
         counter +=1;
         const description = row.querySelector('#description').value;
@@ -260,7 +267,7 @@ input_validate_users.forEach(input_validate_user => {
     });
 }
 
-
+//si la validacion sale bien guarda el acta con los datos del usuario
     if(validation == false){
 
         label_error.setAttribute('hidden', 'true');
@@ -290,7 +297,7 @@ input_validate_users.forEach(input_validate_user => {
                     const id_certificate = response['id_certificate'];
                     let new_counter = 0;
                     rows.forEach(row => {
-
+                        //guardar fila por fila de cada acta
                         label_success.textContent = "Guardando fila..... 80%";
                         const id_product = row.querySelector('#id_product').value;
                         $.ajax({
@@ -324,12 +331,13 @@ input_validate_users.forEach(input_validate_user => {
                                                       toast.onmouseleave = Swal.resumeTimer;
                                                     }
                                                   });
+                                                  //mostrar mensaje de terminacion
                                                   Toast.fire({
                                                     icon: "success",
                                                     title: "Acta creada correctamente. Redireccionando......."
                                                   });
                                                   setTimeout(() => {
-
+                                                    //redireccionar a los certificados
                                                     window.location = "../certificates";
                                                 }, 2000);
                                             }, 2000);

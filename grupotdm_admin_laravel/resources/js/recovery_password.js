@@ -1,11 +1,13 @@
 const btn_change_password = document.querySelector('#btn_change_password');
 const error_form = document.querySelector('#error');
+//Boton que guardar la contraseña nueva
 btn_change_password.addEventListener('click', function(e){
     e.preventDefault();
     const _token = document.querySelector("input[name=_token]").value;
     const email = document.querySelector('#email');
     const password1 = document.querySelector('#password1');
     const password2 = document.querySelector('#password2');
+    //valida las contrasñas
     if (password1.value != password2.value) {
         error_form.innerHTML = "LAS CONTRASEÑAS NO COINCIDEN";
         error_form.removeAttribute('hidden');
@@ -21,6 +23,7 @@ btn_change_password.addEventListener('click', function(e){
         error_form.classList.remove('alert-danger');
         error_form.classList.add('alert-success');
 
+        //Hace el cambio y retorna a la vista de logueo
         $.ajax({
             type: "POST",
             url: "changepassword",
