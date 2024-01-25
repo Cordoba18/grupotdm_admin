@@ -2,6 +2,8 @@
 
 //importaciones
 namespace App\Http\Controllers;
+
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +26,7 @@ class LoginController extends Controller
         $email = $request->email;
        $credentials = request()->only('email', 'password');
        //validamos si el usuario esta activo
-       $user = DB::selectOne("SELECT * FROM users WHERE email='$email' AND id_state = 1");
+       $user = User::where('email', $email)->where('id_state', 1)->first();
        if ($user) {
         //validamos las credenciales de autenticacion
         if (Auth::attempt($credentials)) {

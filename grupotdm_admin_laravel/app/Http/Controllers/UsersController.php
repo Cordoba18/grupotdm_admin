@@ -223,7 +223,9 @@ public function save_user(Request $request){
     $validation_nit = DB::selectOne("SELECT * FROM users WHERE nit ='$request->nit'");
     $validation_form_email = strpos($request->email, '@eltemplodelamoda.com.co');
     $validation_form_email2 = strpos($request->email, '@eltemplodelamodafresca.com.co');
-    if (!$validation_form_email && !$validation_form_email2) {
+    $validation_form_email3 = strpos($request->email, '@tclosangeles.com');
+    $validation_form_email4 = strpos($request->email, '@tceluniverso.com');
+    if (!$validation_form_email && !$validation_form_email2 && !$validation_form_email3 && !$validation_form_email4) {
         return redirect()->route('dashboard.users.new_user')->with("message_error","Formato de correo no permitido");
     }else
     if ($validation_email) {

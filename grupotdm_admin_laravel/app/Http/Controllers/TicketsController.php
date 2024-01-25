@@ -71,7 +71,7 @@ public function create_ticket(){
     $user = Auth::user();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
     $priorities = Prioritie::all();
-    $users = DB::select("SELECT * FROM users WHERE id_area = 2 AND id_state = 1 AND id <> $user->id");
+    $users = DB::select("SELECT * FROM users WHERE id_area = 2 AND id_state = 1");
     $themes_users = Theme_user::all();
         return view('dashboard.tickets.create', compact('user', 'themes_users','validate_user_sistemas', 'priorities','users'));
 }

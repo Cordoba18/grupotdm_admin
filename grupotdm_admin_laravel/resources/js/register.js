@@ -205,11 +205,14 @@ function validate_email(texto) {
     const patron2 = /@eltemplodelamodafresca\.com.co/;
 
     const resultado2 = texto.search(patron2);
-    // const patron3 = /@outlook\.com/;
+    const patron3 = /@tceluniverso\.com/;
 
-    // const resultado3 = texto.search(patron3);
+    const resultado3 = texto.search(patron3);
+    const patron4 = /@tclosangeles\.com/;
 
-    if (resultado1 !== -1 || resultado2 !== -1) {
+    const resultado4 = texto.search(patron4);
+
+    if (resultado1 !== -1 || resultado2 !== -1 || resultado3 !== -1 || resultado4 !== -1) {
         return true;
     } else {
         return false;
