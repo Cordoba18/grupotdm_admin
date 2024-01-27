@@ -21,7 +21,9 @@
 @stop
 
 @section('content')
-@if ($user->id_area == $my_user->id_area || $my_user->id_area == 1)
+@if($validate_user_administrator && $my_user->id_area != 1)
+<p class="alert alert-danger" role="alert" class="">No tines permitido hacer eso</p>
+@elseif ($validation_jefe || $user->id == $my_user->id || $validate_user_administrator)
 <form id="miFormulario" action="{{ route('dashboard.users.change_password.save_changes') }}" method="post">
     @csrf
     <input type="number" name="id" hidden value="{{ $user->id }}">
@@ -42,11 +44,11 @@
               <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
 
          @endif
-  <div class="content_buttons" style="display: flex">
-    <button class="btn btn-success">Cambiar contraseña</button>
+  <div class="content_buttons" style="display: flex; width: 100%; flex-wrap: wrap;">
+    <button style="width: 100%;margin-bottom: 10px;" class="btn btn-success">Cambiar contraseña</button>
 </form>
-<form action="{{ route('dashboard.users.edit_profile' , $user->id)}}" method="get">
-    <button  class="btn btn-outline-primary">Volver</button>
+<form style="width: 100%;" action="{{ route('dashboard.users.edit_profile' , $user->id)}}" method="get">
+    <button style="width: 100%; text-align: center;" class="btn btn-outline-primary">Volver</button>
 </form>
   </div>
 @else

@@ -141,7 +141,6 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
     const message_code = document.querySelector('#message_code');
     message_code.innerHTML = 'Hemos enviado un codigo de verificacion a ' + email;
     const btn_verificar = document.querySelector('#btn_verificar');
-    console.log(name + "" + lastname)
     btn_verificar.addEventListener('click', function (e) {
         e.preventDefault();
         const verify_code = document.querySelector('#code');
@@ -149,6 +148,11 @@ function activate_form_code(code, email, password, name,area,nit,company,lastnam
         if (verify_code.value == code) {
             error_code.setAttribute('hidden', 'true');
             btn_verificar.disabled = true;
+            Swal.fire({
+                title: "BUEN TRABAJO!",
+                text: "Su usuario se esta registrando. Espera un momento...!",
+                icon: "info"
+              });
             //Creamos el nuevo usuario en caso de que el codigo ingresado coincida con el de la base de datos
             $.ajax({
                 type: "POST",

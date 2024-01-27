@@ -10,8 +10,9 @@
 <div class="content_loading" hidden>
 
 </div>
+<br>
 <h1>Perfil de <b> {{ $user->name }}</b></h1>
-
+<br>
 @if (session('message'))
 
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
@@ -19,9 +20,9 @@
          @endif
 
 @stop
-
+<br>
 @section('content')
-@if ($user->id_area == $my_user->id_area || $my_user->id_area == 1)
+@if ($user->id_area == $my_user->id_area || $validate_user_administrator ||  $my_user->id_area == 2)
 
 <form id="miFormulario" action="{{ route('dashboard.users.save_changes') }}" method="post">
     @csrf
@@ -40,7 +41,7 @@
   </div>
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Correo</label>
-    <input disabled type="email" name="email" class="form-control" required id="exampleFormControlInput1" value="{{ $user->email }}">
+    <input @if(!$validate_user_administrator){{ "disabled" }}@endif type="email" name="email" class="form-control" required id="exampleFormControlInput1" value="{{ $user->email }}">
   </div>
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Compañia</label>
@@ -155,7 +156,7 @@
 
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Punto fuerte</label>
-  <select required name="id_theme_user" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
+  <select name="id_theme_user" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
     @php
     $theme_user = null;
     @endphp
@@ -184,12 +185,12 @@
 
 @endif
 
-<div class="content_buttons" style="padding-bottom: 20px; display: flex;">
-    <button class="btn btn-success" style="margin-right: 10px">Guardar Cambios</button>
+<div class="content_buttons" style="padding-bottom: 10px; display: flex; flex-wrap: wrap;">
+    <button class="btn btn-success" style="width: 100%; margin-bottom: 10px;">Guardar Cambios</button>
     </form>
-    @if ($validation_jefe || $user->id == $my_user->id)
-    <form action="{{ route('dashboard.users.change_password' , $user->id) }}" method="get">
-    <button href="" class="btn btn-primary">Cambiar Contraseña</button>
+    @if ($validation_jefe || $user->id == $my_user->id || $validate_user_administrator)
+    <form style="width: 100%; " action="{{ route('dashboard.users.change_password' , $user->id) }}" method="get">
+    <button href="" style="text-align: center; width: 100%;" class="btn btn-primary">Cambiar Contraseña</button>
 </form>
     @endif
 

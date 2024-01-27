@@ -61,7 +61,7 @@ class RecoveryPasswordController extends Controller
         if ($code == $user_code->code) {
             return view('user.change_password_recovery_password',compact('email'));
         }else{
-            return view('user.sendcode_recovery_password', compact('email'))->with('message_error', 'Código no válido');
+            return view('user.sendcode_recovery_password', compact('email'))->with("message_error", "Código no válido");
         }
     }
 

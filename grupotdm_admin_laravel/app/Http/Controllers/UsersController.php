@@ -140,7 +140,19 @@ public function save_changes(Request $request){
     $user->nit= $request->nit;
     $user->id_company = $request->id_company;
     $user->id_chargy = $request->id_chargy;
+    $message = "";
+    $validate_user_administrator = DB::selectOne("SELECT * FROM users WHERE id_area = 1 AND id=$my_user->id");
+    //validamos si el usuario de la peticion es un usuario de sistemas y existe un correo en el request
+    if($validate_user_administrator && $request->email){
+        //validamos si ese correo ya existe
+        if(DB::select("SELECT * FROM users WHERE email ='$request->email'")){
+            $message = "(Correo no cambiado porque ya existe!)";
+        }else{
+            //si el correo no existe cambiamos el correo del usuario
+            $user->email = $request->email;
+        }
 
+    }
     if ($request->id_area) {
         $user->id_area = $request->id_area;
     }
@@ -157,7 +169,7 @@ public function save_changes(Request $request){
     }
     ReportController::create_report("Se han modificado los datos del usuario $user->email", $my_user->id, 2);
     $user->save();
-    return redirect()->route('dashboard.users.edit_profile', $request->id)->with("message","Usuario actualizado con exito!");
+    return redirect()->route('dashboard.users.edit_profile', $request->id)->with("message","Usuario actualizado con exito! $message");
 
 }
 
@@ -180,7 +192,14 @@ public function delete_user(Request $request){
 }
 public function change_password($id){
     $user = User::find($id);
-    return view("dashboard.users.edit_password", compact("user"));
+    $validate_user_administrator = DB::selectOne("SELECT * FROM users WHERE id_area = 1 AND id=$id");
+    $validation_jefe = DB::selectOne("SELECT * FROM users u
+        INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE c.chargy = 'JEFE DE AREA' AND u.id = $id");
+        if (!$validation_jefe) {
+            $validation_jefe = null;
+        }
+    return view("dashboard.users.edit_password", compact("user","validate_user_administrator", "validation_jefe"));
 }
 
 //funcion que me permite guardar la nueva contraseña de un usuario
