@@ -239,7 +239,7 @@
         <a class="btn btn-light" href="{{ route('dashboard.tickets') }}">Volver <i class="bi bi-arrow-return-left"></i></a>
 
         @if ($ticket->id_user_sender == $user->id)
-        <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post">
+        <form action="{{ route('dashboard.tickets.delete_ticket') }}" method="post" @if($ticket->id_state != 7) onsubmit="return confirmarEnvio()" @endif>
             @csrf
             <input type="number" name="id_ticket" value="{{ $ticket->id }}" hidden>
             @if($ticket->id_state == 7)
@@ -290,6 +290,16 @@ try {
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @vite(['resources/js/view_ticket.js'])
+
+<script>
+    function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de eliminar esta ticket?");
+
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
+</script>
 
 <script>
 

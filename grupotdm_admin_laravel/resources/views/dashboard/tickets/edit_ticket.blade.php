@@ -34,6 +34,7 @@
         <div class="mb-3">
             <label for="formFile" class="form-label">Cambiar archivo</label>
             <input class="form-control" type="file" id="formFile" name="file">
+            <b style="color: red; font-weight: bold;">*El archivo es opcional*</b>
         </div>
 
         @if ($validate_user_sistemas)

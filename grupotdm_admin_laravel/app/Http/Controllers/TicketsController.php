@@ -308,6 +308,14 @@ public function finish_ticket_mail(Request $request){
     Mail::to($user_destination->email)->send(new modificate_ticket($user_destination,$user_destination, $infoticket));
     //Generar notificacion
     NotificationController::create_notification("Su ticket ha sido cerrado con exito!", $ticket->id_user_destination , route('dashboard.tickets.ticket_detail', $ticket->id));
+    //generamos el evento en vivo para el ticket
+    $ticket = DB::selectOne("SELECT  t.id, t.name,t.file, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $ticket->id");
+    broadcast(new StateTicket($ticket))->toOthers();
     return view('dashboard.accept_emails.view_finish_ticket_mail', compact('user_destination','ticket'));
     }else{
         return redirect()->route("dashboard.tickets.ticket_detail", $ticket->id)->with('message_error','La acción no esta disponible verifica que el usuario este ejecutando el ticket');
@@ -445,6 +453,14 @@ public function calification_ticket(Request $request){
     $user_sender = User::find($ticket->id_user_destination);
     //Generamos un correo
     Mail::to($user_sender->email)->send(new calification_ticket($user_sender, $ticket));
+    //generamos el evento de estado
+    $ticket = DB::selectOne("SELECT  t.id, t.name, t.description, t.date_start, t.date_finally, p.priority, ud.id_area AS id_area_user_destination, s.id AS id_state, s.state, us.name AS name_sender,  ud.name AS name_destination, ud.id AS id_user_destination, us.id AS id_user_sender
+    FROM tickets t
+    INNER JOIN priorities p ON t.id_priority = p.id
+    INNER JOIN users us ON t.id_user_sender =us.id
+    INNER JOIN users ud ON t.id_user_destination = ud.id
+    INNER JOIN states s ON t.id_state = s.id  WHERE t.id = $ticket->id");
+    broadcast(new StateTicket($ticket))->toOthers();
     return redirect()->back()->with('message', 'Calificación Agregada con exito!');
 }
 
