@@ -6,7 +6,8 @@
                 <br>
                 <p>El motivo del presente correo es notificar la creacion de tu nuevo repositorio con los siguientes datos:</p>
                 <br>
-                <div style="display: flex; align-items: center">
+                <div style="display: flex; align-items: center; flex-wrap: wrap;">
                 <p>Nombre : <b style="padding: 10px">{{ $directorie->name }}</b></p>
                 <p>Codigo : <b style="padding: 10px">{{ $directorie->code }}</b></p>
+                </div>
 @endsection

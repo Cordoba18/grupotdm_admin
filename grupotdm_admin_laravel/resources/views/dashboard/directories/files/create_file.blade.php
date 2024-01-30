@@ -9,10 +9,16 @@
 
 </div>
 <h1>CREAR ARCHIVO</h1>
-
+<br>
 @if (session('message'))
 
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
+
+         @endif
+
+         @if (session('message_error'))
+
+              <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
 
          @endif
 @stop

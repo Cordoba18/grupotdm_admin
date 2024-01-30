@@ -108,7 +108,7 @@
 
 
     </div>
-    <button type="button" href="" onclick="imprimirDiv()" class="btn btn-dark" style="width: 100%">Imprimir REFERENCIA</button>
+    <button type="button" href="" onclick="imprimirDiv()" class="btn btn-dark" style="width: 100%">IMPRIMIR REFERENCIA</button>
     @endif
 </div>
 
@@ -202,18 +202,18 @@ $state_certificate = $s->state_certificate;
     <label for="exampleFormControlTextarea1" class="form-label">CAMBIAR IMAGEN PRINCIPAL</label>
     <input type="file" name="file" id="" accept="image/*" style="width: 100%">
   </div>
-<div class="content_buttons" style="display: flex; flex-wrap: wrap;">
-  <button style="margin: 5px;" class="btn btn-success">Guardar Cambios <i class="bi bi-box-arrow-down"></i></button>
-  <a style="margin: 5px;" href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS  <i class="bi bi-image"></i></a>
+<div class="content_buttons" style="display: flex; flex-wrap: wrap; width: 100%;">
+  <button style="margin: 5px; width: 100%;" class="btn btn-success">Guardar Cambios <i class="bi bi-box-arrow-down"></i></button>
+  <a style="margin: 5px; width: 100%;" href="{{ route('dashboard.inventories.view_product.images_product',$product->id) }}" class="btn btn-primary"> IMAGENES SECUNDARIAS  <i class="bi bi-image"></i></a>
   <br>
 </form>
-<form action="{{ route('dashboard.inventories.delete') }}" method="post" @if($product->id_state == 1) onsubmit="return confirmarEnvio()@endif">
+<form style="width: 100%;" action="{{ route('dashboard.inventories.delete') }}" method="post" @if($product->id_state == 1) onsubmit="return confirmarEnvio()@endif">
     @csrf
     <input type="text" hidden value="{{ $product->id }}" name="id_product">
     @if($product->id_state == 1)
-    <button style="margin: 5px;" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+    <button style="margin: 5px; width: 100%; text-align: center;" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
     @elseif ($product->id_state == 2)
-    <button style="margin: 5px;" class="btn btn-success">ACTIVAR</button>
+    <button style="margin: 5px; width: 100%;" class="btn btn-success">ACTIVAR</button>
     @endif
 
 
@@ -270,7 +270,6 @@ $state_certificate = $s->state_certificate;
 <script>
 var inputsAndSelects = document.querySelectorAll('input, select, textarea');
 
-console.log(inputsAndSelects);
 // Iterar sobre cada elemento y establecer el atributo 'disabled'
 inputsAndSelects.forEach(function (element) {
     element.setAttribute('disabled', 'true');
@@ -303,6 +302,14 @@ inputsAndSelects.forEach(function (element) {
         });
     }
   </script>
+  <script>
+    function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de DESACTIVAR este producto?");
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
+</script>
 <script>
 
     let content_logo_loading = '<div class="content_logo">'+

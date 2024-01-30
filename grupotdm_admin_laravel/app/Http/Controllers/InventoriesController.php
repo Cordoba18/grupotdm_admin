@@ -258,11 +258,18 @@ public function save_changes_view_product(Request $request){
 //funcion que me permite obtener una serial personalizada y aleatoria para los productos
 public function get_serie(){
 
+    $user = Auth::user();
+
+    if ($user->id_company == 2) {
+        $razon_social = "TDMF";
+    }else{
+        $razon_social = "TDM";
+    }
     $finish = false;
     while(!$finish){
         //generamos la serial aleatoria
-    $alfanumerico = str::random(7);
-    $serie = "TDM".$alfanumerico;
+    $alfanumerico = rand(100000,999999);
+    $serie = $razon_social.$alfanumerico;
     //validamos si ya existe esa serial
     $validation = Product::where('serie','=',"$serie")->where('id_state', 1)->first();
     if(!$validation){
@@ -272,4 +279,16 @@ public function get_serie(){
     }
     }
 }
+
+//funcion que me permite eliminar la imagen de un producto y retorna a la vista de las imagenes secundarias del producto
+public function delete_image_product(Request $request){
+    $user = Auth::user();
+    $id_product = $request->id_product;
+    $id_image_product = $request->id_image_product;
+    $image_product = Image_product::find($id_image_product);
+        $image_product->id_state = 2;
+        $image_product->save();
+        return redirect()->route('dashboard.inventories.view_product.images_product', $id_product)->with('message','Imagen eliminada con exito');
+}
+
 }

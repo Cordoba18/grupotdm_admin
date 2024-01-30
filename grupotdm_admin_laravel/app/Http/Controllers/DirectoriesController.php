@@ -192,7 +192,7 @@ public function save_file(Request $request){
             return back()->with('message_error','Archivo no creado');
         }
     }else{
-        return redirect()->route('dashboard.create_file', $id_directory)->with('message','Codigo de directorio incorrecto');
+        return redirect()->route('dashboard.create_file', $id_directory)->with('message_error','Codigo de directorio incorrecto');
     }
 
 

@@ -300,7 +300,7 @@ public function state_certificate(Request $request){
 
             $product->save();
             $new_report_product->id_certificate = $id_certificate;
-            $new_report_product->report = "El producto asociado al acta con ID $certificate->id y fecha $certificate->address esta en estado $state_certificate";
+            $new_report_product->report = "El producto asociado al acta con ID $certificate->id con destino a $certificate->address esta en estado $state_certificate";
             $new_report_product->save();
         }
 
