@@ -168,7 +168,7 @@
 </div>
 <div class="content_buttons" style="width: 100%;display: flex; flex-wrap: wrap;">
 <button style="width: 100%; margin-bottom: 5px;" onclick="imprimirDiv()" class="btn btn-dark">Imprimir PERMISO</button>
-@if($permission->id_user_collaborator == $user->id )
+@if($permission->id_user_collaborator == $user->id && $permission->id_state != 2)
 
 <form style="width: 100%;" action="{{ route('dashboard.permissions.delete') }}" method="post" onsubmit="return confirmarEnvio()">
     @csrf
