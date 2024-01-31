@@ -8,7 +8,6 @@
 
 @section('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
     @vite(['resources/css/view_ticket.css', 'resources/js/app.js'])
     @vite('resources/css/content_loading.css')
 

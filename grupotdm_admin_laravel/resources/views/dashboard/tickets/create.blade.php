@@ -79,7 +79,7 @@
     <option value="{{ $p->id }}">{{ $p->priority }} = Plazo de {{ $p->hour }} horas</option>
     @endforeach
     </select>
-    <button class="btn btn-success">Crear ticket</button>
+    <button class="btn btn-success" style="margin-bottom: 60px">Crear ticket</button>
 </form>
 @stop
 
