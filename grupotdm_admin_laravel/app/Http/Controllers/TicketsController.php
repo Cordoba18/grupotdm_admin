@@ -293,7 +293,14 @@ public function notificate_finish_ticket_mail(Request $request){
 
 //funcion que me permite dar finalizacion de ticket desde el correo
 public function finish_ticket_mail(Request $request){
-    $ticket = Ticket::find($request->id_ticket);
+    if($request->id_ticket){
+        $ticket = Ticket::find($request->id_ticket);
+
+    }else{
+        $ticket = Ticket::find($request->x_id_ticket);
+
+    }
+
     if($ticket->id_state = 5){
         //si esta en estado de ejecucion finalizar el ticket
         $ticket->id_state =7;

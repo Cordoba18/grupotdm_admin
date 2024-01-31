@@ -330,8 +330,13 @@ public function state_certificate(Request $request){
 
     //funcion que sirve para dar entrada de activos
     public function accept_certificate(Request $request){
-        $id_certificate = $request->id_certificate;
-        $id_user_receives = $request->id_user_receives;
+        if($request->id_certificate){
+            $id_certificate = $request->id_certificate;
+            $id_user_receives = $request->id_user_receives;
+        }else{
+            $id_certificate = $request->x_id_certificate;
+            $id_user_receives = $request->x_id_user_receives;
+        }
         $certificate = Certificate::find($id_certificate);
         $user_receive = User::find($certificate->id_user_receives);
         $user_delivery = User::find($certificate->id_user_delivery);

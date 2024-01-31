@@ -167,6 +167,10 @@ public function save_file(Request $request){
     //buscamos el directorio
     $directory = DB::selectOne("SELECT * FROM directories WHERE id=$id_directory AND code=$request->code");
     //validamos si existe
+    $tamaño = $request->file('file')->getSize();
+    if ($tamaño > 300 * 1024 * 1024) {
+        return back()->with('message_error','El archivo debe ser menor a 300MB de peso de almacenamiento');
+    }else
     if ($directory) {
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -226,8 +230,13 @@ public function edit_file(Request $request){
     $file_modified = new Files_modified();
     $fechaActual = Carbon::now('America/Bogota');
     $fechaColombiana = $fechaActual->format('d-m-Y H-i-s');
+
+$tamaño = $request->file('file')->getSize();
+if ($tamaño > 300 * 1024 * 1024) {
+    return back()->with('message_error','El archivo debe ser menor a 300MB de peso de almacenamiento');
+}else
 //verificamos si el directorio existe
-    if ($directory) {
+if ($directory) {
         //si existe un archivo nuevo lo guardamos
         if ($request->hasFile('file')) {
             $file = $request->file('file');

@@ -54,6 +54,7 @@
         <div class="mb-3">
             <label for="formFile" class="form-label">Cambiar archivo</label>
             <input class="form-control" type="file" id="formFile" name="file">
+            <b style="color: red; font-weight: bold; font-size: 17px">TAMAÑO MAXIMO DE ARCHIVO 300MB</b>
         </div>
 
         <div class="mb-3">

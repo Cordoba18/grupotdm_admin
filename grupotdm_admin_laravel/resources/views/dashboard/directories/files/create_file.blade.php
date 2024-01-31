@@ -42,14 +42,15 @@
   <div class="mb-3">
     <label for="formFile" class="form-label">Subir un archivo</label>
     <input required class="form-control" type="file" id="formFile" name="file">
+    <b style="color: red; font-weight: bold; font-size: 17px">TAMAÑO MAXIMO DE ARCHIVO 300MB</b>
   </div>
   <div class="mb-3">
-  <div class="content_buttons" style="display: flex">
-    <button class="btn btn-success" style="margin-right: 10px">Crear archivo</button>
+  <div class="content_buttons" style="display: flex; flex-wrap: wrap">
+    <button class="btn btn-success" style="margin-right: 5px; width: 100%;">Crear archivo</button>
 </form>
-<form action="{{ route('dashboard.view_directory') }}" method="get">
+<form  style="width: 100%;" action="{{ route('dashboard.view_directory') }}" method="get">
     <input type="number" name="id" value="{{ $id_directory}}" hidden>
-    <button class="btn btn-primary">VOLVER</button>
+    <button  style="margin-right: 5px; width: 100%;" class="btn btn-primary">VOLVER</button>
 </form>
 </div>
 </div>
