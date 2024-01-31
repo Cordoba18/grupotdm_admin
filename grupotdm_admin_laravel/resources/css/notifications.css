@@ -21,12 +21,15 @@
     background-color: #FFF5C2;
     animation: animation_notification 1s;
     transition: all 1s;
-
+    box-shadow:  0px 10px 10px black;
+    border: 10px solid black;
 }
 
 .content_notifications .notifications{
     overflow-y: auto;
     max-height: 400px;
+    border: 2px solid black;
+    box-shadow:  0px 10px 10px black;
 }
 .content_notifications .content_btn_close_notifications{
     width: 100%;
