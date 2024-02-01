@@ -192,7 +192,13 @@ input_validate_users.forEach(input_validate_user => {
            if (response['users']) {
             id_user_receives.innerHTML = "";
             response['users'].forEach(user => {
-                id_user_receives.innerHTML = id_user_receives.innerHTML + "<option value='"+user['id']+"'> "+user['name']+"</option>"
+                const adreess = user['shop'];
+                if (adreess) {
+                    id_user_receives.innerHTML = id_user_receives.innerHTML + "<option value='"+user['id']+"'> "+user['name']+ " | " +adreess +"</option>";
+                }else{
+                    id_user_receives.innerHTML = id_user_receives.innerHTML + "<option value='"+user['id']+"'> "+user['name']+ " | SIN UBICACIÓN" +"</option>";
+                }
+
             });
            }
 

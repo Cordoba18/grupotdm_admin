@@ -178,7 +178,7 @@ public function view_product($id){
         $product = Product::find($id);
         $state = DB::selectOne("SELECT s.state FROM products p INNER JOIN states s ON p.id_state = s.id WHERE p.id = $id")->state;
         $user_create_product = DB::selectOne("SELECT u.id, u.name FROM users u WHERE u.id = $product->id_user");
-        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id");
+        $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
         $reports_product = Report_Product::orderBy('id', 'desc')->where('id_product','=',$id)->get();
         return view('dashboard.inventories.view_products',compact('state','user_create_product','reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
 }

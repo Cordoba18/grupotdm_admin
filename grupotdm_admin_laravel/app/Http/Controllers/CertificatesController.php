@@ -124,7 +124,7 @@ class CertificatesController extends Controller
                 $product->id_state = 1;
                 $product->save();
                 $new_report_product->id_certificate = $id_certificate;
-                $new_report_product->report = "El producto ya NO se encuentra asignado al acta  con ID $id_certificate";
+                 $new_report_product->report = "El producto ya NO se encuentra asignado al acta  con ID $id_certificate";
                 $new_report_product->save();
             }
 
@@ -152,8 +152,8 @@ class CertificatesController extends Controller
         //Funcion que guarda las filas del certificado previo de ser creado
         public function save_rows_certificate(Request $request){
             $user = Auth::user();
-
-//Guardar fila
+            $certificate = Certificate::find($request->id_certificate);
+            //Guardar fila
             $new_rows_certificate = new Row_Certificate();
             $new_rows_certificate->id_product = $request->id_product;
             $new_rows_certificate->id_certificate = $request->id_certificate;
@@ -168,7 +168,13 @@ class CertificatesController extends Controller
             $new_report_product = new Report_product();
             $new_report_product->id_product = $request->id_product;
             $new_report_product->id_certificate = $request->id_certificate;
-            $new_report_product->report = "El producto se encuentra pendiente asignado al acta  con ID $request->id_certificate  para la direcciòn $certificate->address";
+            if ($certificate->name_user_receives) {
+                $new_report_product->report = "El producto se encuentra pendiente asignado al acta  con ID $request->id_certificate  para la direcciòn $certificate->address para el usuario $certificate->name_user_receives";
+            }else{
+                $user_receives = User::find($certificate->id_user_receives);
+                $new_report_product->report = "El producto se encuentra pendiente asignado al acta  con ID $request->id_certificate  para la direcciòn $certificate->address para el usuario $user_receives->name";
+            }
+
             $new_report_product->save();
             //Responder al archivo JS
             return response()->json(['message'=> true],200);
@@ -177,7 +183,9 @@ class CertificatesController extends Controller
             //Funcion que busca los usuario del area que no esten inactivos y retorna al archivo JS los usuarios
             public function get_users_areas($id){
 
-                $users = DB::select("SELECT * FROM users WHERE id_area = $id AND id_state <> 2");
+                $users = DB::select("SELECT u.id, u.name, s.shop FROM users u
+                LEFT JOIN shops s ON u.id_shop = s.id
+                 WHERE id_area = $id AND id_state <> 2");
                 return response()->json(['users' => $users], 200);
             }
 
@@ -300,7 +308,13 @@ public function state_certificate(Request $request){
 
             $product->save();
             $new_report_product->id_certificate = $id_certificate;
-            $new_report_product->report = "El producto asociado al acta con ID $certificate->id con destino a $certificate->address esta en estado $state_certificate";
+            if ($certificate->name_user_receives) {
+                $new_report_product->report = "El producto asociado al acta con ID $certificate->id con destino a $certificate->address para el usuario $certificate->name_user_receives esta en estado $state_certificate";
+            }else{
+                $user_receives = User::find($certificate->id_user_receives);
+                $new_report_product->report = "El producto asociado al acta con ID $certificate->id con destino a $certificate->address para el usuario $user_receives->name esta en estado $state_certificate";
+            }
+
             $new_report_product->save();
         }
 
@@ -328,7 +342,7 @@ public function state_certificate(Request $request){
      }
     }
 
-    //funcion que sirve para dar entrada de activos
+    //funcion que sirve para dar entrada de activos por una peticion enviada desde el correo
     public function accept_certificate(Request $request){
         if($request->id_certificate){
             $id_certificate = $request->id_certificate;
@@ -358,7 +372,14 @@ public function state_certificate(Request $request){
                 $product->save();
                 $new_report_product->id_product = $r->id_product;
                 $new_report_product->id_certificate = $id_certificate;
-                $new_report_product->report = "El producto asociado al acta con ID $certificate->id y fecha $certificate->address esta en estado $state_certificate";
+                if ($certificate->name_user_receives) {
+                    $new_report_product->report = "El producto asociado al acta con ID $certificate->id con destino $certificate->address para el usuario $certificate->name_user_receives esta en estado $state_certificate";
+                }else{
+                    $user_receives = User::find($certificate->id_user_receives);
+                    $new_report_product->report = "El producto asociado al acta con ID $certificate->id con destino a $certificate->address para el usuario $user_receives->name esta en estado $state_certificate";
+                }
+
+                $new_report_product->report = "El producto asociado al acta con ID $certificate->id y direccion $certificate->address esta en estado $state_certificate";
                 $new_report_product->save();
             }
             //notificar

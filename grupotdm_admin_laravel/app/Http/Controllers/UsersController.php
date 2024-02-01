@@ -62,10 +62,10 @@ class UsersController extends Controller
 }
 $users = DB::select("SELECT u.id, u.name, u.nit, u.email,c.company, s.state, a.area, ch.chargy, u.id_state
 FROM users u
-INNER JOIN companies c ON u.id_company = c.id
+LEFT JOIN companies c ON u.id_company = c.id
 INNER JOIN states s ON u.id_state = s.id
-INNER JOIN areas a ON u.id_area = a.id
-INNER JOIN charges ch ON u.id_chargy = ch.id $sql");
+LEFT JOIN areas a ON u.id_area = a.id
+LEFT JOIN charges ch ON u.id_chargy = ch.id $sql");
     return $users;
 }
 
