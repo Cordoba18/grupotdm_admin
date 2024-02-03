@@ -8,6 +8,7 @@ use App\Http\Controllers\DirectoriesController;
 use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ServerController;
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RecoveryPasswordController;
@@ -134,3 +135,7 @@ Route::get('/dashboard/inventories/create/get_serie', [InventoriesController::cl
 
 Route::post('/dashboard/get_notifications', [NotificationController::class, 'get_notifications'])->name('dashboard.get_notifications');
 Route::post('/dashboard/view_notification', [NotificationController::class, 'view_notification'])->name('dashboard.view_notification');
+
+Route::get('/dashboard/serves', [ServerController::class, 'show_servers'])->name('dashboard.serves');
+Route::get('/dashboard/serves/create', [ServerController::class, 'create_server'])->name('dashboard.serves.create');
+Route::post('/dashboard/serves/create/save', [ServerController::class, 'save_server'])->name('dashboard.serves.create.save');

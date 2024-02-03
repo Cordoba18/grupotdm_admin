@@ -313,6 +313,21 @@ return [
             'url'  => 'dashboard/inventories',
             'icon' => 'fas fa-solid fa-paperclip',
         ],
+        [
+            'text' => 'VPNS',
+            'url'  => 'dashboard/',
+            'icon' => 'fas fa-solid fa-key',
+        ],
+        [
+            'text' => 'Canales de internet',
+            'url'  => 'dashboard/',
+            'icon' => 'fas fa-solid fa-wifi',
+        ],
+        [
+            'text' => 'Servidores',
+            'url'  => 'dashboard/serves',
+            'icon' => 'fas fa-solid fa-server',
+        ],
         ['header' => 'ARCHIVOS'],
         [
             'text' => 'Directorios',
