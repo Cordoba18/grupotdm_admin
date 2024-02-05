@@ -15,13 +15,11 @@
 <div class="content_loading" hidden>
 
 </div>
-<h1>SERVIDORES</h1>
+<h1>IP's LINUX DIRECTIONS</h1>
 <br>
 
-<a href="{{  route('dashboard.servers.create') }}" class="btn btn-dark" id="btn_create_server">CREAR UN SERVIDOR <i class="bi bi-hdd-rack"></i></a>
-<a href="{{ route('dashboard.servers.sql_licenses') }}" class="btn btn-light" id="btn_sql_licenses">LICENCIAS SQL <i class="bi bi-filetype-sql"></i></a>
-<a href="{{  route('dashboard.servers.ip_linux_directions') }}" class="btn btn-light" id="btn_ip_linux_directions">DIRECCIONES IP LINUX <i class="bi bi-clipboard2-pulse"></i></a>
-<br>
+<a href="{{ route('dashboard.servers.ip_linux_directions.create_ip_linux_directions') }}" class="btn btn-dark" id="btn_create_server">CREAR UN DIRECCIÓN IP LINUX  <i class="bi bi-clipboard2-data"></i></a>
+
 <br>
 @if (session('message'))
 
@@ -74,31 +72,7 @@
 
 @section('content')
 
-<table id="miTabla" class="table table-bordered table-striped dataTable">
 
-    <thead class="table">
-        <th>ESTADO</th>
-        <th>IP</th>
-        <th>NOMBRE</th>
-        <th>ACCIÓN</th>
-    </thead>
-
-    <tbody>
-        @foreach ($servers as $s)
-        <tr>
-
-            <td style="font-size: 30px;">@if($s->id_state == 1)
-                <i class="bi bi-wifi" style="color: green;"></i>
-                @else
-                <i class="bi bi-wifi-off" style="color: red;"></i>
-            @endif</td>
-            <td>{{ $s->ip }}</td>
-            <td>{{ $s->name }}</td>
-            <td><a href="{{ route('dashboard.servers.view', $s->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
-        </tr>
-        @endforeach
-         </tbody>
-</table>
 
 
 @stop

@@ -325,7 +325,7 @@ return [
         ],
         [
             'text' => 'Servidores',
-            'url'  => 'dashboard/serves',
+            'url'  => 'dashboard/servers',
             'icon' => 'fas fa-solid fa-server',
         ],
         ['header' => 'ARCHIVOS'],

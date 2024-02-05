@@ -1,0 +1,31 @@
+.content_server_principal{
+
+    display: flex;
+    height: 100%;
+
+}
+
+.content_server_principal .content_left,.content_server_principal .content_right{
+    width: 50%;
+    padding: 10px;
+
+}
+
+
+
+@media (max-width:600px){
+
+    .content_server_principal{
+
+
+        flex-wrap: wrap;
+
+
+
+    }
+    .content_server_principal .content_left,.content_server_principal .content_right{
+        width: 100%;
+        padding: 0;
+    }
+
+}

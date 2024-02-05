@@ -136,6 +136,20 @@ Route::get('/dashboard/inventories/create/get_serie', [InventoriesController::cl
 Route::post('/dashboard/get_notifications', [NotificationController::class, 'get_notifications'])->name('dashboard.get_notifications');
 Route::post('/dashboard/view_notification', [NotificationController::class, 'view_notification'])->name('dashboard.view_notification');
 
-Route::get('/dashboard/serves', [ServerController::class, 'show_servers'])->name('dashboard.serves');
-Route::get('/dashboard/serves/create', [ServerController::class, 'create_server'])->name('dashboard.serves.create');
-Route::post('/dashboard/serves/create/save', [ServerController::class, 'save_server'])->name('dashboard.serves.create.save');
+Route::get('/dashboard/servers', [ServerController::class, 'show_servers'])->name('dashboard.servers');
+Route::get('/dashboard/servers/create', [ServerController::class, 'create_server'])->name('dashboard.servers.create');
+Route::post('/dashboard/servers/create/save', [ServerController::class, 'save_server'])->name('dashboard.servers.create.save');
+Route::get('/dashboard/servers/view/{id}', [ServerController::class, 'view_server'])->name('dashboard.servers.view');
+Route::post('/dashboard/servers/view/save_changes', [ServerController::class, 'save_changes_server'])->name('dashboard.servers.view.save_changes');
+Route::post('/dashboard/servers/view/change_state', [ServerController::class, 'change_state_server'])->name('dashboard.servers.view.change_state_server');
+Route::post('/dashboard/servers/view/add_sql_licenses_server', [ServerController::class, 'add_sql_licenses_server'])->name('dashboard.servers.view.add_sql_licenses_server');
+Route::post('/dashboard/servers/view/delete_sql_licenses_server', [ServerController::class, 'delete_sql_licenses_server'])->name('dashboard.servers.view.delete_sql_licenses_server');
+
+Route::get('/dashboard/servers/sql_licenses', [ServerController::class, 'show_sql_licenses'])->name('dashboard.servers.sql_licenses');
+Route::get('/dashboard/servers/sql_licenses/create', [ServerController::class, 'create_sql_licenses'])->name('dashboard.servers.sql_licenses.create');
+Route::post('/dashboard/servers/sql_licenses/create/save', [ServerController::class, 'save_sql_licenses'])->name('dashboard.servers.sql_licenses.create.save');
+Route::post('/dashboard/servers/sql_licenses/delete', [ServerController::class, 'delete_sql_licenses'])->name('dashboard.servers.sql_licenses.delete');
+
+
+Route::get('/dashboard/servers/ip_linux_directions', [ServerController::class, 'show_ip_linux_directions'])->name('dashboard.servers.ip_linux_directions');
+Route::get('/dashboard/servers/ip_linux_directions/create', [ServerController::class, 'create_ip_linux_directions'])->name('dashboard.servers.ip_linux_directions.create_ip_linux_directions');

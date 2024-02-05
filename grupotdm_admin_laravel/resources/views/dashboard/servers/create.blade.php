@@ -9,12 +9,14 @@
     $user = Auth::user();
 @endphp
 @section('content_header')
+<div class="content_loading" hidden>
 
+</div>
 <h1>CREAR SERVIDOR</h1>
 <br>
-@if (session('message'))
+@if (session('message_error'))
 
-              <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
+              <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
 
          @endif
 
@@ -23,7 +25,7 @@
 
 @section('content')
 
-<form id="miFormulario" action="{{ route('dashboard.serves.create.save') }}" method="post">
+<form id="miFormulario" action="{{ route('dashboard.servers.create.save') }}" method="post">
     @csrf
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Nombre/Descripción</label>
@@ -38,10 +40,7 @@
     <label for="exampleFormControlInput1" class="form-label">Servicio</label>
     <input type="text" required name="service" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del servidor" value="">
   </div>
-  <div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">Observaciones</label>
-    <textarea  required class="form-control" id="observations" rows="3" name="observations" placeholder="Ingrese obsercaciones del servidor" maxlength="500"></textarea>
-  </div>
+
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">RAM</label>
     <input type="text" required name="RAM" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese RAM del servidor" value="">
@@ -49,7 +48,7 @@
 
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">vCPU</label>
-    <input type="text" required name="vCPU" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del servidor" value="">
+    <input type="text" required name="vcpu" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del servidor" value="">
   </div>
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Total DD</label>
@@ -58,7 +57,7 @@
 
   <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">IP</label>
-    <input type="text" required name="ip" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese ip del servidor" value="">
+    <input type="text"  required name="ip" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese ip del servidor" value="">
   </div>
 
   <div class="mb-3">
@@ -69,6 +68,12 @@
     <label for="exampleFormControlInput1" class="form-label">SPLA_EXCEL</label>
     <input type="text" required name="SPLA_EXCEL" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese ip del servidor" value="">
   </div>
+
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Observaciones</label>
+    <textarea  required class="form-control" id="observations" rows="3" name="observations" placeholder="Ingrese obsercaciones del servidor" maxlength="500"></textarea>
+  </div>
+
   <button class="btn btn-primary" style="margin-bottom: 30px; width: 100%;">GUARDAR SERVIDOR  <i class="bi bi-floppy"></i></button>
 </form>
   @stop

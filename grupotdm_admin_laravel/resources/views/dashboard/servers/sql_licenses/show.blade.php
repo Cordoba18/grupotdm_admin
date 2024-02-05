@@ -3,6 +3,8 @@
 @section('title', 'GRUPO TDM')
 @section('css')
 @vite('resources/css/content_loading.css')
+@vite('resources/css/sql_licenses.css')
+
 <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
@@ -15,12 +17,10 @@
 <div class="content_loading" hidden>
 
 </div>
-<h1>SERVIDORES</h1>
+<h1>LICENCIAS SQL</h1>
 <br>
 
-<a href="{{  route('dashboard.servers.create') }}" class="btn btn-dark" id="btn_create_server">CREAR UN SERVIDOR <i class="bi bi-hdd-rack"></i></a>
-<a href="{{ route('dashboard.servers.sql_licenses') }}" class="btn btn-light" id="btn_sql_licenses">LICENCIAS SQL <i class="bi bi-filetype-sql"></i></a>
-<a href="{{  route('dashboard.servers.ip_linux_directions') }}" class="btn btn-light" id="btn_ip_linux_directions">DIRECCIONES IP LINUX <i class="bi bi-clipboard2-pulse"></i></a>
+<a href="{{  route('dashboard.servers.sql_licenses.create') }}" class="btn btn-dark" id="btn_create_sql_license">CREAR LICENCIA SQL <i class="bi bi-hdd-rack"></i></a>
 <br>
 <br>
 @if (session('message'))
@@ -74,32 +74,26 @@
 
 @section('content')
 
-<table id="miTabla" class="table table-bordered table-striped dataTable">
 
-    <thead class="table">
-        <th>ESTADO</th>
-        <th>IP</th>
-        <th>NOMBRE</th>
-        <th>ACCIÓN</th>
-    </thead>
+<div class="content_sql_licenses">
 
-    <tbody>
-        @foreach ($servers as $s)
-        <tr>
+    @foreach ($sql_licenses as $s)
+    <div class="content_sql_license">
+        <div class="content_header_sql_license">
+            <i class="bi bi-filetype-sql"></i>
+        </div>
+        <div class="content_fooder_sql_license">
+            <p> {{ $s->name }}</p>
+            <form action="{{ route('dashboard.servers.sql_licenses.delete') }}" method="post" onsubmit="return confirmarEnvio()">
+                @csrf
 
-            <td style="font-size: 30px;">@if($s->id_state == 1)
-                <i class="bi bi-wifi" style="color: green;"></i>
-                @else
-                <i class="bi bi-wifi-off" style="color: red;"></i>
-            @endif</td>
-            <td>{{ $s->ip }}</td>
-            <td>{{ $s->name }}</td>
-            <td><a href="{{ route('dashboard.servers.view', $s->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
-        </tr>
-        @endforeach
-         </tbody>
-</table>
-
+                <input type="number" hidden value="{{ $s->id }}" name="id_sql_license">
+                <button class="btn btn-danger"> ELIMINAR <i class="bi bi-trash"></i></button>
+            </form>
+        </div>
+    </div>
+    @endforeach
+</div>
 
 @stop
 
@@ -110,10 +104,17 @@
 <script>
 var route_view_user = "{{ route('dashboard.users.view_user', 0) }}".slice(0, -1);
 
+function confirmarEnvio() {
+      // Mostrar un mensaje de confirmación
+      var confirmacion = confirm("¿Estás seguro de eliminar esa licencia SQL?");
+
+      // Si el usuario hace clic en "Aceptar", el formulario se enviará
+      return confirmacion;
+  }
 </script>
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
 
-<script>
+{{-- <script>
     $(document).ready(function() {
       $('#miTabla').DataTable({
         "paging": true,  // Habilita la paginación
@@ -125,6 +126,6 @@ var route_view_user = "{{ route('dashboard.users.view_user', 0) }}".slice(0, -1)
 
       });
     });
-  </script>
+  </script> --}}
 @stop
 @extends('layouts.content_notifications')

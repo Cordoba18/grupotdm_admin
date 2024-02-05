@@ -24,7 +24,7 @@ class RegisterController extends Controller
 
     //Funcion que permite validar si el correo ya existe
     public function validate_email(Request $request){
-        if (DB::select("SELECT * FROM users WHERE email = '$request->email'")) {
+        if (DB::select("SELECT * FROM users WHERE email = '$request->email' AND id_state = 1")) {
             return response()->json(['message' => true], 200);
         }else{
             //Eliminamos el codigo del usuario en caso de que haya y creamos uno nuevo finalizar creacion
@@ -49,7 +49,12 @@ public static function randNumer() {
 //Funcion que me permite registrar un nuevo usuario y dar una respuesta afirmativa para un archivo JS
 function new_user(Request $request){
 
-    $user = new User();
+    $user = DB::selectOne("SELECT * FROM users WHERE email = '$request->email' AND id_state = 2");
+    if ($user) {
+        $user = User::find($user->id);
+    }else{
+        $user = new User();
+    }
     $user->name = $request->name;
     $user->email = $request->email;
     $user->nit= $request->nit;
@@ -62,11 +67,12 @@ function new_user(Request $request){
     $user->id_chargy = $id_chargy->id;
     $company = DB::selectOne("SELECT c.company FROM companies c WHERE c.id = $request->id_company");
     $area = DB::selectOne("SELECT a.area FROM areas a WHERE a.id = $request->id_area");
+    $user->save();
     // enviamos el correo al administrador
     Mail::to("soporte@eltemplodelamoda.com.co")->send(new Notification($request->name, $request->email ,  $company->company, $area->area));
     //notificamos al administrador
     NotificationController::create_notification("El usuario $user->email esta esperando que lo ACTIVES", 2 , route('dashboard.users'));
-    $user->save();
+
     return response()->json(['message' => true], 200);
 
 }
