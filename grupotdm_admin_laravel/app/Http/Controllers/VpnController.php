@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\VpnExport;
 use App\Mail\Create_vpn;
 use App\Models\Area;
 use App\Models\Ip_linux_direction;
@@ -11,6 +12,7 @@ use App\Models\Vpn_server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VpnController extends Controller
 {
@@ -185,5 +187,10 @@ class VpnController extends Controller
         }
         $vpn->save();
         return redirect()->route('dashboard.vpns.view', $request->id_vpn)->with("message","Accion realizada con exito!");
+    }
+
+    //funcion que me permite exportar las vpns en un excel
+    public function export(){
+        return Excel::download(new VpnExport, "Vpns_GRUPO_TDM.xlsx");
     }
 }

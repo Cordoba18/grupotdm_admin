@@ -145,7 +145,7 @@ Route::post('/dashboard/servers/view/save_changes', [ServerController::class, 's
 Route::post('/dashboard/servers/view/change_state', [ServerController::class, 'change_state_server'])->name('dashboard.servers.view.change_state_server');
 Route::post('/dashboard/servers/view/add_sql_licenses_server', [ServerController::class, 'add_sql_licenses_server'])->name('dashboard.servers.view.add_sql_licenses_server');
 Route::post('/dashboard/servers/view/delete_sql_licenses_server', [ServerController::class, 'delete_sql_licenses_server'])->name('dashboard.servers.view.delete_sql_licenses_server');
-
+Route::get('/dashboard/servers/export', [ServerController::class, 'export'])->name('dashboard.servers.export');
 Route::get('/dashboard/servers/sql_licenses', [ServerController::class, 'show_sql_licenses'])->name('dashboard.servers.sql_licenses');
 Route::get('/dashboard/servers/sql_licenses/create', [ServerController::class, 'create_sql_licenses'])->name('dashboard.servers.sql_licenses.create');
 Route::post('/dashboard/servers/sql_licenses/create/save', [ServerController::class, 'save_sql_licenses'])->name('dashboard.servers.sql_licenses.create.save');
@@ -166,3 +166,4 @@ Route::post('/dashboard/vpns/save_changes', [VpnController::class, 'save_changes
 Route::post('/dashboard/vpns/view/change_state', [VpnController::class, 'change_state_vpn'])->name('dashboard.vpns.view.change_state');
 Route::post('/dashboard/vpns/view/add_ip_linux_direction', [VpnController::class, 'add_ip_linux_direction'])->name('dashboard.vpns.view.add_ip_linux_direction');
 Route::post('/dashboard/vpns/view/delete_ip_linux_direction', [VpnController::class, 'delete_ip_linux_direction'])->name('dashboard.vpns.view.delete_ip_linux_direction');
+Route::get('/dashboard/vpns/export', [VpnController::class, 'export'])->name('dashboard.vpns.export');

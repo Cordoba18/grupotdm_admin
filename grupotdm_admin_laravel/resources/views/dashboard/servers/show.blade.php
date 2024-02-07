@@ -22,6 +22,7 @@
 <a href="{{  route('dashboard.servers.create') }}" class="btn btn-dark" id="btn_create">CREAR UN SERVIDOR <i class="bi bi-hdd-rack"></i></a>
 <a href="{{ route('dashboard.servers.sql_licenses') }}" class="btn btn-light" id="btn_create">LICENCIAS SQL <i class="bi bi-filetype-sql"></i></a>
 <a href="{{  route('dashboard.servers.ip_linux_directions') }}" class="btn btn-light" id="btn_create">DIRECCIONES IP LINUX <i class="bi bi-clipboard2-pulse"></i></a>
+<a href="{{ route('dashboard.servers.export') }}" class="btn btn-success" id="btn_create">EXPORTAR EN EXCEL <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
 <br>
 <br>
 @if (session('message'))

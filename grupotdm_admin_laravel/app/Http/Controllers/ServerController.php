@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ServerExport;
 use App\Models\Area;
 use App\Models\Ip_linux_direction;
 use App\Models\Server;
@@ -13,6 +14,7 @@ use App\Models\Vpn_server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ServerController extends Controller
 {
@@ -322,4 +324,8 @@ class ServerController extends Controller
         return redirect()->route('dashboard.servers.ip_linux_directions')->with('message','DIRECCIÓN IP LINUX eliminado con exito!');
     }
 
+    //funcion que me permite exportar los servidores en un excel
+    public function export(){
+        return Excel::download(new ServerExport, "Servidores_GRUPO_TDM.xlsx");
+    }
 }

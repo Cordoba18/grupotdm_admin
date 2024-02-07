@@ -19,6 +19,8 @@
 <br>
 
 <a href="{{  route('dashboard.vpns.create') }}" class="btn btn-dark" id="btn_create_vpn">CREAR UNA NUEVA LLAVE VPN  <i class="bi bi-key-fill"></i></a>
+
+<a href="{{ route('dashboard.vpns.export') }}" class="btn btn-success" id="btn_create_vpn">EXPORTAR EN EXCEL <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
 <br>
 <br>
 @if (session('message'))

@@ -63,6 +63,7 @@ animation: animation_key 0.5s infinite;
 
 #btn_create_vpn{
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .content_search{
