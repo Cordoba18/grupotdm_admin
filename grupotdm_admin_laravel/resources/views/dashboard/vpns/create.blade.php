@@ -12,40 +12,56 @@
 <div class="content_loading" hidden>
 
 </div>
-<h1 style="text-align: center">CREAR DIRECCION IP LINUX</h1>
+<h1>CREAR LLAVE VPN</h1>
 <br>
 @if (session('message_error'))
 
               <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
 
          @endif
+
+
 @stop
 
 @section('content')
 
-<form id="miFormulario" action="{{ route('dashboard.servers.ip_linux_directions.create_ip_linux_directions.save_ip_linux_directions') }}" method="post">
+<form id="miFormulario" action="{{ route('dashboard.vpns.create.save') }}" method="post" enctype="multipart/form-data">
     @csrf
 <div class="mb-3">
-    <label style="text-align: center; width: 100%" for="exampleFormControlInput1" class="form-label">IP</label>
-    <input style="text-align: center" type="text" required name="ip" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese dirección ip" maxlength="15">
+    <label for="exampleFormControlInput1" class="form-label">Nombre/Descripción</label>
+    <input type="text" required name="name" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del servidor" value="">
+  </div>
+
+
+  <div class="mb-3">
+    <label for="formFile" class="form-label">Subir un archivo</label>
+    <input required class="form-control" type="file" id="formFile" name="file">
+  </div>
+
+  <div class="mb-3">
+    <label for="formFile" class="form-label">AREA DEL USUARIO</label>
+    <select name="" id="id_area_user" style="width: 100%;border: 0; padding: 10px" required>
+        <option value="">Seleccione un area</option>
+        @foreach ($areas as $a)
+        <option value="{{ $a->id }}">{{ $a->area }}</option>
+        @endforeach
+    </select>
   </div>
   <div class="mb-3">
-    <label style="text-align: center; width: 100%;" for="formFile" class="form-label">AGREGAR SERVIDOR</label>
-        <select name="id_server" id="id_server" style="width: 100%;border: 0; padding: 10px; text-align: center;" required>
-            <option value="">Seleccione un servidor</option>
-            @foreach ($servers as $s)
-            <option value="{{ $s->id }}">{{ $s->name }} | {{ $s->ip }}</option>
-            @endforeach
-        </select>
+    <label for="formFile" class="form-label">USUARIO</label>
+    <select name="id_user" id="id_user" style="width: 100%;border: 0; padding: 10px" required>
+        <option value="">Seleccione un area</option>
+    </select>
   </div>
-  <button class="btn btn-primary" style="margin-bottom: 10px; width: 100%;">GUARDAR IP LINUX  <i class="bi bi-floppy"></i></button>
-  <a href="{{ route('dashboard.servers.ip_linux_directions') }}" class="btn btn-light" style="margin-bottom: 30px; width: 100%;">VOLVER  <i class="bi bi-arrow-return-left"></i></a>
+  <button class="btn btn-primary" style="margin-bottom: 30px; width: 100%;">GUARDAR SERVIDOR  <i class="bi bi-floppy"></i></button>
 </form>
   @stop
 
 
 
 @section('js')
+
+@vite('resources/js/vpn.js')
 
 <script>
 
@@ -64,7 +80,6 @@
             });
 
             function validarFormulario() {
-
                 return true;
             }
         });

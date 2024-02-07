@@ -14,6 +14,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RecoveryPasswordController;
 use App\Http\Controllers\Mails_Controller;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\VpnController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -153,3 +154,15 @@ Route::post('/dashboard/servers/sql_licenses/delete', [ServerController::class, 
 
 Route::get('/dashboard/servers/ip_linux_directions', [ServerController::class, 'show_ip_linux_directions'])->name('dashboard.servers.ip_linux_directions');
 Route::get('/dashboard/servers/ip_linux_directions/create', [ServerController::class, 'create_ip_linux_directions'])->name('dashboard.servers.ip_linux_directions.create_ip_linux_directions');
+Route::post('/dashboard/servers/ip_linux_directions/create/save', [ServerController::class, 'save_ip_linux_directions'])->name('dashboard.servers.ip_linux_directions.create_ip_linux_directions.save_ip_linux_directions');
+Route::post('/dashboard/servers/ip_linux_directions/delete', [ServerController::class, 'delete_ip_linux_directions'])->name('dashboard.servers.ip_linux_directions.delete_ip_linux_directions');
+
+
+Route::get('/dashboard/vpns', [VpnController::class, 'show_vpns'])->name('dashboard.vpns');
+Route::get('/dashboard/vpns/create', [VpnController::class, 'create_vpn'])->name('dashboard.vpns.create');
+Route::post('/dashboard/vpns/create/save', [VpnController::class, 'save_vpn'])->name('dashboard.vpns.create.save');
+Route::get('/dashboard/vpns/view/{id}', [VpnController::class, 'view_vpn'])->name('dashboard.vpns.view');
+Route::post('/dashboard/vpns/save_changes', [VpnController::class, 'save_changes_vpn'])->name('dashboard.vpns.save_changes');
+Route::post('/dashboard/vpns/view/change_state', [VpnController::class, 'change_state_vpn'])->name('dashboard.vpns.view.change_state');
+Route::post('/dashboard/vpns/view/add_ip_linux_direction', [VpnController::class, 'add_ip_linux_direction'])->name('dashboard.vpns.view.add_ip_linux_direction');
+Route::post('/dashboard/vpns/view/delete_ip_linux_direction', [VpnController::class, 'delete_ip_linux_direction'])->name('dashboard.vpns.view.delete_ip_linux_direction');

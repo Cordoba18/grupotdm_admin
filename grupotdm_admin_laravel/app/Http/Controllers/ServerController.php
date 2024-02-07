@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Ip_linux_direction;
 use App\Models\Server;
 use App\Models\Server_sql_license;
 use App\Models\Sql_license;
 use App\Models\User;
+use App\Models\Vpn;
+use App\Models\Vpn_server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -35,11 +38,42 @@ class ServerController extends Controller
     public function show_servers(Request $request){
         ServerController::validate_user();
         //retornamos la vista con los servidores a mostrar
-        $servers =  Server::all();
+        $search = $request->search;
+        $filter= $request->filter;
 
+        if ($request->search && $request->filter) {
+            $servers = DB::select("SELECT * FROM servers
+            WHERE (name LIKE '%$request->search%' OR
+             OS LIKE '%$request->search%' OR
+             service LIKE '%$request->search%' OR
+             observations LIKE '%$request->search%' OR
+             RAM LIKE '%$request->search%' OR
+             vcpu LIKE '%$request->search%' OR
+             totaldd LIKE '%$request->search%' OR
+             ip LIKE '%$request->search%' OR
+             SPLA_RDP_TS LIKE '%$request->search%' OR
+             SPLA_EXCEL LIKE '%$request->search%') AND id_state = $request->filter");
+        }else if($request->search){
+            $servers = DB::select("SELECT * FROM servers
+            WHERE name LIKE '%$request->search%' OR
+             OS LIKE '%$request->search%' OR
+             service LIKE '%$request->search%' OR
+             observations LIKE '%$request->search%' OR
+             RAM LIKE '%$request->search%' OR
+             vcpu LIKE '%$request->search%' OR
+             totaldd LIKE '%$request->search%' OR
+             ip LIKE '%$request->search%' OR
+             SPLA_RDP_TS LIKE '%$request->search%' OR
+             SPLA_EXCEL LIKE '%$request->search%'");
+        }else if($request->filter){
+            $servers = DB::select("SELECT * FROM servers
+            WHERE id_state = $request->filter");
+        }else{
+            $servers =  Server::all();
+        }
+        $filters = DB::select("SELECT * FROM states WHERE id = 1 OR id=2");
 
-
-        return view('dashboard.servers.show', compact('servers'));
+        return view('dashboard.servers.show', compact('servers','search','filters','filter'));
 
     }
 
@@ -127,10 +161,17 @@ class ServerController extends Controller
     }
 
     //funcion que me permite retornar la vista para ver las licencias sql
-    public function show_sql_licenses(){
+    public function show_sql_licenses(Request $request){
         ServerController::validate_user();
-        $sql_licenses = Sql_license::all()->where("id_state","=","1");
-        return view('dashboard.servers.sql_licenses.show',compact('sql_licenses'));
+        $search = $request->search;
+
+        if ($request->search ) {
+            $sql = "(name LIKE '%$request->search%') AND";
+        }else{
+            $sql ="";
+        }
+        $sql_licenses =DB::select("SELECT * FROM sql_licenses WHERE $sql id_state = 1");
+        return view('dashboard.servers.sql_licenses.show',compact('sql_licenses', 'search'));
 
     }
 
@@ -210,9 +251,21 @@ class ServerController extends Controller
     //funcion que me permite retornar la vista de la direcciones
     public function show_ip_linux_directions(Request $request){
 
-        $ip_linux_directions = Ip_linux_direction::all()->where('id_state','=','1');
+        $search = $request->search;
 
-        return view('dashboard.servers.ip_linux_directions.show', compact('ip_linux_directions'));
+        if ($request->search ) {
+            $sql = "(i.ip LIKE '%$request->search%' OR s.name LIKE '%$request->search%' OR s.ip LIKE '%$request->search%') AND";
+        }else{
+            $sql ="";
+        }
+
+        $ip_linux_directions = DB::select("SELECT s.name, i.ip, i.id FROM ip_linux_directions i
+        INNER JOIN servers s ON i.id_server = s.id
+        WHERE $sql i.id_state = 1");
+        $filters = DB::select("SELECT * FROM states WHERE id = 1 OR id=2");
+
+
+        return view('dashboard.servers.ip_linux_directions.show', compact('ip_linux_directions','filters','search'));
 
     }
 
@@ -223,6 +276,50 @@ class ServerController extends Controller
 
         $servers = Server::all()->where('id_state','=','1');
         return view('dashboard.servers.ip_linux_directions.create', compact('servers'));
+    }
+
+    //funcion que me permite guardar una direccion ip linux
+
+    public function save_ip_linux_directions(Request $request){
+
+        $validation = Ip_linux_direction::where('id_server','=',"$request->id_server")
+        ->where("ip","=","$request->ip")
+        ->where("id_state","=","1")->first();
+
+        if ($validation) {
+            return redirect()->route('dashboard.servers.ip_linux_directions.create_ip_linux_directions')->with('message_error','El servidor ya tiene una asignación a esa DIRECCIÓN IP LINUX!');
+        }else{
+            $new_ip_linux_direction = new Ip_linux_direction();
+            $new_ip_linux_direction->ip = $request->ip;
+            $new_ip_linux_direction->id_server = $request->id_server;
+            $new_ip_linux_direction->id_state = 1;
+            $new_ip_linux_direction->save();
+            return redirect()->route('dashboard.servers.ip_linux_directions')->with('message','DIRECCIÓN IP LINUX creada con exito !');
+        }
+
+
+
+    }
+
+    //funcion que permite eliminar o desactivar una direccion ip linux
+    public function delete_ip_linux_directions(Request $request){
+
+        $ip_linux_direction = Ip_linux_direction::find($request->id_ip_linux_direction);
+
+        $ip_linux_direction->id_state = 2;
+        $ip_linux_direction->save();
+
+        $vpn_servers = Vpn_server::all()->where("id_ip_linux_direction","=","$request->id_ip_linux_direction");
+        foreach ($vpn_servers as $v) {
+            $vpn_server = Vpn_server::find($v->id);
+            $vpn_server->id_state = 2;
+            $vpn_server->save();
+
+        }
+
+
+
+        return redirect()->route('dashboard.servers.ip_linux_directions')->with('message','DIRECCIÓN IP LINUX eliminado con exito!');
     }
 
 }

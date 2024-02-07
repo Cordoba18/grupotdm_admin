@@ -315,7 +315,7 @@ return [
         ],
         [
             'text' => 'VPNS',
-            'url'  => 'dashboard/',
+            'url'  => 'dashboard/vpns',
             'icon' => 'fas fa-solid fa-key',
         ],
         [
