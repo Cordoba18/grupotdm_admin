@@ -2,6 +2,7 @@
 //importaciones
 namespace App\Http\Controllers;
 
+use App\Exports\Report_productExport;
 use App\Mail\create_product;
 use App\Models\Area;
 use App\Models\Image_product;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 //declarar clases
 class InventoriesController extends Controller
@@ -32,7 +34,8 @@ class InventoriesController extends Controller
         $filter = $request->filter;
         //verificamos existencias de busqueda o filtros
             if($request->search !== null && $request->filter !== null){
-                    $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+                    $sql = "
+                    INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
                     INNER JOIN states_certificates s ON p.id_state_certificate = s.id
                     INNER JOIN type_components t ON p.id_type_component = t.id
                     WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
@@ -40,7 +43,8 @@ class InventoriesController extends Controller
 
 
             }else if($request->search !== null){
-                $sql = "INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
+                $sql = "
+                INNER JOIN origins_certificates o ON p.id_origin_certificate = o.id
                 INNER JOIN states_certificates s ON p.id_state_certificate = s.id
                 INNER JOIN type_components t ON p.id_type_component = t.id
                 WHERE (p.id LIKE '%$request->search%' OR p.name LIKE '%$request->search%' OR p.serie LIKE '%$request->search%' OR p.brand LIKE '%$request->search%' OR p.accessories LIKE '%$request->search%' OR o.origin_certificate LIKE '%$request->search%' OR s.state_certificate LIKE '%$request->search%' OR t.type_component LIKE '%$request->search%')
@@ -55,7 +59,8 @@ class InventoriesController extends Controller
             }
 
 
-            $products = DB::select("SELECT p.id, p.name, p.serie, p.id_state FROM products p $sql ORDER BY p.id DESC");
+            $products = DB::select("SELECT p.id, p.name, p.serie, p.id_state, u.name as name_user, sh.shop FROM products p LEFT JOIN users u ON p.id_user = u.id
+            LEFT JOIN shops sh ON u.id_shop = sh.id $sql ORDER BY p.id DESC");
 
             $reports = Report_product::orderBy('id', 'desc')->get();
 
@@ -291,4 +296,8 @@ public function delete_image_product(Request $request){
         return redirect()->route('dashboard.inventories.view_product.images_product', $id_product)->with('message','Imagen eliminada con exito');
 }
 
+  //funcion que me permite exportar los productos con su ultimo reporte en un excel
+  public function export(){
+    return Excel::download(new Report_productExport, "Reportes_Inventario_GRUPO_TDM.xlsx");
+}
 }

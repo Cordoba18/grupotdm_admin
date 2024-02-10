@@ -5,7 +5,7 @@
 @vite('resources/css/content_loading.css')
 <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-@vite('resources/css/vpns.css')
+
 
 @stop
 @php
@@ -15,12 +15,12 @@
 <div class="content_loading" hidden>
 
 </div>
-<h1>LLAVES VPN</h1>
+<h1>CANALES DE INTERNET</h1>
 <br>
 
-<a href="{{  route('dashboard.vpns.create') }}" class="btn btn-dark" id="btn_create_vpn">CREAR UNA NUEVA LLAVE VPN  <i class="bi bi-key-fill"></i></a>
+<a href="{{  route('dashboard.wifi_channels.create') }}" class="btn btn-dark" id="btn_create">CREAR UN CANAL DE INTERNET  <i class="bi bi-key-fill"></i></a>
 
-
+<a href="{{ route('dashboard.wifi_channels.export') }}" class="btn btn-success" id="btn_create">EXPORTAR EN EXCEL <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
 <br>
 <br>
 @if (session('message'))
@@ -30,7 +30,7 @@
          @endif
          <br>
          <div class="content_search">
-            <form action="{{ route('dashboard.vpns') }}" method="get">
+            <form action="{{ route('dashboard.wifi_channels') }}" method="get">
 
                 @if ($search)
                 <input type="text" name="search" placeholder="Buscar" id="Buscar licencias" value="{{ $search }}">
@@ -47,31 +47,8 @@
 @section('content')
 
 
-<div class="content_vpns">
-    @foreach ($vpns as $v)
 
-    <div class="content_vpn">
-        <div class="content_header">
-            <a href="{{ route('dashboard.vpns.view', $v->id) }}">
-                @if ($v->id_state == 1)
-                <i style="color: green" class="bi bi-key-fill"></i>
-                @else
-                <i style="color: red" class="bi bi-key-fill"></i>
-                @endif
 
-        </a>
-
-        </div>
-        <div class="content_fooder">
-
-            <b> {{ $v->name_vpn }}</b>
-
-            <p><a href="{{ route('dashboard.users.view_user', $v->id_user) }}">{{ $v->name_user }}</a></p>
-        </div>
-    </div>
-
-    @endforeach
-</div>
 
 @stop
 

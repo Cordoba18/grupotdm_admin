@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Vpn;
 use App\Models\Vpn_server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,6 +27,9 @@ class VpnController extends Controller
         //Funcion que me permite retornar la vista del apartado de las vpns
 
         public function show_vpns(Request $request){
+            if(VpnController::validate_user()){
+                return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Vpns"');
+           }
             $search = $request->search;
 
             if ($request->search ) {
@@ -45,7 +49,9 @@ class VpnController extends Controller
             //funcion que me permite retornar la vista para crear una nueva llave vpn
 
     public function create_vpn(){
-
+        if(VpnController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Vpns"');
+       }
         $areas = Area::all();
         return view('dashboard.vpns.create', compact('areas'));
     }
@@ -73,6 +79,9 @@ class VpnController extends Controller
                 $user = User::find($request->id_user);
                 //Enviamos el correo de notificacion
                 Mail::to($user->email)->send(new Create_vpn($user, $new_vpn));
+                //Generamos el reporte
+                $user = Auth::user();
+                ReportController::create_report("El usuario $user->email creo una nueva llave VPN con nombre $new_vpn->name", $user->id, 20);
                 return redirect()->route('dashboard.vpns')->with('message', "Llave VPN creada correctamente!");
             }else{
                 return redirect()->route('dashboard.vpns.create')->with('message_error', "No se selecciono un archivo valido!");
@@ -84,7 +93,9 @@ class VpnController extends Controller
 
         //funcion que me permite retornar una vista para ver el detalle de una llave vpn
         public function view_vpn($id){
-
+            if(VpnController::validate_user()){
+                return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Vpns"');
+           }
             $areas = Area::all();
             $vpn = Vpn::join('users', 'vpns.id_user','users.id')
             ->leftJoin('shops', 'users.id_shop','shops.id')
@@ -142,7 +153,9 @@ class VpnController extends Controller
                 }
             }
         }
-
+        //generamos el reporte
+        $user = Auth::user();
+        ReportController::create_report("El usuario $user->email modifico una llave VPN con nombre $vpn->name", $user->id, 20);
         $vpn->save();
         return redirect()->route('dashboard.vpns.view', $request->id_vpn)->with("message","Cambios Guardados con exito!");
 
@@ -164,15 +177,21 @@ class VpnController extends Controller
             $new_vpn_server->id_vpn = $request->id_vpn;
             $new_vpn_server->id_state = 1;
             $new_vpn_server->save();
+              //generamos el reporte
+        $user = Auth::user();
+        ReportController::create_report("El usuario $user->email agrego una direccion ip linux  ID #$request->id_ip_linux_direction a una LLave VPN", $user->id, 20);
             return redirect()->route('dashboard.vpns.view', $request->id_vpn)->with("message","La ip linux ha sido asignado correctamente a la llave VPN");
         }
     }
 
     //Funcion que me permite eliminar una direccion ip linux de una vpn
     public function delete_ip_linux_direction(Request $request){
-      $new_vpn_server = Vpn_server::find($request->id);
-      $new_vpn_server->id_state = 2;
-      $new_vpn_server->save();
+      $vpn_server = Vpn_server::find($request->id);
+      $vpn_server->id_state = 2;
+      $vpn_server->save();
+                    //generamos el reporte
+                    $user = Auth::user();
+                    ReportController::create_report("El usuario $user->email elimino la direccion ip linux ID # $vpn_server->id_ip_linux_direction de una LLave VPN", $user->id, 20);
       return redirect()->route('dashboard.vpns.view', $request->id_vpn)->with("message","La ip linux ha sido eliminada con exito!");
     }
 
@@ -185,6 +204,9 @@ class VpnController extends Controller
         } else {
             $vpn->id_state = 1;
         }
+          //generamos el reporte
+          $user = Auth::user();
+          ReportController::create_report("El usuario $user->email cambio el estado de La llave VPN con nombre $vpn->name", $user->id, 20);
         $vpn->save();
         return redirect()->route('dashboard.vpns.view', $request->id_vpn)->with("message","Accion realizada con exito!");
     }
@@ -193,4 +215,18 @@ class VpnController extends Controller
     public function export(){
         return Excel::download(new VpnExport, "Vpns_GRUPO_TDM.xlsx");
     }
+
+    //funcion que me permite validar si el usuario es de sistemas o no
+    public static function validate_user(){
+
+
+        $id_area = Auth::user()->id_area;
+
+        if ($id_area != 2 && $id_area != 1) {
+            return true;
+
+        }else{
+            return false;
+        }
+      }
 }

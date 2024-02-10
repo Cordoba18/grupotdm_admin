@@ -320,13 +320,19 @@ return [
         ],
         [
             'text' => 'Canales de internet',
-            'url'  => 'dashboard/',
+            'url'  => 'dashboard/wifi_channels',
             'icon' => 'fas fa-solid fa-wifi',
         ],
         [
             'text' => 'Servidores',
             'url'  => 'dashboard/servers',
             'icon' => 'fas fa-solid fa-server',
+        ],
+        ['header' => 'TESORERIA'],
+        [
+            'text' => 'Planillas',
+            'url'  => 'dashboard/spreadsheets',
+            'icon' => 'fas fa-solid fa-user-file',
         ],
         ['header' => 'ARCHIVOS'],
         [

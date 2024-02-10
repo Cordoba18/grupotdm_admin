@@ -35,13 +35,7 @@
 
     </div>
 
-    @if (session('message_error'))
 
-    <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
-
-
-
-@endif
 @stop
 
 @section('css')

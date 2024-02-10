@@ -21,6 +21,8 @@
          @endif
 
     <a href="{{ route('dashboard.inventories.create') }}" class="btn btn-dark" id="btn_create_product">CREAR PRODUCTO  <i class="bi bi-newspaper"></i></a>
+<BR></BR>
+    <a href="{{ route('dashboard.inventories.export') }}" class="btn btn-success" id="btn_create_product">EXPORTAR EN EXCEL <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
     <br><br>
 
     <div class="content_search">
@@ -99,6 +101,9 @@
         </div>
         <div>
             <p>Serial </p><b>{{ $p->serie }}</b>
+        </div>
+        <div>
+            <p>USUARIO Y UBICACIÓN DEL CREADOR </p><b>{{ $p->name_user }}|{{ $p->shop }}</b>
         </div>
         @php
             $validate_report = false;

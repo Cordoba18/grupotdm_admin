@@ -12,9 +12,10 @@ use App\Http\Controllers\ServerController;
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RecoveryPasswordController;
-use App\Http\Controllers\Mails_Controller;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SpreadsheetsController;
 use App\Http\Controllers\VpnController;
+use App\Http\Controllers\WifiChannelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -132,7 +133,7 @@ Route::post('/dashboard/inventories/view_product/images_product/save', [Inventor
 Route::post('/dashboard/inventories/view_product/images_product/delete', [InventoriesController::class, 'delete_image_product'])->name('dashboard.inventories.view_product.delete_image_product');
 Route::post('/dashboard/inventories/view_product/save_changes', [InventoriesController::class, 'save_changes_view_product'])->name('dashboard.inventories.view_product.save_changes_view_product');
 Route::get('/dashboard/inventories/create/get_serie', [InventoriesController::class, 'get_serie'])->name('dashboard.inventories.create.get_serie');
-
+Route::get('/dashboard/inventories/export', [InventoriesController::class, 'export'])->name('dashboard.inventories.export');
 
 Route::post('/dashboard/get_notifications', [NotificationController::class, 'get_notifications'])->name('dashboard.get_notifications');
 Route::post('/dashboard/view_notification', [NotificationController::class, 'view_notification'])->name('dashboard.view_notification');
@@ -167,3 +168,12 @@ Route::post('/dashboard/vpns/view/change_state', [VpnController::class, 'change_
 Route::post('/dashboard/vpns/view/add_ip_linux_direction', [VpnController::class, 'add_ip_linux_direction'])->name('dashboard.vpns.view.add_ip_linux_direction');
 Route::post('/dashboard/vpns/view/delete_ip_linux_direction', [VpnController::class, 'delete_ip_linux_direction'])->name('dashboard.vpns.view.delete_ip_linux_direction');
 Route::get('/dashboard/vpns/export', [VpnController::class, 'export'])->name('dashboard.vpns.export');
+
+
+Route::get('/dashboard/wifi_channels', [WifiChannelController::class, 'show_wifi_channels'])->name('dashboard.wifi_channels');
+Route::get('/dashboard/wifi_channels/export', [WifiChannelController::class, 'export'])->name('dashboard.wifi_channels.export');
+Route::get('/dashboard/wifi_channels/create', [WifiChannelController::class, 'create_wifi_channels'])->name('dashboard.wifi_channels.create');
+
+
+Route::get('/dashboard/spreadsheets', [SpreadsheetsController::class, 'show_spreadsheets'])->name('dashboard.spreadsheets');
+Route::get('/dashboard/spreadsheets/tpvs/{id}', [SpreadsheetsController::class, 'show_tpvs'])->name('dashboard.spreadsheets.tpvs');

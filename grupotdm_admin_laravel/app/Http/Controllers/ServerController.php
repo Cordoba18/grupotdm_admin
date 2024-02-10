@@ -31,14 +31,20 @@ class ServerController extends Controller
 
         $id_area = Auth::user()->id_area;
 
-        if ($id_area != 2) {
-        //  return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+        if ($id_area != 2 && $id_area != 1) {
+            return true;
+
+        }else{
+            return false;
         }
       }
 
     //funcion que muestra el apartado de servidores
     public function show_servers(Request $request){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+        }
+
         //retornamos la vista con los servidores a mostrar
         $search = $request->search;
         $filter= $request->filter;
@@ -81,12 +87,16 @@ class ServerController extends Controller
 
     //funcion que retorna la vista para crear un nuevo servidor
     public function create_server(){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         return view('dashboard.servers.create');
     }
     //funcion que permite guardar un servidor
     public function save_server(Request $request){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         //consultamos un servidor con la misma ip consultada por el usuario
         $server = Server::where('ip','=',"$request->ip")->first();
                //si existe no lo creamos y retornamos un mensaje
@@ -109,6 +119,9 @@ class ServerController extends Controller
         $server->SPLA_EXCEL = $request->SPLA_EXCEL;
         $server->id_state = 1;
         $server->save();
+        //generamos el reporte
+        $user = Auth::user();
+        ReportController::create_report("El usuario $user->email creo el servidor con ip $server->ip", $user->id, 19);
         return redirect()->route('dashboard.servers')->with('message','Servidor creado con exito!');
         }
     }
@@ -116,7 +129,9 @@ class ServerController extends Controller
 
     //funcion que me permite retornar la vista para ver el detalle de un servidor
     public function view_server($id){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         $server = DB::selectOne("SELECT s.id_state, s.name, s.id,st.state, s.OS, s.service, s.RAM, s.vcpu, s.totaldd, s.ip, s.SPLA_RDP_TS, s.SPLA_EXCEL, s.observations
         FROM servers s
         INNER JOIN states st ON s.id_state = st.id WHERE s.id = $id");
@@ -128,7 +143,9 @@ class ServerController extends Controller
 
     //funcion que me permite guardar cambios de un servidor
     public function save_changes_server(Request $request){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         $server = Server::find($request->id_server);
         $server->name = $request->name;
         $server->OS = $request->OS;
@@ -140,13 +157,18 @@ class ServerController extends Controller
         $server->SPLA_RDP_TS = $request->SPLA_RDP_TS;
         $server->SPLA_EXCEL = $request->SPLA_EXCEL;
         $server->save();
+         //generamos el reporte
+         $user = Auth::user();
+         ReportController::create_report("El usuario $user->email hizo cambios en el servidor con ip $server->ip", $user->id, 19);
         return redirect()->route('dashboard.servers.view', $request->id_server)->with('message','Servidor editado con exito!');
 
     }
 
     //funcion que me permite cambiar el estado de un servidor
     public function change_state_server(Request $request){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         $server = Server::find($request->id_server);
 
         if ($server->id_state == 1) {
@@ -155,7 +177,9 @@ class ServerController extends Controller
         }else{
             $server->id_state = 1;
         }
-
+          //generamos el reporte
+          $user = Auth::user();
+          ReportController::create_report("El usuario $user->email hizo un cambio de ESTADO en el servidor con ip $server->ip", $user->id, 19);
         $server->save();
 
         return redirect()->route('dashboard.servers.view', $request->id_server)->with("message","Accion realizada con exito!");
@@ -164,7 +188,9 @@ class ServerController extends Controller
 
     //funcion que me permite retornar la vista para ver las licencias sql
     public function show_sql_licenses(Request $request){
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         $search = $request->search;
 
         if ($request->search ) {
@@ -172,6 +198,7 @@ class ServerController extends Controller
         }else{
             $sql ="";
         }
+
         $sql_licenses =DB::select("SELECT * FROM sql_licenses WHERE $sql id_state = 1");
         return view('dashboard.servers.sql_licenses.show',compact('sql_licenses', 'search'));
 
@@ -180,7 +207,9 @@ class ServerController extends Controller
     //funcion que me permite retornar la vista para crear una nueva licencia sql
     public function create_sql_licenses(Request $request){
 
-        ServerController::validate_user();
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
 
         return view('dashboard.servers.sql_licenses.create');
     }
@@ -196,6 +225,9 @@ class ServerController extends Controller
             $sql_license->name = $request->name;
             $sql_license->id_state = 1;
             $sql_license->save();
+              //generamos el reporte
+              $user = Auth::user();
+              ReportController::create_report("El usuario $user->email Creo una licencia con nombre $sql_license->name", $user->id, 19);
             return redirect()->route('dashboard.servers.sql_licenses')->with('message','Licencia generada correctamente!');
         }
 
@@ -217,7 +249,9 @@ class ServerController extends Controller
             $Server_sql_license->save();
 
         }
-
+          //generamos el reporte
+          $user = Auth::user();
+          ReportController::create_report("El usuario $user->email elimino una licencia con nombre $sql_license->name", $user->id, 19);
         return redirect()->route('dashboard.servers.sql_licenses')->with('message','Licencia eliminada con exito!');
 
     }
@@ -236,6 +270,9 @@ class ServerController extends Controller
             $new_server_sql_license->id_sql_licenses = $request->id_sql_licenses;
             $new_server_sql_license->id_state = 1;
             $new_server_sql_license->save();
+             //generamos el reporte
+          $user = Auth::user();
+          ReportController::create_report("El usuario $user->email agrego una licencia al servidor con id #$request->id_server", $user->id, 19);
             return redirect()->route('dashboard.servers.view', $request->id_server)->with('message','Licencia agregada con exito');
         }
     }
@@ -246,13 +283,19 @@ class ServerController extends Controller
         $Server_sql_license = Server_sql_license::find($request->id_server_sql_licenses);
         $Server_sql_license->id_state = 2;
         $Server_sql_license->save();
+
+            //generamos el reporte
+            $user = Auth::user();
+            ReportController::create_report("El usuario $user->email elimino una licencia para el servidor servidor con id #$request->id_server", $user->id, 19);
         return redirect()->route('dashboard.servers.view', $request->id_server)->with('message','Licencia eliminada con exito!');
 
     }
 
     //funcion que me permite retornar la vista de la direcciones
     public function show_ip_linux_directions(Request $request){
-
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         $search = $request->search;
 
         if ($request->search ) {
@@ -275,7 +318,9 @@ class ServerController extends Controller
     //Funcion que me permite retornar la vista para crear una direccion ip linux
 
     public function create_ip_linux_directions(){
-
+        if(ServerController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Servidores"');
+       }
         $servers = Server::all()->where('id_state','=','1');
         return view('dashboard.servers.ip_linux_directions.create', compact('servers'));
     }
@@ -296,6 +341,9 @@ class ServerController extends Controller
             $new_ip_linux_direction->id_server = $request->id_server;
             $new_ip_linux_direction->id_state = 1;
             $new_ip_linux_direction->save();
+            //generamos el reporte
+            $user = Auth::user();
+            ReportController::create_report("El usuario $user->email creo una dirección ip linux con ip $request->ip", $user->id, 19);
             return redirect()->route('dashboard.servers.ip_linux_directions')->with('message','DIRECCIÓN IP LINUX creada con exito !');
         }
 
@@ -318,7 +366,9 @@ class ServerController extends Controller
             $vpn_server->save();
 
         }
-
+  //generamos el reporte
+  $user = Auth::user();
+  ReportController::create_report("El usuario $user->email elimino una dirección ip linux con ip $ip_linux_direction->ip", $user->id, 19);
 
 
         return redirect()->route('dashboard.servers.ip_linux_directions')->with('message','DIRECCIÓN IP LINUX eliminado con exito!');
