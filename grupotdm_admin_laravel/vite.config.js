@@ -49,6 +49,7 @@ export default defineConfig({
                 'resources/js/dashboard.js',
                 'resources/js/notifications.js',
                 'resources/js/view_ticket.js',
+                'resources/js/view_rows_tpvs.js',
             ],
             refresh: true,
         }),

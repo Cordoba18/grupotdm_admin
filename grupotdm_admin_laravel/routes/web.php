@@ -177,3 +177,7 @@ Route::get('/dashboard/wifi_channels/create', [WifiChannelController::class, 'cr
 
 Route::get('/dashboard/spreadsheets', [SpreadsheetsController::class, 'show_spreadsheets'])->name('dashboard.spreadsheets');
 Route::get('/dashboard/spreadsheets/tpvs/{id}', [SpreadsheetsController::class, 'show_tpvs'])->name('dashboard.spreadsheets.tpvs');
+Route::get('/dashboard/spreadsheets/tpvs/rows/{id}', [SpreadsheetsController::class, 'show_rows_tpvs'])->name('dashboard.spreadsheets.tpvs.rows_tpvs');
+Route::post('/dashboard/spreadsheets/tpvs/rows/save_rows', [SpreadsheetsController::class, 'save_rows'])->name('dashboard.spreadsheets.tpvs.rows_tpvs.save_rows');
+Route::post('/dashboard/spreadsheets/tpvs/rows/save_spreadsheet_tpv', [SpreadsheetsController::class, 'save_spreadsheet_tpv'])->name('dashboard.spreadsheets.tpvs.rows_tpvs.save_spreadsheet_tpv');
+Route::get('/dashboard/spreadsheets/update', [SpreadsheetsController::class, 'update_spreadsheets'])->name('dashboard.spreadsheets');

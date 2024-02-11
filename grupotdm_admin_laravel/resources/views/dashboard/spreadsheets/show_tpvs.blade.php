@@ -48,15 +48,13 @@
 
                 <td style="font-size: 30px;">@if($s->id_state == 3)
                     <i style="font-weight: bold" class="bi bi-file-earmark-spreadsheet" style="color: yellow;"></i>
-                    @else
-                    <i class="bibi-file-earmark-spreadsheet" style="color: green;"></i>
-                @endif</td>
+                    @else<i class="bi bi-file-earmark-spreadsheet" style="color: green;"></i>@endif</td>
             <td>{{ $s->tpv }}</td>
             <td>{{ $s->total }}</td>
             <td>{{ $s->sub_total }}</td>
             <td>{{ $s->difference }}</td>
 
-            <td><a href="" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
+            <td><a href="{{ route('dashboard.spreadsheets.tpvs.rows_tpvs', $s->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
         </tr>
         @endforeach
          </tbody>
