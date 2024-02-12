@@ -181,3 +181,5 @@ Route::get('/dashboard/spreadsheets/tpvs/rows/{id}', [SpreadsheetsController::cl
 Route::post('/dashboard/spreadsheets/tpvs/rows/save_rows', [SpreadsheetsController::class, 'save_rows'])->name('dashboard.spreadsheets.tpvs.rows_tpvs.save_rows');
 Route::post('/dashboard/spreadsheets/tpvs/rows/save_spreadsheet_tpv', [SpreadsheetsController::class, 'save_spreadsheet_tpv'])->name('dashboard.spreadsheets.tpvs.rows_tpvs.save_spreadsheet_tpv');
 Route::get('/dashboard/spreadsheets/update', [SpreadsheetsController::class, 'update_spreadsheets'])->name('dashboard.spreadsheets');
+
+Route::get('/dashboard/spreadsheets/pdf', [SpreadsheetsController::class, 'pdf'])->name('dashboard.spreadsheets.pdf');

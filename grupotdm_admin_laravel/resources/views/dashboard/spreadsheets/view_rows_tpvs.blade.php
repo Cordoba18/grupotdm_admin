@@ -15,7 +15,7 @@
 
 </div>
 <h1 id="tpv"> {{ $spreadsheet_tpv->tpv }} </h1>
-<b> {{ $spreadsheet_tpv->company }} </b>
+<b>  {{ $spreadsheet_tpv->shop }} -  {{ $spreadsheet_tpv->company }} </b>
 <br>
 @if (session('message'))
 

@@ -22,9 +22,17 @@
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
 
          @endif
-         <a href="" class="btn btn-danger" id="btn_create_vpn">EXPORTAR EN PDF TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
- <a href="" class="btn btn-danger" id="btn_create_vpn">EXPORTAR EN PDF TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
+         <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
+            <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
+            <input type="text" hidden name="id_companie" value="1">
+            <button href="" class="btn btn-danger" id="btn_create_vpn">EXPORTAR EN PDF TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+         </form>
 
+         <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
+            <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
+            <input type="text" hidden name="id_companie" value="2">
+         <button href="" class="btn btn-danger" id="btn_create_vpn">EXPORTAR EN PDF TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+        </form>
 @stop
 
 @section('content')
@@ -36,6 +44,7 @@
     <thead class="table table-dark">
         <th>ESTADO</th>
         <th>TPV</th>
+        <th>TIENDA</th>
         <th>TOTAL POS</th>
         <th>TOTAL CUADRE</th>
         <th>TOTAL DIFERENCIA</th>
@@ -50,6 +59,7 @@
                     <i style="font-weight: bold" class="bi bi-file-earmark-spreadsheet" style="color: yellow;"></i>
                     @else<i class="bi bi-file-earmark-spreadsheet" style="color: green;"></i>@endif</td>
             <td>{{ $s->tpv }}</td>
+            <td>{{ $s->shop }}</td>
             <td>{{ $s->total }}</td>
             <td>{{ $s->sub_total }}</td>
             <td>{{ $s->difference }}</td>

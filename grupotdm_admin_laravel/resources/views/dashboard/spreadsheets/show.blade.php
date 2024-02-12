@@ -49,7 +49,7 @@
                     <i class="bibi-file-earmark-spreadsheet" style="color: red;"></i>
                 @endif</td>
             <td>{{ $s->id }}</td>
-            <td>{{ $s->date }}</td>
+            <td>{{ $s->date_previous }}</td>
             <td><a href="{{ route('dashboard.spreadsheets.tpvs', $s->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
         </tr>
         @endforeach
