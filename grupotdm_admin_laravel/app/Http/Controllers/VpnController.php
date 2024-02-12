@@ -27,6 +27,7 @@ class VpnController extends Controller
         //Funcion que me permite retornar la vista del apartado de las vpns
 
         public function show_vpns(Request $request){
+
             if(VpnController::validate_user()){
                 return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Vpns"');
            }

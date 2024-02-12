@@ -34,6 +34,7 @@
         <th>METODO DE PAGO</th>
         <th>VALOR POS</th>
         <th>VALOR CONTEO</th>
+        <td>DIFERENCIA</td>
     </thead>
 
     <tbody>
@@ -41,8 +42,9 @@
         <tr id="rows">
 
         <td>{{ $s->name }} <p id="id_spreadsheet_rows_tpv" hidden>{{ $s->id }}</p> <p id="name_payment_method" hidden>{{ $s->name }}</p></td>
-        <td> {{ $s->value_pos  }}</td>
+        <td id="value_pos"> {{ $s->value_pos  }}</td>
         <td><input id="input_value_treasurer" min="0" type="number" value="@if ($s->value_treasurer){{ $s->value_treasurer }}@else{{ 0 }}@endif"></td>
+        <td><input id="value_difference" value="{{ $s->difference }}" type="number" disabled></td>
     </tr>
         @endforeach
          </tbody>
@@ -81,8 +83,15 @@
     <i id="element_loading" class="fas fa-2x fa-sync-alt fa-spin"></i>
 </div>
 <div class="content_buttons" style="display: flex;flex-wrap: wrap;">
-    <button style="width: 100;" class="btn btn-success" id="btn_save">GUARDAR</button>
-    <a href="{{ route('dashboard.spreadsheets.tpvs', $spreadsheet_tpv->id_spreadsheet) }}" class="btn btn-primary">VOLVER</a>
+    <button style="width: 100%;" class="btn btn-success" id="btn_save">GUARDAR</button>
+    @if ($spreadsheet_tpv->id_state == 7 && $validation_jefe || $spreadsheet_tpv->id_state == 3 && !$validation_jefe)
+    <form style="width: 100%;" action="{{ route('dashboard.spreadsheets.tpvs.state') }}" method="post">
+        @csrf
+        <input type="number" id="id_spreadsheet_tpv" name="id_spreadsheet_tpv" value="{{ $spreadsheet_tpv->id }}" hidden>
+        <button style="width: 100%; margin: 5px;" class="btn btn-primary" id="btn_save">@if ($spreadsheet_tpv->id_state == 7 && $validation_jefe) RE ABRIR @else TERMINAR @endif</button>
+    </form>
+    @endif
+    <a style="width: 100%;"  href="{{ route('dashboard.spreadsheets.tpvs', $spreadsheet_tpv->id_spreadsheet) }}" class="btn btn-light">VOLVER</a>
 </div>
 
 

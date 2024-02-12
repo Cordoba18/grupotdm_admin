@@ -5,7 +5,7 @@
 @vite('resources/css/content_loading.css')
 <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
+@vite('resources/css/spreadsheet_tpvs.css')
 
 @stop
 @php
@@ -24,15 +24,36 @@
          @endif
          <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
             <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
-            <input type="text" hidden name="id_companie" value="1">
-            <button href="" class="btn btn-danger" id="btn_create_vpn">EXPORTAR EN PDF TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+            <input type="text" hidden name="id_company" value="1">
+            <button  href="" class="btn btn-danger" id="btn_export">EXPORTAR EN PDF TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
          </form>
 
          <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
             <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
-            <input type="text" hidden name="id_companie" value="2">
-         <button href="" class="btn btn-danger" id="btn_create_vpn">EXPORTAR EN PDF TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+            <input type="text" hidden name="id_company" value="2">
+         <button href="" class="btn btn-danger" id="btn_export">EXPORTAR EN PDF TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
         </form>
+
+
+
+        <div class="content_search">
+            <form action="{{ route('dashboard.spreadsheets.tpvs', $id) }}" method="get">
+                <select name="shop" id="" >
+                    <option value="">Tus tiendas</option>
+                    @foreach ($spreadsheet_shops as $s)
+                    <option value="{{ $s->id }}">{{ $s->shop }}</option>
+                    @endforeach
+                </select>
+                <select name="filter" id="" >
+                    <option value="">Seleccione un filtro</option>
+                    @foreach ($filters as $f)
+                    <option value="{{ $f->id }}">{{ $f->state }}</option>
+                    @endforeach
+                </select>
+        <button id="btn_search" class="btn btn-primary"><i class="bi bi-search"></i></button>
+    </form>
+    </div>
+
 @stop
 
 @section('content')

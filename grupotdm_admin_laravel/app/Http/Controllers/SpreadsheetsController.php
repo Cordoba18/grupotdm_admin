@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Companie;
 use App\Models\Payment_method;
+use App\Models\Shop;
 use App\Models\Spreadsheet;
 use App\Models\Spreadsheet_rows_tpv;
+use App\Models\Spreadsheet_shop;
 use App\Models\Spreadsheet_tpv;
+use App\Models\State;
 use App\Models\Tpv;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use DateTimeZone;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SpreadsheetsController extends Controller
 {
@@ -25,6 +32,8 @@ class SpreadsheetsController extends Controller
     }
 
     public static function validate_spreadsheet(){
+
+
         Carbon::setLocale('es');
         $zonaHorariaColombia = new DateTimeZone('America/Bogota');
         $fechaActual = new DateTime('now', $zonaHorariaColombia);
@@ -91,29 +100,93 @@ return true;
 
     //funcion que me permite mostrar y generar una nueva plantilla
     public function show_spreadsheets(Request $request){
-        $search = $request->search;
+        $user = Auth::user();
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+
        $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
        ->select("spreadsheets.date_previous", "spreadsheets.id", "states.state","spreadsheets.id_state")->get();
        SpreadsheetsController::validate_spreadsheet();
-       return view('dashboard.spreadsheets.show', compact('search','spreadsheets'));
+       return view('dashboard.spreadsheets.show', compact('spreadsheets',));
 
     }
 
 //funcion que me permite ver las tpvs de una plantilla
-    public function show_tpvs($id){
+    public function show_tpvs(Request $request,$id){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $user = Auth::user();
+        $shop = $request->shop;
+        $filter = $request->filter;
+        $filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=7");
+        if ($shop && $filter) {
+            $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+            ->join("states","spreadsheet_tpvs.id_state","states.id")
+            ->join("shops","tpvs.id_shop","shops.id")
+            ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
+            ->join("companies","shops.id_company","companies.id")
+            ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+            ->where("shops.id","=","$shop")
+            ->where('spreadsheet_shops.id_user', "=","$user->id")
+            ->where("spreadsheet_tpvs.id_state","=","$filter")
+            ->get();
+        } else if($shop){
+            $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+            ->join("states","spreadsheet_tpvs.id_state","states.id")
+            ->join("shops","tpvs.id_shop","shops.id")
+            ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
+            ->join("companies","shops.id_company","companies.id")
+            ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+            ->where("shops.id","=","$shop")
+            ->where('spreadsheet_shops.id_user', "=","$user->id")
+            ->where("spreadsheet_tpvs.id_state","=","3")
+            ->get();
+        }else if($filter){
+            $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+            ->join("states","spreadsheet_tpvs.id_state","states.id")
+            ->join("shops","tpvs.id_shop","shops.id")
+            ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
+            ->join("companies","shops.id_company","companies.id")
+            ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+            ->where("spreadsheet_tpvs.id_state","=","$filter")
+            ->where('spreadsheet_shops.id_user', "=","$user->id")
+            ->get();
+        }
+        else {
+            $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+            ->join("states","spreadsheet_tpvs.id_state","states.id")
+            ->join("shops","tpvs.id_shop","shops.id")
+            ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
+            ->join("companies","shops.id_company","companies.id")
+            ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")->where('spreadsheet_shops.id_user', "=","$user->id")
+            ->where("spreadsheet_tpvs.id_state","=","3")
+            ->get();
+        }
 
-        $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
-        ->join("states","spreadsheet_tpvs.id_state","states.id")
-        ->join("shops","tpvs.id_shop","shops.id")
-        ->join("companies","shops.id_company","companies.id")
-        ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
-        ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
-        ->get();
-        return view('dashboard.spreadsheets.show_tpvs', compact("id","spreadsheet_tpvs"));
+
+        $spreadsheet_shops = Spreadsheet_shop::join("shops","spreadsheet_shops.id_shop","shops.id")
+        ->select("shops.id","shops.shop")
+        ->where("spreadsheet_shops.id_user","=","$user->id")
+        ->where("spreadsheet_shops.id_state","=",1)->get();
+
+        return view('dashboard.spreadsheets.show_tpvs', compact("id","spreadsheet_tpvs","spreadsheet_shops","filters"));
     }
 
 //funcion que me permite ver las filas de una tpv de una plantilla
     public function show_rows_tpvs($id){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $user = Auth::user();
+        $validation_jefe = DB::selectOne("SELECT * FROM users u
+        INNER JOIN charges c ON u.id_chargy = c.id
+         WHERE (c.chargy = 'JEFE DE AREA' OR c.chargy LIKE '%coordinador%') AND u.id_area = 7 AND u.id = $user->id");
         $spreadsheet_tpv = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
         ->join("states","spreadsheet_tpvs.id_state","states.id")
         ->join("shops","tpvs.id_shop","shops.id")
@@ -122,18 +195,21 @@ return true;
         ->where("spreadsheet_tpvs.id","=","$id")
         ->first();
         $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::join("payment_methods","spreadsheet_rows_tpvs.id_payment_method","payment_methods.id")
-        ->select("payment_methods.name", "spreadsheet_rows_tpvs.id", "spreadsheet_rows_tpvs.value_pos", "spreadsheet_rows_tpvs.value_treasurer")
+        ->select("payment_methods.name", "spreadsheet_rows_tpvs.difference", "spreadsheet_rows_tpvs.id", "spreadsheet_rows_tpvs.value_pos", "spreadsheet_rows_tpvs.value_treasurer")
         ->where("spreadsheet_rows_tpvs.id_spreadsheet_tpv","=","$id")
         ->get();
-        return view("dashboard.spreadsheets.view_rows_tpvs", compact('spreadsheet_tpv','spreadsheet_rows_tpvs'));
+        return view("dashboard.spreadsheets.view_rows_tpvs", compact('spreadsheet_tpv','spreadsheet_rows_tpvs','validation_jefe'));
 
     }
 
     //funcion que me permite guardar filas
     public function save_rows(Request $request){
-
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
         $spreadsheet_rows_tpv = Spreadsheet_rows_tpv::find($request->id_spreadsheet_rows_tpv);
         $spreadsheet_rows_tpv->value_treasurer = $request->value_treasurer;
+        $spreadsheet_rows_tpv->difference =  $request->value_difference;
         $spreadsheet_rows_tpv->save();
         return true;
 
@@ -141,22 +217,124 @@ return true;
 
     //funcion que mer permite guardar datos de la tpv
     public function save_spreadsheet_tpv(Request $request){
-
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
         $spreadsheet_tpv = Spreadsheet_tpv::find($request->id_spreadsheet_tpv);
         $spreadsheet_tpv->sub_total = $request->sub_total;
         $spreadsheet_tpv->difference = $request->difference;
-        $spreadsheet_tpv->id_state = 7;
+        // $spreadsheet_tpv->id_state = 7;
         $spreadsheet_tpv->save();
         return true;
 
     }
 
     public function pdf(Request $request){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
+        ->select("spreadsheets.date_previous", "spreadsheets.id", "states.state","spreadsheets.id_state")
+        ->where("spreadsheets.id","=","$request->id_spreadsheets")
+        ->first();
+        $id_company = $request->id_company;
+        $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+        ->join("states","spreadsheet_tpvs.id_state","states.id")
+        ->join("shops","tpvs.id_shop","shops.id")
+        ->join("companies","shops.id_company","companies.id")
+        ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+        ->where("spreadsheet_tpvs.id_spreadsheet","=","$request->id_spreadsheets")
+        ->get();
+
+        $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::join("payment_methods","spreadsheet_rows_tpvs.id_payment_method","payment_methods.id")
+        ->select("payment_methods.name", "spreadsheet_rows_tpvs.id","spreadsheet_rows_tpvs.id_spreadsheet_tpv", "spreadsheet_rows_tpvs.value_pos", "spreadsheet_rows_tpvs.value_treasurer")
+        ->get();
 
 
-
-        $pdf = Pdf::loadView('dashboard.spreadsheets.pdf.pdf');
+        $pdf = Pdf::loadView('dashboard.spreadsheets.pdf.pdf',compact('spreadsheets','spreadsheet_tpvs','spreadsheet_rows_tpvs','id_company'));
         return $pdf->stream();
     }
+
+    public function show_spreadsheets_shops(Request $request){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $companies = Companie::whereIn('id', [1, 2])->get();
+        $shops = Shop::all();
+        $user = Auth::user();
+        $validation_jefe = DB::selectOne("SELECT * FROM users u
+        INNER JOIN charges c ON u.id_chargy = c.id
+         WHERE (c.chargy = 'JEFE DE AREA' OR c.chargy LIKE '%coordinador%') AND u.id_area = 7 AND u.id = $user->id");
+        $users = User::all()->where("id_area","=","7");
+        $spreadsheet_shops =  Spreadsheet_shop::join("shops","spreadsheet_shops.id_shop","shops.id")
+        ->join("companies","shops.id_company","companies.id")
+        ->join("users","spreadsheet_shops.id_user","users.id")
+        ->select("shops.shop", "companies.company", "spreadsheet_shops.id","users.name","users.id as id_user")
+        ->where("spreadsheet_shops.id_state","=","1")
+        ->get();
+        return view("dashboard.spreadsheets.shops.show",compact("users","validation_jefe","spreadsheet_shops","companies","shops"));
+    }
+
+    public function create_spreadsheets_shops(Request $request){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $validation = Spreadsheet_shop::where("id_user","=","$request->id_user")
+        ->where("id_shop","=","$request->id_shop")
+        ->where("id_state","=",1)->first();
+        if ($validation) {
+           return redirect()->route('dashboard.spreadsheets.shops')->with("message_error","Ya existe esa asignación de tienda");
+
+        }else{
+            $new_spreadsheets_shops = new Spreadsheet_shop();
+            $new_spreadsheets_shops->id_user = $request->id_user;
+            $new_spreadsheets_shops->id_shop = $request->id_shop;
+            $new_spreadsheets_shops->id_state = 1;
+            $new_spreadsheets_shops->save();
+            return redirect()->route('dashboard.spreadsheets.shops')->with("message","Usuario a signado correctamente!");
+        }
+
+    }
+
+    public function delete_spreadsheets_shops(Request $request){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $spreadsheets_shops = Spreadsheet_shop::find($request->id_spreadsheet_shop);
+        $spreadsheets_shops->id_state = 2;
+        $spreadsheets_shops->save();
+        return redirect()->route('dashboard.spreadsheets.shops')->with("message","Asignacion eliminada con exito");
+    }
+
+
+    public function state_tpvs(Request $request){
+        if(SpreadsheetsController::validate_user()){
+            return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
+       }
+        $spreadsheet_tpv = Spreadsheet_tpv::find($request->id_spreadsheet_tpv);
+        if ($spreadsheet_tpv->id_state == 3) {
+            $spreadsheet_tpv->id_state = 7;
+        }else{
+            $spreadsheet_tpv->id_state = 3;
+        }
+        $spreadsheet_tpv->save();
+
+        return redirect()->route('dashboard.spreadsheets.tpvs.rows_tpvs', $request->id_spreadsheet_tpv)->with("message","Estado de conteo cambiado!");
+
+
+    }
+
+    public static function validate_user(){
+
+
+        $id_area = Auth::user()->id_area;
+
+        if ($id_area != 7 && $id_area != 1) {
+            return true;
+
+        }else{
+            return false;
+        }
+      }
 
 }

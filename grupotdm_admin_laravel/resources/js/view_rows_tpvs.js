@@ -19,6 +19,7 @@ btn_save.addEventListener("click", function (e){
         const id_spreadsheet_rows_tpv = row.querySelector("#id_spreadsheet_rows_tpv");
         const input_value_treasurer = row.querySelector("#input_value_treasurer");
         const name_payment_method = row.querySelector("#name_payment_method");
+        const value_difference = row.querySelector("#value_difference");
         setTimeout(() => {
             label_success.innerHTML = `Guardando ${name_payment_method.textContent}...`;
         }, 500);
@@ -26,6 +27,7 @@ btn_save.addEventListener("click", function (e){
         axios.post(`${route_principal}/spreadsheets/tpvs/rows/save_rows`,{
             id_spreadsheet_rows_tpv: id_spreadsheet_rows_tpv.textContent,
             value_treasurer: input_value_treasurer.value,
+            value_difference: value_difference.value,
           }).then(res=>{
             setTimeout(() => {
             label_success.innerHTML = `${name_payment_method.textContent} Guardado con exito!`;
@@ -83,7 +85,8 @@ axios.post(`${route_principal}/spreadsheets/tpvs/rows/save_spreadsheet_tpv`,{
 
 //recorro las filas
 rows.forEach(row => {
-
+    const value_pos = row.querySelector("#value_pos");
+    const value_difference = row.querySelector("#value_difference");
     const input_value_treasurer = row.querySelector("#input_value_treasurer");
 //evento que se dispara cuando el usuario escribe en un input de una fila
     input_value_treasurer.addEventListener("input", function(e) {
@@ -105,6 +108,7 @@ rows.forEach(row => {
             }else{
                 //agrego al contador la suma del input con el mismo contador
                 contador += parseInt(input_value_treasurer.value);
+
             }
 
 
@@ -112,13 +116,24 @@ rows.forEach(row => {
         //Valido si el contador supera el valor total y arrojo una alerta
         if (parseInt(total.textContent) < contador) {
 
-            Swal.fire({
-                title: "CONTEO INVALIDO",
-                text: "Tu conteo esta superando el monto total!",
-                icon: "info"
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "info",
+                title: `Tu conteo esta sobre pasando el valor total del POS`
               });
 
         }
+        value_difference.value = parseInt(value_pos.textContent - input_value_treasurer.value);
         //resto el total con el valor del contador para hayar la diferencia
         difference.innerHTML = parseInt(total.textContent) - contador;
         //muestro el valor total del conteo que obtuve de la variable del contador

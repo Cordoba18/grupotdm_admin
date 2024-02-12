@@ -337,7 +337,7 @@ return [
         [
             'text' => 'Planillas',
             'url'  => 'dashboard/spreadsheets',
-            'icon' => 'fas fa-solid fa-user-file',
+            'icon' => 'fas fa-solid fa-folder-open',
         ],
         ['header' => 'ARCHIVOS'],
         [
