@@ -24,7 +24,7 @@
          @endif
 
 
-         <a href="{{ route("dashboard.spreadsheets.shops") }}" class="btn btn-success"> TIENDAS DE TESOREROS </a>
+         <a style="width: 100%;" href="{{ route("dashboard.spreadsheets.shops") }}" class="btn btn-success"> TIENDAS DE TESOREROS </a>
 
 
 @stop

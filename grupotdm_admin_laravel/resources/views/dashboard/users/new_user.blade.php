@@ -21,7 +21,8 @@
 @endsection
 @section('content')
 
-
+<div class="content_principal" style="display: flex; align-items: center; justify-content: center">
+    <div class="content_form" style="width: 70%;">
 <form id="miFormulario" action="{{ route('dashboard.users.save_user') }}" method="post">
     @csrf
     <input type="number" hidden value="{{ $user->id }}" name="id">
@@ -96,6 +97,8 @@
     <button class="btn btn-success">CREAR USUARIO</button>
     </form>
 
+</div>
+</div>
 </div>
 @stop
 

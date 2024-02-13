@@ -83,7 +83,7 @@
                 <tr>
                     <td><a style="color: black;text-decoration: none; font-weight: bold;" href="{{ route('dashboard.users.view_user', $s->id_user) }}">{{ $s->name }}</a> </td>
                     <td>{{ $s->shop }}</td>
-                    <td>{{ $s->companie }}</td>
+                    <td>{{ $s->company }}</td>
                     @if($validation_jefe)
                     <td><form action="{{ route("dashboard.spreadsheets.shops.delete") }}" method="post">
                         @csrf

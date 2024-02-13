@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-02-2024 a las 13:22:07
+-- Tiempo de generación: 13-02-2024 a las 03:34:49
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -2095,7 +2095,22 @@ INSERT INTO `reports` (`id`, `description`, `id_user`, `id_report_detail`, `date
 (1194, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '09/02/2024 15:28:02', '2024-02-09 20:28:02', '2024-02-09 20:28:02'),
 (1195, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '10/02/2024 09:32:30', '2024-02-10 14:32:30', '2024-02-10 14:32:30'),
 (1196, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '11/02/2024 19:14:41', '2024-02-12 00:14:41', '2024-02-12 00:14:41'),
-(1197, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '11/02/2024 19:29:09', '2024-02-12 00:29:09', '2024-02-12 00:29:09');
+(1197, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '11/02/2024 19:29:09', '2024-02-12 00:29:09', '2024-02-12 00:29:09'),
+(1198, 'Se han modificado los datos del usuario sistemasaux8@eltemplodelamoda.com.co', 2, 2, '12/02/2024 19:56:00', '2024-02-13 00:56:00', '2024-02-13 00:56:00'),
+(1199, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '12/02/2024 19:56:25', '2024-02-13 00:56:25', '2024-02-13 00:56:25'),
+(1200, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 19:56:38', '2024-02-13 00:56:38', '2024-02-13 00:56:38'),
+(1201, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '12/02/2024 20:00:22', '2024-02-13 01:00:22', '2024-02-13 01:00:22'),
+(1202, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 20:56:14', '2024-02-13 01:56:14', '2024-02-13 01:56:14'),
+(1203, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '12/02/2024 20:56:44', '2024-02-13 01:56:44', '2024-02-13 01:56:44'),
+(1204, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:01:43', '2024-02-13 02:01:43', '2024-02-13 02:01:43'),
+(1205, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '12/02/2024 21:07:37', '2024-02-13 02:07:37', '2024-02-13 02:07:37'),
+(1206, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:08:06', '2024-02-13 02:08:06', '2024-02-13 02:08:06'),
+(1207, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '12/02/2024 21:08:38', '2024-02-13 02:08:38', '2024-02-13 02:08:38'),
+(1208, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:09:16', '2024-02-13 02:09:16', '2024-02-13 02:09:16'),
+(1209, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '12/02/2024 21:09:53', '2024-02-13 02:09:53', '2024-02-13 02:09:53'),
+(1210, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:24:38', '2024-02-13 02:24:38', '2024-02-13 02:24:38'),
+(1211, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '12/02/2024 21:26:11', '2024-02-13 02:26:11', '2024-02-13 02:26:11'),
+(1212, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:28:11', '2024-02-13 02:28:11', '2024-02-13 02:28:11');
 
 -- --------------------------------------------------------
 
@@ -2453,7 +2468,7 @@ CREATE TABLE `spreadsheets` (
 --
 
 INSERT INTO `spreadsheets` (`id`, `date_now`, `date_previous`, `id_state`, `updated_at`, `created_at`) VALUES
-(1, '2024-02-11', '2024-02-10', 1, '2024-02-12 05:51:09', '2024-02-12 05:51:09');
+(1, '2024-02-12', '2024-02-11', 1, '2024-02-13 05:55:21', '2024-02-13 05:55:21');
 
 -- --------------------------------------------------------
 
@@ -2467,6 +2482,7 @@ CREATE TABLE `spreadsheet_rows_tpvs` (
   `id_spreadsheet_tpv` int(11) NOT NULL,
   `value_pos` varchar(45) DEFAULT NULL,
   `value_treasurer` varchar(45) DEFAULT NULL,
+  `difference` varchar(45) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -2475,11 +2491,39 @@ CREATE TABLE `spreadsheet_rows_tpvs` (
 -- Volcado de datos para la tabla `spreadsheet_rows_tpvs`
 --
 
-INSERT INTO `spreadsheet_rows_tpvs` (`id`, `id_payment_method`, `id_spreadsheet_tpv`, `value_pos`, `value_treasurer`, `updated_at`, `created_at`) VALUES
-(1, 1, 1, '30000', '20000', '2024-02-12 06:45:12', '2024-02-12 05:51:09'),
-(2, 2, 1, '60000', '60000', '2024-02-12 06:45:12', '2024-02-12 05:51:09'),
-(3, 1, 2, '90000', NULL, '2024-02-12 06:23:32', '2024-02-12 06:23:32'),
-(4, 2, 2, '90000', NULL, '2024-02-12 06:23:32', '2024-02-12 06:23:32');
+INSERT INTO `spreadsheet_rows_tpvs` (`id`, `id_payment_method`, `id_spreadsheet_tpv`, `value_pos`, `value_treasurer`, `difference`, `updated_at`, `created_at`) VALUES
+(1, 1, 1, '50000', NULL, NULL, '2024-02-13 05:55:21', '2024-02-13 05:55:21'),
+(2, 2, 1, '30000', NULL, NULL, '2024-02-13 05:55:21', '2024-02-13 05:55:21'),
+(3, 1, 2, '50000', '30000', '20000', '2024-02-13 06:00:47', '2024-02-13 05:55:21'),
+(4, 2, 2, '20000', '20000', '0', '2024-02-13 06:00:47', '2024-02-13 05:55:21'),
+(5, 1, 3, '90000', NULL, NULL, '2024-02-13 06:13:35', '2024-02-13 06:13:35'),
+(6, 2, 3, '30000', NULL, NULL, '2024-02-13 06:13:35', '2024-02-13 06:13:35'),
+(7, 1, 4, '60000', '60000', '0', '2024-02-13 07:09:01', '2024-02-13 06:55:35'),
+(8, 2, 4, '30000', '20000', '10000', '2024-02-13 07:09:01', '2024-02-13 06:55:35');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `spreadsheet_shops`
+--
+
+CREATE TABLE `spreadsheet_shops` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_shop` int(11) NOT NULL,
+  `id_state` int(11) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `spreadsheet_shops`
+--
+
+INSERT INTO `spreadsheet_shops` (`id`, `id_user`, `id_shop`, `id_state`, `updated_at`, `created_at`) VALUES
+(1, 10, 7, 1, '2024-02-13 05:56:55', '2024-02-13 05:56:55'),
+(2, 10, 8, 1, '2024-02-13 05:57:03', '2024-02-13 05:57:03'),
+(3, 10, 5, 1, '2024-02-13 07:08:24', '2024-02-13 07:08:24');
 
 -- --------------------------------------------------------
 
@@ -2504,8 +2548,10 @@ CREATE TABLE `spreadsheet_tpvs` (
 --
 
 INSERT INTO `spreadsheet_tpvs` (`id`, `total`, `sub_total`, `difference`, `id_tpv`, `id_spreadsheet`, `id_state`, `updated_at`, `created_at`) VALUES
-(1, '90000', '80000', '10000', 2, 1, 7, '2024-02-12 06:45:13', '2024-02-12 05:51:09'),
-(2, '180000', '0', '0', 3, 1, 3, '2024-02-12 06:23:32', '2024-02-12 06:23:32');
+(1, '80000', '0', '0', 2, 1, 3, '2024-02-13 05:55:21', '2024-02-13 05:55:21'),
+(2, '70000', '50000', '20000', 3, 1, 3, '2024-02-13 06:00:47', '2024-02-13 05:55:21'),
+(3, '120000', '0', '0', 4, 1, 3, '2024-02-13 06:13:35', '2024-02-13 06:13:35'),
+(4, '90000', '80000', '10000', 5, 1, 3, '2024-02-13 07:09:37', '2024-02-13 06:55:35');
 
 -- --------------------------------------------------------
 
@@ -2716,7 +2762,9 @@ CREATE TABLE `tpvs` (
 
 INSERT INTO `tpvs` (`id`, `tpv`, `id_user`, `id_shop`, `id_tpv_component`, `id_state`, `updated_at`, `created_at`) VALUES
 (2, 'TPV00101', 1, 8, 1, 1, NULL, NULL),
-(3, 'TPV00102', 1, 7, 1, 1, NULL, NULL);
+(3, 'TPV00102', 1, 7, 1, 1, NULL, NULL),
+(4, 'TPV01009', 1, 8, 2, 1, NULL, NULL),
+(5, 'TPV00601', 1, 5, 2, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2788,9 +2836,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `nit`, `email`, `password`, `id_company`, `id_state`, `id_area`, `id_chargy`, `id_shop`, `id_theme_user`, `updated_at`, `created_at`) VALUES
-(1, 'Jhan Carlos Cordoba', '3043711546', '1111663045', 'jccq12@gmail.com', '$2y$12$qiWWz8RWBnifFKhCROdRdOXSHVwVe9ZBZK4.B6aKJ5Pfh.Emk8W3G', 5, 1, 2, 1, 51, 2, '2024-01-04 18:56:34', '2023-12-04 06:41:19'),
+(1, 'Jhan Carlos Cordoba', '3043711546', '1111663045', 'jccq12@gmail.com', '$2y$12$qiWWz8RWBnifFKhCROdRdOXSHVwVe9ZBZK4.B6aKJ5Pfh.Emk8W3G', 5, 1, 7, 22, 51, 2, '2024-02-13 00:56:25', '2023-12-04 06:41:19'),
 (2, 'Administrador GRUPO TDM', NULL, '805027653', 'soporte@eltemplodelamoda.com.co', '$2y$12$URua6E9e.DoM3Nt2TzqadOQo0RG2QnM5Hk6a5A7EdemJZNaKMttVK', 5, 1, 1, 83, NULL, NULL, '2023-12-21 15:29:01', '2023-12-04 07:04:03'),
-(10, 'Anderson Cordoba', NULL, '1565654465', 'sistemasaux8@eltemplodelamoda.com.co', '$2y$12$RePEIqHaMsIdOsiT1VgfSOBZPhG3sCGXTFpCfAeOi2V8nBmRwFUI6', 5, 1, 2, 5, 51, 2, '2024-01-22 13:49:50', '2023-12-06 20:36:20'),
+(10, 'Anderson Cordoba', NULL, '1565654465', 'sistemasaux8@eltemplodelamoda.com.co', '$2y$12$RePEIqHaMsIdOsiT1VgfSOBZPhG3sCGXTFpCfAeOi2V8nBmRwFUI6', 5, 1, 7, 24, 51, 2, '2024-02-13 00:56:00', '2023-12-06 20:36:20'),
 (11, 'Kelly Gomez', '3123213123', '123456789', 'analistadesistemas@eltemplodelamoda.com.co', '$2y$12$DsPHFtMueUypFjuQyovIeuDIrr3HDOxvVSlEy4rcP6dt8gOnDPPMO', 1, 2, 2, 4, 2, 1, '2024-01-25 16:33:03', '2023-12-06 23:57:46'),
 (12, 'Jerson Henao', NULL, '987456123', 'sistemasaux4@eltemplodelamoda.com.co', '$2y$12$3HC5qCgFUCEYrSTJ/xA6X.Vo.i8ScF5atbOECjPIc3uB9GhgLPpou', 5, 2, 2, 5, 50, 2, '2024-02-01 18:50:09', '2023-12-06 23:59:07'),
 (13, 'Rodrigo Rodallega', NULL, '94495428', 'csoporte@eltemplodelamoda.com.co', '$2y$12$QHlRbbn8t9BP1NUuRB90oeZ7kQ/Q7lt1UuhAafWbnZjPvgLxnSYe2', 5, 1, 2, 1, 51, 3, '2023-12-22 14:49:18', '2023-12-09 21:34:32'),
@@ -3156,6 +3204,15 @@ ALTER TABLE `spreadsheet_rows_tpvs`
   ADD KEY `fk_spreadsheet_rows_tpvs_spreadsheet_tpvs1_idx` (`id_spreadsheet_tpv`);
 
 --
+-- Indices de la tabla `spreadsheet_shops`
+--
+ALTER TABLE `spreadsheet_shops`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_spreadsheet_shops_users1_idx` (`id_user`),
+  ADD KEY `fk_spreadsheet_shops_shops1_idx` (`id_shop`),
+  ADD KEY `fk_spreadsheet_shops_states1_idx` (`id_state`);
+
+--
 -- Indices de la tabla `spreadsheet_tpvs`
 --
 ALTER TABLE `spreadsheet_tpvs`
@@ -3409,7 +3466,7 @@ ALTER TABLE `replenish_times`
 -- AUTO_INCREMENT de la tabla `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1198;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1213;
 
 --
 -- AUTO_INCREMENT de la tabla `reports_certificate`
@@ -3463,13 +3520,19 @@ ALTER TABLE `spreadsheets`
 -- AUTO_INCREMENT de la tabla `spreadsheet_rows_tpvs`
 --
 ALTER TABLE `spreadsheet_rows_tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `spreadsheet_shops`
+--
+ALTER TABLE `spreadsheet_shops`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_tpvs`
 --
 ALTER TABLE `spreadsheet_tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `sql_licenses`
@@ -3505,7 +3568,7 @@ ALTER TABLE `tickets`
 -- AUTO_INCREMENT de la tabla `tpvs`
 --
 ALTER TABLE `tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tpv_types`
@@ -3638,6 +3701,14 @@ ALTER TABLE `spreadsheets`
 ALTER TABLE `spreadsheet_rows_tpvs`
   ADD CONSTRAINT `fk_report_sale_tpvs_payment_methods1` FOREIGN KEY (`id_payment_method`) REFERENCES `payment_methods` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_spreadsheet_rows_tpvs_spreadsheet_tpvs1` FOREIGN KEY (`id_spreadsheet_tpv`) REFERENCES `spreadsheet_tpvs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `spreadsheet_shops`
+--
+ALTER TABLE `spreadsheet_shops`
+  ADD CONSTRAINT `fk_spreadsheet_shops_shops1` FOREIGN KEY (`id_shop`) REFERENCES `shops` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_spreadsheet_shops_states1` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_spreadsheet_shops_users1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `spreadsheet_tpvs`

@@ -117,10 +117,56 @@ return true;
         if(SpreadsheetsController::validate_user()){
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
+       $user = Auth::user();
+       $validation_jefe = DB::selectOne("SELECT * FROM users u
+       INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE (c.chargy = 'JEFE DE AREA' OR c.chargy LIKE '%coordinador%') AND u.id_area = 7 AND u.id = $user->id");
         $user = Auth::user();
         $shop = $request->shop;
         $filter = $request->filter;
         $filters = DB::select("SELECT * FROM states WHERE id = 3 OR id=7");
+        if($validation_jefe){
+            if ($shop && $filter) {
+                $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+                ->join("states","spreadsheet_tpvs.id_state","states.id")
+                ->join("shops","tpvs.id_shop","shops.id")
+                ->join("companies","shops.id_company","companies.id")
+                ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+                ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+                ->where("shops.id","=","$shop")
+                ->where("spreadsheet_tpvs.id_state","=","$filter")
+                ->get();
+            } else if($shop){
+                $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+                ->join("states","spreadsheet_tpvs.id_state","states.id")
+                ->join("shops","tpvs.id_shop","shops.id")
+                ->join("companies","shops.id_company","companies.id")
+                ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+                ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+                ->where("shops.id","=","$shop")
+                ->where("spreadsheet_tpvs.id_state","=","3")
+                ->get();
+            }else if($filter){
+                $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+                ->join("states","spreadsheet_tpvs.id_state","states.id")
+                ->join("shops","tpvs.id_shop","shops.id")
+                ->join("companies","shops.id_company","companies.id")
+                ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+                ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+                ->where("spreadsheet_tpvs.id_state","=","$filter")
+                ->get();
+            }
+            else {
+                $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+                ->join("states","spreadsheet_tpvs.id_state","states.id")
+                ->join("shops","tpvs.id_shop","shops.id")
+                ->join("companies","shops.id_company","companies.id")
+                ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+                ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+                ->where("spreadsheet_tpvs.id_state","=","3")
+                ->get();
+            }
+        }else{
         if ($shop && $filter) {
             $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
             ->join("states","spreadsheet_tpvs.id_state","states.id")
@@ -168,12 +214,17 @@ return true;
             ->where("spreadsheet_tpvs.id_state","=","3")
             ->get();
         }
-
-
+    }
+    if ($validation_jefe) {
+       $spreadsheet_shops = Shop::all();
+    } else {
         $spreadsheet_shops = Spreadsheet_shop::join("shops","spreadsheet_shops.id_shop","shops.id")
         ->select("shops.id","shops.shop")
         ->where("spreadsheet_shops.id_user","=","$user->id")
         ->where("spreadsheet_shops.id_state","=",1)->get();
+    }
+
+
 
         return view('dashboard.spreadsheets.show_tpvs', compact("id","spreadsheet_tpvs","spreadsheet_shops","filters"));
     }
@@ -233,7 +284,13 @@ return true;
         if(SpreadsheetsController::validate_user()){
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
-        $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
+       $user = Auth::user();
+
+       $validation_jefe = DB::selectOne("SELECT * FROM users u
+       INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE (c.chargy = 'JEFE DE AREA' OR c.chargy LIKE '%coordinador%') AND u.id_area = 7 AND u.id = $user->id");
+if ($validation_jefe) {
+    $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
         ->select("spreadsheets.date_previous", "spreadsheets.id", "states.state","spreadsheets.id_state")
         ->where("spreadsheets.id","=","$request->id_spreadsheets")
         ->first();
@@ -242,14 +299,43 @@ return true;
         ->join("states","spreadsheet_tpvs.id_state","states.id")
         ->join("shops","tpvs.id_shop","shops.id")
         ->join("companies","shops.id_company","companies.id")
-        ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+        ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","shops.id as id_shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
         ->where("spreadsheet_tpvs.id_spreadsheet","=","$request->id_spreadsheets")
+        ->where("shops.id_company","=","$request->id_company")
+        ->orderBy('shops.id', 'desc')
         ->get();
 
         $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::join("payment_methods","spreadsheet_rows_tpvs.id_payment_method","payment_methods.id")
-        ->select("payment_methods.name", "spreadsheet_rows_tpvs.id","spreadsheet_rows_tpvs.id_spreadsheet_tpv", "spreadsheet_rows_tpvs.value_pos", "spreadsheet_rows_tpvs.value_treasurer")
+        ->select("payment_methods.name","spreadsheet_rows_tpvs.difference", "spreadsheet_rows_tpvs.id","spreadsheet_rows_tpvs.id_spreadsheet_tpv", "spreadsheet_rows_tpvs.value_pos", "spreadsheet_rows_tpvs.value_treasurer")
         ->get();
 
+
+}else{
+
+    $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
+    ->select("spreadsheets.date_previous", "spreadsheets.id", "states.state","spreadsheets.id_state")
+    ->where("spreadsheets.id","=","$request->id_spreadsheets")
+    ->first();
+    $id_company = $request->id_company;
+    $spreadsheet_tpvs = Spreadsheet_tpv::join("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+    ->join("states","spreadsheet_tpvs.id_state","states.id")
+    ->join("shops","tpvs.id_shop","shops.id")
+    ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
+    ->join("companies","shops.id_company","companies.id")
+    ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","shops.id as id_shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+    ->where("spreadsheet_tpvs.id_spreadsheet","=","$request->id_spreadsheets")
+    ->where("shops.id_company","=","$request->id_company")
+    ->where('spreadsheet_shops.id_user', "=","$user->id")
+    ->orderBy('shops.id', 'desc')
+    ->get();
+
+    $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::join("payment_methods","spreadsheet_rows_tpvs.id_payment_method","payment_methods.id")
+    ->select("payment_methods.name","spreadsheet_rows_tpvs.difference", "spreadsheet_rows_tpvs.id","spreadsheet_rows_tpvs.id_spreadsheet_tpv", "spreadsheet_rows_tpvs.value_pos", "spreadsheet_rows_tpvs.value_treasurer")
+    ->get();
+
+
+
+}
 
         $pdf = Pdf::loadView('dashboard.spreadsheets.pdf.pdf',compact('spreadsheets','spreadsheet_tpvs','spreadsheet_rows_tpvs','id_company'));
         return $pdf->stream();

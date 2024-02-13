@@ -24,6 +24,8 @@
 @if($validate_user_administrator && $my_user->id_area != 1)
 <p class="alert alert-danger" role="alert" class="">No tines permitido hacer eso</p>
 @elseif ($validation_jefe || $user->id == $my_user->id || $validate_user_administrator)
+<div class="content_principal" style="display: flex; align-items: center; justify-content: center">
+    <div class="content_form" style="width: 70%;">
 <form id="miFormulario" action="{{ route('dashboard.users.change_password.save_changes') }}" method="post">
     @csrf
     <input type="number" name="id" hidden value="{{ $user->id }}">
@@ -55,6 +57,8 @@
 <p class="alert alert-danger" role="alert" class="">No estas autorizado para cambiar contraseñas</p>
 @endif
 @stop
+</div>
+</div>
 
 @section('css')
 @vite('resources/css/content_loading.css')

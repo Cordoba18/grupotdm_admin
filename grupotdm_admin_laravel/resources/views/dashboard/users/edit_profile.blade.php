@@ -11,7 +11,7 @@
 
 </div>
 <br>
-<h1>Perfil de <b> {{ $user->name }}</b></h1>
+
 <br>
 @if (session('message'))
 
@@ -20,10 +20,12 @@
          @endif
 
 @stop
-<br>
+
 @section('content')
 @if ($user->id_area == $my_user->id_area || $validate_user_administrator ||  $my_user->id_area == 2)
-
+<div class="content_principal" style="display: flex; align-items: center; justify-content: center">
+    <div class="content_form" style="width: 70%;">
+        <h1>Perfil de <b> {{ $user->name }}</b></h1>
 <form id="miFormulario" action="{{ route('dashboard.users.save_changes') }}" method="post">
     @csrf
     <input type="number" hidden value="{{ $user->id }}" name="id">
@@ -201,7 +203,8 @@
 @else
 <p class="alert alert-danger" role="alert" class=""> No tienes permitido editar este usuario</p>
 @endif
-
+</div>
+</div>
 @stop
 
 @section('css')

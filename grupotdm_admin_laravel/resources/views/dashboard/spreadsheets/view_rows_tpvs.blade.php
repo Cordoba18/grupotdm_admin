@@ -75,7 +75,6 @@
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">ESTADO</label>
     <input disabled type="text" id="state" name="" class="form-control-plaintext" value="{{ $spreadsheet_tpv->state }}">
-    <p>Al momento de guardar el informe de tpv se realizara un cambio de estado a TERMINADO !</p>
 </div>
 
 <div class="overlay" id="content_loading" style="display: flex; align-items: center" hidden>
