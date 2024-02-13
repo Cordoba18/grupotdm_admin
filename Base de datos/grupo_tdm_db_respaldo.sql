@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-02-2024 a las 03:34:49
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Tiempo de generación: 13-02-2024 a las 23:19:33
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -418,7 +418,10 @@ INSERT INTO `comments` (`id`, `comment`, `date`, `id_user`, `id_ticket`, `id_sta
 (203, 'Ahlo', '30 January 2024 15:17:34', 15, 58, 1, '2024-01-31 01:17:34', '2024-01-31 01:17:34'),
 (204, 'Hola', '01 February 2024 15:00:26', 1, 59, 1, '2024-02-02 01:00:26', '2024-02-02 01:00:26'),
 (205, 'Hola', '03 February 2024 12:29:36', 10, 59, 1, '2024-02-03 22:29:36', '2024-02-03 22:29:36'),
-(206, 'Chevere', '07 February 2024 11:01:31', 10, 59, 1, '2024-02-07 16:01:33', '2024-02-07 16:01:33');
+(206, 'Chevere', '07 February 2024 11:01:31', 10, 59, 1, '2024-02-07 16:01:33', '2024-02-07 16:01:33'),
+(207, 'hOLA', '13 February 2024 15:32:43', 10, 63, 1, '2024-02-14 01:32:43', '2024-02-14 01:32:43'),
+(208, 'Necesitas algo', '13 February 2024 15:32:46', 10, 63, 1, '2024-02-14 01:32:46', '2024-02-14 01:32:46'),
+(209, 'YA ACABO?', '13 February 2024 15:38:49', 10, 63, 1, '2024-02-13 20:38:51', '2024-02-13 20:38:51');
 
 -- --------------------------------------------------------
 
@@ -661,7 +664,11 @@ INSERT INTO `notifications` (`id`, `notification`, `date`, `route`, `id_user`, `
 (154, 'Se ha creado un nuevo ticket para ti', '08/02/2024 12:19:59', 'http://localhost/dashboard/tickets/ticket_detail/61', 10, 3, '2024-02-08 17:19:59', '2024-02-08 17:19:59'),
 (155, 'Su ticket ha sido VISTO y esta previo a ejecución', '08/02/2024 12:20:10', 'http://localhost/dashboard/tickets/ticket_detail/61', 10, 3, '2024-02-08 17:20:10', '2024-02-08 17:20:10'),
 (156, 'El ticket impuesto para ti ha sido eliminado!', '08/02/2024 12:20:16', 'http://localhost/dashboard/tickets/ticket_detail/61', 10, 4, '2024-02-09 00:15:57', '2024-02-08 17:20:16'),
-(157, 'Se ha creado un nuevo ticket para ti', '08/02/2024 12:20:34', 'http://localhost/dashboard/tickets/ticket_detail/62', 1, 3, '2024-02-08 17:20:34', '2024-02-08 17:20:34');
+(157, 'Se ha creado un nuevo ticket para ti', '08/02/2024 12:20:34', 'http://localhost/dashboard/tickets/ticket_detail/62', 1, 3, '2024-02-08 17:20:34', '2024-02-08 17:20:34'),
+(158, 'Se ha creado un nuevo ticket para ti', '13/02/2024 15:30:45', 'http://localhost/dashboard/tickets/ticket_detail/63', 10, 3, '2024-02-13 20:30:45', '2024-02-13 20:30:45'),
+(159, 'Su ticket ha sido VISTO y esta previo a ejecución', '13/02/2024 15:32:23', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 4, '2024-02-14 01:32:34', '2024-02-13 20:32:23'),
+(160, 'Su ticket ha sido ejecutado', '13/02/2024 15:37:42', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 3, '2024-02-13 20:37:42', '2024-02-13 20:37:42'),
+(161, 'Tienes un nuevo comentario en ticket', '13/02/2024 15:38:51', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 3, '2024-02-13 20:38:51', '2024-02-13 20:38:51');
 
 -- --------------------------------------------------------
 
@@ -2110,7 +2117,21 @@ INSERT INTO `reports` (`id`, `description`, `id_user`, `id_report_detail`, `date
 (1209, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '12/02/2024 21:09:53', '2024-02-13 02:09:53', '2024-02-13 02:09:53'),
 (1210, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:24:38', '2024-02-13 02:24:38', '2024-02-13 02:24:38'),
 (1211, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '12/02/2024 21:26:11', '2024-02-13 02:26:11', '2024-02-13 02:26:11'),
-(1212, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:28:11', '2024-02-13 02:28:11', '2024-02-13 02:28:11');
+(1212, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '12/02/2024 21:28:11', '2024-02-13 02:28:11', '2024-02-13 02:28:11'),
+(1213, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '13/02/2024 15:22:30', '2024-02-13 20:22:30', '2024-02-13 20:22:30'),
+(1214, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '13/02/2024 15:27:26', '2024-02-13 20:27:26', '2024-02-13 20:27:26'),
+(1215, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '13/02/2024 15:28:00', '2024-02-13 20:28:00', '2024-02-13 20:28:00'),
+(1216, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '13/02/2024 15:28:28', '2024-02-13 20:28:28', '2024-02-13 20:28:28'),
+(1217, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '13/02/2024 15:28:43', '2024-02-13 20:28:43', '2024-02-13 20:28:43'),
+(1218, 'Se han modificado los datos del usuario sistemasaux8@eltemplodelamoda.com.co', 2, 2, '13/02/2024 15:28:58', '2024-02-13 20:28:58', '2024-02-13 20:28:58'),
+(1219, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '13/02/2024 15:29:08', '2024-02-13 20:29:08', '2024-02-13 20:29:08'),
+(1220, 'El usuario jccq12@gmail.com creo un ticket llamado HACELE LA COMIDA A VALERIA', 1, 4, '13/02/2024 15:30:45', '2024-02-13 20:30:45', '2024-02-13 20:30:45'),
+(1221, 'El usuario sistemasaux8@eltemplodelamoda.com.co ha visto el ticket con id 63', 10, 7, '13/02/2024 15:32:20', '2024-02-13 20:32:20', '2024-02-13 20:32:20'),
+(1222, 'El usuario sistemasaux8@eltemplodelamoda.com.co inicio la ejecución del ticket con id 63', 10, 7, '13/02/2024 15:37:40', '2024-02-13 20:37:40', '2024-02-13 20:37:40'),
+(1223, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '13/02/2024 15:55:30', '2024-02-13 20:55:30', '2024-02-13 20:55:30'),
+(1224, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '13/02/2024 15:55:51', '2024-02-13 20:55:51', '2024-02-13 20:55:51'),
+(1225, 'Se han modificado los datos del usuario sistemasaux8@eltemplodelamoda.com.co', 2, 2, '13/02/2024 15:56:10', '2024-02-13 20:56:10', '2024-02-13 20:56:10'),
+(1226, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '13/02/2024 15:56:20', '2024-02-13 20:56:20', '2024-02-13 20:56:20');
 
 -- --------------------------------------------------------
 
@@ -2386,6 +2407,7 @@ INSERT INTO `server_sql_licenses` (`id`, `id_server`, `id_sql_licenses`, `id_sta
 CREATE TABLE `shops` (
   `id` int(11) NOT NULL,
   `shop` varchar(100) NOT NULL,
+  `operation_center` varchar(45) DEFAULT NULL,
   `id_company` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
@@ -2395,58 +2417,58 @@ CREATE TABLE `shops` (
 -- Volcado de datos para la tabla `shops`
 --
 
-INSERT INTO `shops` (`id`, `shop`, `id_company`, `updated_at`, `created_at`) VALUES
-(1, 'CALI CENTRO - TEMPLO 1', 1, NULL, NULL),
-(2, 'CALI CENTRO - TEMPLO 2', 1, NULL, NULL),
-(3, 'ARMENIA - TEMPLO 4', 1, NULL, NULL),
-(4, 'CALI VALLE DEL LILI SUR - TEMPLO 5', 1, NULL, NULL),
-(5, 'BUENAVENTURA - TEMPLO 6', 1, NULL, NULL),
-(6, 'CALI CALIMA - TEMPLO 8', 1, NULL, NULL),
-(7, 'PALMIRA - TEMPLO 9', 1, NULL, NULL),
-(8, 'PEREIRA - TEMPLO 10', 1, NULL, NULL),
-(9, 'CALI CENTRO - TEMPLO 11', 1, NULL, NULL),
-(10, 'JAMUNDÌ - TEMPLO 13', 1, NULL, NULL),
-(11, 'MANIZALES - TEMPLO 14', 1, NULL, NULL),
-(12, 'TULÙA - TEMPLO 16', 1, NULL, NULL),
-(13, 'SANTANDER DE QUILICHAO - TEMPLO 17', 1, NULL, NULL),
-(14, 'CALI CALLE 26 - TEMPLO 18', 1, NULL, NULL),
-(15, 'IBAGUÈ - TEMPLO 19', 1, NULL, NULL),
-(16, 'CALI MARIANO RAMOS - TEMPLO 20', 1, NULL, NULL),
-(17, 'YUMBO - TEMPLO 23', 1, NULL, NULL),
-(18, 'BUGA - TEMPLO 24', 1, NULL, NULL),
-(19, 'CALI LOS MANGOS - TEMPLO 26', 1, NULL, NULL),
-(20, 'FLORIDA - TEMPLO 27', 1, NULL, NULL),
-(21, 'POPAYÀN - TEMPLO 28', 1, NULL, NULL),
-(22, 'CALI MELÈNDEZ - TEMPLO 29', 1, NULL, NULL),
-(23, 'CALI ALAMEDA - TEMPLO 30', 1, NULL, NULL),
-(24, 'CALI CARRERA 1 - TEMPLO 31', 1, NULL, NULL),
-(25, 'CALI COSMOCENTRO - TEMPLO 32', 1, NULL, NULL),
-(26, 'NEIVA CENTRO - TEMPLO 33', 1, NULL, NULL),
-(27, 'BUENAVENTURA PACIFIC MALLL - TEMPLO 34', 1, NULL, NULL),
-(28, 'PALMIRA UNICENTRO - TEMPLO 35', 1, NULL, NULL),
-(29, 'SHOPPING TEX 1', 2, NULL, NULL),
-(30, 'SHOPPING TEX 2', 2, NULL, NULL),
-(31, 'SHOPPING TEX 3', 2, NULL, NULL),
-(32, 'SHOPPING TEX 4', 2, NULL, NULL),
-(33, 'SHOPPING TEX 5', 2, NULL, NULL),
-(34, 'SHOPPING TEX 6', 2, NULL, NULL),
-(35, 'SHOPPING TEX 7', 2, NULL, NULL),
-(36, 'SHOPPING TEX 8', 2, NULL, NULL),
-(37, 'SHOPPING TEX 9', 2, NULL, NULL),
-(38, 'SHOPPING TEX 10', 2, NULL, NULL),
-(39, 'SHOPPING TEX 11', 2, NULL, NULL),
-(40, 'SHOPPING TEX 12', 2, NULL, NULL),
-(41, 'SHOPPING TEX 13', 2, NULL, NULL),
-(42, 'SHOPPING TEX 14', 2, NULL, NULL),
-(43, 'SHOPPING TEX 15', 2, NULL, NULL),
-(44, 'SHOPPING TEX 16', 2, NULL, NULL),
-(45, 'SHOPPING TEX 17', 2, NULL, NULL),
-(46, 'SHOPPING TEX 18', 2, NULL, NULL),
-(47, 'SHOPPING TEX 19', 2, NULL, NULL),
-(48, 'SHOPPING TEX 20', 2, NULL, NULL),
-(49, 'SHOPPING TEX 21', 2, NULL, NULL),
-(50, 'CEDI', 5, NULL, NULL),
-(51, 'OFICINA ADMINISTRATIVA', 5, NULL, NULL);
+INSERT INTO `shops` (`id`, `shop`, `operation_center`, `id_company`, `updated_at`, `created_at`) VALUES
+(1, 'CALI CENTRO - TEMPLO 1', '001', 1, NULL, NULL),
+(2, 'CALI CENTRO - TEMPLO 2', '002', 1, NULL, NULL),
+(3, 'ARMENIA - TEMPLO 4', '004', 1, NULL, NULL),
+(4, 'CALI VALLE DEL LILI SUR - TEMPLO 5', '005', 1, NULL, NULL),
+(5, 'BUENAVENTURA - TEMPLO 6', '006', 1, NULL, NULL),
+(6, 'CALI CALIMA - TEMPLO 8', '008', 1, NULL, NULL),
+(7, 'PALMIRA - TEMPLO 9', '009', 1, NULL, NULL),
+(8, 'PEREIRA - TEMPLO 10', '010', 1, NULL, NULL),
+(9, 'CALI CENTRO - TEMPLO 11', '011', 1, NULL, NULL),
+(10, 'JAMUNDÌ - TEMPLO 13', '013', 1, NULL, NULL),
+(11, 'MANIZALES - TEMPLO 14', '014', 1, NULL, NULL),
+(12, 'TULÙA - TEMPLO 16', '016', 1, NULL, NULL),
+(13, 'SANTANDER DE QUILICHAO - TEMPLO 17', '017', 1, NULL, NULL),
+(14, 'CALI CALLE 26 - TEMPLO 18', '018', 1, NULL, NULL),
+(15, 'IBAGUÈ - TEMPLO 19', '019', 1, NULL, NULL),
+(16, 'CALI MARIANO RAMOS - TEMPLO 20', '020', 1, NULL, NULL),
+(17, 'YUMBO - TEMPLO 23', '023', 1, NULL, NULL),
+(18, 'BUGA - TEMPLO 24', '024', 1, NULL, NULL),
+(19, 'CALI LOS MANGOS - TEMPLO 26', '026', 1, NULL, NULL),
+(20, 'FLORIDA - TEMPLO 27', '027', 1, NULL, NULL),
+(21, 'POPAYÀN - TEMPLO 28', '028', 1, NULL, NULL),
+(22, 'CALI MELÈNDEZ - TEMPLO 29', '029', 1, NULL, NULL),
+(23, 'CALI ALAMEDA - TEMPLO 30', '030', 1, NULL, NULL),
+(24, 'CALI CARRERA 1 - TEMPLO 31', '031', 1, NULL, NULL),
+(25, 'CALI COSMOCENTRO - TEMPLO 32', '032', 1, NULL, NULL),
+(26, 'NEIVA CENTRO - TEMPLO 33', '033', 1, NULL, NULL),
+(27, 'BUENAVENTURA PACIFIC MALLL - TEMPLO 34', '034', 1, NULL, NULL),
+(28, 'PALMIRA UNICENTRO - TEMPLO 35', '035', 1, NULL, NULL),
+(29, 'SHOPPING TEX 1', '001', 2, NULL, NULL),
+(30, 'SHOPPING TEX 2', '002', 2, NULL, NULL),
+(31, 'SHOPPING TEX 3', '003', 2, NULL, NULL),
+(32, 'SHOPPING TEX 4', '004', 2, NULL, NULL),
+(33, 'SHOPPING TEX 5', '005', 2, NULL, NULL),
+(34, 'SHOPPING TEX 6', '006', 2, NULL, NULL),
+(35, 'SHOPPING TEX 7', '007', 2, NULL, NULL),
+(36, 'SHOPPING TEX 8', '008', 2, NULL, NULL),
+(37, 'SHOPPING TEX 9', '009', 2, NULL, NULL),
+(38, 'SHOPPING TEX 10', '010', 2, NULL, NULL),
+(39, 'SHOPPING TEX 11', '011', 2, NULL, NULL),
+(40, 'SHOPPING TEX 12', '012', 2, NULL, NULL),
+(41, 'SHOPPING TEX 13', '013', 2, NULL, NULL),
+(42, 'SHOPPING TEX 14', '014', 2, NULL, NULL),
+(43, 'SHOPPING TEX 15', '015', 2, NULL, NULL),
+(44, 'SHOPPING TEX 16', '016', 2, NULL, NULL),
+(45, 'SHOPPING TEX 17', '017', 2, NULL, NULL),
+(46, 'SHOPPING TEX 18', '018', 2, NULL, NULL),
+(47, 'SHOPPING TEX 19', '019', 2, NULL, NULL),
+(48, 'SHOPPING TEX 20', '020', 2, NULL, NULL),
+(49, 'SHOPPING TEX 21', '021', 2, NULL, NULL),
+(50, 'CEDI', '', 5, NULL, NULL),
+(51, 'OFICINA ADMINISTRATIVA', '', 5, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2468,7 +2490,8 @@ CREATE TABLE `spreadsheets` (
 --
 
 INSERT INTO `spreadsheets` (`id`, `date_now`, `date_previous`, `id_state`, `updated_at`, `created_at`) VALUES
-(1, '2024-02-12', '2024-02-11', 1, '2024-02-13 05:55:21', '2024-02-13 05:55:21');
+(1, '2024-02-12', '2024-02-11', 1, '2024-02-13 05:55:21', '2024-02-13 05:55:21'),
+(2, '2024-02-13', '2024-02-12', 1, '2024-02-14 01:21:19', '2024-02-14 01:21:19');
 
 -- --------------------------------------------------------
 
@@ -2499,7 +2522,15 @@ INSERT INTO `spreadsheet_rows_tpvs` (`id`, `id_payment_method`, `id_spreadsheet_
 (5, 1, 3, '90000', NULL, NULL, '2024-02-13 06:13:35', '2024-02-13 06:13:35'),
 (6, 2, 3, '30000', NULL, NULL, '2024-02-13 06:13:35', '2024-02-13 06:13:35'),
 (7, 1, 4, '60000', '60000', '0', '2024-02-13 07:09:01', '2024-02-13 06:55:35'),
-(8, 2, 4, '30000', '20000', '10000', '2024-02-13 07:09:01', '2024-02-13 06:55:35');
+(8, 2, 4, '30000', '20000', '10000', '2024-02-13 07:09:01', '2024-02-13 06:55:35'),
+(9, 1, 5, '80000', '80000', '0', '2024-02-14 01:59:01', '2024-02-14 01:21:19'),
+(10, 2, 5, '20000', '10000', '10000', '2024-02-14 01:59:01', '2024-02-14 01:21:19'),
+(11, 1, 6, '40000', '50000', '-10000', '2024-02-14 02:07:08', '2024-02-14 01:21:19'),
+(12, 2, 6, '30000', '20000', '10000', '2024-02-14 02:07:08', '2024-02-14 01:21:19'),
+(13, 1, 7, '70000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(14, 2, 7, '50000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(15, 1, 8, '20000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(16, 2, 8, '90000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19');
 
 -- --------------------------------------------------------
 
@@ -2521,9 +2552,8 @@ CREATE TABLE `spreadsheet_shops` (
 --
 
 INSERT INTO `spreadsheet_shops` (`id`, `id_user`, `id_shop`, `id_state`, `updated_at`, `created_at`) VALUES
-(1, 10, 7, 1, '2024-02-13 05:56:55', '2024-02-13 05:56:55'),
-(2, 10, 8, 1, '2024-02-13 05:57:03', '2024-02-13 05:57:03'),
-(3, 10, 5, 1, '2024-02-13 07:08:24', '2024-02-13 07:08:24');
+(5, 10, 8, 1, '2024-02-14 01:59:39', '2024-02-14 01:59:39'),
+(6, 10, 7, 1, '2024-02-14 01:59:55', '2024-02-14 01:59:55');
 
 -- --------------------------------------------------------
 
@@ -2551,7 +2581,11 @@ INSERT INTO `spreadsheet_tpvs` (`id`, `total`, `sub_total`, `difference`, `id_tp
 (1, '80000', '0', '0', 2, 1, 3, '2024-02-13 05:55:21', '2024-02-13 05:55:21'),
 (2, '70000', '50000', '20000', 3, 1, 3, '2024-02-13 06:00:47', '2024-02-13 05:55:21'),
 (3, '120000', '0', '0', 4, 1, 3, '2024-02-13 06:13:35', '2024-02-13 06:13:35'),
-(4, '90000', '80000', '10000', 5, 1, 3, '2024-02-13 07:09:37', '2024-02-13 06:55:35');
+(4, '90000', '80000', '10000', 5, 1, 3, '2024-02-13 07:09:37', '2024-02-13 06:55:35'),
+(5, '100000', '90000', '10000', 2, 2, 3, '2024-02-14 01:59:01', '2024-02-14 01:21:19'),
+(6, '70000', '70000', '0', 3, 2, 7, '2024-02-14 02:07:13', '2024-02-14 01:21:19'),
+(7, '120000', '0', '0', 4, 2, 3, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(8, '110000', '0', '0', 5, 2, 3, '2024-02-14 01:21:19', '2024-02-14 01:21:19');
 
 -- --------------------------------------------------------
 
@@ -2737,7 +2771,8 @@ INSERT INTO `tickets` (`id`, `name`, `description`, `file`, `date_start`, `date_
 (59, 'AYUDA CON EQUIPO DE NOMINA', 'Traslado de equipo', NULL, '01/02/2024 14:36:45', '01/02/2024 15:36:45', 5, 1, 10, 6, '2024-02-03 22:28:37', '2024-02-01 19:37:11'),
 (60, 'AYUDA CON COSAS', 'N/A', NULL, '08/02/2024 12:18:43', '08/02/2024 14:18:43', 4, 10, 1, 6, '2024-02-12 00:50:28', '2024-02-08 17:19:06'),
 (61, 'asd', 'adasd', NULL, '08/02/2024 12:19:50', '08/02/2024 13:19:50', 5, 10, 10, 6, '2024-02-12 00:50:34', '2024-02-08 17:19:59'),
-(62, 'asda', 'asdsad', NULL, '08/02/2024 12:20:26', '08/02/2024 13:20:26', 5, 10, 1, 6, '2024-02-12 00:50:37', '2024-02-08 17:20:34');
+(62, 'asda', 'asdsad', NULL, '08/02/2024 12:20:26', '08/02/2024 13:20:26', 5, 10, 1, 6, '2024-02-12 00:50:37', '2024-02-08 17:20:34'),
+(63, 'HACELE LA COMIDA A VALERIA', 'PATICO', NULL, '13/02/2024 15:29:39', '13/02/2024 16:29:39', 5, 1, 10, 5, '2024-02-14 01:37:40', '2024-02-13 20:30:45');
 
 -- --------------------------------------------------------
 
@@ -2836,9 +2871,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `nit`, `email`, `password`, `id_company`, `id_state`, `id_area`, `id_chargy`, `id_shop`, `id_theme_user`, `updated_at`, `created_at`) VALUES
-(1, 'Jhan Carlos Cordoba', '3043711546', '1111663045', 'jccq12@gmail.com', '$2y$12$qiWWz8RWBnifFKhCROdRdOXSHVwVe9ZBZK4.B6aKJ5Pfh.Emk8W3G', 5, 1, 7, 22, 51, 2, '2024-02-13 00:56:25', '2023-12-04 06:41:19'),
+(1, 'Jhan Carlos Cordoba', '3043711546', '1111663045', 'jccq12@gmail.com', '$2y$12$qiWWz8RWBnifFKhCROdRdOXSHVwVe9ZBZK4.B6aKJ5Pfh.Emk8W3G', 5, 1, 7, 22, 51, 2, '2024-02-13 20:55:51', '2023-12-04 06:41:19'),
 (2, 'Administrador GRUPO TDM', NULL, '805027653', 'soporte@eltemplodelamoda.com.co', '$2y$12$URua6E9e.DoM3Nt2TzqadOQo0RG2QnM5Hk6a5A7EdemJZNaKMttVK', 5, 1, 1, 83, NULL, NULL, '2023-12-21 15:29:01', '2023-12-04 07:04:03'),
-(10, 'Anderson Cordoba', NULL, '1565654465', 'sistemasaux8@eltemplodelamoda.com.co', '$2y$12$RePEIqHaMsIdOsiT1VgfSOBZPhG3sCGXTFpCfAeOi2V8nBmRwFUI6', 5, 1, 7, 24, 51, 2, '2024-02-13 00:56:00', '2023-12-06 20:36:20'),
+(10, 'Anderson Cordoba', NULL, '1565654465', 'sistemasaux8@eltemplodelamoda.com.co', '$2y$12$RePEIqHaMsIdOsiT1VgfSOBZPhG3sCGXTFpCfAeOi2V8nBmRwFUI6', 5, 1, 7, 24, 51, 2, '2024-02-13 20:56:10', '2023-12-06 20:36:20'),
 (11, 'Kelly Gomez', '3123213123', '123456789', 'analistadesistemas@eltemplodelamoda.com.co', '$2y$12$DsPHFtMueUypFjuQyovIeuDIrr3HDOxvVSlEy4rcP6dt8gOnDPPMO', 1, 2, 2, 4, 2, 1, '2024-01-25 16:33:03', '2023-12-06 23:57:46'),
 (12, 'Jerson Henao', NULL, '987456123', 'sistemasaux4@eltemplodelamoda.com.co', '$2y$12$3HC5qCgFUCEYrSTJ/xA6X.Vo.i8ScF5atbOECjPIc3uB9GhgLPpou', 5, 2, 2, 5, 50, 2, '2024-02-01 18:50:09', '2023-12-06 23:59:07'),
 (13, 'Rodrigo Rodallega', NULL, '94495428', 'csoporte@eltemplodelamoda.com.co', '$2y$12$QHlRbbn8t9BP1NUuRB90oeZ7kQ/Q7lt1UuhAafWbnZjPvgLxnSYe2', 5, 1, 2, 1, 51, 3, '2023-12-22 14:49:18', '2023-12-09 21:34:32'),
@@ -3358,7 +3393,7 @@ ALTER TABLE `charges`
 -- AUTO_INCREMENT de la tabla `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT de la tabla `companies`
@@ -3406,7 +3441,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT de la tabla `origins_certificates`
@@ -3466,7 +3501,7 @@ ALTER TABLE `replenish_times`
 -- AUTO_INCREMENT de la tabla `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1213;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1227;
 
 --
 -- AUTO_INCREMENT de la tabla `reports_certificate`
@@ -3514,25 +3549,25 @@ ALTER TABLE `shops`
 -- AUTO_INCREMENT de la tabla `spreadsheets`
 --
 ALTER TABLE `spreadsheets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_rows_tpvs`
 --
 ALTER TABLE `spreadsheet_rows_tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_shops`
 --
 ALTER TABLE `spreadsheet_shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_tpvs`
 --
 ALTER TABLE `spreadsheet_tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `sql_licenses`
@@ -3562,7 +3597,7 @@ ALTER TABLE `themes_users`
 -- AUTO_INCREMENT de la tabla `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT de la tabla `tpvs`
