@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SpreadsheetsExport;
+use App\Mail\spreadsheet_tpvs_finish_notificate;
 use App\Models\Area;
 use App\Models\Companie;
 use App\Models\Payment_method;
@@ -20,6 +22,8 @@ use DateTime;
 use DateTimeZone;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SpreadsheetsController extends Controller
 {
@@ -75,7 +79,6 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
             foreach ($payment_methods as $p) {
                 $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::where("id_payment_method","="," $p->id")
                 ->where("id_spreadsheet_tpv","=","$spreadsheet_tpv->id")->first();
-
                 if (!$spreadsheet_rows_tpvs) {
                     $spreadsheet_rows_tpvs = new Spreadsheet_rows_tpv();
                     $spreadsheet_rows_tpvs->id_payment_method = $p->id;
@@ -88,8 +91,6 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
                 }
                 $total = $total + intval($spreadsheet_rows_tpvs->value_pos);
             }
-
-
             $spreadsheet_tpv = Spreadsheet_tpv::find($spreadsheet_tpv->id);
             $spreadsheet_tpv->total = $total;
             $spreadsheet_tpv->save();
@@ -397,9 +398,37 @@ if ($validation_jefe) {
         if(SpreadsheetsController::validate_user()){
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
+
+       $jefes = DB::select("SELECT * FROM users u
+       INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE (c.chargy = 'JEFE DE AREA' OR c.chargy LIKE '%coordinador%') AND u.id_area = 7");
         $spreadsheet_tpv = Spreadsheet_tpv::find($request->id_spreadsheet_tpv);
         if ($spreadsheet_tpv->id_state == 3) {
             $spreadsheet_tpv->id_state = 7;
+            $data = Spreadsheet_rows_tpv::leftJoin("payment_methods","spreadsheet_rows_tpvs.id_payment_method","payment_methods.id")
+            ->leftJoin("spreadsheet_tpvs","spreadsheet_rows_tpvs.id_spreadsheet_tpv","spreadsheet_tpvs.id")
+            ->leftJoin("states","spreadsheet_tpvs.id_state","states.id")
+            ->leftJoin("tpvs","spreadsheet_tpvs.id_tpv","tpvs.id")
+            ->leftJoin("shops","tpvs.id_shop","shops.id")
+            ->leftJoin("companies","shops.id_company","companies.id")
+            ->leftJoin("spreadsheets","spreadsheet_tpvs.id_spreadsheet","spreadsheets.id")
+            ->leftJoin("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
+            ->leftJoin("users","spreadsheet_shops.id_user","users.id")
+            ->select("users.name",
+                "spreadsheets.date_previous","spreadsheets.date_now",
+                "tpvs.tpv","companies.company","shops.shop",
+            "spreadsheet_tpvs.total as total_pos","spreadsheet_tpvs.sub_total as sub_total_pos","spreadsheet_tpvs.difference as difference_pos",
+            "payment_methods.name as payment_method","spreadsheet_rows_tpvs.value_pos",
+            "spreadsheet_rows_tpvs.value_treasurer","spreadsheet_rows_tpvs.difference","states.state")
+            ->where("spreadsheet_tpvs.id","=","$request->id_spreadsheet_tpv")
+            ->orderBy('shops.id', 'desc')
+            ->get();
+
+            foreach ($jefes as $jefe) {
+                Mail::to($jefe->email)->send(new spreadsheet_tpvs_finish_notificate($jefe, $data));
+            }
+
+
         }else{
             $spreadsheet_tpv->id_state = 3;
         }
@@ -423,4 +452,7 @@ if ($validation_jefe) {
         }
       }
 
+      public function excel(Request $request){
+        return Excel::download(new SpreadsheetsExport($request->id_spreadsheets,$request->id_company), "Informe_Tesoreria_Grupo_TDM.xlsx");
+      }
 }

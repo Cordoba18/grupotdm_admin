@@ -22,17 +22,31 @@
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
 
          @endif
+         <div class="content_buttons">
          <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
             <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
             <input type="text" hidden name="id_company" value="1">
-            <button  href="" class="btn btn-danger" id="btn_export">EXPORTAR EN PDF TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+            <button  href="" class="btn btn-danger" id="btn_export">PDF TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
          </form>
 
          <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
             <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
             <input type="text" hidden name="id_company" value="2">
-         <button href="" class="btn btn-danger" id="btn_export">EXPORTAR EN PDF TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+         <button href="" class="btn btn-danger" id="btn_export">PDF TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
         </form>
+
+        <form action="{{ route('dashboard.spreadsheets.excel') }}" method="get">
+            <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
+            <input type="text" hidden name="id_company" value="1">
+            <button  href="" class="btn btn-success" id="btn_export">EXCEL TMD <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+         </form>
+
+         <form action="{{ route('dashboard.spreadsheets.excel') }}" method="get">
+            <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
+            <input type="text" hidden name="id_company" value="2">
+         <button href="" class="btn btn-success" id="btn_export">EXCEL TMDF <i class="bi bi-file-earmark-spreadsheet-fill"></i></button>
+        </form>
+    </div>
 
 
 

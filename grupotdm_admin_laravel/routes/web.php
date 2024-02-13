@@ -181,7 +181,10 @@ Route::get('/dashboard/spreadsheets/tpvs/rows/{id}', [SpreadsheetsController::cl
 Route::post('/dashboard/spreadsheets/tpvs/rows/save_rows', [SpreadsheetsController::class, 'save_rows'])->name('dashboard.spreadsheets.tpvs.rows_tpvs.save_rows');
 Route::post('/dashboard/spreadsheets/tpvs/rows/save_spreadsheet_tpv', [SpreadsheetsController::class, 'save_spreadsheet_tpv'])->name('dashboard.spreadsheets.tpvs.rows_tpvs.save_spreadsheet_tpv');
 Route::get('/dashboard/spreadsheets/update', [SpreadsheetsController::class, 'update_spreadsheets'])->name('dashboard.spreadsheets');
+
 Route::get('/dashboard/spreadsheets/pdf', [SpreadsheetsController::class, 'pdf'])->name('dashboard.spreadsheets.pdf');
+Route::get('/dashboard/spreadsheets/excel', [SpreadsheetsController::class, 'excel'])->name('dashboard.spreadsheets.excel');
+
 Route::get('/dashboard/spreadsheets/shops', [SpreadsheetsController::class, 'show_spreadsheets_shops'])->name('dashboard.spreadsheets.shops');
 Route::post('/dashboard/spreadsheets/shops/create', [SpreadsheetsController::class, 'create_spreadsheets_shops'])->name('dashboard.spreadsheets.shops.create');
 Route::post('/dashboard/spreadsheets/shops/delete', [SpreadsheetsController::class, 'delete_spreadsheets_shops'])->name('dashboard.spreadsheets.shops.delete');

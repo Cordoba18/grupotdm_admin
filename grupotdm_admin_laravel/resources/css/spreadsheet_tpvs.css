@@ -1,6 +1,4 @@
-#btn_export{
-    width: 100%;
-}
+
 
 .content_search{
     width: 100%;
@@ -23,6 +21,7 @@
     border-radius: 10px;
     margin-right: 30px;
     width: 200px;
+
 }
 
 @media (max-width:800px){
@@ -33,9 +32,28 @@
 
     .content_search select{
         width: 100%;
+        margin-bottom: 20px;
     }
     .content_search button{
         width: 100%;
         margin-top: 10px;
     }
+}
+@media (max-width:1200px){
+    .content_buttons{
+        flex-wrap: wrap;
+    }
+    .content_buttons button{
+        width: 100%;
+        margin: 0;
+    }
+}
+
+.content_buttons{
+    display: flex;
+    justify-content: center;
+}
+.content_buttons button{
+    width: 200px;
+    margin: 20px;
 }

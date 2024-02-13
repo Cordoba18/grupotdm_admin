@@ -45,7 +45,7 @@
 
  @endforeach
  <br>
- <table style="width: 100%;text-align: center;font-size: 15px; border: 1px solid black; background-color:   rgb(0, 0, 0); color: white;font-weight: boldl;">
+ <table style="width: 100%;text-align: center;font-size: 20px; border: 1px solid black;">
     <thead>
         <th>TIENDA</th>
         <th>TOTAL POS</th>
@@ -54,9 +54,9 @@
 
     <tbody>
         <tr style="border: 1px solid black">
-            <td>{{ $s->shop }}</td>
-            <td>{{ $total }}</td>
-            <td>{{ $sub_total }}</td>
+            <td  style="border: 1px solid black">{{ $s->shop }}</td>
+            <td  style="border: 1px solid black">{{ $total }}</td>
+            <td  style="border: 1px solid black">{{ $sub_total }}</td>
         </tr>
     </tbody>
 </table>
@@ -72,7 +72,7 @@
             <div class="content_info_tpv">
                 <div class="info_tpv">
 
-                    <table style="width: 100%;text-align: center;font-size: 10px; border: 1px solid black; background-color: grey">
+                    <table style="width: 100%;text-align: center;font-size: 13px; border: 1px solid black; ">
                         <thead>
                             <th>TPV</th>
                             <th>TOTAL POS</th>
@@ -93,7 +93,7 @@
 
                 <div class="info_payment_methods">
 
-                    <table style="width: 100%;text-align: center;font-size: 10px;border: 1px solid black;">
+                    <table style="width: 100%;text-align: center;font-size: 13px;border: 1px solid black;">
                         <thead class="table">
                             <th>METODO DE PAGO</th>
                             <th>VALOR POS</th>
