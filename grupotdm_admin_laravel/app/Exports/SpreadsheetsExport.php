@@ -73,6 +73,7 @@ class SpreadsheetsExport implements FromCollection, WithHeadings, ShouldAutoSize
             "spreadsheet_tpvs.total as total_pos","spreadsheet_tpvs.sub_total as sub_total_pos","spreadsheet_tpvs.difference as difference_pos",
             "payment_methods.name as payment_method","spreadsheet_rows_tpvs.value_pos",
             "spreadsheet_rows_tpvs.value_treasurer","spreadsheet_rows_tpvs.difference","states.state")
+            ->where("spreadsheet_shops.id_state","=",1)
             ->where("spreadsheet_tpvs.id_spreadsheet","=","$id_spreadsheets")
             ->where("shops.id_company","=","$id_company")
             ->where('spreadsheet_shops.id_user', "=","$user->id")
@@ -93,7 +94,7 @@ class SpreadsheetsExport implements FromCollection, WithHeadings, ShouldAutoSize
             'FECHA DE INFORME',
             'FECHA DE CREACIÓN DE INFORME',
             'TPV',
-            'COMAPAÑIA',
+            'COMPAÑIA',
             'TIENDA',
             'TOTAL POS',
             'TOTAL CONTEO',

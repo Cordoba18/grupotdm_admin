@@ -55,7 +55,6 @@ axios.post(`${route_principal}/spreadsheets/tpvs/rows/save_spreadsheet_tpv`,{
   }).then(res=>{
     setTimeout(() => {
         btn_save.disabled = false;
-        state.value = "TERMINADO";
         content_loading.setAttribute("hidden","true");
         const Toast = Swal.mixin({
             toast: true,

@@ -46,7 +46,37 @@
 
 @section('content')
 
+<table id="miTabla" class="table table-bordered table-striped dataTable">
+    <thead class="table-dark">
+     <th>ID</th>
+     <th>CODIGO</th>
+     <th>DETALLE</th>
+     <th>CANTIDAD</th>
+     <th>FECHA DE INICIO</th>
+     <th>FECHA DE FINALIZACIÓN</th>
+     <th>VALOR UNITARIO</th>
+     <th>ACCIÓN</th>
 
+
+    </thead>
+    <tbody>
+
+            @foreach ($wifi_channels as $w)
+            <tr>
+                <td>{{ $w->id }}</td>
+                <td>{{ $w->code }}</td>
+                <td>{{ $w->detail }}</td>
+                <td>{{ $w->amount }}</td>
+                <td>{{ $w->date_start }}</td>
+                <td>{{ $w->date_finish}}</td>
+                <td>{{ $w->unit_value }}</td>
+                <td><a  href="{{ route('dashboard.wifi_channels.edit', $w->id) }}" class="btn btn-success">EDITAR</a></td>
+            </tr>
+            @endforeach
+
+
+    </tbody>
+</table>
 
 
 

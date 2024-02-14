@@ -25,15 +25,35 @@
 
 @section('content')
 
-<form id="miFormulario" action="" method="post" enctype="multipart/form-data">
+<form id="miFormulario" action="{{ route("dashboard.wifi_channels.create.save") }}" method="post" enctype="multipart/form-data">
     @csrf
 <div class="mb-3">
-    <label for="exampleFormControlInput1" class="form-label">Nombre/Descripción</label>
-    <input type="text" required name="name" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese nombre del servidor" value="">
+    <label for="exampleFormControlInput1" class="form-label">Código</label>
+    <input type="text" required name="code" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese codigo" value="">
+  </div>
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Detalle</label>
+    <input type="text" required name="detail" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese detalle" value="">
   </div>
 
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Cantidad</label>
+    <input type="text" required name="amount" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese cantidad " value="">
+  </div>
 
-  <button class="btn btn-primary" style="margin-bottom: 30px; width: 100%;">GUARDAR SERVIDOR  <i class="bi bi-floppy"></i></button>
+  <div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Valor unitario</label>
+    <input type="text" required name="unit_value" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese valor unitario " value="">
+  </div>
+  <div class="mb-3">
+  <label for="exampleFormControlInput1"  class="form-label"  for="fecha">Selecciona fecha inicial:</label>
+<input style="width: 100%" type="date" id="date_start" name="date_start">
+</div>
+<div class="mb-3">
+<label for="exampleFormControlInput1"  class="form-label" for="fecha">Selecciona fecha de finalización:</label>
+<input style="width: 100%" type="date" id="date_finish" name="date_finish">
+</div>
+  <button class="btn btn-primary" style="margin-bottom: 30px; width: 100%;">GUARDAR CANAL DE INTERNET  <i class="bi bi-floppy"></i></button>
 </form>
   @stop
 

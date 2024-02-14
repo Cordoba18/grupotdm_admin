@@ -149,3 +149,15 @@ color: red;
    color: green;
 }
 
+
+.content_img{
+    width: 100%;
+    height: 400px;
+    text-align: center;
+
+}
+.content_img img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}

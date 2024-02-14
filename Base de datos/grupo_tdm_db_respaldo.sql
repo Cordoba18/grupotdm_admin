@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-02-2024 a las 23:19:33
+-- Tiempo de generación: 14-02-2024 a las 23:34:51
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -83,7 +83,8 @@ INSERT INTO `califications` (`id`, `calification`, `comment`, `id_ticket`, `id_u
 (4, 4, 'Gracias', 17, 2, '19 December 2023', '2023-12-19 20:02:52', '2023-12-19 20:02:52'),
 (5, 5, 'Muy buen servicio', 25, 16, '21 December 2023', '2023-12-22 01:31:36', '2023-12-22 01:31:36'),
 (6, 4, 'Horrible', 8, 10, '06 January 2024', '2024-01-06 21:27:10', '2024-01-06 21:27:10'),
-(7, 4, 'Muy buena atención. Muchas Gracias', 56, 23, '29 January 2024', '2024-01-30 01:14:30', '2024-01-30 01:11:34');
+(7, 4, 'Muy buena atención. Muchas Gracias', 56, 23, '29 January 2024', '2024-01-30 01:14:30', '2024-01-30 01:11:34'),
+(8, 3, 'Gracias', 67, 1, '14 February 2024', '2024-02-14 19:35:20', '2024-02-14 19:35:20');
 
 -- --------------------------------------------------------
 
@@ -140,7 +141,8 @@ INSERT INTO `certificates` (`id`, `id_proceeding`, `date`, `address`, `id_user_d
 (23, 2, '01/02/2024 15:04:19', 'OFICINA ADMINISTRATIVA', 10, 1, NULL, NULL, 'N/a', NULL, NULL, NULL, NULL, 2, '2024-02-07 20:15:34', '2024-02-02 01:04:36'),
 (24, 2, '07/02/2024 10:16:05', 'OFICINA ADMINISTRATIVA', 10, 24, NULL, 10, 'N/a', '2024-02-07_15-17-02.gif', '07/02/2024 10:16:51', 'success.png', '07/02/2024 10:22:53', 12, '2024-02-07 20:22:53', '2024-02-07 20:16:34'),
 (25, 2, '07/02/2024 10:18:45', 'OFICINA ADMINISTRATIVA', 10, 18, NULL, 10, 'N/A', '2024-02-07_15-19-31.gif', '07/02/2024 10:19:24', 'success.png', '07/02/2024 10:23:16', 12, '2024-02-07 20:23:16', '2024-02-07 20:19:11'),
-(26, 2, '08/02/2024 10:35:04', 'OFICINA ADMINISTRATIVA', 1, 1, NULL, NULL, 'N/a', NULL, NULL, NULL, NULL, 2, '2024-02-08 20:36:53', '2024-02-08 20:35:22');
+(26, 2, '08/02/2024 10:35:04', 'OFICINA ADMINISTRATIVA', 1, 1, NULL, NULL, 'N/a', NULL, NULL, NULL, NULL, 2, '2024-02-08 20:36:53', '2024-02-08 20:35:22'),
+(27, 2, '14/02/2024 17:09:52', 'oficinas de NETGROUP', 19, 18, NULL, 19, 'salida para  NETGROUP con portátiles alquilados', '2024-02-14_22-15-20.jpg', '14/02/2024 17:15:46', '2024-02-14_22-18-44.jpg', '14/02/2024 17:18:21', 12, '2024-02-14 22:18:46', '2024-02-15 03:12:40');
 
 -- --------------------------------------------------------
 
@@ -276,13 +278,16 @@ CREATE TABLE `codes` (
 
 INSERT INTO `codes` (`email`, `code`, `updated_at`, `created_at`) VALUES
 ('asdasd123@tceluniverso.com', '512289', '2024-01-25 19:03:08', '2024-01-25 19:03:08'),
+('asistentetic@eltemplodelamoda.com.co', '949457', '2024-02-14 23:52:01', '2024-02-14 23:52:01'),
 ('csoporte@eltemplodelamoda.com.co', '271395', '2023-12-09 21:33:16', '2023-12-09 21:33:16'),
 ('ewtewtewt@eltemplodelamoda.com.co', '480993', '2024-01-05 23:47:39', '2024-01-05 23:47:39'),
 ('fwefewfw@eltemplodelamoda.com.co', '866571', '2024-01-05 23:43:24', '2024-01-05 23:43:24'),
 ('jccq12@eltemplodelamoda.com.co', '528815', '2023-12-09 18:50:00', '2023-12-09 18:50:00'),
 ('jccq12@eltemplodelamodafresca.com.co', '984455', '2023-12-09 18:49:21', '2023-12-09 18:49:21'),
 ('jccq12@gmail.com', '454489', '2024-01-26 21:16:56', '2024-01-26 21:16:56'),
+('recepciontdm@eltemplodelamoda.com.co', '211659', '2024-02-15 02:48:37', '2024-02-15 02:48:37'),
 ('sistemasaux10@eltemplodelamoda.com.co', '227045', '2024-01-31 01:13:13', '2024-01-31 01:13:13'),
+('sistemasaux11@eltemplodelamoda.com.co', '486707', '2024-02-14 18:38:29', '2024-02-14 18:38:29'),
 ('sistemasaux21@eltemplodelamoda.com.co', '484538', '2024-01-27 19:49:49', '2024-01-27 19:49:49'),
 ('sistemasaux8@eltemplodelamoda.com.co', '450521', '2023-12-07 18:38:05', '2023-12-07 18:38:05'),
 ('sistemasaux9@eltemplodelamoda.com.co', '407743', '2024-02-05 20:54:36', '2024-02-05 20:54:36'),
@@ -421,7 +426,44 @@ INSERT INTO `comments` (`id`, `comment`, `date`, `id_user`, `id_ticket`, `id_sta
 (206, 'Chevere', '07 February 2024 11:01:31', 10, 59, 1, '2024-02-07 16:01:33', '2024-02-07 16:01:33'),
 (207, 'hOLA', '13 February 2024 15:32:43', 10, 63, 1, '2024-02-14 01:32:43', '2024-02-14 01:32:43'),
 (208, 'Necesitas algo', '13 February 2024 15:32:46', 10, 63, 1, '2024-02-14 01:32:46', '2024-02-14 01:32:46'),
-(209, 'YA ACABO?', '13 February 2024 15:38:49', 10, 63, 1, '2024-02-13 20:38:51', '2024-02-13 20:38:51');
+(209, 'YA ACABO?', '13 February 2024 15:38:49', 10, 63, 1, '2024-02-13 20:38:51', '2024-02-13 20:38:51'),
+(210, 'Buen Dia Leonardo, Porfa cuando pasen estos casos, realizar las preguntar pertinentes las cuales son las siguientes', '14 February 2024 08:51:01', 18, 64, 1, '2024-02-14 18:51:01', '2024-02-14 18:51:01'),
+(211, '1 Preguntarle al usuario si debemos ejecutar la NTC por Almacen Fecha y No de Caja', '14 February 2024 08:51:39', 18, 64, 1, '2024-02-14 18:51:39', '2024-02-14 18:51:39'),
+(212, 'si ese no es el problema preguntarle si hay un daño de caja o si las ventas no subieron', '14 February 2024 08:52:07', 18, 64, 1, '2024-02-14 13:52:09', '2024-02-14 13:52:09'),
+(213, 'con el fin de solucionar y tener un dato mas certero ya que la imagen anexa no me informa nada', '14 February 2024 08:52:32', 18, 64, 1, '2024-02-14 13:52:34', '2024-02-14 13:52:34'),
+(214, 'Yo ya pregunte', '14 February 2024 08:59:11', 1, 64, 1, '2024-02-14 18:59:11', '2024-02-14 18:59:11'),
+(215, 'Por si algo', '14 February 2024 08:59:17', 1, 64, 1, '2024-02-14 18:59:17', '2024-02-14 18:59:17'),
+(216, 'Lo vamos a mandar', '14 February 2024 09:11:40', 1, 65, 1, '2024-02-14 19:11:40', '2024-02-14 19:11:40'),
+(217, 'De aqui para alla cierto?', '14 February 2024 09:11:45', 1, 65, 1, '2024-02-14 19:11:45', '2024-02-14 19:11:45'),
+(218, 'Osea para el CEDI?', '14 February 2024 09:11:51', 1, 65, 1, '2024-02-14 19:11:51', '2024-02-14 19:11:51'),
+(219, 'no sabemos si esta bien el adaptador, necesitamos solo responderle el correo que mando a la cuenta de soporte', '14 February 2024 09:12:58', 19, 65, 1, '2024-02-14 19:12:58', '2024-02-14 19:12:58'),
+(220, 'Entonces respondo que si le vamos a enviar uno y ya?', '14 February 2024 09:13:16', 1, 65, 1, '2024-02-14 19:13:16', '2024-02-14 19:13:16'),
+(221, 'O como ?', '14 February 2024 09:13:28', 1, 65, 1, '2024-02-14 14:13:30', '2024-02-14 14:13:30'),
+(222, 'que dice el correo ?', '14 February 2024 09:13:50', 19, 65, 1, '2024-02-14 19:13:50', '2024-02-14 19:13:50'),
+(223, 'Que solicita un convertidor VGA a HTDMI', '14 February 2024 09:14:36', 1, 65, 1, '2024-02-14 19:14:36', '2024-02-14 19:14:36'),
+(224, 'Eso no tenemos', '14 February 2024 09:14:39', 1, 65, 1, '2024-02-14 19:14:39', '2024-02-14 19:14:39'),
+(225, 'Hay que comprarlo', '14 February 2024 09:14:46', 1, 65, 1, '2024-02-14 19:14:46', '2024-02-14 19:14:46'),
+(226, 'Ya', '14 February 2024 09:16:54', 1, 65, 1, '2024-02-14 19:16:54', '2024-02-14 19:16:54'),
+(227, 'Cierra el ticket porfa', '14 February 2024 09:17:04', 1, 65, 1, '2024-02-14 19:17:04', '2024-02-14 19:17:04'),
+(228, 'Hay que ir a cotizar un cable', '14 February 2024 09:17:13', 1, 65, 1, '2024-02-14 19:17:13', '2024-02-14 19:17:13'),
+(229, 'Ese que tu quiere mandar no es', '14 February 2024 09:17:19', 1, 65, 1, '2024-02-14 14:17:21', '2024-02-14 14:17:21'),
+(230, 'listo', '14 February 2024 09:22:15', 19, 66, 1, '2024-02-14 14:22:17', '2024-02-14 14:22:17'),
+(231, 'Cierra el ticket porfavor', '14 February 2024 09:27:52', 1, 64, 1, '2024-02-14 14:27:54', '2024-02-14 14:27:54'),
+(232, 'Listo?', '14 February 2024 09:49:29', 1, 66, 1, '2024-02-14 19:49:29', '2024-02-14 19:49:29'),
+(233, 'bro no puedo cambiar los datos ni la contraseña a los correo', '14 February 2024 10:37:35', 19, 69, 1, '2024-02-14 15:37:37', '2024-02-14 15:37:37'),
+(234, 'Necesito el correo', '14 February 2024 10:38:43', 1, 69, 1, '2024-02-14 20:38:43', '2024-02-14 20:38:43'),
+(235, 'Dime que correo es', '14 February 2024 10:38:49', 1, 69, 1, '2024-02-14 20:38:49', '2024-02-14 20:38:49'),
+(236, 'Listo', '14 February 2024 10:42:23', 1, 69, 1, '2024-02-14 20:42:23', '2024-02-14 20:42:23'),
+(237, 'Te voy a adjuntar el cambio en una imagen al ticket', '14 February 2024 10:42:35', 1, 69, 1, '2024-02-14 20:42:35', '2024-02-14 20:42:35'),
+(238, 'Ya esta', '14 February 2024 10:43:14', 1, 69, 1, '2024-02-14 20:43:14', '2024-02-14 20:43:14'),
+(239, 'Puede descargar la captura', '14 February 2024 10:43:21', 1, 69, 1, '2024-02-14 20:43:21', '2024-02-14 20:43:21'),
+(240, 'Cerra el ticket porfa :)', '14 February 2024 10:49:11', 1, 69, 1, '2024-02-14 20:49:11', '2024-02-14 20:49:11'),
+(241, 'Listo bro', '14 February 2024 11:19:00', 1, 71, 1, '2024-02-14 21:19:00', '2024-02-14 21:19:00'),
+(242, 'Informales que ya se hizo porfa', '14 February 2024 11:19:10', 1, 71, 1, '2024-02-14 21:19:10', '2024-02-14 21:19:10'),
+(243, 'Y cierra el ticket', '14 February 2024 11:19:13', 1, 71, 1, '2024-02-14 21:19:13', '2024-02-14 21:19:13'),
+(244, 'Ya existe la visita?', '14 February 2024 12:00:36', 1, 70, 1, '2024-02-14 17:00:38', '2024-02-14 17:00:38'),
+(245, 'me respopndio vale', '14 February 2024 12:01:06', 19, 70, 1, '2024-02-14 22:01:06', '2024-02-14 22:01:06'),
+(246, 'esperemos que llegue', '14 February 2024 12:01:14', 19, 70, 1, '2024-02-14 22:01:14', '2024-02-14 22:01:14');
 
 -- --------------------------------------------------------
 
@@ -571,7 +613,13 @@ INSERT INTO `images_products` (`id`, `image`, `id_product`, `id_state`, `updated
 (8, '2024-01-30_16-04-39.webp', 6, 2, '2024-01-30 21:13:54', '2024-01-30 21:04:39'),
 (9, '2024-01-30_16-16-57.webp', 6, 1, '2024-01-30 21:16:57', '2024-01-30 21:16:57'),
 (10, '2024-01-31_08-43-55.avif', 7, 1, '2024-01-31 13:43:55', '2024-01-31 13:43:55'),
-(11, '2024-02-08_10-34-36.webp', 8, 1, '2024-02-08 15:34:36', '2024-02-08 15:34:36');
+(11, '2024-02-08_10-34-36.webp', 8, 1, '2024-02-08 15:34:36', '2024-02-08 15:34:36'),
+(12, '2024-02-14_17-00-13.jpg', 9, 1, '2024-02-14 22:00:13', '2024-02-14 22:00:13'),
+(13, '2024-02-14_17-03-19.jpg', 10, 1, '2024-02-14 22:03:19', '2024-02-14 22:03:19'),
+(14, '2024-02-14_17-04-00.jpg', 11, 1, '2024-02-14 22:04:00', '2024-02-14 22:04:00'),
+(15, '2024-02-14_17-05-24.jpg', 12, 1, '2024-02-14 22:05:24', '2024-02-14 22:05:24'),
+(16, '2024-02-14_17-06-13.jpg', 13, 1, '2024-02-14 22:06:13', '2024-02-14 22:06:13'),
+(17, '2024-02-14_17-08-17.jpg', 14, 1, '2024-02-14 22:08:17', '2024-02-14 22:08:17');
 
 -- --------------------------------------------------------
 
@@ -648,12 +696,12 @@ INSERT INTO `notifications` (`id`, `notification`, `date`, `route`, `id_user`, `
 (138, 'Su ticket ha sido VISTO y esta previo a ejecución', '01/02/2024 14:37:21', 'http://localhost/dashboard/tickets/ticket_detail/59', 1, 3, '2024-02-01 19:37:21', '2024-02-01 19:37:21'),
 (139, 'El ticket ha sido modificado', '01/02/2024 14:58:32', 'http://localhost/dashboard/tickets/ticket_detail/59', 10, 3, '2024-02-01 19:58:32', '2024-02-01 19:58:32'),
 (140, 'Se ha creado una nueva acta para ti', '01/02/2024 15:04:38', 'http://localhost/dashboard/certificates/view_certificate/23', 1, 3, '2024-02-01 20:04:38', '2024-02-01 20:04:38'),
-(141, 'El usuario sistemasaux9@eltemplodelamoda.com.co esta esperando que lo ACTIVES', '05/02/2024 10:54:50', 'http://localhost/dashboard/users', 2, 3, '2024-02-05 15:54:50', '2024-02-05 15:54:50'),
+(141, 'El usuario sistemasaux9@eltemplodelamoda.com.co esta esperando que lo ACTIVES', '05/02/2024 10:54:50', 'http://localhost/dashboard/users', 2, 4, '2024-02-15 00:20:15', '2024-02-05 15:54:50'),
 (142, 'Se ha eliminado el acta el cual ibas a recibir', '07/02/2024 10:15:34', 'http://172.21.107.193/dashboard/certificates/view_certificate/23', 1, 3, '2024-02-07 15:15:34', '2024-02-07 15:15:34'),
 (143, 'Se ha creado una nueva acta para ti', '07/02/2024 10:16:36', 'http://172.21.107.193/dashboard/certificates/view_certificate/24', 24, 3, '2024-02-07 15:16:36', '2024-02-07 15:16:36'),
 (144, 'El acta el cual recibiras se encuentra despachada', '07/02/2024 10:17:02', 'http://172.21.107.193/dashboard/certificates/view_certificate/24', 24, 3, '2024-02-07 15:17:02', '2024-02-07 15:17:02'),
 (145, 'Se ha eliminado el acta el cual ibas a recibir', '07/02/2024 10:18:37', 'http://172.21.107.193/dashboard/certificates/view_certificate/24', 24, 3, '2024-02-07 15:18:37', '2024-02-07 15:18:37'),
-(146, 'Se ha creado una nueva acta para ti', '07/02/2024 10:19:13', 'http://172.21.107.193/dashboard/certificates/view_certificate/25', 18, 3, '2024-02-07 15:19:13', '2024-02-07 15:19:13'),
+(146, 'Se ha creado una nueva acta para ti', '07/02/2024 10:19:13', 'http://172.21.107.193/dashboard/certificates/view_certificate/25', 18, 4, '2024-02-14 21:35:21', '2024-02-07 15:19:13'),
 (147, 'El acta el cual recibiras se encuentra despachada', '07/02/2024 10:19:31', 'http://172.21.107.193/dashboard/certificates/view_certificate/25', 18, 3, '2024-02-07 15:19:31', '2024-02-07 15:19:31'),
 (148, 'Su acta ha sido ENTREGADA con exito!', '07/02/2024 10:22:53', 'http://172.21.107.193/dashboard/certificates/view_certificate/24', 10, 3, '2024-02-07 15:22:53', '2024-02-07 15:22:53'),
 (149, 'Su acta ha sido ENTREGADA con exito!', '07/02/2024 10:23:16', 'http://172.21.107.193/dashboard/certificates/view_certificate/25', 10, 3, '2024-02-07 15:23:16', '2024-02-07 15:23:16'),
@@ -668,7 +716,73 @@ INSERT INTO `notifications` (`id`, `notification`, `date`, `route`, `id_user`, `
 (158, 'Se ha creado un nuevo ticket para ti', '13/02/2024 15:30:45', 'http://localhost/dashboard/tickets/ticket_detail/63', 10, 3, '2024-02-13 20:30:45', '2024-02-13 20:30:45'),
 (159, 'Su ticket ha sido VISTO y esta previo a ejecución', '13/02/2024 15:32:23', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 4, '2024-02-14 01:32:34', '2024-02-13 20:32:23'),
 (160, 'Su ticket ha sido ejecutado', '13/02/2024 15:37:42', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 3, '2024-02-13 20:37:42', '2024-02-13 20:37:42'),
-(161, 'Tienes un nuevo comentario en ticket', '13/02/2024 15:38:51', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 3, '2024-02-13 20:38:51', '2024-02-13 20:38:51');
+(161, 'Tienes un nuevo comentario en ticket', '13/02/2024 15:38:51', 'http://localhost/dashboard/tickets/ticket_detail/63', 1, 3, '2024-02-13 20:38:51', '2024-02-13 20:38:51'),
+(162, 'Se ha creado un nuevo ticket para ti', '14/02/2024 08:47:00', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 18, 4, '2024-02-14 18:47:07', '2024-02-14 13:47:00'),
+(163, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 08:47:26', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 19, 4, '2024-02-14 18:47:47', '2024-02-14 13:47:26'),
+(164, 'Tienes un nuevo comentario en ticket', '14/02/2024 08:52:09', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 19, 4, '2024-02-14 18:55:51', '2024-02-14 13:52:09'),
+(165, 'Tienes un nuevo comentario en ticket', '14/02/2024 08:52:34', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 19, 4, '2024-02-14 21:55:13', '2024-02-14 13:52:34'),
+(166, 'El ticket ha sido modificado', '14/02/2024 08:55:27', 'http://127.0.0.1:8000/dashboard/tickets/ticket_detail/64', 1, 3, '2024-02-14 13:55:27', '2024-02-14 13:55:27'),
+(167, 'Se ha creado un nuevo ticket para ti', '14/02/2024 09:10:33', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 1, 4, '2024-02-14 19:10:39', '2024-02-14 14:10:33'),
+(168, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 09:10:53', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 19, 4, '2024-02-14 19:11:01', '2024-02-14 14:10:53'),
+(169, 'Su ticket ha sido ejecutado', '14/02/2024 09:11:22', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 19, 4, '2024-02-14 21:55:21', '2024-02-14 14:11:22'),
+(170, 'El ticket ha sido modificado', '14/02/2024 09:13:30', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 1, 3, '2024-02-14 14:13:30', '2024-02-14 14:13:30'),
+(171, 'Tienes un nuevo comentario en ticket', '14/02/2024 09:13:30', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 19, 4, '2024-02-14 21:55:27', '2024-02-14 14:13:30'),
+(172, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #65', '14/02/2024 09:16:55', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 19, 4, '2024-02-14 21:55:34', '2024-02-14 14:16:55'),
+(173, 'Tienes un nuevo comentario en ticket', '14/02/2024 09:17:21', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 19, 4, '2024-02-14 21:55:41', '2024-02-14 14:17:21'),
+(174, 'Su ticket ha sido cerrado con exito!', '14/02/2024 09:17:33', 'http://172.21.107.193/dashboard/tickets/ticket_detail/65', 1, 3, '2024-02-14 14:17:33', '2024-02-14 14:17:33'),
+(175, 'Se ha creado un nuevo ticket para ti', '14/02/2024 09:19:05', 'http://172.21.107.193/dashboard/tickets/ticket_detail/66', 19, 4, '2024-02-14 21:55:46', '2024-02-14 14:19:05'),
+(176, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 09:19:31', 'http://172.21.107.193/dashboard/tickets/ticket_detail/66', 1, 3, '2024-02-14 14:19:31', '2024-02-14 14:19:31'),
+(177, 'Tienes un nuevo comentario en ticket', '14/02/2024 09:22:17', 'http://172.21.107.193/dashboard/tickets/ticket_detail/66', 1, 3, '2024-02-14 14:22:17', '2024-02-14 14:22:17'),
+(178, 'Su ticket ha sido ejecutado', '14/02/2024 09:23:22', 'http://172.21.107.193/dashboard/tickets/ticket_detail/66', 1, 3, '2024-02-14 14:23:22', '2024-02-14 14:23:22'),
+(179, 'Se ha creado un nuevo ticket para ti', '14/02/2024 09:26:37', 'http://172.21.107.193/dashboard/tickets/ticket_detail/67', 18, 4, '2024-02-14 19:29:58', '2024-02-14 14:26:38'),
+(180, 'Su ticket ha sido ejecutado', '14/02/2024 09:27:41', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 19, 4, '2024-02-14 21:55:53', '2024-02-14 14:27:41'),
+(181, 'Tienes un nuevo comentario en ticket', '14/02/2024 09:27:54', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 19, 4, '2024-02-14 21:56:00', '2024-02-14 14:27:54'),
+(182, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #64', '14/02/2024 09:27:56', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 19, 4, '2024-02-14 21:56:06', '2024-02-14 14:27:56'),
+(183, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 09:30:00', 'http://172.21.107.193/dashboard/tickets/ticket_detail/67', 1, 3, '2024-02-14 14:30:00', '2024-02-14 14:30:00'),
+(184, 'Su ticket ha sido ejecutado', '14/02/2024 09:34:37', 'http://172.21.107.193/dashboard/tickets/ticket_detail/67', 1, 3, '2024-02-14 14:34:37', '2024-02-14 14:34:37'),
+(185, 'Su ticket ha sido cerrado con exito!', '14/02/2024 09:34:49', 'http://172.21.107.193/dashboard/tickets/ticket_detail/67', 18, 4, '2024-02-14 21:35:09', '2024-02-14 14:34:49'),
+(186, 'Tu ticket ha sido calificado !Hechale un vistaso!', '14/02/2024 09:35:20', 'http://172.21.107.193/dashboard/tickets/ticket_detail/67', 18, 4, '2024-02-14 21:36:15', '2024-02-14 14:35:20'),
+(187, 'El usuario Leonardo Dagua esta esperando la finalizacion del ticket #66', '14/02/2024 09:43:11', 'http://172.21.107.193/dashboard/tickets/ticket_detail/66', 1, 3, '2024-02-14 14:43:11', '2024-02-14 14:43:11'),
+(188, 'Su ticket ha sido cerrado con exito!', '14/02/2024 09:49:19', 'http://172.21.107.193/dashboard/tickets/ticket_detail/66', 19, 4, '2024-02-14 21:56:17', '2024-02-14 14:49:19'),
+(189, 'Su ticket ha sido cerrado con exito!', '14/02/2024 09:49:55', 'http://172.21.107.193/dashboard/tickets/ticket_detail/64', 1, 4, '2024-02-14 19:50:03', '2024-02-14 14:49:55'),
+(190, 'Se ha creado un nuevo ticket para ti', '14/02/2024 10:31:33', 'http://172.21.107.193/dashboard/tickets/ticket_detail/68', 19, 4, '2024-02-14 21:56:23', '2024-02-14 15:31:33'),
+(191, 'Se ha creado un nuevo ticket para ti', '14/02/2024 10:33:30', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 19, 4, '2024-02-14 21:56:29', '2024-02-14 15:33:30'),
+(192, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 10:36:25', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 19, 4, '2024-02-14 20:36:38', '2024-02-14 15:36:25'),
+(193, 'El ticket ha sido modificado', '14/02/2024 10:37:11', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 1, 3, '2024-02-14 15:37:11', '2024-02-14 15:37:11'),
+(194, 'Tienes un nuevo comentario en ticket', '14/02/2024 10:37:37', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 1, 3, '2024-02-14 15:37:37', '2024-02-14 15:37:37'),
+(195, 'Su ticket ha sido ejecutado', '14/02/2024 10:42:39', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 19, 4, '2024-02-14 21:56:35', '2024-02-14 15:42:39'),
+(196, 'El ticket ha sido modificado', '14/02/2024 10:42:58', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 1, 3, '2024-02-14 15:42:58', '2024-02-14 15:42:58'),
+(197, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #69', '14/02/2024 10:43:25', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 19, 4, '2024-02-14 21:56:51', '2024-02-14 15:43:25'),
+(198, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 10:43:45', 'http://172.21.107.193/dashboard/tickets/ticket_detail/68', 19, 4, '2024-02-14 21:56:58', '2024-02-14 15:43:45'),
+(199, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #69', '14/02/2024 10:48:52', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 19, 4, '2024-02-14 21:57:03', '2024-02-14 15:48:52'),
+(200, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #69', '14/02/2024 10:53:20', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 19, 4, '2024-02-14 21:57:08', '2024-02-14 15:53:20'),
+(201, 'El ticket impuesto para ti ha sido eliminado!', '14/02/2024 11:00:49', 'http://172.21.107.193/dashboard/tickets/ticket_detail/69', 1, 3, '2024-02-14 16:00:49', '2024-02-14 16:00:49'),
+(202, 'Se ha creado un nuevo ticket para ti', '14/02/2024 11:03:40', 'http://172.21.107.193/dashboard/tickets/ticket_detail/70', 19, 4, '2024-02-14 21:57:15', '2024-02-14 16:03:40'),
+(203, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 11:03:52', 'http://172.21.107.193/dashboard/tickets/ticket_detail/70', 1, 3, '2024-02-14 16:03:52', '2024-02-14 16:03:52'),
+(204, 'Su ticket ha sido ejecutado', '14/02/2024 11:16:04', 'http://172.21.107.193/dashboard/tickets/ticket_detail/70', 1, 3, '2024-02-14 16:16:04', '2024-02-14 16:16:04'),
+(205, 'Se ha creado un nuevo ticket para ti', '14/02/2024 11:17:34', 'http://172.21.107.193/dashboard/tickets/ticket_detail/71', 1, 3, '2024-02-14 16:17:34', '2024-02-14 16:17:34'),
+(206, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 11:17:48', 'http://172.21.107.193/dashboard/tickets/ticket_detail/71', 19, 4, '2024-02-14 22:00:09', '2024-02-14 16:17:48'),
+(207, 'Su ticket ha sido ejecutado', '14/02/2024 11:18:03', 'http://172.21.107.193/dashboard/tickets/ticket_detail/71', 19, 4, '2024-02-14 22:00:14', '2024-02-14 16:18:03'),
+(208, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #71', '14/02/2024 11:19:16', 'http://172.21.107.193/dashboard/tickets/ticket_detail/71', 19, 4, '2024-02-14 22:00:20', '2024-02-14 16:19:16'),
+(209, 'Su ticket ha sido cerrado con exito!', '14/02/2024 11:19:29', 'http://172.21.107.193/dashboard/tickets/ticket_detail/71', 1, 3, '2024-02-14 16:19:29', '2024-02-14 16:19:29'),
+(210, 'El ticket ha sido modificado', '14/02/2024 11:31:55', 'http://172.21.107.193/dashboard/tickets/ticket_detail/68', 18, 4, '2024-02-14 21:36:22', '2024-02-14 16:31:55'),
+(211, 'El ticket ha sido modificado', '14/02/2024 11:33:32', 'http://172.21.107.193/dashboard/tickets/ticket_detail/68', 18, 4, '2024-02-14 21:35:42', '2024-02-14 16:33:32'),
+(212, 'El ticket impuesto para ti ha sido eliminado!', '14/02/2024 11:54:01', 'http://172.21.107.193/dashboard/tickets/ticket_detail/68', 18, 3, '2024-02-14 16:54:01', '2024-02-14 16:54:01'),
+(213, 'Tienes un nuevo comentario en ticket', '14/02/2024 12:00:38', 'http://172.21.107.193/dashboard/tickets/ticket_detail/70', 19, 4, '2024-02-14 22:00:43', '2024-02-14 17:00:38'),
+(214, 'El usuario asistentetic@eltemplodelamoda.com.co esta esperando que lo ACTIVES', '14/02/2024 13:52:21', 'http://172.21.107.193/dashboard/users', 2, 3, '2024-02-14 18:52:21', '2024-02-14 18:52:21'),
+(215, 'Se ha creado un nuevo ticket para ti', '14/02/2024 15:22:19', 'http://172.21.107.193/dashboard/tickets/ticket_detail/72', 1, 3, '2024-02-14 20:22:19', '2024-02-14 20:22:19'),
+(216, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 15:22:32', 'http://172.21.107.193/dashboard/tickets/ticket_detail/72', 19, 4, '2024-02-15 01:24:50', '2024-02-14 20:22:32'),
+(217, 'Su ticket ha sido ejecutado', '14/02/2024 15:26:43', 'http://172.21.107.193/dashboard/tickets/ticket_detail/72', 19, 3, '2024-02-14 20:26:43', '2024-02-14 20:26:43'),
+(218, 'El ticket ha sido modificado', '14/02/2024 15:29:18', 'http://172.21.107.193/dashboard/tickets/ticket_detail/72', 1, 3, '2024-02-14 20:29:18', '2024-02-14 20:29:18'),
+(219, 'El usuario Jhan Carlos Cordoba esta esperando la finalizacion del ticket #72', '14/02/2024 15:31:26', 'http://172.21.107.193/dashboard/tickets/ticket_detail/72', 19, 3, '2024-02-14 20:31:26', '2024-02-14 20:31:26'),
+(220, 'Su ticket ha sido cerrado con exito!', '14/02/2024 15:36:17', 'http://172.21.107.193/dashboard/tickets/ticket_detail/72', 1, 3, '2024-02-14 20:36:17', '2024-02-14 20:36:17'),
+(221, 'Se ha creado un nuevo ticket para ti', '14/02/2024 16:11:04', 'http://172.21.107.193/dashboard/tickets/ticket_detail/73', 19, 3, '2024-02-14 21:11:04', '2024-02-14 21:11:04'),
+(222, 'Su ticket ha sido VISTO y esta previo a ejecución', '14/02/2024 16:16:33', 'http://172.21.107.193/dashboard/tickets/ticket_detail/73', 1, 3, '2024-02-14 21:16:33', '2024-02-14 21:16:33'),
+(223, 'Su ticket ha sido ejecutado', '14/02/2024 16:16:59', 'http://172.21.107.193/dashboard/tickets/ticket_detail/73', 1, 3, '2024-02-14 21:16:59', '2024-02-14 21:16:59'),
+(224, 'El usuario recepciontdm@eltemplodelamoda.com.co esta esperando que lo ACTIVES', '14/02/2024 16:49:03', 'http://172.21.107.193/dashboard/users', 2, 3, '2024-02-14 21:49:03', '2024-02-14 21:49:03'),
+(225, 'Se ha creado una nueva acta para ti', '14/02/2024 17:12:42', 'http://172.21.107.193/dashboard/certificates/view_certificate/27', 18, 3, '2024-02-14 22:12:42', '2024-02-14 22:12:42'),
+(226, 'El acta el cual recibiras se encuentra despachada', '14/02/2024 17:15:20', 'http://172.21.107.193/dashboard/certificates/view_certificate/27', 18, 3, '2024-02-14 22:15:20', '2024-02-14 22:15:20'),
+(227, 'Su acta ha sido ENTREGADA con exito!', '14/02/2024 17:18:44', 'http://172.21.107.193/dashboard/certificates/view_certificate/27', 19, 3, '2024-02-14 22:18:44', '2024-02-14 22:18:44');
 
 -- --------------------------------------------------------
 
@@ -837,7 +951,13 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `name`, `brand`, `serie`, `image_serie`, `accessories`, `id_type_component`, `id_state_certificate`, `id_origin_certificate`, `id_state`, `id_user`, `updated_at`, `created_at`) VALUES
 (6, 'PC', 'HP', 'TDM67516', NULL, 'N/A', 1, 1, 1, 1, 1, '2024-02-07 20:22:53', '2024-01-30 20:02:38'),
 (7, 'MOUSE', 'HP', 'TDM540457', NULL, 'N/A', 1, 1, 1, 1, 1, '2024-01-31 18:43:51', '2024-01-31 18:43:51'),
-(8, 'TECLADO', 'N/a', 'TDM885835', NULL, 'N/A', 1, 2, 2, 1, 1, '2024-02-08 20:36:53', '2024-02-08 20:34:30');
+(8, 'TECLADO', 'N/a', 'TDM885835', NULL, 'N/A', 1, 2, 2, 1, 1, '2024-02-08 20:36:53', '2024-02-08 20:34:30'),
+(9, 'portatil', 'hp', '86857', NULL, 'n/a', 2, 1, 1, 1, 19, '2024-02-14 22:18:46', '2024-02-15 03:00:11'),
+(10, 'cargador', 'hp', 'a9825', NULL, 'n/a', 2, 1, 2, 1, 19, '2024-02-14 22:18:46', '2024-02-15 03:03:17'),
+(11, 'PORTÁTIL', 'Hp', '87243', NULL, 'N/a', 2, 1, 2, 1, 1, '2024-02-14 22:18:46', '2024-02-15 03:03:58'),
+(12, 'CARGADOR PORTÁTIL', 'HP', 'A22975', NULL, 'N/a', 1, 1, 2, 1, 1, '2024-02-14 22:18:46', '2024-02-15 03:05:22'),
+(13, 'MOUSE', 'LENOVO', 'TDM926186', NULL, 'N/a', 1, 1, 2, 1, 1, '2024-02-14 22:18:46', '2024-02-15 03:06:11'),
+(14, 'mouse', 'hp', 'TDM252674', NULL, 'n/a', 2, 1, 2, 1, 19, '2024-02-14 22:18:46', '2024-02-15 03:08:15');
 
 -- --------------------------------------------------------
 
@@ -2132,6 +2252,101 @@ INSERT INTO `reports` (`id`, `description`, `id_user`, `id_report_detail`, `date
 (1224, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '13/02/2024 15:55:51', '2024-02-13 20:55:51', '2024-02-13 20:55:51'),
 (1225, 'Se han modificado los datos del usuario sistemasaux8@eltemplodelamoda.com.co', 2, 2, '13/02/2024 15:56:10', '2024-02-13 20:56:10', '2024-02-13 20:56:10'),
 (1226, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '13/02/2024 15:56:20', '2024-02-13 20:56:20', '2024-02-13 20:56:20');
+INSERT INTO `reports` (`id`, `description`, `id_user`, `id_report_detail`, `date`, `updated_at`, `created_at`) VALUES
+(1227, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 08:37:03', '2024-02-14 13:37:03', '2024-02-14 13:37:03'),
+(1228, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 08:37:31', '2024-02-14 13:37:31', '2024-02-14 13:37:31'),
+(1229, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '14/02/2024 08:37:46', '2024-02-14 13:37:46', '2024-02-14 13:37:46'),
+(1230, 'El usuario Leonardo Dagua con correo sistemasaux11@eltemplodelamoda.com.co ha ingresado al sistema', 19, 8, '14/02/2024 08:40:21', '2024-02-14 13:40:21', '2024-02-14 13:40:21'),
+(1231, 'El usuario Sebastian Hinestroza con correo sistemasaux2@eltemplodelamoda.com.co ha ingresado al sistema', 18, 8, '14/02/2024 08:46:04', '2024-02-14 13:46:04', '2024-02-14 13:46:04'),
+(1232, 'El usuario sistemasaux11@eltemplodelamoda.com.co creo un ticket llamado ntc', 19, 4, '14/02/2024 08:47:00', '2024-02-14 13:47:00', '2024-02-14 13:47:00'),
+(1233, 'El usuario sistemasaux2@eltemplodelamoda.com.co ha visto el ticket con id 64', 18, 7, '14/02/2024 08:47:24', '2024-02-14 13:47:24', '2024-02-14 13:47:24'),
+(1234, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 08:53:15', '2024-02-14 13:53:15', '2024-02-14 13:53:15'),
+(1235, 'Se ha editado el ticket con ID 64', 1, 7, '14/02/2024 08:55:28', '2024-02-14 13:55:28', '2024-02-14 13:55:28'),
+(1236, 'El usuario sistemasaux11@eltemplodelamoda.com.co creo un ticket llamado contestar correo don Julián Guarnizo', 19, 4, '14/02/2024 09:10:33', '2024-02-14 14:10:33', '2024-02-14 14:10:33'),
+(1237, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 09:10:46', '2024-02-14 14:10:46', '2024-02-14 14:10:46'),
+(1238, 'El usuario jccq12@gmail.com ha visto el ticket con id 65', 1, 7, '14/02/2024 09:10:52', '2024-02-14 14:10:52', '2024-02-14 14:10:52'),
+(1239, 'El usuario jccq12@gmail.com inicio la ejecución del ticket con id 65', 1, 7, '14/02/2024 09:11:20', '2024-02-14 14:11:20', '2024-02-14 14:11:20'),
+(1240, 'Se ha editado el ticket con ID 65', 19, 7, '14/02/2024 09:13:30', '2024-02-14 14:13:30', '2024-02-14 14:13:30'),
+(1241, 'El usuario sistemasaux11@eltemplodelamoda.com.co finalizo la ejecución del ticket con id 65', 19, 7, '14/02/2024 09:17:31', '2024-02-14 14:17:31', '2024-02-14 14:17:31'),
+(1242, 'El usuario jccq12@gmail.com creo un ticket llamado COTIZAR CONVERTIDOR VGA A HTDMI', 1, 4, '14/02/2024 09:19:05', '2024-02-14 14:19:05', '2024-02-14 14:19:05'),
+(1243, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha visto el ticket con id 66', 19, 7, '14/02/2024 09:19:29', '2024-02-14 14:19:29', '2024-02-14 14:19:29'),
+(1244, 'El usuario sistemasaux11@eltemplodelamoda.com.co inicio la ejecución del ticket con id 66', 19, 7, '14/02/2024 09:23:20', '2024-02-14 14:23:20', '2024-02-14 14:23:20'),
+(1245, 'El usuario jccq12@gmail.com creo un ticket llamado TERMINAR REUNION ZOOM DE HOY', 1, 4, '14/02/2024 09:26:37', '2024-02-14 14:26:37', '2024-02-14 14:26:37'),
+(1246, 'El usuario jccq12@gmail.com inicio la ejecución del ticket con id 64', 1, 7, '14/02/2024 09:27:39', '2024-02-14 14:27:39', '2024-02-14 14:27:39'),
+(1247, 'El usuario sistemasaux2@eltemplodelamoda.com.co ha visto el ticket con id 67', 18, 7, '14/02/2024 09:29:58', '2024-02-14 14:29:58', '2024-02-14 14:29:58'),
+(1248, 'El usuario sistemasaux2@eltemplodelamoda.com.co inicio la ejecución del ticket con id 67', 18, 7, '14/02/2024 09:34:36', '2024-02-14 14:34:36', '2024-02-14 14:34:36'),
+(1249, 'El usuario jccq12@gmail.com finalizo la ejecución del ticket con id 67', 1, 7, '14/02/2024 09:34:47', '2024-02-14 14:34:47', '2024-02-14 14:34:47'),
+(1250, 'Se ha agregado una calificacion de 3 estrellas para el ticket con ID 67', 1, 7, '14/02/2024 09:35:21', '2024-02-14 14:35:21', '2024-02-14 14:35:21'),
+(1251, 'El usuario jccq12@gmail.com finalizo la ejecución del ticket con id 66', 1, 7, '14/02/2024 09:49:17', '2024-02-14 14:49:17', '2024-02-14 14:49:17'),
+(1252, 'El usuario sistemasaux11@eltemplodelamoda.com.co finalizo la ejecución del ticket con id 64', 19, 7, '14/02/2024 09:49:53', '2024-02-14 14:49:53', '2024-02-14 14:49:53'),
+(1253, 'El usuario sistemasaux11@eltemplodelamoda.com.co creo un ticket llamado nota en siesa', 19, 4, '14/02/2024 10:31:33', '2024-02-14 15:31:33', '2024-02-14 15:31:33'),
+(1254, 'El usuario sistemasaux11@eltemplodelamoda.com.co creo un ticket llamado cambiar contraseña', 19, 4, '14/02/2024 10:33:30', '2024-02-14 15:33:30', '2024-02-14 15:33:30'),
+(1255, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha visto el ticket con id 69', 19, 7, '14/02/2024 10:36:23', '2024-02-14 15:36:23', '2024-02-14 15:36:23'),
+(1256, 'Se ha editado el ticket con ID 69', 19, 7, '14/02/2024 10:37:11', '2024-02-14 15:37:11', '2024-02-14 15:37:11'),
+(1257, 'El usuario jccq12@gmail.com inicio la ejecución del ticket con id 69', 1, 7, '14/02/2024 10:42:37', '2024-02-14 15:42:37', '2024-02-14 15:42:37'),
+(1258, 'Se ha editado el ticket con ID 69', 1, 7, '14/02/2024 10:42:58', '2024-02-14 15:42:58', '2024-02-14 15:42:58'),
+(1259, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha visto el ticket con id 68', 19, 7, '14/02/2024 10:43:43', '2024-02-14 15:43:43', '2024-02-14 15:43:43'),
+(1260, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha eliminado el ticket con id 69', 19, 6, '14/02/2024 11:00:49', '2024-02-14 16:00:49', '2024-02-14 16:00:49'),
+(1261, 'El usuario jccq12@gmail.com creo un ticket llamado SOLICITAR VISITA IMPRESORA', 1, 4, '14/02/2024 11:03:40', '2024-02-14 16:03:40', '2024-02-14 16:03:40'),
+(1262, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha visto el ticket con id 70', 19, 7, '14/02/2024 11:03:50', '2024-02-14 16:03:50', '2024-02-14 16:03:50'),
+(1263, 'El usuario sistemasaux11@eltemplodelamoda.com.co inicio la ejecución del ticket con id 70', 19, 7, '14/02/2024 11:16:01', '2024-02-14 16:16:01', '2024-02-14 16:16:01'),
+(1264, 'El usuario sistemasaux11@eltemplodelamoda.com.co creo un ticket llamado ntc', 19, 4, '14/02/2024 11:17:34', '2024-02-14 16:17:34', '2024-02-14 16:17:34'),
+(1265, 'El usuario jccq12@gmail.com ha visto el ticket con id 71', 1, 7, '14/02/2024 11:17:46', '2024-02-14 16:17:46', '2024-02-14 16:17:46'),
+(1266, 'El usuario jccq12@gmail.com inicio la ejecución del ticket con id 71', 1, 7, '14/02/2024 11:18:01', '2024-02-14 16:18:01', '2024-02-14 16:18:01'),
+(1267, 'El usuario sistemasaux11@eltemplodelamoda.com.co finalizo la ejecución del ticket con id 71', 19, 7, '14/02/2024 11:19:27', '2024-02-14 16:19:27', '2024-02-14 16:19:27'),
+(1268, 'Se ha editado el ticket con ID 68', 19, 7, '14/02/2024 11:31:55', '2024-02-14 16:31:55', '2024-02-14 16:31:55'),
+(1269, 'Se ha editado el ticket con ID 68', 19, 7, '14/02/2024 11:33:32', '2024-02-14 16:33:32', '2024-02-14 16:33:32'),
+(1270, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 11:42:31', '2024-02-14 16:42:31', '2024-02-14 16:42:31'),
+(1271, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '14/02/2024 11:42:47', '2024-02-14 16:42:47', '2024-02-14 16:42:47'),
+(1272, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '14/02/2024 11:43:02', '2024-02-14 16:43:02', '2024-02-14 16:43:02'),
+(1273, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 11:44:19', '2024-02-14 16:44:19', '2024-02-14 16:44:19'),
+(1274, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 11:51:35', '2024-02-14 16:51:35', '2024-02-14 16:51:35'),
+(1275, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha eliminado el ticket con id 68', 19, 6, '14/02/2024 11:54:01', '2024-02-14 16:54:01', '2024-02-14 16:54:01'),
+(1276, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 11:58:25', '2024-02-14 16:58:25', '2024-02-14 16:58:25'),
+(1277, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 11:58:51', '2024-02-14 16:58:51', '2024-02-14 16:58:51'),
+(1278, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '14/02/2024 11:59:04', '2024-02-14 16:59:04', '2024-02-14 16:59:04'),
+(1279, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 11:59:21', '2024-02-14 16:59:21', '2024-02-14 16:59:21'),
+(1280, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 13:46:33', '2024-02-14 18:46:33', '2024-02-14 18:46:33'),
+(1281, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 13:47:09', '2024-02-14 18:47:09', '2024-02-14 18:47:09'),
+(1282, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 13:47:29', '2024-02-14 18:47:29', '2024-02-14 18:47:29'),
+(1283, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 13:52:42', '2024-02-14 18:52:42', '2024-02-14 18:52:42'),
+(1284, 'El usuario soporte@eltemplodelamoda.com.co ha cambiado el estado del usuario asistentetic@eltemplodelamoda.com.co a ACTIVO O ELIMINADO', 2, 3, '14/02/2024 13:52:52', '2024-02-14 18:52:52', '2024-02-14 18:52:52'),
+(1285, 'El usuario Valeria Garcia con correo asistentetic@eltemplodelamoda.com.co ha ingresado al sistema', 25, 8, '14/02/2024 13:53:19', '2024-02-14 18:53:19', '2024-02-14 18:53:19'),
+(1286, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '14/02/2024 14:00:03', '2024-02-14 19:00:03', '2024-02-14 19:00:03'),
+(1287, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '14/02/2024 14:22:43', '2024-02-14 19:22:43', '2024-02-14 19:22:43'),
+(1288, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 14:23:21', '2024-02-14 19:23:21', '2024-02-14 19:23:21'),
+(1289, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 14:24:54', '2024-02-14 19:24:54', '2024-02-14 19:24:54'),
+(1290, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '14/02/2024 14:25:14', '2024-02-14 19:25:14', '2024-02-14 19:25:14'),
+(1291, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 14:25:24', '2024-02-14 19:25:24', '2024-02-14 19:25:24'),
+(1292, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 15:19:29', '2024-02-14 20:19:29', '2024-02-14 20:19:29'),
+(1293, 'Se han modificado los datos del usuario jccq12@gmail.com', 2, 2, '14/02/2024 15:19:47', '2024-02-14 20:19:47', '2024-02-14 20:19:47'),
+(1294, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 15:20:00', '2024-02-14 20:20:00', '2024-02-14 20:20:00'),
+(1295, 'El usuario sistemasaux11@eltemplodelamoda.com.co creo un ticket llamado cambiar clave de usuarios remotos', 19, 4, '14/02/2024 15:22:19', '2024-02-14 20:22:19', '2024-02-14 20:22:19'),
+(1296, 'El usuario jccq12@gmail.com ha visto el ticket con id 72', 1, 7, '14/02/2024 15:22:30', '2024-02-14 20:22:30', '2024-02-14 20:22:30'),
+(1297, 'El usuario jccq12@gmail.com inicio la ejecución del ticket con id 72', 1, 7, '14/02/2024 15:26:41', '2024-02-14 20:26:41', '2024-02-14 20:26:41'),
+(1298, 'Se ha editado el ticket con ID 72', 1, 7, '14/02/2024 15:29:18', '2024-02-14 20:29:18', '2024-02-14 20:29:18'),
+(1299, 'El usuario sistemasaux11@eltemplodelamoda.com.co finalizo la ejecución del ticket con id 72', 19, 7, '14/02/2024 15:36:15', '2024-02-14 20:36:15', '2024-02-14 20:36:15'),
+(1300, 'El usuario jccq12@gmail.com creo un ticket llamado REVISAR LLAVE VPN', 1, 4, '14/02/2024 16:11:04', '2024-02-14 21:11:04', '2024-02-14 21:11:04'),
+(1301, 'El usuario Anderson Cordoba con correo sistemasaux8@eltemplodelamoda.com.co ha ingresado al sistema', 10, 8, '14/02/2024 16:16:10', '2024-02-14 21:16:10', '2024-02-14 21:16:10'),
+(1302, 'El usuario sistemasaux11@eltemplodelamoda.com.co ha visto el ticket con id 73', 19, 7, '14/02/2024 16:16:31', '2024-02-14 21:16:31', '2024-02-14 21:16:31'),
+(1303, 'El usuario sistemasaux11@eltemplodelamoda.com.co inicio la ejecución del ticket con id 73', 19, 7, '14/02/2024 16:16:57', '2024-02-14 21:16:57', '2024-02-14 21:16:57'),
+(1304, 'El usuario Leonardo Dagua con correo sistemasaux11@eltemplodelamoda.com.co ha ingresado al sistema', 19, 8, '14/02/2024 16:44:35', '2024-02-14 21:44:35', '2024-02-14 21:44:35'),
+(1305, 'El usuario Administrador GRUPO TDM con correo soporte@eltemplodelamoda.com.co ha ingresado al sistema', 2, 8, '14/02/2024 16:49:18', '2024-02-14 21:49:18', '2024-02-14 21:49:18'),
+(1306, 'El usuario soporte@eltemplodelamoda.com.co ha cambiado el estado del usuario recepciontdm@eltemplodelamoda.com.co a ACTIVO O ELIMINADO', 2, 3, '14/02/2024 16:49:32', '2024-02-14 21:49:32', '2024-02-14 21:49:32'),
+(1307, 'El usuario Recepcion TDM con correo recepciontdm@eltemplodelamoda.com.co ha ingresado al sistema', 26, 8, '14/02/2024 16:50:01', '2024-02-14 21:50:01', '2024-02-14 21:50:01'),
+(1308, 'El usuario Recepcion TDM con correo recepciontdm@eltemplodelamoda.com.co ha ingresado al sistema', 26, 8, '14/02/2024 16:57:32', '2024-02-14 21:57:32', '2024-02-14 21:57:32'),
+(1309, 'El usuario Leonardo Dagua ha creado un producto con la siguiente serial 86857', 19, 18, '14/02/2024 17:00:11', '2024-02-14 22:00:11', '2024-02-14 22:00:11'),
+(1310, 'El usuario Jhan Carlos Cordoba con correo jccq12@gmail.com ha ingresado al sistema', 1, 8, '14/02/2024 17:02:05', '2024-02-14 22:02:05', '2024-02-14 22:02:05'),
+(1311, 'El usuario Leonardo Dagua ha creado un producto con la siguiente serial a9825', 19, 18, '14/02/2024 17:03:17', '2024-02-14 22:03:17', '2024-02-14 22:03:17'),
+(1312, 'El usuario Jhan Carlos Cordoba ha creado un producto con la siguiente serial 87243', 1, 18, '14/02/2024 17:03:58', '2024-02-14 22:03:58', '2024-02-14 22:03:58'),
+(1313, 'El usuario Jhan Carlos Cordoba ha creado un producto con la siguiente serial A22975', 1, 18, '14/02/2024 17:05:22', '2024-02-14 22:05:22', '2024-02-14 22:05:22'),
+(1314, 'El usuario Jhan Carlos Cordoba ha creado un producto con la siguiente serial TDM926186', 1, 18, '14/02/2024 17:06:11', '2024-02-14 22:06:11', '2024-02-14 22:06:11'),
+(1315, 'El usuario Leonardo Dagua ha creado un producto con la siguiente serial TDM252674', 19, 18, '14/02/2024 17:08:15', '2024-02-14 22:08:15', '2024-02-14 22:08:15'),
+(1316, 'El usuario Leonardo Dagua ha creado un acta para Sebastian Hinestroza para la siguiente dirección oficinas de NETGROUP', 19, 17, '14/02/2024 17:12:40', '2024-02-14 22:12:40', '2024-02-14 22:12:40'),
+(1317, 'El usuario Leonardo Dagua ha Despachado los componentes asignados al acta con ID 27 para Sebastian Hinestroza para la siguiente dirección oficinas de NETGROUP', 19, 17, '14/02/2024 17:15:20', '2024-02-14 22:15:20', '2024-02-14 22:15:20'),
+(1318, 'El usuario Sebastian Hinestroza con correo sistemasaux2@eltemplodelamoda.com.co ha ingresado al sistema', 18, 8, '14/02/2024 17:17:00', '2024-02-14 22:17:00', '2024-02-14 22:17:00'),
+(1319, 'El usuario Leonardo Dagua ha recibido los componentes asignados al acta con ID 27 para la siguiente dirección oficinas de NETGROUP', 18, 17, '14/02/2024 17:18:44', '2024-02-14 22:18:44', '2024-02-14 22:18:44'),
+(1320, 'El usuario Recepcion TDM con correo recepciontdm@eltemplodelamoda.com.co ha ingresado al sistema', 26, 8, '14/02/2024 17:22:03', '2024-02-14 22:22:03', '2024-02-14 22:22:03');
 
 -- --------------------------------------------------------
 
@@ -2295,7 +2510,25 @@ INSERT INTO `report_products` (`id`, `report`, `id_product`, `id_certificate`, `
 (67, 'El producto asociado al acta con ID 24 y direccion OFICINA ADMINISTRATIVA esta en estado ENTREGADO', 6, 24, '2024-02-07 20:22:53', '2024-02-07 20:22:53'),
 (68, 'El producto asociado al acta con ID 25 y direccion OFICINA ADMINISTRATIVA esta en estado ENTREGADO', 6, 25, '2024-02-07 20:23:16', '2024-02-07 20:23:16'),
 (69, 'El producto se encuentra pendiente asignado al acta  con ID 26  para la direcciòn OFICINA ADMINISTRATIVA para el usuario Jhan Carlos Cordoba', 8, 26, '2024-02-08 20:35:28', '2024-02-08 20:35:28'),
-(70, 'El producto ya NO se encuentra asignado al acta  con ID 26', 8, 26, '2024-02-08 20:36:53', '2024-02-08 20:36:53');
+(70, 'El producto ya NO se encuentra asignado al acta  con ID 26', 8, 26, '2024-02-08 20:36:53', '2024-02-08 20:36:53'),
+(71, 'El producto se encuentra pendiente asignado al acta  con ID 27  para la direcciòn oficinas de NETGROUP para el usuario Sebastian Hinestroza', 14, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(72, 'El producto se encuentra pendiente asignado al acta  con ID 27  para la direcciòn oficinas de NETGROUP para el usuario Sebastian Hinestroza', 10, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(73, 'El producto se encuentra pendiente asignado al acta  con ID 27  para la direcciòn oficinas de NETGROUP para el usuario Sebastian Hinestroza', 11, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(74, 'El producto se encuentra pendiente asignado al acta  con ID 27  para la direcciòn oficinas de NETGROUP para el usuario Sebastian Hinestroza', 13, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(75, 'El producto se encuentra pendiente asignado al acta  con ID 27  para la direcciòn oficinas de NETGROUP para el usuario Sebastian Hinestroza', 9, 27, '2024-02-15 03:12:43', '2024-02-15 03:12:43'),
+(76, 'El producto se encuentra pendiente asignado al acta  con ID 27  para la direcciòn oficinas de NETGROUP para el usuario Sebastian Hinestroza', 12, 27, '2024-02-15 03:12:43', '2024-02-15 03:12:43'),
+(77, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado DESPACHADO', 14, 27, '2024-02-14 22:15:22', '2024-02-14 22:15:22'),
+(78, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado DESPACHADO', 10, 27, '2024-02-14 22:15:22', '2024-02-14 22:15:22'),
+(79, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado DESPACHADO', 11, 27, '2024-02-14 22:15:22', '2024-02-14 22:15:22'),
+(80, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado DESPACHADO', 13, 27, '2024-02-14 22:15:22', '2024-02-14 22:15:22'),
+(81, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado DESPACHADO', 9, 27, '2024-02-14 22:15:22', '2024-02-14 22:15:22'),
+(82, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado DESPACHADO', 12, 27, '2024-02-14 22:15:22', '2024-02-14 22:15:22'),
+(83, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado ENTREGADO', 14, 27, '2024-02-14 22:18:46', '2024-02-14 22:18:46'),
+(84, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado ENTREGADO', 10, 27, '2024-02-14 22:18:46', '2024-02-14 22:18:46'),
+(85, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado ENTREGADO', 11, 27, '2024-02-14 22:18:46', '2024-02-14 22:18:46'),
+(86, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado ENTREGADO', 13, 27, '2024-02-14 22:18:46', '2024-02-14 22:18:46'),
+(87, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado ENTREGADO', 9, 27, '2024-02-14 22:18:46', '2024-02-14 22:18:46'),
+(88, 'El producto asociado al acta con ID 27 con destino a oficinas de NETGROUP para el usuario Sebastian Hinestroza esta en estado ENTREGADO', 12, 27, '2024-02-14 22:18:46', '2024-02-14 22:18:46');
 
 -- --------------------------------------------------------
 
@@ -2340,7 +2573,13 @@ INSERT INTO `rows_certificates` (`id`, `id_product`, `id_certificate`, `updated_
 (22, 6, 23, '2024-02-02 01:04:38', '2024-02-02 01:04:38'),
 (23, 6, 24, '2024-02-07 20:16:37', '2024-02-07 20:16:37'),
 (24, 6, 25, '2024-02-07 20:19:13', '2024-02-07 20:19:13'),
-(25, 8, 26, '2024-02-08 20:35:28', '2024-02-08 20:35:28');
+(25, 8, 26, '2024-02-08 20:35:28', '2024-02-08 20:35:28'),
+(26, 14, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(27, 10, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(28, 11, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(29, 13, 27, '2024-02-15 03:12:42', '2024-02-15 03:12:42'),
+(30, 9, 27, '2024-02-15 03:12:43', '2024-02-15 03:12:43'),
+(31, 12, 27, '2024-02-15 03:12:43', '2024-02-15 03:12:43');
 
 -- --------------------------------------------------------
 
@@ -2491,7 +2730,8 @@ CREATE TABLE `spreadsheets` (
 
 INSERT INTO `spreadsheets` (`id`, `date_now`, `date_previous`, `id_state`, `updated_at`, `created_at`) VALUES
 (1, '2024-02-12', '2024-02-11', 1, '2024-02-13 05:55:21', '2024-02-13 05:55:21'),
-(2, '2024-02-13', '2024-02-12', 1, '2024-02-14 01:21:19', '2024-02-14 01:21:19');
+(2, '2024-02-13', '2024-02-12', 1, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(3, '2024-02-14', '2024-02-13', 1, '2024-02-14 21:43:22', '2024-02-14 21:43:22');
 
 -- --------------------------------------------------------
 
@@ -2530,7 +2770,15 @@ INSERT INTO `spreadsheet_rows_tpvs` (`id`, `id_payment_method`, `id_spreadsheet_
 (13, 1, 7, '70000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
 (14, 2, 7, '50000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
 (15, 1, 8, '20000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
-(16, 2, 8, '90000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19');
+(16, 2, 8, '90000', NULL, NULL, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(17, 1, 9, '90000', '80000', '10000', '2024-02-14 21:45:43', '2024-02-14 21:43:22'),
+(18, 2, 9, '70000', '80000', '-10000', '2024-02-14 21:45:43', '2024-02-14 21:43:22'),
+(19, 1, 10, '70000', NULL, NULL, '2024-02-14 21:43:22', '2024-02-14 21:43:22'),
+(20, 2, 10, '20000', NULL, NULL, '2024-02-14 21:43:22', '2024-02-14 21:43:22'),
+(21, 1, 11, '10000', '15000', '-5000', '2024-02-15 00:04:36', '2024-02-14 21:43:23'),
+(22, 2, 11, '50000', '45000', '5000', '2024-02-15 00:04:36', '2024-02-14 21:43:23'),
+(23, 1, 12, '90000', NULL, NULL, '2024-02-14 21:43:23', '2024-02-14 21:43:23'),
+(24, 2, 12, '20000', NULL, NULL, '2024-02-14 21:43:23', '2024-02-14 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -2553,7 +2801,8 @@ CREATE TABLE `spreadsheet_shops` (
 
 INSERT INTO `spreadsheet_shops` (`id`, `id_user`, `id_shop`, `id_state`, `updated_at`, `created_at`) VALUES
 (5, 10, 8, 1, '2024-02-14 01:59:39', '2024-02-14 01:59:39'),
-(6, 10, 7, 1, '2024-02-14 01:59:55', '2024-02-14 01:59:55');
+(6, 10, 7, 2, '2024-02-15 00:25:37', '2024-02-14 01:59:55'),
+(7, 10, 7, 2, '2024-02-15 00:26:27', '2024-02-15 00:26:12');
 
 -- --------------------------------------------------------
 
@@ -2585,7 +2834,11 @@ INSERT INTO `spreadsheet_tpvs` (`id`, `total`, `sub_total`, `difference`, `id_tp
 (5, '100000', '90000', '10000', 2, 2, 3, '2024-02-14 01:59:01', '2024-02-14 01:21:19'),
 (6, '70000', '70000', '0', 3, 2, 7, '2024-02-14 02:07:13', '2024-02-14 01:21:19'),
 (7, '120000', '0', '0', 4, 2, 3, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
-(8, '110000', '0', '0', 5, 2, 3, '2024-02-14 01:21:19', '2024-02-14 01:21:19');
+(8, '110000', '0', '0', 5, 2, 3, '2024-02-14 01:21:19', '2024-02-14 01:21:19'),
+(9, '160000', '160000', '0', 2, 3, 7, '2024-02-14 21:45:49', '2024-02-14 21:43:22'),
+(10, '90000', '0', '0', 3, 3, 3, '2024-02-14 21:43:22', '2024-02-14 21:43:22'),
+(11, '60000', '60000', '0', 4, 3, 3, '2024-02-15 00:08:51', '2024-02-14 21:43:22'),
+(12, '110000', '0', '0', 5, 3, 3, '2024-02-14 21:43:23', '2024-02-14 21:43:23');
 
 -- --------------------------------------------------------
 
@@ -2772,7 +3025,17 @@ INSERT INTO `tickets` (`id`, `name`, `description`, `file`, `date_start`, `date_
 (60, 'AYUDA CON COSAS', 'N/A', NULL, '08/02/2024 12:18:43', '08/02/2024 14:18:43', 4, 10, 1, 6, '2024-02-12 00:50:28', '2024-02-08 17:19:06'),
 (61, 'asd', 'adasd', NULL, '08/02/2024 12:19:50', '08/02/2024 13:19:50', 5, 10, 10, 6, '2024-02-12 00:50:34', '2024-02-08 17:19:59'),
 (62, 'asda', 'asdsad', NULL, '08/02/2024 12:20:26', '08/02/2024 13:20:26', 5, 10, 1, 6, '2024-02-12 00:50:37', '2024-02-08 17:20:34'),
-(63, 'HACELE LA COMIDA A VALERIA', 'PATICO', NULL, '13/02/2024 15:29:39', '13/02/2024 16:29:39', 5, 1, 10, 5, '2024-02-14 01:37:40', '2024-02-13 20:30:45');
+(63, 'HACELE LA COMIDA A VALERIA', 'PATICO', NULL, '13/02/2024 15:29:39', '13/02/2024 16:29:39', 5, 1, 10, 6, '2024-02-14 18:38:53', '2024-02-13 20:30:45'),
+(64, 'ntc', 'jhon cortes solicita \"Buenos días por favor para Templo 1 no se reflejan la caja 1 y la caja 3 del.dia de ayer\"', '2024-02-14_13-47-00.jpeg', '14/02/2024 08:45:34', '14/02/2024 14:45:34', 1, 19, 1, 7, '2024-02-14 19:49:53', '2024-02-14 13:47:00'),
+(65, 'contestar correo don Julián Guarnizo', 'don Julián solicito confirmación para los tramites para el cable adaptador VGA/hdmi por medio del correo de soporte', NULL, '14/02/2024 09:06:27', '14/02/2024 15:06:27', 1, 19, 1, 7, '2024-02-14 19:17:31', '2024-02-14 14:10:33'),
+(66, 'COTIZAR CONVERTIDOR VGA A HTDMI', 'Debes ir a la PAVA a cotizar el adaptador solicitado. Luego montarme un ticket con la imagen de la cotizacion para mandarlo por correo.', NULL, '14/02/2024 09:18:04', '14/02/2024 11:18:04', 4, 1, 19, 7, '2024-02-14 19:49:17', '2024-02-14 14:19:05'),
+(67, 'TERMINAR REUNION ZOOM DE HOY', 'Terminar reunion de hoy y enviar grabacion al correo de Andres Benavides O Luz Angela', NULL, '14/02/2024 09:24:27', '14/02/2024 10:24:27', 5, 1, 18, 7, '2024-02-14 19:34:47', '2024-02-14 14:26:37'),
+(68, 'nota en siesa', 'no aparecen las notas en los campos de la tabla en siesa, ya se realizo otro archivo y aun asi perdura el error no sale\r\nanydesk: 569401911', '2024-02-14_16-31-55.png', '14/02/2024 10:19:07', '14/02/2024 16:19:07', 1, 19, 18, 2, '2024-02-14 16:54:01', '2024-02-14 15:31:33'),
+(69, 'cambiar contraseña', 'carmen de t1 quiere cambiar de contraseña, escribe por el chat', '2024-02-14_15-42-58.png', '14/02/2024 10:31:46', '14/02/2024 16:31:46', 1, 19, 1, 2, '2024-02-14 16:00:49', '2024-02-14 15:33:30'),
+(70, 'SOLICITAR VISITA IMPRESORA', 'Solicitar a la visita al SR. Yair Para el arreglo de impresora por correo con direccion de la oficina', NULL, '14/02/2024 11:02:53', '14/02/2024 12:02:53', 5, 1, 19, 6, '2024-02-14 22:06:34', '2024-02-14 16:03:40'),
+(71, 'ntc', 'generar ntc T14 día 13 todas las cajas', NULL, '14/02/2024 11:16:23', '14/02/2024 17:16:23', 1, 19, 1, 7, '2024-02-14 21:19:27', '2024-02-14 16:17:34'),
+(72, 'cambiar clave de usuarios remotos', 'cambiar el usuario a kelly t30 TMODA\\testdm20 \r\ny\r\ncambiar usuario de los angeles TMODA\\busint_angeles_1 para jhonatan', '2024-02-14_20-29-18.png', '14/02/2024 15:19:52', '14/02/2024 21:19:52', 1, 19, 1, 7, '2024-02-15 01:36:15', '2024-02-14 20:22:19'),
+(73, 'REVISAR LLAVE VPN', 'Debes ingresar al anydesk de Tesorera Kelly de T30 y comprimir la llave VPN y pasarla a tu equipo y solicitar una revisión a NEGROUP para esa llave.', '2024-02-14_21-11-04.png', '14/02/2024 16:09:18', '14/02/2024 17:09:18', 5, 1, 19, 5, '2024-02-15 02:16:57', '2024-02-14 21:11:04');
 
 -- --------------------------------------------------------
 
@@ -2871,7 +3134,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `nit`, `email`, `password`, `id_company`, `id_state`, `id_area`, `id_chargy`, `id_shop`, `id_theme_user`, `updated_at`, `created_at`) VALUES
-(1, 'Jhan Carlos Cordoba', '3043711546', '1111663045', 'jccq12@gmail.com', '$2y$12$qiWWz8RWBnifFKhCROdRdOXSHVwVe9ZBZK4.B6aKJ5Pfh.Emk8W3G', 5, 1, 7, 22, 51, 2, '2024-02-13 20:55:51', '2023-12-04 06:41:19'),
+(1, 'Jhan Carlos Cordoba', '3043711546', '1111663045', 'jccq12@gmail.com', '$2y$12$qiWWz8RWBnifFKhCROdRdOXSHVwVe9ZBZK4.B6aKJ5Pfh.Emk8W3G', 5, 1, 2, 1, 51, 2, '2024-02-14 20:19:47', '2023-12-04 06:41:19'),
 (2, 'Administrador GRUPO TDM', NULL, '805027653', 'soporte@eltemplodelamoda.com.co', '$2y$12$URua6E9e.DoM3Nt2TzqadOQo0RG2QnM5Hk6a5A7EdemJZNaKMttVK', 5, 1, 1, 83, NULL, NULL, '2023-12-21 15:29:01', '2023-12-04 07:04:03'),
 (10, 'Anderson Cordoba', NULL, '1565654465', 'sistemasaux8@eltemplodelamoda.com.co', '$2y$12$RePEIqHaMsIdOsiT1VgfSOBZPhG3sCGXTFpCfAeOi2V8nBmRwFUI6', 5, 1, 7, 24, 51, 2, '2024-02-13 20:56:10', '2023-12-06 20:36:20'),
 (11, 'Kelly Gomez', '3123213123', '123456789', 'analistadesistemas@eltemplodelamoda.com.co', '$2y$12$DsPHFtMueUypFjuQyovIeuDIrr3HDOxvVSlEy4rcP6dt8gOnDPPMO', 1, 2, 2, 4, 2, 1, '2024-01-25 16:33:03', '2023-12-06 23:57:46'),
@@ -2881,9 +3144,11 @@ INSERT INTO `users` (`id`, `name`, `phone`, `nit`, `email`, `password`, `id_comp
 (16, 'Jhan Carlos  Cordoba Quiñonez', '3043711546', '123456789', 'sistemasaux20@eltemplodelamoda.com.co', '$2y$12$/qI94Q1wzePQRzejcL924eeSSsl7HIZc8zR/NPYA4LYYY35DUZNzS', 1, 2, 16, 84, NULL, NULL, '2024-01-31 14:09:46', '2023-12-15 23:30:24'),
 (17, 'Karen Arenas', NULL, '567688878', 'sistemasaux6@eltemplodelamoda.com.co', '$2y$12$kRnWSni/aDjFfpTXRSy3i.ruPxFYskvoHpfaKjrfk5Wm.LyKcu38y', NULL, 2, 2, NULL, 51, 2, '2024-02-01 18:49:57', '2024-01-03 19:10:37'),
 (18, 'Sebastian Hinestroza', NULL, '65764754656', 'sistemasaux2@eltemplodelamoda.com.co', '$2y$12$/QvvaypJYZQjz9vKk8RCC.TxzokbMqyt4bx4ke2gO.z26C/zoQW1.', 5, 1, 2, 2, 50, 3, '2024-02-01 18:49:45', '2024-01-03 19:16:39'),
-(19, 'Leonardo Dagua', '3016672211', '1006011332', 'sistemasaux11@eltemplodelamoda.com.co', '$2y$12$ja.dnChTfKTVVX4rpujPcO2IfyOEzb7jd3uEEjJ9cvVf4BtFq6hne', NULL, 1, 2, NULL, 50, 1, '2024-01-15 17:26:55', '2024-01-15 17:24:10'),
+(19, 'Leonardo Dagua', '3016672211', '1006011332', 'sistemasaux11@eltemplodelamoda.com.co', '$2y$12$jbtcwgZHUOUrSsU6kwydu.TaUSevoNGCMk/opUirK2/MdN/WMGXUu', NULL, 1, 2, NULL, 50, 1, '2024-02-14 18:39:49', '2024-01-15 17:24:10'),
 (23, 'Jhan Carlos  Cordoba', NULL, '4545545454', 'sistemasaux21@eltemplodelamoda.com.co', '$2y$12$bqKdR3HogV6HKgZbk2JQzuxFDJ0TK2uIaf8LWEdhJ./a0QrdD/F8q', 1, 2, 16, 84, 1, NULL, '2024-02-05 15:47:40', '2024-01-27 14:54:46'),
-(24, 'Jhan Carlos La maravilla', NULL, '12345678910', 'sistemasaux9@eltemplodelamoda.com.co', '$2y$12$79HW4BRiM3hPCSGEdlRQj.PDv5nh7UwO9jrruU85Zf8hEJiwSQFYC', 1, 1, 3, 6, 1, 2, '2024-02-07 15:02:51', '2024-01-29 16:35:01');
+(24, 'Jhan Carlos La maravilla', NULL, '12345678910', 'sistemasaux9@eltemplodelamoda.com.co', '$2y$12$79HW4BRiM3hPCSGEdlRQj.PDv5nh7UwO9jrruU85Zf8hEJiwSQFYC', 1, 1, 3, 6, 1, 2, '2024-02-07 15:02:51', '2024-01-29 16:35:01'),
+(25, 'Valeria Garcia', NULL, '1107511528', 'asistentetic@eltemplodelamoda.com.co', '$2y$12$sUrBy94g9tqaJgST8HIucutJh6NwmBz3plYEGvp7Dfz66T2pzVJeq', 1, 1, 7, 22, NULL, NULL, '2024-02-14 18:52:52', '2024-02-14 23:52:19'),
+(26, 'Recepcion TDM', NULL, '111111111', 'recepciontdm@eltemplodelamoda.com.co', '$2y$12$FsSV.BbIp83rMzHYGbDUDOWTOSA9.zW60erZNp88hiCLCat90cP0e', 1, 1, 16, 84, NULL, NULL, '2024-02-14 21:49:32', '2024-02-15 02:49:01');
 
 -- --------------------------------------------------------
 
@@ -2972,6 +3237,13 @@ CREATE TABLE `wifi_channels` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `wifi_channels`
+--
+
+INSERT INTO `wifi_channels` (`id`, `code`, `detail`, `amount`, `date_start`, `date_finish`, `unit_value`, `id_state`, `updated_at`, `created_at`) VALUES
+(1, '12341235', 'CLARO', '4', '2024-02-12', '2024-02-26', '40000', 2, '2024-02-15 02:01:02', '2024-02-15 01:02:57');
 
 --
 -- Índices para tablas volcadas
@@ -3369,13 +3641,13 @@ ALTER TABLE `areas`
 -- AUTO_INCREMENT de la tabla `califications`
 --
 ALTER TABLE `califications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `certificates`
 --
 ALTER TABLE `certificates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `characteristics_products`
@@ -3393,7 +3665,7 @@ ALTER TABLE `charges`
 -- AUTO_INCREMENT de la tabla `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 
 --
 -- AUTO_INCREMENT de la tabla `companies`
@@ -3423,7 +3695,7 @@ ALTER TABLE `files_modified`
 -- AUTO_INCREMENT de la tabla `images_products`
 --
 ALTER TABLE `images_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `ip_linux_directions`
@@ -3441,7 +3713,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=228;
 
 --
 -- AUTO_INCREMENT de la tabla `origins_certificates`
@@ -3483,7 +3755,7 @@ ALTER TABLE `proceedings`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `reasons`
@@ -3501,7 +3773,7 @@ ALTER TABLE `replenish_times`
 -- AUTO_INCREMENT de la tabla `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1227;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1321;
 
 --
 -- AUTO_INCREMENT de la tabla `reports_certificate`
@@ -3519,13 +3791,13 @@ ALTER TABLE `report_details`
 -- AUTO_INCREMENT de la tabla `report_products`
 --
 ALTER TABLE `report_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de la tabla `rows_certificates`
 --
 ALTER TABLE `rows_certificates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `servers`
@@ -3549,25 +3821,25 @@ ALTER TABLE `shops`
 -- AUTO_INCREMENT de la tabla `spreadsheets`
 --
 ALTER TABLE `spreadsheets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_rows_tpvs`
 --
 ALTER TABLE `spreadsheet_rows_tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_shops`
 --
 ALTER TABLE `spreadsheet_shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `spreadsheet_tpvs`
 --
 ALTER TABLE `spreadsheet_tpvs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `sql_licenses`
@@ -3597,7 +3869,7 @@ ALTER TABLE `themes_users`
 -- AUTO_INCREMENT de la tabla `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de la tabla `tpvs`
@@ -3621,7 +3893,7 @@ ALTER TABLE `type_components`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `vpns`
@@ -3645,7 +3917,7 @@ ALTER TABLE `websockets_statistics_entries`
 -- AUTO_INCREMENT de la tabla `wifi_channels`
 --
 ALTER TABLE `wifi_channels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

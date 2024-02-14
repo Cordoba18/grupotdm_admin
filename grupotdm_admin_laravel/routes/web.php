@@ -173,7 +173,10 @@ Route::get('/dashboard/vpns/export', [VpnController::class, 'export'])->name('da
 Route::get('/dashboard/wifi_channels', [WifiChannelController::class, 'show_wifi_channels'])->name('dashboard.wifi_channels');
 Route::get('/dashboard/wifi_channels/export', [WifiChannelController::class, 'export'])->name('dashboard.wifi_channels.export');
 Route::get('/dashboard/wifi_channels/create', [WifiChannelController::class, 'create_wifi_channels'])->name('dashboard.wifi_channels.create');
-
+Route::post('/dashboard/wifi_channels/create/save', [WifiChannelController::class, 'save_wifi_channels'])->name('dashboard.wifi_channels.create.save');
+Route::get('/dashboard/wifi_channels/edit/{id}', [WifiChannelController::class, 'edit_wifi_channels'])->name('dashboard.wifi_channels.edit');
+Route::post('/dashboard/wifi_channels/edit/save_changes', [WifiChannelController::class, 'save_changes_wifi_channels'])->name('dashboard.wifi_channels.edit.save_changes');
+Route::post('/dashboard/wifi_channels/delete', [WifiChannelController::class, 'delete_wifi_channels'])->name('dashboard.wifi_channels.delete');
 
 Route::get('/dashboard/spreadsheets', [SpreadsheetsController::class, 'show_spreadsheets'])->name('dashboard.spreadsheets');
 Route::get('/dashboard/spreadsheets/tpvs/{id}', [SpreadsheetsController::class, 'show_tpvs'])->name('dashboard.spreadsheets.tpvs');

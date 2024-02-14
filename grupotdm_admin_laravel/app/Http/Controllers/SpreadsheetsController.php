@@ -175,6 +175,7 @@ return true;
             ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
             ->join("companies","shops.id_company","companies.id")
             ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_shops.id_state","=","1")
             ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
             ->where("shops.id","=","$shop")
             ->where('spreadsheet_shops.id_user', "=","$user->id")
@@ -187,6 +188,7 @@ return true;
             ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
             ->join("companies","shops.id_company","companies.id")
             ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_shops.id_state","=","1")
             ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
             ->where("shops.id","=","$shop")
             ->where('spreadsheet_shops.id_user', "=","$user->id")
@@ -199,6 +201,7 @@ return true;
             ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
             ->join("companies","shops.id_company","companies.id")
             ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+            ->where("spreadsheet_shops.id_state","=","1")
             ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
             ->where("spreadsheet_tpvs.id_state","=","$filter")
             ->where('spreadsheet_shops.id_user', "=","$user->id")
@@ -211,7 +214,9 @@ return true;
             ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
             ->join("companies","shops.id_company","companies.id")
             ->select("states.state","tpvs.tpv","shops.shop","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
-            ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")->where('spreadsheet_shops.id_user', "=","$user->id")
+            ->where("spreadsheet_shops.id_state","=","1")
+            ->where("spreadsheet_tpvs.id_spreadsheet","=","$id")
+            ->where('spreadsheet_shops.id_user', "=","$user->id")
             ->where("spreadsheet_tpvs.id_state","=","3")
             ->get();
         }
@@ -324,6 +329,7 @@ if ($validation_jefe) {
     ->join("spreadsheet_shops","shops.id","spreadsheet_shops.id_shop")
     ->join("companies","shops.id_company","companies.id")
     ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","shops.id as id_shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
+    ->where("spreadsheet_shops.id_state","=","1")
     ->where("spreadsheet_tpvs.id_spreadsheet","=","$request->id_spreadsheets")
     ->where("shops.id_company","=","$request->id_company")
     ->where('spreadsheet_shops.id_user', "=","$user->id")
@@ -420,6 +426,7 @@ if ($validation_jefe) {
             "spreadsheet_tpvs.total as total_pos","spreadsheet_tpvs.sub_total as sub_total_pos","spreadsheet_tpvs.difference as difference_pos",
             "payment_methods.name as payment_method","spreadsheet_rows_tpvs.value_pos",
             "spreadsheet_rows_tpvs.value_treasurer","spreadsheet_rows_tpvs.difference","states.state")
+            ->where("spreadsheet_shops.id_state","=","1")
             ->where("spreadsheet_tpvs.id","=","$request->id_spreadsheet_tpv")
             ->orderBy('shops.id', 'desc')
             ->get();

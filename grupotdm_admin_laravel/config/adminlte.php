@@ -319,11 +319,6 @@ return [
             'icon' => 'fas fa-solid fa-key',
         ],
         [
-            'text' => 'TPVS',
-            'url'  => 'dashboard/tpvs',
-            'icon' => 'fas fa-solid fa-key',
-        ],
-        [
             'text' => 'Canales de internet',
             'url'  => 'dashboard/wifi_channels',
             'icon' => 'fas fa-solid fa-wifi',
