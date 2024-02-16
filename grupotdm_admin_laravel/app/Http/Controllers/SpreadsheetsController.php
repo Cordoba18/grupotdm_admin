@@ -84,6 +84,8 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
                     $spreadsheet_rows_tpvs->id_payment_method = $p->id;
                     $spreadsheet_rows_tpvs->id_spreadsheet_tpv = $spreadsheet_tpv->id;
                 //valor del pos
+
+
                     $numero = rand(1,9).'0000';
                     $spreadsheet_rows_tpvs->value_pos = $numero;
                     $spreadsheet_rows_tpvs->save();
