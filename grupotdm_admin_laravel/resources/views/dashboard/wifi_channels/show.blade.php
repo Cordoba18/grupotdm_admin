@@ -5,7 +5,7 @@
 @vite('resources/css/content_loading.css')
 <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-
+@vite('resources/css/wifi_channels.css')
 
 @stop
 @php
@@ -18,9 +18,9 @@
 <h1>CANALES DE INTERNET</h1>
 <br>
 
-<a href="{{  route('dashboard.wifi_channels.create') }}" class="btn btn-dark" id="btn_create">CREAR UN CANAL DE INTERNET  <i class="bi bi-key-fill"></i></a>
+<a href="{{  route('dashboard.wifi_channels.create') }}" class="btn btn-dark" id="btn_create">CREAR UN CANAL DE INTERNET </a>
 
-<a href="{{ route('dashboard.wifi_channels.export') }}" class="btn btn-success" id="btn_create">EXPORTAR EN EXCEL <i class="bi bi-file-earmark-spreadsheet-fill"></i></a>
+<a href="{{ route('dashboard.wifi_channels.export') }}" class="btn btn-success" id="btn_create">EXPORTAR EN EXCEL </a>
 <br>
 <br>
 @if (session('message'))

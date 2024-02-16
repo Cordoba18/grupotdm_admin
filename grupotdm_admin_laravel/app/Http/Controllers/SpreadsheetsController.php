@@ -105,10 +105,9 @@ return true;
         if(SpreadsheetsController::validate_user()){
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
-
+       SpreadsheetsController::validate_spreadsheet();
        $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
        ->select("spreadsheets.date_previous", "spreadsheets.id", "states.state","spreadsheets.id_state")->get();
-       SpreadsheetsController::validate_spreadsheet();
        return view('dashboard.spreadsheets.show', compact('spreadsheets',));
 
     }

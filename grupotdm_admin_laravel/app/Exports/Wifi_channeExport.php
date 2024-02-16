@@ -15,7 +15,8 @@ class Wifi_channeExport implements FromCollection, WithHeadings, ShouldAutoSize,
 {
     public function collection()
     {
-        $data = Wifi_channel::all()->where("id_state","=","1");
+        $data = Wifi_channel::select("id","code","detail","amount","date_start","date_finish","unit_value")
+        ->where("id_state","=","1")->get();
 
         return collect($data);
     }
@@ -37,16 +38,16 @@ class Wifi_channeExport implements FromCollection, WithHeadings, ShouldAutoSize,
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->getStyle('A1:H' . ($event->sheet->getHighestRow()))
+                $event->sheet->getStyle('A1:G' . ($event->sheet->getHighestRow()))
                     ->getBorders()
                     ->getAllBorders()
                     ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE);
 
-                $event->sheet->getStyle('A1:H' . ($event->sheet->getHighestRow()))
+                $event->sheet->getStyle('A1:G' . ($event->sheet->getHighestRow()))
                     ->getBorders()
                     ->getOutline()
                     ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK);
-                $event->sheet->getStyle('A1:H1')->applyFromArray([
+                $event->sheet->getStyle('A1:G1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],

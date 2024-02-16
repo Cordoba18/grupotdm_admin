@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\Report_productExport;
 use App\Mail\create_product;
 use App\Models\Area;
+use App\Models\Characteristic_product;
 use App\Models\Image_product;
 use App\Models\Origin_Certificate;
 use App\Models\Product;
@@ -177,6 +178,7 @@ public function view_product($id){
 
     $user = Auth::user();
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
+    $characteristic_products = Characteristic_product::all()->where("id_product", "=", "$id")->where("id_state","=","1");
         $origins_certificates = Origin_Certificate::all();
         $states_certificates = State_Certificate::all();
         $types_components = Type_Component::all();
@@ -185,7 +187,7 @@ public function view_product($id){
         $user_create_product = DB::selectOne("SELECT u.id, u.name FROM users u WHERE u.id = $product->id_user");
         $images_product = DB::select("SELECT * FROM images_products WHERE id_product = $id AND id_state = 1");
         $reports_product = Report_Product::orderBy('id', 'desc')->where('id_product','=',$id)->get();
-        return view('dashboard.inventories.view_products',compact('state','user_create_product','reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
+        return view('dashboard.inventories.view_products',compact("characteristic_products",'state','user_create_product','reports_product','validate_user_sistemas','images_product','origins_certificates','states_certificates','types_components','product'));
 }
 
 
@@ -299,5 +301,30 @@ public function delete_image_product(Request $request){
   //funcion que me permite exportar los productos con su ultimo reporte en un excel
   public function export(){
     return Excel::download(new Report_productExport, "Reportes_Inventario_GRUPO_TDM.xlsx");
+}
+
+//Funcion que me permite agregar una caracteristica a un producto
+public function save_characteristic_product(Request $request){
+
+    $new_characteristic_product = new Characteristic_product();
+
+    $new_characteristic_product->type = $request->type;
+    $new_characteristic_product->detail = $request->detail;
+    $new_characteristic_product->id_product = $request->id_product;
+    $new_characteristic_product->id_state = 1;
+    $new_characteristic_product->save();
+    return redirect()->route("dashboard.inventories.view_product", $request->id_product)->with("message","Caracteristica agregada al producto!");
+}
+
+
+//Funcion que me permite eliminar la caracteristica de un producto
+public function delete_characteristic_product(Request $request){
+
+
+    $characteristic_product = Characteristic_product::find($request->id_characteristic_product);
+    $characteristic_product->id_state = 2;
+    $characteristic_product->save();
+
+    return redirect()->route("dashboard.inventories.view_product", $request->id_product)->with("message","Caracteristica eliminada con exito!");
 }
 }

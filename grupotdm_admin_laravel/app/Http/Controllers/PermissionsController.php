@@ -52,6 +52,10 @@ class PermissionsController extends Controller
         $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
         WHERE c.chargy = 'JEFE DE AREA' AND u.id = $user->id");
+        $validation_coordinador = DB::selectOne("SELECT * FROM users u
+        INNER JOIN charges c ON u.id_chargy = c.id
+        WHERE c.chargy LIKE '%coordinador%' AND u.id = $user->id");
+
         $permission = DB::selectOne("SELECT p.id, uc.name AS name_user, uc.nit, p.date_application, r.reason, re.replenish_time, s.state, p.id_state, p.observations, p.id_user_collaborator
         FROM permissions p
         INNER JOIN users uc ON p.id_user_collaborator = uc.id
@@ -62,7 +66,7 @@ class PermissionsController extends Controller
         $dates_permission = Permission::find($id);
         $user_boss = User::find($dates_permission->id_user_boss);
         $user_reception = User::find($dates_permission->id_user_reception);
-        return view('dashboard.permissions.show_permission', compact('validation_jefe','permission', 'dates_permission','user_boss','user_reception'));
+        return view('dashboard.permissions.show_permission', compact('validation_jefe','validation_coordinador','permission', 'dates_permission','user_boss','user_reception'));
     }
 
 //funcion que me permite retornar la vista para crear el producto
@@ -76,9 +80,11 @@ public function create_permission(){
 //funcion que me permite guardar un nuevo permiso
 public function save_permission(Request $request){
     $user = Auth::user();
-    $jefe = DB::selectOne("SELECT * FROM users u
+    $jefes = DB::select("SELECT * FROM users u
     INNER JOIN charges c ON u.id_chargy = c.id
-     WHERE c.chargy = 'JEFE DE AREA' AND u.id_area = $user->id_area");
+     WHERE (c.chargy = 'JEFE DE AREA' OR c.chargy LIKE '%coordinador%')  AND u.id_area = $user->id_area");
+
+
     $new_permission = new Permission();
     $new_permission->date_application = $request->date_application;
     //validamos si existe una fecha para el dia de mañana para guardar
@@ -93,12 +99,16 @@ public function save_permission(Request $request){
     $new_permission->id_state = 3;
     $new_permission->save();
     //enviamos la info al jefe del area
-    if ($jefe){
-        //enviamos un correo
-        Mail::to($jefe->email)->send(new create_permission($jefe, $new_permission, $user));
-        //notificamos al jefe
-        NotificationController::create_notification("El usuario $user->name ha solicitado un permiso", $jefe->id, route('dashboard.permissions.view_permission',$new_permission->id));
+    foreach ($jefes as $jefe) {
+        if ($jefe->id != $user->id){
+             //notificamos al jefe
+             NotificationController::create_notification("El usuario $user->name ha solicitado un permiso", $jefe->id, route('dashboard.permissions.view_permission',$new_permission->id));
+            //enviamos un correo
+            Mail::to($jefe->email)->send(new create_permission($jefe, $new_permission, $user));
+
+        }
     }
+
     //generamos un reporte
     ReportController::create_report("Ha generado un permiso por/para $new_permission->observations", $user->id, 9);
     return redirect()->route('dashboard.permissions')->with('message','Permiso generado con exito!');

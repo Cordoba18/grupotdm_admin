@@ -134,7 +134,8 @@ Route::post('/dashboard/inventories/view_product/images_product/delete', [Invent
 Route::post('/dashboard/inventories/view_product/save_changes', [InventoriesController::class, 'save_changes_view_product'])->name('dashboard.inventories.view_product.save_changes_view_product');
 Route::get('/dashboard/inventories/create/get_serie', [InventoriesController::class, 'get_serie'])->name('dashboard.inventories.create.get_serie');
 Route::get('/dashboard/inventories/export', [InventoriesController::class, 'export'])->name('dashboard.inventories.export');
-
+Route::post('/dashboard/inventories/view_product/characteristic_product/save', [InventoriesController::class, 'save_characteristic_product'])->name('dashboard.inventories.view_product.characteristic_product.save');
+Route::post('/dashboard/inventories/view_product/characteristic_product/delete', [InventoriesController::class, 'delete_characteristic_product'])->name('dashboard.inventories.view_product.characteristic_product.delete');
 Route::post('/dashboard/get_notifications', [NotificationController::class, 'get_notifications'])->name('dashboard.get_notifications');
 Route::post('/dashboard/view_notification', [NotificationController::class, 'view_notification'])->name('dashboard.view_notification');
 

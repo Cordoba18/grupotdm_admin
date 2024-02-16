@@ -31,6 +31,7 @@ export default defineConfig({
                 'resources/css/ip_linux_directions.css',
                 'resources/css/spreadsheet_tpvs.css',
                 'resources/css/vpns.css',
+                'resources/css/wifi_channels.css',
                 'resources/js/spreadsheets_shops.js',
                 'resources/js/view_vpn.js',
                 'resources/js/vpn.js',

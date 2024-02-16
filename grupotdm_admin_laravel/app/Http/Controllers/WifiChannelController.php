@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Wifi_channeExport;
 use App\Models\Wifi_channel;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,7 +13,19 @@ class WifiChannelController extends Controller
     public function show_wifi_channels(Request $request){
 
         $search = $request->search;
-        $wifi_channels =  Wifi_channel::all()->where('id_state','=','1');
+        if($search){
+            $wifi_channels =  Wifi_channel::all()
+            ->where('code','LIKE',"%$search%")
+            ->where('detail','LIKE',"%$search%")
+            ->where('amount','LIKE',"%$search%")
+            ->where('date_start','LIKE',"%$search%")
+            ->where('date_finish','LIKE',"%$search%")
+            ->where('unit_value','LIKE',"%$search%")
+            ->where('id_state','=','1');
+        }else{
+            $wifi_channels =  Wifi_channel::all()->where('id_state','=','1');
+        }
+
         return view("dashboard.wifi_channels.show", compact('wifi_channels','search'));
     }
 
@@ -24,7 +37,7 @@ class WifiChannelController extends Controller
 
     //funcion que me permite exportar los canales de internet
     public function export(){
-        // return Excel::download(new VpnExport, "Vpns_GRUPO_TDM.xlsx");
+        return Excel::download(new Wifi_channeExport, "Canales_Internet_GRUPO_TDM.xlsx");
     }
 
     //funcion que me permite guardar una red wifi

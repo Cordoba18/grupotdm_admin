@@ -21,7 +21,9 @@
     width: 200px;
 
 }
-
+#btn_create{
+    width: 100%;
+}
 @media (max-width:800px){
     .content_search input{
         width: 100%;
@@ -45,13 +47,4 @@
         width: 100%;
         margin: 0;
     }
-}
-
-.content_buttons{
-    display: flex;
-    justify-content: center;
-}
-.content_buttons button{
-    width: 200px;
-    margin: 20px;
 }
