@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use GuzzleHttp\Client;
 
 //Declaracion de clase
 class ProfileController extends Controller
@@ -22,40 +23,6 @@ class ProfileController extends Controller
     }
 
      public function index(){
-    // Parámetros de la consulta
-$nombreConexion = 'Real-Prueba';
-$idCia = 1;
-$idProveedor = 'OK';
-$idConsulta = 'CLS_MED_PAG_X_CIAS';
-$usuario = 'unoee';
-$clave = '805027653';
-$parametros = [
-    'COMP' => 1,
-];
-
-// Construir el cuerpo de la consulta XML
-$xml = "<Consulta>
-    <NombreConexion>{$nombreConexion}</NombreConexion>
-    <IdCia>{$idCia}</IdCia>
-    <IdProveedor>{$idProveedor}</IdProveedor>
-    <IdConsulta>{$idConsulta}</IdConsulta>
-    <Usuario>{$usuario}</Usuario>
-    <Clave>{$clave}</Clave>
-    <Parametros>";
-foreach ($parametros as $key => $value) {
-    $xml .= "<{$key}>{$value}</{$key}>";
-}
-$xml .= "</Parametros>
-</Consulta>";
-
-
-// Hacer la solicitud HTTP
-$response = Http::post('http://201.234.74.111:9086/WSUNOEE.asmx?op=EjecutarConsultaXML', [
-    'xml' => $xml,
-]);
-dd($response);
-// Obtener la respuesta
-$data = $response->json();
 
 
         return view('dashboard');
