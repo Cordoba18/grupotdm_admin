@@ -23,8 +23,6 @@ class ProfileController extends Controller
     }
 
      public function index(){
-
-
         return view('dashboard');
      }
     public function edit(Request $request): View

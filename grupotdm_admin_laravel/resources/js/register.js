@@ -206,7 +206,7 @@ function validate_email(texto) {
 
     const resultado1 = texto.search(patron1);
 
-    const patron2 = /@eltemplodelamodafresca\.com.co/;
+    const patron2 = /@eltemplodelamodafresca\.com/;
 
     const resultado2 = texto.search(patron2);
     const patron3 = /@tceluniverso\.com/;
