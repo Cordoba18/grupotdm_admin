@@ -12,8 +12,8 @@ class Tpv extends Model
     protected $table = 'tpvs';
     protected $fillable = [
         'tpv',
-        'id_user',
         'id_company',
+        'operation_center',
         'id_tpv_component',
         'id_state',
     ];

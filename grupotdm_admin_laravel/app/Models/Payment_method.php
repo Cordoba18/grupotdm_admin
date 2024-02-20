@@ -12,5 +12,8 @@ class Payment_method extends Model
     protected $table = 'payment_methods';
     protected $fillable = [
         'name',
+        'description',
+        'id_company',
+        'id_state',
     ];
 }

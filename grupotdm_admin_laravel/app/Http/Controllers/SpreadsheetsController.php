@@ -35,6 +35,212 @@ class SpreadsheetsController extends Controller
         $this->middleware('auth');
     }
 
+
+    public static function get_consultas($url, $xml_data)
+    {
+
+        $client = new \GuzzleHttp\Client();
+        $data = $client->request('POST', $url, [
+            'headers' => [
+                'Content-Type' => 'text/xml'
+            ],
+            'body' => $xml_data
+        ]);
+
+        $xml = simplexml_load_string($data->getBody());
+        $ns = $xml->getNamespaces(true);
+        $soap = $xml->children($ns['soap']);
+        $result = $soap->children()->EjecutarConsultaXMLResponse->EjecutarConsultaXMLResult;
+        $diff = $result->children($ns['diffgr'])->diffgram->children();
+
+        return $diff->NewDataSet->Resultado;
+    }
+
+    public static function add_payment_methods(){
+
+        $nombreConexion = 'Real-Prueba';
+        $idCia = 1;
+        $idProveedor = 'OK';
+        $idConsulta = 'CLS_MED_PAG_X_CIAS';
+        $usuario = 'unoee';
+        $clave = '805027653';
+        $parametros = [
+            'COMP' => 2,
+        ];
+
+        $soapUrl = "http://201.234.74.111:9086/WSUNOEE.asmx?op=EjecutarConsultaXML";
+
+        try {
+
+
+            $xml_post_string = "<soap:Envelope xmlns:soap='http://www.w3.org/2003/05/soap-envelope' xmlns:tem='http://tempuri.org/'>
+        <soap:Header/>
+        <soap:Body>
+            <tem:EjecutarConsultaXML>
+                <!--Optional:-->
+                <tem:pvstrxmlParametros><![CDATA[<?xml version='1.0' encoding='utf-8'?>
+                <Consulta>
+                <NombreConexion>{$nombreConexion}</NombreConexion>
+                <IdCia>{$idCia}</IdCia>
+                <IdProveedor>{$idProveedor}</IdProveedor>
+                <IdConsulta>{$idConsulta}</IdConsulta>
+                <Usuario>{$usuario}</Usuario>
+                <Clave>{$clave}</Clave>
+                <Parametros>";
+            foreach ($parametros as $key => $value) {
+                $xml_post_string .= "<{$key}>{$value}</{$key}>";
+            }
+            $xml_post_string .= "</Parametros>
+            </Consulta>
+                ]]></tem:pvstrxmlParametros>
+            </tem:EjecutarConsultaXML>
+        </soap:Body>
+        </soap:Envelope>";
+
+
+            $data = self::get_consultas($soapUrl, $xml_post_string);
+            if ($data) {
+                foreach ($data as $resultado) {
+
+                    $validation_payment_method = Payment_method::where("name","=",$resultado->f025_descripcion)->where("id_company","=","$resultado->f025_id_cia")->first();
+                    if (!$validation_payment_method) {
+                        $new_payment_method = new Payment_method();
+                        $new_payment_method->description = $resultado->f025_id;
+                        $new_payment_method->name = $resultado->f025_descripcion;
+                        $new_payment_method->id_state = $resultado->id_state;
+                        $new_payment_method->id_company = $resultado->f025_id_cia;
+                        $new_payment_method->save();
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+    }
+
+    public static function add_tpvs(){
+
+        $nombreConexion = 'Real-Prueba';
+        $idCia = 1;
+        $idProveedor = 'OK';
+        $idConsulta = 'CLS_TPVS_X_CIAS';
+        $usuario = 'unoee';
+        $clave = '805027653';
+        $parametros = [
+            'COMP' => 2,
+        ];
+
+        $soapUrl = "http://201.234.74.111:9086/WSUNOEE.asmx?op=EjecutarConsultaXML";
+
+        try {
+
+
+            $xml_post_string = "<soap:Envelope xmlns:soap='http://www.w3.org/2003/05/soap-envelope' xmlns:tem='http://tempuri.org/'>
+        <soap:Header/>
+        <soap:Body>
+            <tem:EjecutarConsultaXML>
+                <!--Optional:-->
+                <tem:pvstrxmlParametros><![CDATA[<?xml version='1.0' encoding='utf-8'?>
+                <Consulta>
+                <NombreConexion>{$nombreConexion}</NombreConexion>
+                <IdCia>{$idCia}</IdCia>
+                <IdProveedor>{$idProveedor}</IdProveedor>
+                <IdConsulta>{$idConsulta}</IdConsulta>
+                <Usuario>{$usuario}</Usuario>
+                <Clave>{$clave}</Clave>
+                <Parametros>";
+            foreach ($parametros as $key => $value) {
+                $xml_post_string .= "<{$key}>{$value}</{$key}>";
+            }
+            $xml_post_string .= "</Parametros>
+            </Consulta>
+                ]]></tem:pvstrxmlParametros>
+            </tem:EjecutarConsultaXML>
+        </soap:Body>
+        </soap:Envelope>";
+
+
+            $data = self::get_consultas($soapUrl, $xml_post_string);
+            if ($data) {
+                foreach ($data as $resultado) {
+
+                    $valitation_tpv = Tpv::join("shops","tpvs.id_shop","shops.id")
+                    ->where("tpvs.tpv","=",$resultado->tpv)->where("shops.operation_center","=","$resultado->operation_center")
+                    ->where("shops.id_company","=","$resultado->id_company")->first();
+
+                    if (!$valitation_tpv) {
+                        dd("REVISA TU INFORMACION");
+                        $shop = Shop::where("id_company","=","$resultado->id_company")->where("operation_center","=","$resultado->operation_center")->first();
+                        if($shop){
+                        $new_tpv = new Tpv();
+                        $new_tpv->tpv = $resultado->tpv;
+                        $new_tpv->description = $resultado->description;
+                        $new_tpv->id_shop = $shop->id;
+                        $new_tpv->id_state = 1;
+                        $new_tpv->save();
+                    }
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public static function add_buys($id_company,$date, $operation_center){
+
+        $nombreConexion = 'Real-Prueba';
+        $idCia = 1;
+        $idProveedor = 'OK';
+        $idConsulta = 'CLS_TESORERIA_V2_DOCS_ENC';
+        $usuario = 'unoee';
+        $clave = '805027653';
+        $parametros = [
+            'COMP' => $id_company,
+            'CO' => $operation_center,
+            'FECHA_INI' => $date,
+            'FECHA_FIN' => $date,
+        ];
+
+        $soapUrl = "http://201.234.74.111:9086/WSUNOEE.asmx?op=EjecutarConsultaXML";
+
+        try {
+
+
+            $xml_post_string = "<soap:Envelope xmlns:soap='http://www.w3.org/2003/05/soap-envelope' xmlns:tem='http://tempuri.org/'>
+        <soap:Header/>
+        <soap:Body>
+            <tem:EjecutarConsultaXML>
+                <!--Optional:-->
+                <tem:pvstrxmlParametros><![CDATA[<?xml version='1.0' encoding='utf-8'?>
+                <Consulta>
+                <NombreConexion>{$nombreConexion}</NombreConexion>
+                <IdCia>{$idCia}</IdCia>
+                <IdProveedor>{$idProveedor}</IdProveedor>
+                <IdConsulta>{$idConsulta}</IdConsulta>
+                <Usuario>{$usuario}</Usuario>
+                <Clave>{$clave}</Clave>
+                <Parametros>";
+            foreach ($parametros as $key => $value) {
+                $xml_post_string .= "<{$key}>{$value}</{$key}>";
+            }
+            $xml_post_string .= "</Parametros>
+            </Consulta>
+                ]]></tem:pvstrxmlParametros>
+            </tem:EjecutarConsultaXML>
+        </soap:Body>
+        </soap:Envelope>";
+            $data = self::get_consultas($soapUrl, $xml_post_string);
+
+            if ($data) {
+                    return ($data);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public static function validate_spreadsheet(){
 
 
@@ -43,6 +249,7 @@ class SpreadsheetsController extends Controller
         $fechaActual = new DateTime('now', $zonaHorariaColombia);
         // Imprimir la hora actual en Colombia
         $fechaAnterior = Carbon::yesterday($zonaHorariaColombia)->format('Y-m-d');
+        $fechaAnterior_pos = Carbon::yesterday($zonaHorariaColombia)->format('Ymd');
         $fechaActual2 = $fechaActual->format('Y-m-d');
 $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
 
@@ -73,8 +280,13 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
             }
 
             $total = 0;
+            $shop = Tpv::join("shops","tpvs.id_shop","shops.id")
+            ->select("shops.id_company", "shops.operation_center")
+            ->where("tpvs.id","=","$t->id")
+            ->first();
 
 
+            $data = SpreadsheetsController::add_buys($shop->id_company, $fechaAnterior_pos, $shop->operation_center );
             $payment_methods = Payment_method::all();
             foreach ($payment_methods as $p) {
                 $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::where("id_payment_method","="," $p->id")
@@ -85,8 +297,11 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
                     $spreadsheet_rows_tpvs->id_spreadsheet_tpv = $spreadsheet_tpv->id;
                 //valor del pos
 
-
-                    $numero = rand(1,9).'0000';
+                foreach ($data as $d) {
+                    if ($p->description == $d->id_medio_pago) {
+                        $numero = intval($d->VALOR_NET);
+                    }
+                }
                     $spreadsheet_rows_tpvs->value_pos = $numero;
                     $spreadsheet_rows_tpvs->save();
 

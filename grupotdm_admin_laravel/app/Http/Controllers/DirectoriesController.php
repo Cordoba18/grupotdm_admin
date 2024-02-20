@@ -24,8 +24,36 @@ class DirectoriesController extends Controller
         $this->middleware('auth');
     }
 
+
+    public static function get_consultas($url, $xml_data)
+    {
+
+        $client = new \GuzzleHttp\Client();
+        $data = $client->request('POST', $url, [
+            'headers' => [
+                'Content-Type' => 'text/xml'
+            ],
+            'body' => $xml_data
+        ]);
+
+        $xml = simplexml_load_string($data->getBody());
+        $ns = $xml->getNamespaces(true);
+        $soap = $xml->children($ns['soap']);
+        $result = $soap->children()->EjecutarConsultaXMLResponse->EjecutarConsultaXMLResult;
+        $diff = $result->children($ns['diffgr'])->diffgram->children();
+
+        return $diff->NewDataSet->Resultado;
+    }
+
+
+
+
+
+
+
     //funcion que sirve para ver los directorios
     public function show_directories(){
+
 
         $user = Auth::user();
         $directories = DB::select("SELECT d.code, d.id, d.name, d.directory, d.date_create, d.date_update, u.id AS id_user , u.name AS name_user, s.state, s.id AS id_state
