@@ -234,7 +234,7 @@ class SpreadsheetsController extends Controller
             $data = self::get_consultas($soapUrl, $xml_post_string);
 
             if ($data) {
-                    return ($data);
+                    return $data;
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -261,10 +261,25 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
         $spreadsheet->id_state = 1;
         $spreadsheet->save();
        }
+       $shops = Shop::whereIn('id_company', [1, 2])->get();
+       foreach ($shops as $s) {
+        # code...
+        $validation = false;
+        $tpvs = Tpv::all()->where("id_state","=","1")->where("id_shop","=","$s->id");
+        foreach ($tpvs as $t) {
+            $spreadsheet_tpv = Spreadsheet_tpv::where("id_spreadsheet","=","$spreadsheet->id")
+            ->where("id_tpv","=","$t->id")->first();
+            if (!$spreadsheet_tpv) {
+                $validation = true;
+            }
+        }
 
-        $tpvs = Tpv::all()->where("id_state","=","1");
+
+        if ($validation) {
+            # code...
 
         foreach ($tpvs as $t) {
+
             $spreadsheet_tpv = Spreadsheet_tpv::where("id_spreadsheet","=","$spreadsheet->id")
             ->where("id_tpv","=","$t->id")->first();
             if(!$spreadsheet_tpv){
@@ -279,39 +294,10 @@ $spreadsheet = Spreadsheet::where("date_now","LIKE","%$fechaActual2%")->first();
 
             }
 
-            $total = 0;
-            $shop = Tpv::join("shops","tpvs.id_shop","shops.id")
-            ->select("shops.id_company", "shops.operation_center")
-            ->where("tpvs.id","=","$t->id")
-            ->first();
 
-
-            $data = SpreadsheetsController::add_buys($shop->id_company, $fechaAnterior_pos, $shop->operation_center );
-            $payment_methods = Payment_method::all();
-            foreach ($payment_methods as $p) {
-                $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::where("id_payment_method","="," $p->id")
-                ->where("id_spreadsheet_tpv","=","$spreadsheet_tpv->id")->first();
-                if (!$spreadsheet_rows_tpvs) {
-                    $spreadsheet_rows_tpvs = new Spreadsheet_rows_tpv();
-                    $spreadsheet_rows_tpvs->id_payment_method = $p->id;
-                    $spreadsheet_rows_tpvs->id_spreadsheet_tpv = $spreadsheet_tpv->id;
-                //valor del pos
-
-                foreach ($data as $d) {
-                    if ($p->description == $d->id_medio_pago) {
-                        $numero = intval($d->VALOR_NET);
-                    }
-                }
-                    $spreadsheet_rows_tpvs->value_pos = $numero;
-                    $spreadsheet_rows_tpvs->save();
-
-                }
-                $total = $total + intval($spreadsheet_rows_tpvs->value_pos);
-            }
-            $spreadsheet_tpv = Spreadsheet_tpv::find($spreadsheet_tpv->id);
-            $spreadsheet_tpv->total = $total;
-            $spreadsheet_tpv->save();
         }
+    }
+    }
 return true;
 
     }
@@ -322,7 +308,7 @@ return true;
         if(SpreadsheetsController::validate_user()){
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
-       SpreadsheetsController::validate_spreadsheet();
+        SpreadsheetsController::validate_spreadsheet();
        $spreadsheets  = Spreadsheet::join("states","spreadsheets.id_state","states.id")
        ->select("spreadsheets.date_previous", "spreadsheets.id", "states.state","spreadsheets.id_state")->get();
        return view('dashboard.spreadsheets.show', compact('spreadsheets',));
@@ -456,6 +442,48 @@ return true;
         if(SpreadsheetsController::validate_user()){
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
+
+       $zonaHorariaColombia = new DateTimeZone('America/Bogota');
+       $fechaActual = new DateTime('now', $zonaHorariaColombia);
+       $fechaAnterior_pos = Carbon::yesterday($zonaHorariaColombia)->format('Ymd');
+       $total = 0;
+       $spreadsheet_tpv = Spreadsheet_tpv::find($id);
+       $t = Tpv::join("shops","tpvs.id_shop","shops.id")->where("tpvs.id","=","$spreadsheet_tpv->id_tpv")->first();
+       $payment_methods = Payment_method::all()->where("id_company","=","$t->id_company");
+       $data = SpreadsheetsController::add_buys($t->id_company, $fechaAnterior_pos, $t->operation_center);
+        foreach ($payment_methods as $p) {
+            $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::where("id_payment_method","="," $p->id")
+            ->where("id_spreadsheet_tpv","=","$spreadsheet_tpv->id")->first();
+            if (!$spreadsheet_rows_tpvs) {
+                $spreadsheet_rows_tpvs = new Spreadsheet_rows_tpv();
+                $spreadsheet_rows_tpvs->id_payment_method = $p->id;
+                $spreadsheet_rows_tpvs->id_spreadsheet_tpv = $spreadsheet_tpv->id;
+            //valor del pos
+
+            foreach ($data as $d) {
+
+                $cosa = $d->tpv;
+                dd($cosa);
+                if ($p->description == $d->id_medio_pago && $t->tpv == $d->tpv) {
+
+                    $numero = intval($d->VALOR_NET);
+
+                }
+            }
+            try {
+                $spreadsheet_rows_tpvs->value_pos = $numero;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+
+                $spreadsheet_rows_tpvs->save();
+
+            }
+            $total = $total + intval($spreadsheet_rows_tpvs->value_pos);
+        }
+
+        $spreadsheet_tpv->total = $total;
+        $spreadsheet_tpv->save();
         $user = Auth::user();
         $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
