@@ -228,10 +228,12 @@ public function new_user(){
     $themes_users = Theme_user::all();
     $companies = Companie::all();
     $charges = Charge::all()->where('id_area','=',$user->id_area);
+  $areas = Area::all();
     $shops = Shop::all();
     $area = DB::selectOne("SELECT * FROM areas WHERE id = $user->id_area");
     $validate_user_sistemas = DB::selectOne("SELECT * FROM users WHERE id_area = 2 AND id=$user->id");
-    return view('dashboard.users.new_user', compact ('user', 'companies', 'charges', 'shops', 'area','themes_users', 'validate_user_sistemas'));
+    $validate_user_administrador = DB::selectOne("SELECT * FROM users WHERE id_area = 1 AND id=$user->id");
+    return view('dashboard.users.new_user', compact ('areas','validate_user_administrador','user', 'companies', 'charges', 'shops', 'area','themes_users', 'validate_user_sistemas'));
 }
 
 
@@ -260,7 +262,12 @@ public function save_user(Request $request){
         $user->email= $request->email;
         $user->id_company = $request->id_company;
         $user->id_state = 1;
-        $user->id_area = $my_user->id_area;
+        if($request->id_area){
+            $user->id_area = $request->id_area;
+        }else{
+            $user->id_area = $my_user->id_area;
+        }
+
         $user->password = Hash::make($request->password);
         $user->id_chargy = $request->id_chargy;
         if ($request->id_theme_user) {

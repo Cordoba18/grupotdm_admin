@@ -11,7 +11,12 @@
 <div class="content_loading" hidden>
 
 </div>
+@if($validate_user_sistemas || $validate_user_administrador)
+<h1>Crear nuevo usuario </h1>
+@else
 <h1>Crear nuevo usuario para <b>{{ $area->area }}</b> </h1>
+@endif
+
 @if (session('message_error'))
 
               <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
@@ -68,14 +73,30 @@
 </div>
 </select>
 </div>
+@if ($validate_user_sistemas || $validate_user_administrador)
+
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Area</label>
+  <select required name="id_area" id="id_area" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
+    <option value="">SELECCIONE UN AREA</option>
+    @foreach ($areas as $a)
+    <option value="{{ $a->id }}">{{ $a->area }} </option>
+    @endforeach
+  </select>
+</div>
+
+@endif
 <div class="mb-3">
     <label for="exampleFormControlInput1" class="form-label">Cargos</label>
   <select required name="id_chargy" id="id_chargy" style="width: 100%" class="form-select form-select-lg mb-3" aria-label="Large select example">
     <option value="">SELECCIONE UN CARGO</option>
+    @if (!$validate_user_sistemas && !$validate_user_administrador)
     @foreach ($charges as $c)
 
     <option value="{{ $c->id }}">{{ $c->chargy }}</option>
     @endforeach
+    @endif
+
   </select>
 </div>
 

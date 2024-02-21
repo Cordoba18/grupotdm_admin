@@ -192,7 +192,6 @@ Echo.join(`stateticket`)
                 window.location = `./${id_ticket}`;
               }, 4000);
 
-
           }, 2000);
     }
 

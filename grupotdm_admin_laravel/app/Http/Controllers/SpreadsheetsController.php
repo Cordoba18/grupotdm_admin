@@ -56,6 +56,7 @@ class SpreadsheetsController extends Controller
         return $diff->NewDataSet->Resultado;
     }
 
+    //Consulta que inserta los metodos de pago de siesa ha mi tabla
     public static function add_payment_methods(){
 
         $nombreConexion = 'Real-Prueba';
@@ -118,7 +119,7 @@ class SpreadsheetsController extends Controller
         }
 
     }
-
+    //Funcion que me permite guardar las tpvs de la base de datos a mi tabla
     public static function add_tpvs(){
 
         $nombreConexion = 'Real-Prueba';
@@ -424,7 +425,9 @@ return true;
         }
     }
     if ($validation_jefe) {
-       $spreadsheet_shops = Shop::all();
+        $spreadsheet_shops = Shop::where("id_company", 1)
+        ->orWhere("id_company", 2)
+        ->get();
     } else {
         $spreadsheet_shops = Spreadsheet_shop::join("shops","spreadsheet_shops.id_shop","shops.id")
         ->select("shops.id","shops.shop")
@@ -448,8 +451,24 @@ return true;
        $fechaAnterior_pos = Carbon::yesterday($zonaHorariaColombia)->format('Ymd');
        $total = 0;
        $spreadsheet_tpv = Spreadsheet_tpv::find($id);
-       $t = Tpv::join("shops","tpvs.id_shop","shops.id")->where("tpvs.id","=","$spreadsheet_tpv->id_tpv")->first();
+       $t = Tpv::join("shops","tpvs.id_shop","shops.id")
+       ->where("tpvs.id","=","$spreadsheet_tpv->id_tpv")
+       ->first();
+       $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::all()->where("id_spreadsheet_tpv","=","$spreadsheet_tpv->id");
        $payment_methods = Payment_method::all()->where("id_company","=","$t->id_company");
+       $total_rows = 0;
+       $total_payment_methods = 0;
+
+       foreach ($spreadsheet_rows_tpvs as $key) {
+        $total_rows = $total_rows + 1;
+       }
+       foreach ($payment_methods as $key => $value) {
+        $total_payment_methods = $total_payment_methods + 1;
+       }
+
+
+if ($total_payment_methods !== $total_rows) {
+
        $data = SpreadsheetsController::add_buys($t->id_company, $fechaAnterior_pos, $t->operation_center);
         foreach ($payment_methods as $p) {
             $spreadsheet_rows_tpvs = Spreadsheet_rows_tpv::where("id_payment_method","="," $p->id")
@@ -459,11 +478,10 @@ return true;
                 $spreadsheet_rows_tpvs->id_payment_method = $p->id;
                 $spreadsheet_rows_tpvs->id_spreadsheet_tpv = $spreadsheet_tpv->id;
             //valor del pos
-
+            $numero = 0;
             foreach ($data as $d) {
 
                 $cosa = $d->tpv;
-                dd($cosa);
                 if ($p->description == $d->id_medio_pago && $t->tpv == $d->tpv) {
 
                     $numero = intval($d->VALOR_NET);
@@ -483,7 +501,15 @@ return true;
         }
 
         $spreadsheet_tpv->total = $total;
+
+        if($total == 0){
+            $spreadsheet_tpv->id_state = 2;
+            $spreadsheet_tpv->save();
+            return redirect()->route('dashboard.spreadsheets.tpvs', $spreadsheet_tpv->id_spreadsheet)->with("message_error", "La $t->tpv no tuvo ventas");
+        }
+
         $spreadsheet_tpv->save();
+}
         $user = Auth::user();
         $validation_jefe = DB::selectOne("SELECT * FROM users u
         INNER JOIN charges c ON u.id_chargy = c.id
@@ -552,6 +578,7 @@ if ($validation_jefe) {
         ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","shops.id as id_shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
         ->where("spreadsheet_tpvs.id_spreadsheet","=","$request->id_spreadsheets")
         ->where("shops.id_company","=","$request->id_company")
+        ->where("spreadsheet_tpvs.id_state","<>","2")
         ->orderBy('shops.id', 'desc')
         ->get();
 
@@ -574,6 +601,7 @@ if ($validation_jefe) {
     ->join("companies","shops.id_company","companies.id")
     ->select("states.state","tpvs.tpv","shops.id_company","shops.shop","shops.id as id_shop","companies.company","spreadsheet_tpvs.total","spreadsheet_tpvs.sub_total","spreadsheet_tpvs.difference","spreadsheet_tpvs.id_state","spreadsheet_tpvs.id")
     ->where("spreadsheet_shops.id_state","=","1")
+    ->where("spreadsheet_tpvs.id_state","<>","2")
     ->where("spreadsheet_tpvs.id_spreadsheet","=","$request->id_spreadsheets")
     ->where("shops.id_company","=","$request->id_company")
     ->where('spreadsheet_shops.id_user', "=","$user->id")

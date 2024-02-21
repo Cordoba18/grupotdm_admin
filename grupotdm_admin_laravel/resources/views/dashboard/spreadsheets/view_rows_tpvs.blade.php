@@ -42,7 +42,7 @@
         <tr id="rows">
 
         <td>{{ $s->name }} <p id="id_spreadsheet_rows_tpv" hidden>{{ $s->id }}</p> <p id="name_payment_method" hidden>{{ $s->name }}</p></td>
-        <td id="value_pos"> {{ $s->value_pos  }}</td>
+        <td>${{ number_format($s->value_pos)  }} <p id="value_pos" hidden>{{ $s->value_pos }}</p></td>
         <td><input @if ($spreadsheet_tpv->id_state == 7 ) disabled  @endif id="input_value_treasurer" min="0" type="number" value="@if ($s->value_treasurer){{ $s->value_treasurer }}@else{{ 0 }}@endif"></td>
         <td><input  id="value_difference" value="{{ $s->difference }}" type="number" disabled></td>
     </tr>
@@ -63,7 +63,7 @@
 
         <tr>
 
-        <td id="total">{{ $spreadsheet_tpv->total }}</td>
+        <td>${{ number_format($spreadsheet_tpv->total) }} <p id="total" hidden>{{ $spreadsheet_tpv->total }}</p></td>
         <td id="sub_total">{{ $spreadsheet_tpv->sub_total }}</td>
         <td id="difference">{{ $spreadsheet_tpv->difference }}</td>
     </tr>

@@ -22,6 +22,12 @@
               <p class="alert alert-success" role="alert" class=""> {{ session('message') }}</p>
 
          @endif
+
+         @if (session('message_error'))
+
+              <p class="alert alert-danger" role="alert" class=""> {{ session('message_error') }}</p>
+
+         @endif
          <div class="content_buttons">
          <form action="{{ route('dashboard.spreadsheets.pdf') }}" method="get">
             <input type="text" hidden name="id_spreadsheets" value="{{ $id }}">
@@ -95,9 +101,9 @@
                     @else<i class="bi bi-file-earmark-spreadsheet" style="color: green;"></i>@endif</td>
             <td>{{ $s->tpv }}</td>
             <td>{{ $s->shop }}</td>
-            <td>{{ $s->total }}</td>
-            <td>{{ $s->sub_total }}</td>
-            <td>{{ $s->difference }}</td>
+            <td>${{ number_format($s->total) }}</td>
+            <td>${{ number_format($s->sub_total) }}</td>
+            <td>${{ number_format($s->difference) }}</td>
 
             <td><a href="{{ route('dashboard.spreadsheets.tpvs.rows_tpvs', $s->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
         </tr>

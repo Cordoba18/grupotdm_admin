@@ -52,6 +52,7 @@ class SpreadsheetsExport implements FromCollection, WithHeadings, ShouldAutoSize
                 "spreadsheet_rows_tpvs.value_treasurer","spreadsheet_rows_tpvs.difference"
                 ,"states.state")
                 ->where("spreadsheet_tpvs.id_spreadsheet","=","$id_spreadsheets")
+                ->where("spreadsheet_tpvs.id_state","<>","2")
                 ->where("shops.id_company","=","$id_company")
                 ->orderBy('shops.id', 'desc')
                 ->get();
@@ -74,6 +75,7 @@ class SpreadsheetsExport implements FromCollection, WithHeadings, ShouldAutoSize
             "payment_methods.name as payment_method","spreadsheet_rows_tpvs.value_pos",
             "spreadsheet_rows_tpvs.value_treasurer","spreadsheet_rows_tpvs.difference","states.state")
             ->where("spreadsheet_shops.id_state","=",1)
+            ->where("spreadsheet_tpvs.id_state","<>","2")
             ->where("spreadsheet_tpvs.id_spreadsheet","=","$id_spreadsheets")
             ->where("shops.id_company","=","$id_company")
             ->where('spreadsheet_shops.id_user', "=","$user->id")
