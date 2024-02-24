@@ -67,7 +67,7 @@
 @endphp
         @endif
 
-        @if ($s->id_company == $id_company && (($s->total != 0 && $s->sub_total != 0 && $s->difference != 0) || ($s->total != null && $s->sub_total != null && $s->difference != null)))
+        @if ($s->id_company == $id_company)
 
             <div class="content_info_tpv">
                 <div class="info_tpv">
@@ -103,7 +103,7 @@
 
                         <tbody>
                             @foreach ($spreadsheet_rows_tpvs as $srt)
-                            @if($srt->id_spreadsheet_tpv == $s->id && (($srt->value_pos != 0 && $srt->value_treasurer != 0 && $srt->difference != 0) || ($srt->value_pos != null && $srt->value_treasurer != null && $srt->difference != null)))
+                            @if($srt->id_spreadsheet_tpv == $s->id && (($srt->value_pos != "0" && $srt->value_treasurer != "0" && $srt->difference != "0") || ($srt->value_pos != null && $srt->value_treasurer != null && $srt->difference != null)))
                                 <tr id="rows" style="border: 1px solid black">
 
                                     <td>{{ $srt->name }}</td>

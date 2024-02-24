@@ -89,7 +89,7 @@
     <form style="width: 100%;" action="{{ route('dashboard.spreadsheets.tpvs.state') }}" method="post">
         @csrf
         <input type="number" id="id_spreadsheet_tpv" name="id_spreadsheet_tpv" value="{{ $spreadsheet_tpv->id }}" hidden>
-        <button style="width: 100%; margin: 5px;" class="btn btn-primary" id="btn_save">@if ($spreadsheet_tpv->id_state == 7 && $validation_jefe) RE ABRIR @else TERMINAR @endif</button>
+        <button style="width: 100%; margin: 5px;" class="btn btn-primary" >@if ($spreadsheet_tpv->id_state == 7 && $validation_jefe) RE ABRIR @else TERMINAR @endif</button>
     </form>
     @endif
     <a style="width: 100%;"  href="{{ route('dashboard.spreadsheets.tpvs', $spreadsheet_tpv->id_spreadsheet) }}" class="btn btn-light">VOLVER</a>

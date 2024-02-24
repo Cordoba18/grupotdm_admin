@@ -7,7 +7,7 @@
 }
 .content_vpns .content_vpn{
 
-    padding: 30px;
+    padding: 10px;
     border: 4px solid;
     text-align: center;
     background-color: black;
@@ -15,7 +15,8 @@
 
     border-radius: 100%;
 transition: 1s all;
-margin: 20px;
+margin: 5px;
+width: 400px;
 }
 
 .content_vpns .content_vpn:hover{
