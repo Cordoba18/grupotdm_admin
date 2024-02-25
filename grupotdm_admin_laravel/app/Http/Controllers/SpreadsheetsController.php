@@ -446,9 +446,12 @@ return true;
             return redirect()->route('dashboard')->with('message_error','No tienes permiso de ingresar al apartado de "Planillas"');
        }
 
-       $zonaHorariaColombia = new DateTimeZone('America/Bogota');
-       $fechaActual = new DateTime('now', $zonaHorariaColombia);
-       $fechaAnterior_pos = Carbon::yesterday($zonaHorariaColombia)->format('Ymd');
+       $spreadsheets  = Spreadsheet::join("spreadsheet_tpvs","spreadsheets.id","spreadsheet_tpvs.id_spreadsheet")
+       ->select("spreadsheets.date_previous")
+       ->where("spreadsheet_tpvs.id","=",$id)
+       ->first();
+
+       $fechaAnterior_pos = Carbon::createFromFormat('Y-m-d', $spreadsheets->date_previous)->format('Ymd');
        $total = 0;
        $spreadsheet_tpv = Spreadsheet_tpv::find($id);
        $t = Tpv::join("shops","tpvs.id_shop","shops.id")
