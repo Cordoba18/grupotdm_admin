@@ -35,7 +35,6 @@
 <table id="miTabla" class="table table-bordered table-striped dataTable">
 
     <thead class="table">
-        <th>ESTADO</th>
         <th>ID</th>
         <th>FECHA DE PLANTILLA</th>
         <th>VER</th>
@@ -44,12 +43,6 @@
     <tbody>
         @foreach ($spreadsheets as $s)
         <tr>
-
-                <td style="font-size: 30px;">@if($s->id_state == 1)
-                    <i class="bi bi-file-earmark-spreadsheet" style="color: green;"></i>
-                    @else
-                    <i class="bibi-file-earmark-spreadsheet" style="color: red;"></i>
-                @endif</td>
             <td>{{ $s->id }}</td>
             <td>{{ $s->date_previous }}</td>
             <td><a href="{{ route('dashboard.spreadsheets.tpvs', $s->id) }}" class="btn btn-primary"><i class="bi bi-eye-fill"></i></a></td>
