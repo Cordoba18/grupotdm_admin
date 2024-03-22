@@ -241,7 +241,7 @@ public function new_user(){
 public function save_user(Request $request){
     $my_user = User::find(Auth::user()->id);
     $validation_email = DB::selectOne("SELECT * FROM users WHERE email ='$request->email'");
-    $validation_nit = DB::selectOne("SELECT * FROM users WHERE nit ='$request->nit'");
+    // $validation_nit = DB::selectOne("SELECT * FROM users WHERE nit ='$request->nit'");
     $validation_form_email = strpos($request->email, '@eltemplodelamoda.com.co');
     $validation_form_email2 = strpos($request->email, '@eltemplodelamodafresca.com');
     $validation_form_email3 = strpos($request->email, '@tclosangeles.com');
@@ -253,9 +253,12 @@ public function save_user(Request $request){
         return redirect()->route('dashboard.users.new_user')->with("message_error","Usuario con correo existente");
     }else if ($request->password !== $request->password2) {
         return redirect()->route('dashboard.users.new_user')->with("message_error","Las contraseñas no coinciden");
-    }else if ($validation_nit) {
-        return redirect()->route('dashboard.users.new_user')->with("message_error","Usuario con nit existente");
-    }else{
+    }
+    // else
+    //  if ($validation_nit) {
+    //     return redirect()->route('dashboard.users.new_user')->with("message_error","Usuario con nit existente");
+    // }
+    else{
         $user = new User();
         $user->name = $request->name;
         $user->nit= $request->nit;

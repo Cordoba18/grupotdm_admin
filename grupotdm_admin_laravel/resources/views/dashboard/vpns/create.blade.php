@@ -53,7 +53,7 @@
         <option value="">Seleccione un area</option>
     </select>
   </div>
-  <button class="btn btn-primary" style="margin-bottom: 30px; width: 100%;">GUARDAR SERVIDOR  <i class="bi bi-floppy"></i></button>
+  <button class="btn btn-primary" style="margin-bottom: 30px; width: 100%;">GUARDAR VPN  <i class="bi bi-floppy"></i></button>
 </form>
   @stop
 
