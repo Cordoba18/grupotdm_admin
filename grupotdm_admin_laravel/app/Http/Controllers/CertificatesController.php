@@ -301,7 +301,7 @@ public function state_certificate(Request $request){
             $new_report_product->id_product = $r->id_product;
             $product = Product::find($r->id_product);
             if  ($certificate->id_state == 12){
-                $product->id_state = 1;
+                $product->id_state = 2;
             }else{
                 $product->id_state = $certificate->id_state;
             }
