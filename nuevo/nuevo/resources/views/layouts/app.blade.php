@@ -25,14 +25,9 @@
 <body class="{{ $class ?? '' }}">
 
     @guest
-    <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('https://cdn.shopify.com/s/files/1/0535/1515/7686/files/Banner_nuestra-Empresa.png?v=1614644309'); background-position-y: 50%;">
-        <span class="mask bg-primary opacity-6"></span>
-    </div>
-    @include('layouts.navbars.auth.sidenav')
-    <main class="main-content border-radius-lg">
+
         @yield('content')
-    </main>
-@include('components.fixed-plugin')
+
     @endguest
 
     @auth

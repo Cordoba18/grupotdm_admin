@@ -136,6 +136,7 @@ Echo.join(`commentticket.${id_ticket}`)
         result.forEach(u => {
             if (u.id == id_user_destination.textContent || u.id == id_user_sender && u.id != id_user) {
 
+                console.log("hola")
             validate_conection.className = "comment_state_online";
             validate_conection.innerHTML = `COLABORADOR CONECTADO EN TICKET <i class="bi bi-wifi"></i>`;
             conection = true;
