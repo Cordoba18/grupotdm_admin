@@ -252,9 +252,10 @@
             <button class="btn btn-success">RE ABRIR TICKET </button>
             @else
             <button class="btn btn-danger">ELIMINAR <i class="bi bi-trash3-fill"></i> </button>
+        </form>
             @endif
 
-        </form>
+
         @if (($ticket->id_state == 5 || $ticket->id_state == 6 ) && $ticket->id_user_sender == $user->id)
         <form action="{{ route('dashboard.tickets.state') }}" method="post">
             @csrf

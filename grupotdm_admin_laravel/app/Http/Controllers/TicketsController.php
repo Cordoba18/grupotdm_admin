@@ -286,7 +286,7 @@ public function notificate_finish_ticket_mail(Request $request){
          //Notificamos
          NotificationController::create_notification("El usuario $user_destination->name esta esperando la finalizacion del ticket #$ticket->id", $user_sender->id , route('dashboard.tickets.ticket_detail', $ticket->id));
         //Enviamos correo
-         Mail::to($user_sender->email)->send(new notificate_finish_ticket($user_sender, $user_destination ,$ticket));
+         Mail::to($user_sender->email)->send(new notificate_finish_ticket($user_destination, $user_sender ,$ticket));
         return redirect()->route("dashboard.tickets.ticket_detail", $ticket->id)->with('message','Usuario notificado!');
 
 }
